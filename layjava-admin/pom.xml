@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.layjava</groupId>
+        <artifactId>layjava-admin-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>layjava-admin</artifactId>
+    <packaging>jar</packaging>
+
+    <description>
+        web服务入口
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.layjava</groupId>
+            <artifactId>layjava-system</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <!-- 配置打包插件（并打包成胖包） -->
+            <plugin>
+                <groupId>org.noear</groupId>
+                <artifactId>solon-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 指定启动主类 -->
+                    <mainClass>demo.DemoApp</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

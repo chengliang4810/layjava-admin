@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.layjava</groupId>
+        <artifactId>layjava-admin-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>layjava-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        common 通用模块
+    </description>
+    <modules>
+        <module>layjava-common-bom</module>
+        <module>layjava-common-core</module>
+        <module>layjava-common-web</module>
+        <module>layjava-common-mybatis</module>
+        <module>layjava-common-redis</module>
+        <module>layjava-common-security</module>
+        <module>layjava-common-log</module>
+    </modules>
+
+</project>

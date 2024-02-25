@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.layjava</groupId>
+        <artifactId>layjava-common</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>layjava-common-web</artifactId>
+
+    <dependencies>
+        <!-- Http 启动器 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.boot.smarthttp</artifactId>
+        </dependency>
+
+        <!-- Json序列化支持组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.serialization.jackson</artifactId>
+        </dependency>
+
+        <!-- 跨域处理组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.web.cors</artifactId>
+        </dependency>
+
+        <!-- 验证扩展组件 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.validation</artifactId>
+        </dependency>
+
+        <!-- 日志 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.logging.logback</artifactId>
+        </dependency>
+    </dependencies>
+
+
+</project>
