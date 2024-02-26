@@ -1,4 +1,4 @@
-package com.layjava.common.web;
+package com.layjava.common.web.interceprot;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
@@ -26,13 +26,15 @@ public class GlobalResultInterceptor implements RouterInterceptor {
      */
     @Override
     public Object postResult(Context ctx, Object result) throws Throwable {
-        if(result instanceof Throwable){
+        if(result instanceof Throwable error){
             // 如果是异常，包装成Result返回
-            return Result.failure(((Throwable) result).getMessage());
-        } else if (result instanceof Result) {
+            return Result.failure(error.getMessage());
+        }
+        else if(result instanceof Result) {
             // 如果是Result类型，直接返回
             return result;
-        }else{
+        }
+        else{
             // 其他类型，包装成Result返回
             return Result.succeed(result);
         }
