@@ -7,7 +7,10 @@ target/
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
+.idea/inspectionProfiles
 .idea/libraries/
+.idea/*.iml
+.idea/
 *.iws
 *.iml
 *.ipr

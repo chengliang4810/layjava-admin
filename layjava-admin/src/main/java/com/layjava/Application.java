@@ -3,6 +3,12 @@ package com.layjava;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.SolonMain;
 
+/**
+ * 应用启动类
+ *
+ * @author chengliang
+ * @date 2024/02/26
+ */
 @SolonMain
 public class Application {
 
