@@ -12,6 +12,12 @@
     <artifactId>layjava-common-web</artifactId>
 
     <dependencies>
+        <!-- solon -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon</artifactId>
+        </dependency>
+
         <!-- Http 启动器 -->
         <dependency>
             <groupId>org.noear</groupId>
