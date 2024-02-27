@@ -25,7 +25,7 @@
 
          <dependency>
              <groupId>org.noear</groupId>
-             <artifactId>mybatis-plus-extension-solon-plugin </artifactId>
+             <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
          </dependency>
 
          <!-- sql性能分析插件 -->

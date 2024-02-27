@@ -28,8 +28,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
-        <p6spy.version>3.9.1</p6spy.version>
         <!-- 数据源 -->
+        <mysql.version>8.0.33</mysql.version>
+        <p6spy.version>3.9.1</p6spy.version>
         <hikaricp.version>4.0.3</hikaricp.version>
 
         <lombok.version>1.18.30</lombok.version>
@@ -88,6 +89,13 @@
                 <version>${hutool.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- Mysql驱动包 -->
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
 
             <!-- 数据源 -->

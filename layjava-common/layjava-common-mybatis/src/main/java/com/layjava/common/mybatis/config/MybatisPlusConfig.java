@@ -1,6 +1,7 @@
 package com.layjava.common.mybatis.config;
 
 import cn.hutool.core.net.NetUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
@@ -26,16 +27,15 @@ import javax.sql.DataSource;
 @Configuration
 public class MybatisPlusConfig {
 
-    //此下的 db1 与 mybatis.db1 将对应在起来 //可以用 @Db("db1") 注入mapper
-    //typed=true，表示默认数据源。@Db 可不带名字注入
     @Bean(value = "db", typed = true)
-    public DataSource db1(@Inject("${system.db}") DataSource ds) {
-        return ds;
+    public DataSource dataSource(@Inject("${system.db}") HikariDataSource dataSource) {
+        return dataSource;
     }
 
     @Bean
     public void mybatisPlusConfig(@Db("db") MybatisConfiguration cfg,
                                   @Db("db") GlobalConfig globalConfig) {
+        // 配置插件
         MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
         plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         cfg.addInterceptor(plusInterceptor);

@@ -7,6 +7,9 @@ solon.app.name: layjava-admin
 solon.app.title: "LayJavaAdmin"
 #应用组
 solon.app.group: "system"
+--- # 加载common.yml
+solon.config.load:
+  - "common-mybatis.yml"
 # 添加外部扩展配置
 ---
 solon.env.on: prod
@@ -35,7 +38,3 @@ mybatis.db:
     - "com.layjava.**.mapper"
     # 对应的 XML 文件位置
     - "mapper/**/*Mapper.xml"
-
---- # 加载common.yml
-solon.config.load:
-  - "common-mybatis.yml"

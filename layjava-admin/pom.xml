@@ -18,6 +18,11 @@
     </description>
 
     <dependencies>
+        <!-- Mysql驱动包 -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.layjava</groupId>
             <artifactId>layjava-system</artifactId>
@@ -34,7 +39,7 @@
                 <artifactId>solon-maven-plugin</artifactId>
                 <configuration>
                     <!-- 指定启动主类 -->
-                    <mainClass>demo.DemoApp</mainClass>
+                    <mainClass>com.layjava.Application</mainClass>
                 </configuration>
             </plugin>
         </plugins>
