@@ -1,1 +1,9 @@
 server.port: 8080
+
+# 配置默认数据源
+system.db:
+  schema: system
+  jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  driverClassName: com.mysql.cj.jdbc.Driver
+  username: root
+  password: 123456

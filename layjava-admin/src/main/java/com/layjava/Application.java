@@ -13,7 +13,7 @@ import org.noear.solon.annotation.SolonMain;
 public class Application {
 
     public static void main(String[] args) {
-        Solon.start(Application.class, args);
+        Solon.start(Application.class, args, solonApp -> {});
     }
 
 }
