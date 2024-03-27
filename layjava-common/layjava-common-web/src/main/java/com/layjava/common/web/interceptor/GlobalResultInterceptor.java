@@ -1,4 +1,4 @@
-package com.layjava.common.web.interceprot;
+package com.layjava.common.web.interceptor;
 
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
