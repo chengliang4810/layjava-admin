@@ -26,6 +26,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- 接口文档模块 -->
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-common-doc</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- 安全模块 -->
             <dependency>
                 <groupId>com.layjava</groupId>

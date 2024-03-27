@@ -26,7 +26,6 @@
         <dependency>
             <groupId>com.layjava</groupId>
             <artifactId>layjava-system</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 

@@ -18,6 +18,7 @@
     <modules>
         <module>layjava-common-bom</module>
         <module>layjava-common-core</module>
+        <module>layjava-common-doc</module>
         <module>layjava-common-web</module>
         <module>layjava-common-mybatis</module>
         <module>layjava-common-redis</module>
