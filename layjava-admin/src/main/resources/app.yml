@@ -38,3 +38,12 @@ mybatis.db:
     - "com.layjava.**.mapper"
     # 对应的 XML 文件位置
     - "mapper/**/*Mapper.xml"
+
+
+# security配置
+security:
+  # 排除路径
+  excludes:
+    - /
+    # 公共路径
+    - /favicon.ico

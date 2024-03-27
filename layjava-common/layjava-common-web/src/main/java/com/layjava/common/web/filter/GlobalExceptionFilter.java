@@ -1,5 +1,7 @@
 package com.layjava.common.web.filter;
 
+import com.layjava.common.core.exception.AuthException;
+import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Filter;
@@ -24,11 +26,21 @@ public class GlobalExceptionFilter implements Filter {
             if(!ctx.getHandled()){
                 ctx.render(Result.failure(404, "资源不存在"));
             }
-        } catch (ValidatorException e){
-            // //e.getResult().getDescription()
+        }
+        // 参数验证异常
+        catch (ValidatorException e){
             ctx.render(Result.failure(e.getCode(), e.getMessage()));
-        } catch (Throwable e) {
-            ctx.render(Result.failure(500, "服务端运行出错"));
+        }
+        // 权限异常
+        catch (AuthException e){
+            ctx.render(Result.failure(e.getCode(), e.getMessage()));
+        }
+        // 其他异常
+        catch (Throwable e) {
+            if ("dev".equals(Solon.cfg().getProperty("solon.env"))){
+                e.printStackTrace();
+            }
+            ctx.render(Result.failure(500, e.getMessage()));
         }
     }
 
