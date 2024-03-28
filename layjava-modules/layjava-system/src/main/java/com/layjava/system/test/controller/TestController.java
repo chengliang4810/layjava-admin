@@ -17,7 +17,6 @@ import java.util.List;
  * @date 2024/02/26
  */
 @Controller
-@SaIgnore
 @Mapping("/hello")
 public class TestController {
 
