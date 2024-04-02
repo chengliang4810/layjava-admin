@@ -8,9 +8,11 @@ import com.layjava.common.security.handler.SecurityExceptionHandler;
 import com.layjava.common.security.properties.SecurityProperties;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 
 @Configuration
+@Import(profiles = "classpath:common-security.yml")
 public class SecurityConfig {
 
     /**

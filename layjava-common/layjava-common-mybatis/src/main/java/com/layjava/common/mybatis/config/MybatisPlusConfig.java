@@ -29,7 +29,7 @@ import javax.sql.DataSource;
 public class MybatisPlusConfig {
 
     @Bean(value = "db", typed = true)
-    public DataSource dataSource(@Inject("${system.db}") HikariDataSource dataSource) {
+    public DataSource dataSource(@Inject("${layjava.db}") HikariDataSource dataSource) {
         return dataSource;
     }
 

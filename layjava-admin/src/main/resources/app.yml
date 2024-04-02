@@ -14,7 +14,7 @@ solon.env.on: prod
 solon.config.add: "./app.yml"
 
 --- # mybatis plus
-layjava.db:
+mybatis.db:
   # 实体扫描，多个package用逗号或者分号分隔
   typeAliases:
     - "com.layjava.**.domain"
@@ -29,6 +29,5 @@ security:
   # 排除路径
   excludes:
     - /
-    # 公共路径
-    - /favicon.ico
-    - /hello
+    # 登录
+    - /auth/login
