@@ -32,9 +32,6 @@ public class AuthController extends BaseController {
      */
     @Mapping("/login")
     public LoginVo login(@Validated LoginBody loginBody) {
-        log.info("登录信息：{}", loginBody);
-
-
         return authService.login(loginBody);
     }
 
