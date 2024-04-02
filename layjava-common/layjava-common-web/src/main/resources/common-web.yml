@@ -1,0 +1,13 @@
+# 内置配置 不允许修改  如需修改请在写相同配置覆盖
+# server配置
+server.port: 8080
+#设定最大的请求包大小（或表单项的值大小）//默认: 2m
+server.request.maxBodySize: 2mb #kb,mb
+#设定最大的上传文件大小
+server.request.maxFileSize: 2mb #kb,mb (默认使用 maxBodySize 配置值)
+#设定最大的请求头大小//默认: 8k
+server.request.maxHeaderSize: 8kb #kb,mb
+#设定请求体编码
+server.request.encoding: "utf-8"
+#设定响应体编码
+server.response.encoding: "utf-8"

@@ -6,30 +6,15 @@ solon.app.name: layjava-admin
 #应用标题
 solon.app.title: "LayJavaAdmin"
 #应用组
-solon.app.group: "system"
---- # 加载common.yml
-solon.config.load:
-  - "common-mybatis.yml"
+solon.app.group: "layjava"
+
 # 添加外部扩展配置
 ---
 solon.env.on: prod
 solon.config.add: "./app.yml"
 
---- # server配置
-server.port: 8080
-#设定最大的请求包大小（或表单项的值大小）//默认: 2m
-server.request.maxBodySize: 2mb #kb,mb
-#设定最大的上传文件大小
-server.request.maxFileSize: 2mb #kb,mb (默认使用 maxBodySize 配置值)
-#设定最大的请求头大小//默认: 8k
-server.request.maxHeaderSize: 8kb #kb,mb
-#设定请求体编码
-server.request.encoding: "utf-8"
-#设定响应体编码
-server.response.encoding: "utf-8"
-
 --- # mybatis plus
-mybatis.db:
+layjava.db:
   # 实体扫描，多个package用逗号或者分号分隔
   typeAliases:
     - "com.layjava.**.domain"
@@ -39,8 +24,7 @@ mybatis.db:
     # 对应的 XML 文件位置
     - "mapper/**/*Mapper.xml"
 
-
-# security配置
+# security url放行配置
 security:
   # 排除路径
   excludes:

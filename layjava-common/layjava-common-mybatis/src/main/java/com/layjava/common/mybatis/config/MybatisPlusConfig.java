@@ -1,7 +1,6 @@
 package com.layjava.common.mybatis.config;
 
 import cn.hutool.core.net.NetUtil;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
@@ -14,6 +13,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 
 import javax.sql.DataSource;
@@ -25,6 +25,7 @@ import javax.sql.DataSource;
  * @date 2024/02/27
  */
 @Configuration
+@Import(profiles = "classpath:common-mybatis.yml")
 public class MybatisPlusConfig {
 
     @Bean(value = "db", typed = true)
