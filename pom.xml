@@ -29,7 +29,7 @@
         <java.version>17</java.version>
 
         <!-- 数据源 -->
-        <mysql.version>8.0.33</mysql.version>
+        <mysql.version>8.3.0</mysql.version>
         <p6spy.version>3.9.1</p6spy.version>
         <hikaricp.version>4.0.3</hikaricp.version>
 
@@ -88,6 +88,14 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-bom</artifactId>
                 <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
