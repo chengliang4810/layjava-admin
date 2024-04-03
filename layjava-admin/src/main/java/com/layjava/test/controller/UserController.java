@@ -1,7 +1,9 @@
 package com.layjava.test.controller;
 
 import com.layjava.common.web.core.BaseController;
+import com.layjava.test.service.UserService;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 
 /**
@@ -14,7 +16,7 @@ import org.noear.solon.annotation.Mapping;
 @Mapping("/test/user")
 public class UserController extends BaseController {
 
-    // @Inject
-    // private UserService userService;
+    @Inject
+    private UserService userService;
 
 }
