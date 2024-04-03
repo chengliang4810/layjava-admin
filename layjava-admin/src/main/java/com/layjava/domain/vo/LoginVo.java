@@ -16,7 +16,7 @@ public class LoginVo implements Serializable {
     /**
      * 授权令牌
      */
-    private String accessToken;
+    private String token;
 
     /**
      * 授权令牌 access_token 的有效期
