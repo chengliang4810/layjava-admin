@@ -13,6 +13,17 @@
     <description>代码生成模块</description>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.layjava</groupId>
+            <artifactId>layjava-common-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.layjava</groupId>
+            <artifactId>layjava-common-web</artifactId>
+        </dependency>
+
         <!-- 通用 -->
         <dependency>
             <groupId>com.layjava</groupId>

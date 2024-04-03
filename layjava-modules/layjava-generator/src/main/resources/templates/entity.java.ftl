@@ -10,24 +10,22 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 </#if>
 <#if entityLombokModel>
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
     <#if chainModel>
 import lombok.experimental.Accessors;
     </#if>
 </#if>
 
 /**
- * <p>
+ *
  * ${table.comment!}
- * </p>
  *
  * @author ${author}
  * @since ${date}
  */
 <#if entityLombokModel>
-@Getter
-@Setter
+@Data
     <#if chainModel>
 @Accessors(chain = true)
     </#if>
@@ -41,6 +39,7 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "${entity}对象", description = "${table.comment!}")
 </#if>
 <#if superEntityClass??>
+@EqualsAndHashCode(callSuper = true)
 public class ${entity} extends ${superEntityClass}<#if activeRecord><${entity}></#if> {
 <#elseif activeRecord>
 public class ${entity} extends Model<${entity}> {

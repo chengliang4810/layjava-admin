@@ -1,5 +1,7 @@
 package ${package.Controller};
 
+import ${package.Service}.${table.serviceName};
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
 
@@ -21,5 +23,8 @@ public class ${table.controllerName} extends ${superControllerClass} {
 <#else>
 public class ${table.controllerName} {
 </#if>
+
+    @Inject
+    private ${table.serviceName} ${table.entityPath}Service;
 
 }
