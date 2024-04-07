@@ -3,23 +3,23 @@ package com.layjava.generator;
 import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 代码生成器启动类
  * 后续做成接口
+ *
  * @author chengliang
  * @date 2024/04/03
  */
 public class GeneratorStarter {
 
-    private final static List<String> ENTITY_SUPER_CLASS_COMMONS = List.of("create_dept","create_by", "create_time", "update_by", "update_time");
+    private final static List<String> ENTITY_SUPER_CLASS_COMMONS = List.of("create_dept", "create_by", "create_time", "update_by", "update_time");
 
     public static void main(String[] args) {
         // 获取当前项目的路径
@@ -44,13 +44,13 @@ public class GeneratorStarter {
                     builder.parent("com.layjava.generator") // 设置包名
                             .moduleName("test") // 设置模块名
                             .entity("domain") // 设置entity包名
-                            .pathInfo(Collections.singletonMap( OutputFile.xml, xmlDir.getAbsolutePath())); // 设置mapperXml生成路径
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, xmlDir.getAbsolutePath())); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("sys_user") // 设置需要生成的表名
                             .addTablePrefix("sys_", "iot_") // 设置过滤表前缀
                             .entityBuilder()
-                            .superClass(BaseEntity.class)
+                            .superClass("com.layjava.common.mybatis.core.entity.BaseEntity") // 设置实体父类
                             .enableFileOverride() // 文件覆盖
                             .enableChainModel() // 开启链式调用
                             .enableLombok() // 开启lombok模型
@@ -64,8 +64,16 @@ public class GeneratorStarter {
                             .serviceBuilder() // 设置 service 层代码策略
                             .enableFileOverride() // 开启覆盖已生成文件
                             .formatServiceFileName("%sService"); // 个人不喜欢IService的模式
+
                 })
                 .templateEngine(new FreemarkerTemplateEngine())
+                .injectionConfig(consumer -> {
+                    List<CustomFile> customFiles = new ArrayList<>();
+                    customFiles.add(new CustomFile.Builder().fileName("Bo.java").templatePath("/templates/bo.java.ftl").packageName("domain.bo").enableFileOverride().build());
+                    customFiles.add(new CustomFile.Builder().fileName("Vo.java").templatePath("/templates/vo.java.ftl").packageName("domain.vo").enableFileOverride().build());
+                    consumer.customFile(customFiles);
+
+                })
                 .execute();
     }
 
