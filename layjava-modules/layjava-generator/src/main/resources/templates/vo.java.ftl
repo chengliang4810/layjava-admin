@@ -26,14 +26,13 @@ public class ${entity}Vo implements Serializable {
     <#if field.keyFlag>
         <#assign keyPropertyName="${field.propertyName}"/>
     </#if>
-
     <#if field.comment!?length gt 0>
     /**
      * ${field.comment}
      */
     </#if>
     private ${field.propertyType} ${field.propertyName};
+
 </#list>
 <#------------  END 字段循环遍历  ---------->
-
 }
