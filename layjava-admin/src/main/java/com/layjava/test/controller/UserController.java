@@ -10,7 +10,7 @@ import org.noear.solon.annotation.Mapping;
  * 用户信息表 控制器
  *
  * @author chengliang4810
- * @since 2024-04-03
+ * @since 2024-04-08
  */
 @Controller
 @Mapping("/test/user")

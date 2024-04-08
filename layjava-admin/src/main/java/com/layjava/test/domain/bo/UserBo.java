@@ -1,7 +1,5 @@
-package com.layjava.test.domain;
+package com.layjava.test.domain.bo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,14 +15,13 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-@TableName("sys_user")
 @EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity {
+public class UserBo extends BaseEntity {
+
 
     /**
      * 用户ID
      */
-    @TableId("user_id")
     private Long userId;
 
     /**
@@ -97,8 +94,9 @@ public class User extends BaseEntity {
      */
     private String loginIp;
 
+
     /**
-     * 最后登录时间
+     * 登录日期
      */
     private LocalDateTime loginDate;
 
@@ -106,4 +104,5 @@ public class User extends BaseEntity {
      * 备注
      */
     private String remark;
+
 }

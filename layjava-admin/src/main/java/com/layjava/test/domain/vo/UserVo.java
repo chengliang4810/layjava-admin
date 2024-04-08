@@ -1,12 +1,9 @@
-package com.layjava.test.domain;
+package com.layjava.test.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -17,14 +14,11 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-@TableName("sys_user")
-@EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity {
+public class UserVo implements Serializable {
 
     /**
      * 用户ID
      */
-    @TableId("user_id")
     private Long userId;
 
     /**
@@ -106,4 +100,5 @@ public class User extends BaseEntity {
      * 备注
      */
     private String remark;
+
 }
