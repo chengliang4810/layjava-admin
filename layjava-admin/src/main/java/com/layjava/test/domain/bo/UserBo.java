@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(callSuper = true)
 public class UserBo extends BaseEntity {
 
-
     /**
      * 用户ID
      */
