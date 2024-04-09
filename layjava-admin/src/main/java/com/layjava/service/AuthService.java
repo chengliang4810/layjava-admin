@@ -10,7 +10,7 @@ import org.noear.solon.annotation.Component;
  * 身份验证服务
  *
  * @author chengliang
- * @date 2024/04/02
+ * @since 2024/04/02
  */
 @Slf4j
 @Component

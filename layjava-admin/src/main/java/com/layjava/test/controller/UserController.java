@@ -4,10 +4,7 @@ import com.layjava.common.web.core.BaseController;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
 import com.layjava.test.service.UserService;
-import org.noear.solon.annotation.Controller;
-import org.noear.solon.annotation.Get;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,30 @@ public class UserController extends BaseController {
     @Mapping("/list")
     public List<UserVo> list(UserBo userBo) {
         return userService.getUserVoList(userBo);
+    }
+
+    @Get
+    @Mapping("/{id}")
+    public UserVo get(Integer id) {
+        return userService.getUserVoById(id);
+    }
+
+    @Post
+    @Mapping
+    public boolean save(UserBo userBo) {
+        return userService.saveUser(userBo);
+    }
+
+    @Put
+    @Mapping
+    public boolean update(UserBo userBo) {
+        return userService.updateUserById(userBo);
+    }
+
+    @Delete
+    @Mapping("/{id}")
+    public boolean delete(Integer id) {
+        return userService.deleteUserById(id);
     }
 
 }
