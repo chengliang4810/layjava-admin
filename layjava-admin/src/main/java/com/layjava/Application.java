@@ -7,7 +7,7 @@ import org.noear.solon.annotation.SolonMain;
  * 应用启动类
  *
  * @author chengliang
- * @date 2024/02/26
+ * @since 2024/02/26
  */
 @SolonMain
 public class Application {

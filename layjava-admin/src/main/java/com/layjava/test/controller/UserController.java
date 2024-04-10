@@ -1,5 +1,6 @@
 package com.layjava.test.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
@@ -18,6 +19,7 @@ import java.util.List;
 @Mapping("/test/user")
 public class UserController extends BaseController {
 
+
     @Inject
     private UserService userService;
 
@@ -30,7 +32,7 @@ public class UserController extends BaseController {
 
     @Get
     @Mapping("/{id}")
-    public UserVo get(Integer id) {
+    public UserVo get(Long id) {
         return userService.getUserVoById(id);
     }
 
@@ -47,9 +49,10 @@ public class UserController extends BaseController {
     }
 
     @Delete
-    @Mapping("/{id}")
-    public boolean delete(Integer id) {
-        return userService.deleteUserById(id);
+    @Mapping("/{ids}")
+    public boolean delete(String ids) {
+        List<String> split = StrUtil.split(ids, ",");
+        return userService.deleteUserById(1L);
     }
 
 }

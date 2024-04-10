@@ -27,7 +27,7 @@ public interface UserService {
      * @param id 用户id
      * @return {@link UserVo}
      */
-    UserVo getUserVoById(Integer id);
+    UserVo getUserVoById(Long id);
 
 
     /**
@@ -54,6 +54,6 @@ public interface UserService {
      * @param id 身份证件
      * @return boolean
      */
-    boolean deleteUserById(Integer id);
+    boolean deleteUserById(Long id);
 
 }

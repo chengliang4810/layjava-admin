@@ -9,8 +9,8 @@ import com.layjava.test.domain.vo.UserVo;
 import com.layjava.test.mapper.UserMapper;
 import com.layjava.test.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.annotation.Inject;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +25,7 @@ import java.util.Map;
 @Component
 public class UserServiceImpl implements UserService {
 
-    @Inject
+    @Db
     private UserMapper userMapper;
 
     @Override
@@ -49,4 +49,23 @@ public class UserServiceImpl implements UserService {
         return queryWrapper;
     }
 
+    @Override
+    public UserVo getUserVoById(Long id) {
+        return null;
+    }
+
+    @Override
+    public boolean saveUser(UserBo userBo) {
+        return false;
+    }
+
+    @Override
+    public boolean updateUserById(UserBo userBo) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteUserById(Long id) {
+        return false;
+    }
 }
