@@ -14,15 +14,19 @@ solon.env.on: prod
 solon.config.add: "./app.yml"
 
 --- # mybatis plus
-mybatis.db:
+mybatis.default:
   # 实体扫描，多个package用逗号或者分号分隔
   typeAliases:
     - "com.layjava.**.domain"
+  # 对应Mapper接口位置
   mappers:
-    # 对应Mapper接口位置
-    - "com.layjava.**.mapper"
+    # com.**.mapper.*Mapper       Type interface com.layjava.test.mapper.UserMapper is not known to the MybatisPlusMapperRegistry.
+    # com.lay*.**.mapper          Missing mapper registration
+    # com.layjava.**.mapper.* ｜ com.**.mapper.*          报错
+    # com.layjava.test.mapper.* ｜ com.layjava.*.mapper.* 成功
+    - "com.layjava.**.mapper.*"
     # 对应的 XML 文件位置
-    - "mapper/**/*Mapper.xml"
+    # - "classpath:mapper/**/*Mapper.xml"
 
 # security url放行配置
 security:
@@ -32,3 +36,4 @@ security:
     # 登录
     - /auth/login
     - /swagger/v2
+    - /test/user/list

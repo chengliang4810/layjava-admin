@@ -2,9 +2,12 @@ package com.layjava.test.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.layjava.common.web.core.BaseController;
+import com.layjava.test.domain.User;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
+import com.layjava.test.mapper.UserMapper;
 import com.layjava.test.service.UserService;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.*;
 
 import java.util.List;
@@ -23,6 +26,9 @@ public class UserController extends BaseController {
     @Inject
     private UserService userService;
 
+    @Db
+    private UserMapper userMapper;
+
     /**
      * 查询用户列表
      *
@@ -31,8 +37,8 @@ public class UserController extends BaseController {
      */
     @Get
     @Mapping("/list")
-    public List<UserVo> list(UserBo userBo) {
-        return userService.getUserVoList(userBo);
+    public List<User> list(UserBo userBo) {
+        return userMapper.selectList();
     }
 
     /**

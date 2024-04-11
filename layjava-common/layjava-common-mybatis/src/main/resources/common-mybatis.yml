@@ -2,7 +2,7 @@
 # MyBatisPlus配置
 # https://baomidou.com/config/
 # 配置数据源对应的 mybatis 信息（要与 DataSource bean 的名字对上）
-mybatis.db:
+mybatis.default:
   configuration:
     # 自动驼峰命名规则（camel case）映射
     mapUnderscoreToCamelCase: true
