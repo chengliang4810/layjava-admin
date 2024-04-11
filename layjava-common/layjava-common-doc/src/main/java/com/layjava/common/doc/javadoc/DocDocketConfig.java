@@ -57,6 +57,8 @@ public class DocDocketConfig {
             //包装Bean（指定名字）
             BeanWrap beanWrap = Solon.context().wrap(DocDocket.class, docDocket);
             Solon.context().putWrap("DocDocket-" + groupConfig.getGroup(), beanWrap);
+            //注册到Solon容器中
+            System.out.println("DocDocket-" + groupConfig.getGroup() + " 注册成功");
         });
 
     }

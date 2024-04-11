@@ -16,9 +16,7 @@ public class OpenApiController {
 
     @Mapping("swagger/v2")
     public String api(Context ctx, String group) throws IOException {
-        String apiJson = OpenApi2Utils.getApiJson(ctx, "");
-        System.out.println("apiJson:" + apiJson);
-        return apiJson;
+        return OpenApi2Utils.getApiJson(ctx, group);
     }
 
 }

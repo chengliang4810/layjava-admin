@@ -1,6 +1,11 @@
 package com.layjava.common.doc.javadoc;
 
-import com.github.therapi.runtimejavadoc.*;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.StrUtil;
+import com.github.therapi.runtimejavadoc.ClassJavadoc;
+import com.github.therapi.runtimejavadoc.Comment;
+import com.github.therapi.runtimejavadoc.CommentFormatter;
+import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
 import com.layjava.common.doc.javadoc.common.Constants;
 import com.layjava.common.doc.javadoc.impl.ActionHolder;
 import com.layjava.common.doc.javadoc.impl.BuilderHelper;
@@ -35,6 +40,7 @@ import org.noear.solon.docs.models.ApiContact;
 import org.noear.solon.docs.models.ApiLicense;
 import org.noear.solon.docs.models.ApiScheme;
 
+import java.io.StringReader;
 import java.lang.reflect.*;
 import java.text.Collator;
 import java.time.LocalDateTime;
@@ -242,14 +248,12 @@ public class OpenApi2Builder {
 
         String controllerKey = BuilderHelper.getControllerKey(clazz);
         Set<String> apiTags = new LinkedHashSet<>();
-
-        if (api == null){
+        String description = "";
+        if (api == null) {
             ClassJavadoc javadoc = RuntimeJavadoc.getJavadoc(clazz);
-
-            System.out.println("-----------------------" + javadoc.getComment());
-            System.out.println(format(javadoc.getComment()));
-            System.out.println("-----------------------");
-            apiTags.add(format(javadoc.getComment()));
+            description = format(javadoc.getComment());
+            List<String> list = IoUtil.readLines(new StringReader(description), new ArrayList<>());
+            apiTags.add(list.get(0));
         } else {
             apiTags.add(api.value());
             apiTags.addAll(Arrays.asList(api.tags()));
@@ -260,7 +264,7 @@ public class OpenApi2Builder {
         for (String tagName : apiTags) {
             Tag tag = new Tag();
             tag.setName(tagName);
-            tag.setDescription(controllerKey + " (" + clazz.getSimpleName() + ")");
+            tag.setDescription(StrUtil.isBlank(description) ? controllerKey + " (" + clazz.getSimpleName() + ")" : description);
 
             swagger.addTag(tag);
         }
@@ -306,12 +310,13 @@ public class OpenApi2Builder {
             if (apiAction != null) {
                 operation.setSummary(apiAction.value());
             } else {
-                Class<?> aClass = actionHolder.controllerClz();
-                System.out.println(aClass.getName());
                 ClassJavadoc javadoc = RuntimeJavadoc.getJavadoc(actionHolder.controllerClz().getName());
-                System.out.println(actionMethod);
+                String comment = format(javadoc.getComment());
+
+                List<String> list = IoUtil.readLines(new StringReader(comment), new ArrayList<>());
+                operation.setTags(List.of(list.get(0)));
                 javadoc.getMethods().stream().filter(m -> m.getName().equals(actionMethod.getName())).findFirst().ifPresent(methodJavadoc -> {
-                    operation.setTags(List.of(format(methodJavadoc.getComment())));
+                    operation.setSummary(format(methodJavadoc.getComment()));
                 });
             }
             // operation.setDescription(apiAction.notes());

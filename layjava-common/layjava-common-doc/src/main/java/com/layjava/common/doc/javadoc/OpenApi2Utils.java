@@ -2,7 +2,6 @@ package com.layjava.common.doc.javadoc;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import io.swagger.models.Swagger;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -55,7 +54,6 @@ public class OpenApi2Utils {
      */
     public static String getApiJson(Context ctx, String group) throws IOException {
         List<DocDocket> docDockets = Solon.context().getBeansOfType(DocDocket.class);
-        System.out.println(JSONUtil.toJsonStr(docDockets));
 
         if (CollUtil.isEmpty(docDockets)) {
             return "";
