@@ -1,28 +1,15 @@
 solon:
   docs:
-    # 是否开启接口文档
-    enabled: true
-    # 标题
-    title: '标题多租户管理系统_接口文档'
-    # 描述
-    description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...'
-    # 版本
-    version: '版本号: ${solon.version}'
-    # 作者信息
-    contact:
-      name: chengliang4810
-      email: chengliang4810@163.com
-      url: https://gitee.com/chengliang4810
     # 接口文档分组
     group-configs:
         - group: 1.演示模块
-          packages-to-scan: com.layjava.demo
+          packageName: com.layjava.test
         - group: 2.通用模块
-          packages-to-scan: com.layjava.web
+          packageName: com.layjava.web
         - group: 3.系统模块
-          packages-to-scan: com.layjava.system
+          packageName: com.layjava.system
         - group: 4.代码生成模块
-          packages-to-scan: com.layjava.generator
+          packageName: com.layjava.generator
 
 # 配置默认数据源
 layjava.datasource:

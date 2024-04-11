@@ -1,5 +1,8 @@
 package com.layjava.common.doc.javadoc;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import io.swagger.models.Swagger;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -51,18 +54,27 @@ public class OpenApi2Utils {
      * 获取接口
      */
     public static String getApiJson(Context ctx, String group) throws IOException {
-        DocDocket docket = Solon.context().getBean(group);
+        List<DocDocket> docDockets = Solon.context().getBeansOfType(DocDocket.class);
+        System.out.println(JSONUtil.toJsonStr(docDockets));
 
-        if (docket == null) {
-            return null;
+        if (CollUtil.isEmpty(docDockets)) {
+            return "";
         }
+        // 如果未指定分组，则取第一个分组
+        if (StrUtil.isBlank(group)) {
+            group = docDockets.get(0).groupName();
+        }
+
+        String finalGroup = group;
+        // 找不到则取第一个
+        DocDocket docket = docDockets.stream().filter(d -> d.groupName().equals(finalGroup)).findFirst().orElse(docDockets.get(0));
 
         if (!BasicAuthUtil.basicAuth(ctx, docket)) {
             BasicAuthUtil.response401(ctx);
             return null;
         }
 
-        if (docket.globalResponseCodes().containsKey(200) == false) {
+        if (!docket.globalResponseCodes().containsKey(200)) {
             docket.globalResponseCodes().put(200, "");
         }
 
