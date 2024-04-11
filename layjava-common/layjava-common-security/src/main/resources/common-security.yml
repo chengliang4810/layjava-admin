@@ -14,6 +14,8 @@ sa-token:
   token-style: tik
   # 是否输出操作日志
   is-log: false
+  # 是否打印版本字符画
+  is-print: false
   # 允许动态设置 token 有效期
   dynamic-active-timeout: true
   # 允许从 请求参数 读取 token
