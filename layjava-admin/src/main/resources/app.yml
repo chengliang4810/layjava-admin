@@ -31,3 +31,4 @@ security:
     - /
     # 登录
     - /auth/login
+    - /swagger/v2

@@ -26,6 +26,10 @@ public class GlobalResultInterceptor implements RouterInterceptor {
      */
     @Override
     public Object postResult(Context ctx, Object result) throws Throwable {
+        Class<? extends Context> aClass = ctx.getClass();
+        if (!aClass.getName().startsWith("com.layjava")) {
+            return result;
+        }
         if(result instanceof Throwable error){
             // 如果是异常，包装成Result返回
             return Result.failure(error.getMessage());
@@ -38,7 +42,7 @@ public class GlobalResultInterceptor implements RouterInterceptor {
             // 其他类型，包装成Result返回
             return Result.succeed(result);
         }
-    }
+     }
 
 
 }

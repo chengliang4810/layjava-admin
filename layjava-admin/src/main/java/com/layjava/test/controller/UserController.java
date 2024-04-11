@@ -23,31 +23,60 @@ public class UserController extends BaseController {
     @Inject
     private UserService userService;
 
-
+    /**
+     * 查询用户列表
+     *
+     * @param userBo 用户bo
+     * @return {@link List}<{@link UserVo}>
+     */
     @Get
     @Mapping("/list")
     public List<UserVo> list(UserBo userBo) {
         return userService.getUserVoList(userBo);
     }
 
+    /**
+     * 根据Id查询用户信息
+     *
+     * @param id 身份证件
+     * @return {@link UserVo}
+     */
     @Get
     @Mapping("/{id}")
     public UserVo get(Long id) {
         return userService.getUserVoById(id);
     }
 
+    /**
+     * 新增用户信息
+     *
+     * @param userBo 用户bo
+     * @return boolean
+     */
     @Post
     @Mapping
     public boolean save(UserBo userBo) {
         return userService.saveUser(userBo);
     }
 
+    /**
+     * 根据Id更新用户信息
+     *
+     * @param userBo 用户bo
+     * @return boolean
+     */
     @Put
     @Mapping
     public boolean update(UserBo userBo) {
         return userService.updateUserById(userBo);
     }
 
+    /**
+     * 删除用户信息
+     *
+     * @param ids ids
+     * @return boolean
+     */
     @Delete
     @Mapping("/{ids}")
     public boolean delete(String ids) {
