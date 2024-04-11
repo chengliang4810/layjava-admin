@@ -3,7 +3,6 @@ package com.layjava.common.mybatis.config;
 import cn.hutool.core.net.NetUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
-import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
 import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import com.baomidou.mybatisplus.solon.plugins.MybatisPlusInterceptor;
@@ -25,20 +24,20 @@ import javax.sql.DataSource;
  * @date 2024/02/27
  */
 @Configuration
-@Import(profiles = "classpath:common-mybatis.yml")
+@Import(profilesIfAbsent = "classpath:common-mybatis.yml")
 public class MybatisPlusConfig {
 
-    @Bean(value = "db", typed = true)
-    public DataSource dataSource(@Inject("${layjava.db}") HikariDataSource dataSource) {
+    @Bean(value = "default", typed = true)
+    public DataSource defaultDataSource(@Inject("${layjava.datasource.default}") HikariDataSource dataSource) {
         return dataSource;
     }
 
     @Bean
-    public void mybatisPlusConfig(@Db("db") MybatisConfiguration cfg,
-                                  @Db("db") GlobalConfig globalConfig) {
+    public void mybatisPlusConfig(@Db("default") MybatisConfiguration cfg) {
         // 配置插件
         MybatisPlusInterceptor plusInterceptor = new MybatisPlusInterceptor();
         plusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        plusInterceptor.addInnerInterceptor(optimisticLockerInnerInterceptor());
         cfg.addInterceptor(plusInterceptor);
     }
 

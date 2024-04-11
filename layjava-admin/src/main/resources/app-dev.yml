@@ -1,9 +1,10 @@
-server.port: 8080
+# server.port: 8082
 
 # 配置默认数据源
-layjava.db:
-  schema: layjava
-  jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-  driverClassName: com.mysql.cj.jdbc.Driver
-  username: root
-  password: 123456
+layjava.datasource:
+    default:
+      schema: primary
+      jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+      driverClassName: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 123456

@@ -1,11 +1,10 @@
 package com.layjava.system.test.controller;
 
-import cn.dev33.satoken.annotation.SaIgnore;
 import com.layjava.system.test.domain.Test;
 import com.layjava.system.test.mapper.TestMapper;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
-import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
 @Mapping("/hello")
 public class TestController {
 
-    @Inject
+    @Db
     private TestMapper testMapper;
 
     @Get

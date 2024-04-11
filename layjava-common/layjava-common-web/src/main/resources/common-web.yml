@@ -1,6 +1,6 @@
 # 内置配置 不允许修改  如需修改请在写相同配置覆盖
 # server配置
-server.port: 8080
+server.port: 8989
 #设定最大的请求包大小（或表单项的值大小）//默认: 2m
 server.request.maxBodySize: 2mb #kb,mb
 #设定最大的上传文件大小
