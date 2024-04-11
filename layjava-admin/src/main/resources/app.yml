@@ -20,13 +20,9 @@ mybatis.default:
     - "com.layjava.**.domain"
   # 对应Mapper接口位置
   mappers:
-    # com.**.mapper.*Mapper       Type interface com.layjava.test.mapper.UserMapper is not known to the MybatisPlusMapperRegistry.
-    # com.lay*.**.mapper          Missing mapper registration
-    # com.layjava.**.mapper.* ｜ com.**.mapper.*          报错
-    # com.layjava.test.mapper.* ｜ com.layjava.*.mapper.* 成功
     - "com.layjava.**.mapper.*"
     # 对应的 XML 文件位置
-    # - "classpath:mapper/**/*Mapper.xml"
+    - "classpath:mapper/**/*Mapper.xml"
 
 # security url放行配置
 security:
