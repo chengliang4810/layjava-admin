@@ -19,20 +19,20 @@ import java.util.Map;
  * @since 2.3
  */
 public class BuilderHelper {
-    public static boolean isModel(Class<?> clz){
-        if(clz.isAnnotationPresent(ApiModel.class)){
+    public static boolean isModel(Class<?> clz) {
+        if (clz.isAnnotationPresent(ApiModel.class)) {
             return true;
         }
 
-        if(clz.getName().startsWith("java")){
+        if (clz.getName().startsWith("java")) {
             return false;
         }
 
-        if(clz.isPrimitive() || clz.isEnum()){
+        if (clz.isPrimitive() || clz.isEnum()) {
             return false;
         }
 
-        if(Map.class.isAssignableFrom(clz) || Collection.class.isAssignableFrom(clz)){
+        if (Map.class.isAssignableFrom(clz) || Collection.class.isAssignableFrom(clz)) {
             return false;
         }
 
@@ -75,6 +75,13 @@ public class BuilderHelper {
         return modelName;
     }
 
+    /**
+     * 获取http方法
+     *
+     * @param actionHolder 方法
+     * @param apiAction    api操作
+     * @return {@link String}
+     */
     public static String getHttpMethod(ActionHolder actionHolder, ApiOperation apiAction) {
         if (apiAction == null || Utils.isBlank(apiAction.httpMethod())) {
             MethodType methodType = actionHolder.routing().method();

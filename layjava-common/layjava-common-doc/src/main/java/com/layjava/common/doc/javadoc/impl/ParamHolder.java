@@ -1,5 +1,6 @@
 package com.layjava.common.doc.javadoc.impl;
 
+import com.github.therapi.runtimejavadoc.MethodJavadoc;
 import com.layjava.common.doc.javadoc.wrap.ApiImplicitParamImpl;
 import com.layjava.common.doc.javadoc.wrap.ApiParamAnno;
 import com.layjava.common.doc.javadoc.wrap.ApiParamImpl;
@@ -23,9 +24,21 @@ import java.util.Map;
 public class ParamHolder {
     private ParamWrap param;
     private ApiParamAnno anno;
+    private MethodJavadoc methodJavadoc;
 
     public ParamHolder(ParamWrap param) {
         this.param = param;
+        if (param != null) {
+            ApiParam tmp = param.getParameter().getAnnotation(ApiParam.class);
+            if (tmp != null) {
+                anno = new ApiParamImpl(tmp);
+            }
+        }
+    }
+
+    public ParamHolder(ParamWrap param, MethodJavadoc methodJavadoc) {
+        this.param = param;
+        this.methodJavadoc = methodJavadoc;
         if (param != null) {
             ApiParam tmp = param.getParameter().getAnnotation(ApiParam.class);
             if (tmp != null) {

@@ -2,10 +2,7 @@ package com.layjava.common.doc.javadoc;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.StrUtil;
-import com.github.therapi.runtimejavadoc.ClassJavadoc;
-import com.github.therapi.runtimejavadoc.Comment;
-import com.github.therapi.runtimejavadoc.CommentFormatter;
-import com.github.therapi.runtimejavadoc.RuntimeJavadoc;
+import com.github.therapi.runtimejavadoc.*;
 import com.layjava.common.doc.javadoc.common.Constants;
 import com.layjava.common.doc.javadoc.impl.ActionHolder;
 import com.layjava.common.doc.javadoc.impl.BuilderHelper;
@@ -32,6 +29,7 @@ import org.noear.solon.core.route.Routing;
 import org.noear.solon.core.util.GenericUtil;
 import org.noear.solon.core.wrap.ClassWrap;
 import org.noear.solon.core.wrap.FieldWrap;
+import org.noear.solon.core.wrap.MethodWrap;
 import org.noear.solon.core.wrap.ParamWrap;
 import org.noear.solon.docs.ApiEnum;
 import org.noear.solon.docs.DocDocket;
@@ -372,13 +370,20 @@ public class OpenApi2Builder {
      * 解析action 参数文档
      */
     private List<Parameter> parseActionParameters(ActionHolder actionHolder) {
+        // 获取参数信息
         Map<String, ParamHolder> actionParamMap = new LinkedHashMap<>();
-        for (ParamWrap p1 : actionHolder.action().method().getParamWraps()) {
+
+        MethodWrap method = actionHolder.action().method();
+        MethodJavadoc methodJavadoc = RuntimeJavadoc.getJavadoc(method.getMethod());
+        // 将方法参数存储到map
+
+        for (ParamWrap p1 : method.getParamWraps()) {
             actionParamMap.put(p1.getName(), new ParamHolder(p1));
         }
 
         // 获取参数注解信息
         {
+            // 将参数注解信息绑定到参数
             List<ApiImplicitParam> apiParams = new ArrayList<>();
             if (actionHolder.isAnnotationPresent(ApiImplicitParams.class)) {
                 apiParams.addAll(Arrays.asList(actionHolder.getAnnotation(ApiImplicitParams.class).value()));
@@ -389,6 +394,7 @@ public class OpenApi2Builder {
                 apiParams.addAll(Arrays.asList(paramArray));
             }
 
+            // 循环处理参数注解
             for (ApiImplicitParam a1 : apiParams) {
                 ParamHolder paramHolder = actionParamMap.get(a1.name());
                 if (paramHolder == null) {
@@ -723,6 +729,8 @@ public class OpenApi2Builder {
             }
         }
 
+        ClassJavadoc classJavadoc = RuntimeJavadoc.getJavadoc(clazz);
+        String comment = format(classJavadoc.getComment());
 
         // 2.创建模型
         ApiModel apiModel = clazz.getAnnotation(ApiModel.class);
@@ -730,7 +738,7 @@ public class OpenApi2Builder {
         if (apiModel != null) {
             title = apiModel.description();
         } else {
-            title = modelName;
+            title = StrUtil.isBlank(comment) ? modelName : comment;
         }
 
         Map<String, Property> fieldList = new LinkedHashMap<>();
@@ -759,12 +767,18 @@ public class OpenApi2Builder {
 
             Field field = fw.field;
 
+            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(field);
             ApiModelProperty apiField = field.getAnnotation(ApiModelProperty.class);
 
             // 隐藏的跳过
             if (apiField != null && apiField.hidden()) {
                 continue;
             }
+
+            // 类字段注释
+            String fieldComment = format(fieldJavadoc.getComment());
+            // 第一行注释作为标题
+            String fieldTitle = StrUtil.isBlank(fieldComment) ? "" : IoUtil.readLines(new StringReader(fieldComment), new ArrayList<>()).get(0);
 
             Class<?> typeClazz = field.getType();
             Type typeGenericType = field.getGenericType();
@@ -794,13 +808,15 @@ public class OpenApi2Builder {
                 // 如果是泛型参数的类型
                 if (typeGenericType instanceof ParameterizedType) {
                     ArrayProperty fieldPr = new ArrayProperty();
+                    fieldPr.setTitle(fieldTitle);
+                    fieldPr.setDescription(fieldComment);
+
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
                         fieldPr.setRequired(apiField.required());
                         // 如果是泛型参数的类型 加上 示例，在knife4j下将无法正确解析，所以将其注释
                         // fieldPr.setExample(apiField.example());
                     }
-
 
                     ParameterizedType pt = (ParameterizedType) typeGenericType;
                     //得到泛型里的class类型对象
@@ -822,10 +838,13 @@ public class OpenApi2Builder {
                         if (itemClazz.equals(type)) {
                             //避免出现循环依赖，然后 oom
                             RefProperty itemPr = new RefProperty(modelName, RefFormat.INTERNAL);
+                            itemPr.setTitle(fieldTitle);
+                            fieldPr.setDescription(fieldComment);
                             fieldPr.setItems(itemPr);
                         } else {
                             Property itemPr = getPrimitiveProperty((Class<?>) itemClazz);
-
+                            itemPr.setTitle(fieldTitle);
+                            itemPr.setDescription(fieldComment);
                             if (itemPr != null) {
                                 fieldPr.setItems(itemPr);
                             } else {
@@ -848,17 +867,22 @@ public class OpenApi2Builder {
                 if (typeClazz.equals(type)) {
                     //避免出现循环依赖，然后 oom
                     RefProperty fieldPr = new RefProperty(modelName, RefFormat.INTERNAL);
+                    fieldPr.setTitle(fieldTitle);
+                    fieldPr.setDescription(fieldComment);
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
                         fieldPr.setRequired(apiField.required());
                         fieldPr.setExample(apiField.example());
                     }
 
+
                     fieldList.put(field.getName(), fieldPr);
                 } else {
                     ModelImpl swaggerModel = (ModelImpl) this.parseSwaggerModel(typeClazz, typeGenericType);
 
                     RefProperty fieldPr = new RefProperty(swaggerModel.getName(), RefFormat.INTERNAL);
+                    fieldPr.setTitle(fieldTitle);
+                    fieldPr.setDescription(fieldComment);
                     if (apiField != null) {
                         fieldPr.setDescription(apiField.value());
                         fieldPr.setRequired(apiField.required());
@@ -870,7 +894,8 @@ public class OpenApi2Builder {
             } else {
                 ObjectProperty fieldPr = new ObjectProperty();
                 fieldPr.setName(field.getName());
-
+                fieldPr.setTitle(fieldTitle);
+                fieldPr.setDescription(fieldComment);
                 if (apiField != null) {
                     fieldPr.setDescription(apiField.value());
                     fieldPr.setRequired(apiField.required());
@@ -979,6 +1004,7 @@ public class OpenApi2Builder {
                 return null;
             }
 
+            // 泛型参数的类型
             Type dataGenericType = paramHolder.dataGenericType();
 
             if (dataTypeClass != Void.class) {
