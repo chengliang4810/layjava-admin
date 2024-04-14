@@ -36,7 +36,7 @@ public class DocDocketConfig {
             //配置API信息
             ApiInfo apiInfo = new ApiInfo().title(docsProperty.getTitle())
                     .description(docsProperty.getDescription())
-                    .version("1.0");
+                    .version(docsProperty.getVersion());
 
             //配置联系人信息
             if (docsProperty.getContact() != null) {
