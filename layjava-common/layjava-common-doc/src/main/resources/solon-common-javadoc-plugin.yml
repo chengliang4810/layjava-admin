@@ -1,6 +1,6 @@
 # This file is used to configure the common-javadoc-plugin.
 # You can customize the configuration according to your needs.
-# // 以下为默认配置，可以根据需要进行覆盖即可。
+# // 以下为默认配置，根据需要进行覆盖配置即可。
 solon:
   docs:
     # 是否开启接口文档
