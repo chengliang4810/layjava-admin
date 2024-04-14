@@ -13,9 +13,11 @@ import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiContact;
 import org.noear.solon.docs.models.ApiInfo;
 
-@Import(profilesIfAbsent = "classpath:-solon-common-javadoc-plugin.yml")
+@Import(profilesIfAbsent = "classpath:solon-common-javadoc-plugin.yml")
 @Configuration
 public class DocDocketConfig {
+
+    private static final String PREFIX_NAME = "solon-common-javadoc-plugin-";
 
     /**
      * 构建 DocDocket 实例，并配置相关信息
@@ -56,9 +58,7 @@ public class DocDocketConfig {
 
             //包装Bean（指定名字）
             BeanWrap beanWrap = Solon.context().wrap(DocDocket.class, docDocket);
-            Solon.context().putWrap("DocDocket-" + groupConfig.getGroup(), beanWrap);
-            //注册到Solon容器中
-            System.out.println("DocDocket-" + groupConfig.getGroup() + " 注册成功");
+            Solon.context().putWrap(PREFIX_NAME + groupConfig.getGroup(), beanWrap);
         });
 
     }
