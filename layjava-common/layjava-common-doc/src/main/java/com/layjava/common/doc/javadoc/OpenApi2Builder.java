@@ -418,7 +418,9 @@ public class OpenApi2Builder {
 
             Parameter parameter;
 
+            // 多个参数
             if (paramHolder.allowMultiple()) {
+                System.out.println("paramSchema" + paramSchema);
                 if (Utils.isNotEmpty(paramSchema)) {
                     //array model
                     BodyParameter modelParameter = new BodyParameter();
@@ -426,7 +428,7 @@ public class OpenApi2Builder {
                     if (paramHolder.getParam() != null && paramHolder.getParam().isRequiredBody() == false) {
                         modelParameter.setIn(ApiEnum.PARAM_TYPE_QUERY);
                     }
-
+                    modelParameter.setDescription("我试试");
                     parameter = modelParameter;
                 } else if ("file".equals(dataType)) {
                     //array file
@@ -457,8 +459,9 @@ public class OpenApi2Builder {
                     }
                 }
             } else {
+                System.out.println("model paramSchema" + paramSchema);
                 if (Utils.isNotEmpty(paramSchema)) {
-                    //model
+                    // model
                     if (paramHolder.isRequiredBody() || paramHolder.getParam() == null) {
                         //做为 body
                         BodyParameter modelParameter = new BodyParameter();
@@ -487,6 +490,7 @@ public class OpenApi2Builder {
 
                     parameter = formParameter;
                 } else {
+                    // query参数
                     if (paramHolder.isRequiredHeader()) {
                         parameter = new HeaderParameter();
                     } else if (paramHolder.isRequiredCookie()) {
@@ -502,7 +506,7 @@ public class OpenApi2Builder {
                     } else {
                         QueryParameter queryParameter = new QueryParameter();
                         queryParameter.setType(dataType);
-
+                        queryParameter.setDescription("123123123");
                         if (paramHolder.getAnno() != null) {
                             queryParameter.setFormat(paramHolder.getAnno().format());
                             queryParameter.setDefaultValue(paramHolder.getAnno().defaultValue());
@@ -572,7 +576,14 @@ public class OpenApi2Builder {
     }
 
 
+    /**
+     * 按字段解析操作参数
+     *
+     * @param paramHolder 参数保持器
+     * @param paramList   参数列表
+     */
     private void parseActionParametersByFields(ParamHolder paramHolder, List<Parameter> paramList) {
+
         //做为 字段
         ClassWrap classWrap = ClassWrap.get(paramHolder.getParam().getType());
         for (FieldWrap fw : classWrap.getFieldWraps().values()) {
@@ -591,7 +602,10 @@ public class OpenApi2Builder {
             }
 
             ApiModelProperty anno = fw.field.getAnnotation(ApiModelProperty.class);
+            FieldJavadoc fieldJavadoc = RuntimeJavadoc.getJavadoc(fw.field);
 
+            String description = format(fieldJavadoc.getComment());
+            parameter.setDescription(description);
             if (anno != null) {
                 parameter.setName(anno.name());
                 parameter.setDescription(anno.value());
