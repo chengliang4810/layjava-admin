@@ -20,7 +20,7 @@ mybatis.default:
     - "com.layjava.**.domain"
   # 对应Mapper接口位置
   mappers:
-    - "com.layjava.**.mapper.*"
+    - "com.layjava.**.mapper.*Mapper"
     # 对应的 XML 文件位置
     - "classpath:mapper/**/*Mapper.xml"
 

@@ -2,6 +2,7 @@ package com.layjava.common.doc.javadoc;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import io.swagger.models.Swagger;
 import org.noear.solon.Solon;
 import org.noear.solon.Utils;
@@ -10,7 +11,6 @@ import org.noear.solon.core.handle.Context;
 import org.noear.solon.docs.DocDocket;
 import org.noear.solon.docs.models.ApiGroupResource;
 import org.noear.solon.docs.util.BasicAuthUtil;
-import org.noear.solon.docs.util.JsonUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -46,7 +46,7 @@ public class OpenApi2Utils {
                 })
                 .collect(Collectors.toList());
 
-        return JsonUtil.toJson(resourceList);
+        return JSONUtil.toJsonStr(resourceList);
     }
 
     /**
@@ -77,6 +77,6 @@ public class OpenApi2Utils {
         }
 
         Swagger swagger = new OpenApi2Builder(docket).build();
-        return JsonUtil.toJson(swagger);
+        return JSONUtil.toJsonStr(swagger);
     }
 }

@@ -1,8 +1,11 @@
 package com.layjava.test.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.layjava.common.core.util.MapstructUtils;
 import com.layjava.test.domain.User;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
@@ -43,7 +46,7 @@ public class UserServiceImpl implements UserService {
     private Wrapper<User> buildWrapper(UserBo userBo) {
         Map<String, Object> params = userBo.getParams();
         LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
-
+        // 构建查询条件
         queryWrapper.eq(userBo.getUserId() != null, User::getUserId, userBo.getUserId());
 
         return queryWrapper;
@@ -56,16 +59,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean saveUser(UserBo userBo) {
-        return false;
+        // 参数校验
+        Assert.notNull(userBo, "用户信息不能为空");
+
+        User user = MapstructUtils.convert(userBo, User.class);
+        return userMapper.insert(user) > 0;
     }
 
     @Override
     public boolean updateUserById(UserBo userBo) {
-        return false;
+        // 参数校验
+        Assert.notNull(userBo, "用户信息不能为空");
+        Assert.notNull(userBo.getUserId(), "用户ID不能为空");
+
+        User user = MapstructUtils.convert(userBo, User.class);
+        return userMapper.updateById(user) > 0;
     }
 
     @Override
-    public boolean deleteUserById(Long id) {
-        return false;
+    public int deleteUserById(List<Long> idList) {
+        // 参数校验
+        Assert.isTrue(CollUtil.isNotEmpty(idList), "用户ID不能为空");
+
+        return userMapper.deleteBatchIds(idList);
     }
+
 }

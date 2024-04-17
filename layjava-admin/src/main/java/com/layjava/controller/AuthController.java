@@ -18,7 +18,7 @@ import java.util.Map;
  * 身份验证控制器
  *
  * @author chengliang
- * @date 2024/04/02
+ * @since 2024/04/02
  */
 @Slf4j
 @Controller
@@ -39,6 +39,11 @@ public class AuthController extends BaseController {
         return authService.login(loginBody);
     }
 
+    /**
+     * 用户信息
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @Mapping("/user-info")
     public Map<String, Object> userInfo() {
         Map<String, Object> result = new HashMap<>();
@@ -49,6 +54,9 @@ public class AuthController extends BaseController {
         return result;
     }
 
+    /**
+     * 注销
+     */
     @Mapping("/logout")
     public void logout() {
         StpUtil.logout();

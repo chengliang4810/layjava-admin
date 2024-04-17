@@ -1,6 +1,6 @@
 package com.layjava.test.mapper;
 
-import com.layjava.common.mybatis.core.BaseMapperPlus;
+import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
 import com.layjava.test.domain.User;
 import com.layjava.test.domain.vo.UserVo;
 
