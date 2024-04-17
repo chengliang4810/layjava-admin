@@ -3,9 +3,12 @@ package com.layjava.test.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.layjava.common.core.util.MapstructUtils;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.test.domain.User;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
@@ -35,6 +38,14 @@ public class UserServiceImpl implements UserService {
     public List<UserVo> getUserVoList(UserBo userBo) {
         Wrapper<User> userWrapper = buildWrapper(userBo);
         return userMapper.selectVoList(userWrapper);
+    }
+
+    @Override
+    public PageResult<UserVo> getUserVoList(UserBo userBo, PageQuery pageQuery) {
+        Wrapper<User> userWrapper = buildWrapper(userBo);
+
+        IPage<UserVo> voPage = userMapper.selectVoPage(pageQuery.build(), userWrapper);
+        return PageResult.build(voPage);
     }
 
     /**

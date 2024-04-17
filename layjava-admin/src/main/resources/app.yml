@@ -32,4 +32,4 @@ security:
     # 登录
     - /auth/login
     - /swagger/v2
-    - /test/user/list
+    - /test/user/**

@@ -1,5 +1,7 @@
 package com.layjava.test.service;
 
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
 
@@ -20,6 +22,15 @@ public interface UserService {
      * @return 用户信息表
      */
     List<UserVo> getUserVoList(UserBo userBo);
+
+    /**
+     * 获取用户vo分页列表
+     *
+     * @param userBo    用户bo
+     * @param pageQuery 页面查询
+     * @return {@link List}<{@link UserVo}>
+     */
+    PageResult<UserVo> getUserVoList(UserBo userBo, PageQuery pageQuery);
 
     /**
      * 根据id获取用户信息
@@ -52,4 +63,5 @@ public interface UserService {
      * @return int 删除行数
      */
     int deleteUserById(List<Long> idList);
+
 }
