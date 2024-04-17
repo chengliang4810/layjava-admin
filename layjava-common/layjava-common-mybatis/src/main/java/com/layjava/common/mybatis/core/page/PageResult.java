@@ -9,14 +9,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 表格分页数据对象
+ * 分页数据对象
  *
- * @author Lion Li
+ * @author chengliang
+ * @since  2024/04/17
  */
-
 @Data
 @NoArgsConstructor
-public class TableDataInfo<T> implements Serializable {
+public class PageResult<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -37,27 +37,27 @@ public class TableDataInfo<T> implements Serializable {
      * @param list  列表数据
      * @param total 总记录数
      */
-    public TableDataInfo(List<T> list, long total) {
+    public PageResult(List<T> list, long total) {
         this.rows = list;
         this.total = total;
     }
 
-    public static <T> TableDataInfo<T> build(IPage<T> page) {
-        TableDataInfo<T> rspData = new TableDataInfo<>();
+    public static <T> PageResult<T> build(IPage<T> page) {
+        PageResult<T> rspData = new PageResult<>();
         rspData.setRows(page.getRecords());
         rspData.setTotal(page.getTotal());
         return rspData;
     }
 
-    public static <T> TableDataInfo<T> build(List<T> list) {
-        TableDataInfo<T> rspData = new TableDataInfo<>();
+    public static <T> PageResult<T> build(List<T> list) {
+        PageResult<T> rspData = new PageResult<>();
         rspData.setRows(list);
         rspData.setTotal(list.size());
         return rspData;
     }
 
-    public static <T> TableDataInfo<T> build() {
-        return new TableDataInfo<>();
+    public static <T> PageResult<T> build() {
+        return new PageResult<>();
     }
 
 }
