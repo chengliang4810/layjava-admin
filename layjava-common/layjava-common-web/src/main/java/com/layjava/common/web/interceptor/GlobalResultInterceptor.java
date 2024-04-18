@@ -31,6 +31,7 @@ public class GlobalResultInterceptor implements RouterInterceptor {
     //            return result;
     //        }
         if(result instanceof Throwable error){
+            error.printStackTrace();
             // 如果是异常，包装成Result返回
             return Result.failure(error.getMessage());
         }
