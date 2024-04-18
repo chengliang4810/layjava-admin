@@ -11,7 +11,7 @@ import org.noear.solon.core.route.RouterInterceptorChain;
  * 全局结果拦截器
  * 统一处理返回结果
  * @author chengliang
- * @date 2024/02/26
+ * @since 2024/02/26
  */
 @Component
 public class GlobalResultInterceptor implements RouterInterceptor {

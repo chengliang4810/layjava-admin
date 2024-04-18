@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
  * 身份验证异常
  *
  * @author chengliang
- * @date 2024/03/28
+ * @since 2024/03/28
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

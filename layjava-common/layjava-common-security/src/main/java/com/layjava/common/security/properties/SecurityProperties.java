@@ -8,7 +8,7 @@ import org.noear.solon.annotation.Inject;
  * Security 配置属性
  *
  * @author chengliang
- * @date 2024/03/27
+ * @since 2024/03/27
  */
 @Data
 @Configuration

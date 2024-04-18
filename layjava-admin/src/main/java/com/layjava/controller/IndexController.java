@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Mapping;
 /**
  * 后端默认 Controller，可用于监测服务是否启动成功
  * @author chengliang
- * @date 2024/03/27
+ * @since 2024/03/27
  */
 @Controller
 public class IndexController {

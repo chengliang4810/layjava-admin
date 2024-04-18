@@ -13,7 +13,7 @@ import org.noear.solon.validation.ValidatorException;
  * 全局异常筛选器
  *
  * @author chengliang
- * @date 2024/02/26
+ * @since 2024/02/26
  */
 @Component
 public class GlobalExceptionFilter implements Filter {

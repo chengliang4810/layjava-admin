@@ -6,7 +6,7 @@ import org.noear.solon.annotation.Import;
 /**
  * web 通用配置
  * @author chengliang
- * @date 2024/04/02
+ * @since 2024/04/02
  */
 @Configuration
 @Import(profilesIfAbsent = "classpath:common-web.yml")

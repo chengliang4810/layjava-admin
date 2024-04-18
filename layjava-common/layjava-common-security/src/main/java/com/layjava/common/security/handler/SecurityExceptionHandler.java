@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
  * 权限异常处理器
  *
  * @author chengliang
- * @date 2024/02/26
+ * @since 2024/02/26
  */
 @Slf4j
 public class SecurityExceptionHandler implements SaFilterErrorStrategy {
