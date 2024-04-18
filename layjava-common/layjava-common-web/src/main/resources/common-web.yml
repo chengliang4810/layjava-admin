@@ -23,4 +23,4 @@ solon.serialization.json:
   nullNumberAsZero: false
   nullArrayAsEmpty: false
   nullAsWriteable: false #输出所有null值
-  enumAsName: false #枚举使用名字（v2.2.1 后支持）
+  enumAsName: true #枚举使用名字（v2.2.1 后支持）

@@ -9,7 +9,9 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>layjava-common-mybatis</artifactId>
+    <artifactId>layjava-common-dao</artifactId>
+
+    <description>数据访问</description>
 
      <dependencies>
 
@@ -26,6 +28,11 @@
          <dependency>
              <groupId>org.noear</groupId>
              <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
+         </dependency>
+
+         <dependency>
+             <groupId>org.noear</groupId>
+             <artifactId>bean-searcher-solon-plugin</artifactId>
          </dependency>
 
          <!-- sql性能分析插件 -->

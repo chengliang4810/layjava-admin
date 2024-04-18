@@ -1,5 +1,7 @@
 package com.layjava.test.domain.vo;
 
+import com.layjava.test.domain.User;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
+@AutoMapper(target = User.class, convertGenerate = false)
 public class UserVo implements Serializable {
 
     /**

@@ -1,6 +1,8 @@
 package com.layjava.test.domain.bo;
 
 import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.test.domain.User;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@AutoMapper(target = User.class, reverseConvertGenerate = false)
 public class UserBo extends BaseEntity {
 
     /**

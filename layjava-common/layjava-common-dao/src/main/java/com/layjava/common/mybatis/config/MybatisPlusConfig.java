@@ -21,10 +21,10 @@ import javax.sql.DataSource;
  * 数据源配置
  *
  * @author chengliang
- * @date 2024/02/27
+ * @since  2024/02/27
  */
 @Configuration
-@Import(profilesIfAbsent = "classpath:common-mybatis.yml")
+@Import(profilesIfAbsent = "classpath:common-mybatis-plus.yml")
 public class MybatisPlusConfig {
 
     @Bean(value = "default", typed = true)

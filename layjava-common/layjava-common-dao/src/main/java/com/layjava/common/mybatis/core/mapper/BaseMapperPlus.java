@@ -6,12 +6,12 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
 import com.baomidou.mybatisplus.solon.plugins.pagination.Page;
 import com.baomidou.mybatisplus.solon.toolkit.Db;
 import com.layjava.common.core.util.MapstructUtils;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
+import org.noear.solon.core.util.GenericUtil;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -26,8 +26,8 @@ import java.util.stream.Collectors;
  *
  * @param <T> table 泛型
  * @param <V> vo 泛型
- * @author Lion Li
- * @since 2021-05-13
+ * @author Lion Li,chengliang4810
+ * @since 2024/04/17
  */
 @SuppressWarnings("unchecked")
 public interface BaseMapperPlus<T, V> extends BaseMapper<T> {
@@ -35,12 +35,11 @@ public interface BaseMapperPlus<T, V> extends BaseMapper<T> {
     Log log = LogFactory.getLog(BaseMapperPlus.class);
 
     default Class<V> currentVoClass() {
-        GenericTypeUtils.resolveTypeArguments(this.getClass(), BaseMapperPlus.class);
-        return (Class<V>) GenericTypeUtils.resolveTypeArguments(this.getClass(), BaseMapperPlus.class)[1];
+        return (Class<V>) GenericUtil.resolveTypeArguments(this.getClass().getInterfaces()[0], BaseMapperPlus.class)[1];
     }
 
     default Class<T> currentModelClass() {
-        return (Class<T>) GenericTypeUtils.resolveTypeArguments(this.getClass(), BaseMapperPlus.class)[0];
+        return (Class<T>) GenericUtil.resolveTypeArguments(this.getClass().getInterfaces()[0], BaseMapperPlus.class)[0];
     }
 
     default List<T> selectList() {

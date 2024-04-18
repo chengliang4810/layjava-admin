@@ -24,6 +24,14 @@ mybatis.default:
     # 对应的 XML 文件位置
     - "classpath:mapper/**/*Mapper.xml"
 
+--- # bean searcher配置统一分页条件
+bean-searcher:
+  params:
+    pagination:
+      page: pageNum
+      size: pageSize
+      start: 1
+
 # security url放行配置
 security:
   # 排除路径

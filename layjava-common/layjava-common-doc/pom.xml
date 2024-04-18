@@ -20,38 +20,9 @@
             <artifactId>layjava-common-core</artifactId>
         </dependency>
 
-        <!-- Runtime -->
-        <dependency>
-            <groupId>com.github.therapi</groupId>
-            <artifactId>therapi-runtime-javadoc</artifactId>
-            <version>0.13.0</version>
-        </dependency>
-
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.docs</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>${swagger.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-models</artifactId>
-            <version>${swagger.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-annotations</artifactId>
-                </exclusion>
-            </exclusions>
+            <artifactId>solon-docs-openapi2-javadoc</artifactId>
         </dependency>
 
     </dependencies>

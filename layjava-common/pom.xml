@@ -20,7 +20,7 @@
         <module>layjava-common-core</module>
         <module>layjava-common-doc</module>
         <module>layjava-common-web</module>
-        <module>layjava-common-mybatis</module>
+        <module>layjava-common-dao</module>
         <module>layjava-common-redis</module>
         <module>layjava-common-security</module>
         <module>layjava-common-log</module>

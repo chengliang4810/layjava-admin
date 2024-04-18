@@ -16,7 +16,7 @@
 
         <dependency>
             <groupId>com.layjava</groupId>
-            <artifactId>layjava-common-mybatis</artifactId>
+            <artifactId>layjava-common-dao</artifactId>
         </dependency>
 
         <dependency>

@@ -50,7 +50,7 @@
             <!-- 数据库模块 -->
             <dependency>
                 <groupId>com.layjava</groupId>
-                <artifactId>layjava-common-mybatis</artifactId>
+                <artifactId>layjava-common-dao</artifactId>
                 <version>${revision}</version>
             </dependency>
 
