@@ -206,11 +206,11 @@
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <annotationProcessorPaths>
-                        <path>
-                            <groupId>com.github.therapi</groupId>
-                            <artifactId>therapi-runtime-javadoc-scribe</artifactId>
-                            <version>0.15.0</version>
-                        </path>
+<!--                        <path>-->
+<!--                            <groupId>com.github.therapi</groupId>-->
+<!--                            <artifactId>therapi-runtime-javadoc-scribe</artifactId>-->
+<!--                            <version>0.13.0</version>-->
+<!--                        </path>-->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
