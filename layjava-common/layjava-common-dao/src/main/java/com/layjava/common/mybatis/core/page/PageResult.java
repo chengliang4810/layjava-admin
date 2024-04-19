@@ -1,6 +1,8 @@
 package com.layjava.common.mybatis.core.page;
 
+import cn.zhxu.bs.SearchResult;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.layjava.common.core.util.MapstructUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -58,6 +60,24 @@ public class PageResult<T> implements Serializable {
 
     public static <T> PageResult<T> build() {
         return new PageResult<>();
+    }
+
+    public static <T> PageResult<T> build(SearchResult<T> search) {
+        PageResult<T> rspData = new PageResult<>();
+        rspData.setRows(search.getDataList());
+        rspData.setTotal(search.getTotalCount().intValue());
+        return rspData;
+    }
+
+    public static <V> PageResult<V> build(SearchResult<?> search, Class<V> toClass) {
+        List<V> convertDataList = MapstructUtils.convert(search.getDataList(), toClass);
+        if (convertDataList == null) {
+            return new PageResult<>();
+        }
+        PageResult<V> rspData = new PageResult<>();
+        rspData.setRows(convertDataList);
+        rspData.setTotal(search.getTotalCount().intValue());
+        return rspData;
     }
 
 }

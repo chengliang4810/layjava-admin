@@ -1,11 +1,15 @@
 package com.layjava.test.controller;
 
 import cn.hutool.core.convert.Convert;
+import cn.zhxu.bs.BeanSearcher;
+import cn.zhxu.bs.SearchResult;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.layjava.common.core.util.MapstructUtils;
 import com.layjava.common.core.util.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.web.core.BaseController;
+import com.layjava.test.domain.User;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
 import com.layjava.test.service.UserService;
@@ -28,6 +32,8 @@ public class UserController extends BaseController {
 
     @Inject
     private UserService userService;
+    @Inject
+    private BeanSearcher beanSearcher;
 
     /**
      * 查询用户列表
@@ -38,20 +44,21 @@ public class UserController extends BaseController {
     @Get
     @Mapping("/list")
     public List<UserVo> list(UserBo userBo) {
-        return userService.getUserVoList(userBo);
+        List<User> searchAll = beanSearcher.searchAll(User.class);
+        return MapstructUtils.convert(searchAll, UserVo.class);
     }
 
     /**
      * 分页查询用户列表
      *
-     * @param userBo    用户信息查询条件
      * @param pageQuery 分页查询条件
      * @return 用户信息分页列表数据
      */
     @Get
     @Mapping("/list/{pageNum}/{pageSize}")
-    public PageResult<UserVo> pageList(UserBo userBo, PageQuery pageQuery) {
-        return userService.getUserVoList(userBo, pageQuery);
+    public PageResult<UserVo> pageList(PageQuery pageQuery) {
+        SearchResult<User> search = beanSearcher.search(User.class);
+        return PageResult.build(search, UserVo.class);
     }
 
     /**
