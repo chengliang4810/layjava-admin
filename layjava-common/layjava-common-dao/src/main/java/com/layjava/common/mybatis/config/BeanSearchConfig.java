@@ -3,6 +3,7 @@ package com.layjava.common.mybatis.config;
 import cn.zhxu.bs.BeanMeta;
 import cn.zhxu.bs.ParamFilter;
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.core.handle.Context;
 
@@ -16,6 +17,7 @@ import java.util.Map;
  * @since 2024/04/17
  */
 @Configuration
+@Condition(onProperty = "${bean-searcher.enable} = true")
 public class BeanSearchConfig {
 
     @Bean
