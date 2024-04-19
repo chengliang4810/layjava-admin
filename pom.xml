@@ -32,6 +32,7 @@
         <mysql.version>8.3.0</mysql.version>
         <p6spy.version>3.9.1</p6spy.version>
         <hikaricp.version>4.0.3</hikaricp.version>
+        <doc-docket.version>1.0.0</doc-docket.version>
 
         <lombok.version>1.18.30</lombok.version>
         <mapstruct-plus.version>1.3.5</mapstruct-plus.version>
@@ -158,6 +159,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.layjava.solon.docs</groupId>
+                <artifactId>doc-docket</artifactId>
+                <version>${doc-docket.version}</version>
             </dependency>
 
             <!-- Mysql驱动包 -->

@@ -16,11 +16,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>com.layjava</groupId>
-            <artifactId>layjava-common-core</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-docs-openapi2-javadoc</artifactId>
         </dependency>
@@ -28,7 +23,6 @@
         <dependency>
             <groupId>com.layjava.solon.docs</groupId>
             <artifactId>doc-docket</artifactId>
-            <version>1.0.0</version>
         </dependency>
 
     </dependencies>
