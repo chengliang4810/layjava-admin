@@ -1,6 +1,7 @@
 package com.layjava.test.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -48,24 +49,9 @@ public class UserServiceImpl implements UserService {
         return PageResult.build(voPage);
     }
 
-    /**
-     * 构建查询条件
-     *
-     * @param userBo 用户信息BO
-     * @return Wrapper<User> 查询条件
-     */
-    private Wrapper<User> buildWrapper(UserBo userBo) {
-        Map<String, Object> params = userBo.getParams();
-        LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
-        // 构建查询条件
-        queryWrapper.eq(userBo.getUserId() != null, User::getUserId, userBo.getUserId());
-
-        return queryWrapper;
-    }
-
     @Override
     public UserVo getUserVoById(Long id) {
-        return null;
+        return userMapper.selectVoById(id);
     }
 
     @Override
@@ -93,6 +79,22 @@ public class UserServiceImpl implements UserService {
         Assert.isTrue(CollUtil.isNotEmpty(idList), "用户ID不能为空");
 
         return userMapper.deleteBatchIds(idList);
+    }
+
+    /**
+     * 构建查询条件
+     *
+     * @param userBo 用户信息BO
+     * @return Wrapper<User> 查询条件
+     */
+    private Wrapper<User> buildWrapper(UserBo userBo) {
+        Map<String, Object> params = userBo.getParams();
+        LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
+        // 构建查询条件
+        queryWrapper.eq(userBo.getUserId() != null, User::getUserId, userBo.getUserId());
+        queryWrapper.like(StrUtil.isNotBlank(userBo.getUserName()), User::getUserName, userBo.getUserName());
+
+        return queryWrapper;
     }
 
 }
