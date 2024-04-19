@@ -1,5 +1,7 @@
 package ${package.Entity};
 
+import ${package.Entity}.${entity};
+import io.github.linpeilie.annotations.AutoMapper;
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
@@ -26,8 +28,10 @@ import lombok.experimental.Accessors;
 </#if>
 <#if superEntityClass??>
 @EqualsAndHashCode(callSuper = true)
+@AutoMapper(target = ${entity}.class, reverseConvertGenerate = false)
 public class ${entity}Bo extends ${superEntityClass} {
 <#else>
+@AutoMapper(target = User.class, reverseConvertGenerate = false)
 public class ${entity}Bo {
 </#if>
 

@@ -1,6 +1,7 @@
 package ${package.Mapper};
 
 import ${package.Entity}.${entity};
+import ${package.Entity}.vo.${entity}Vo;
 import ${superMapperClassPackage};
 <#if mapperAnnotationClass??>
 import ${mapperAnnotationClass.name};
@@ -16,6 +17,6 @@ import ${mapperAnnotationClass.name};
 <#if mapperAnnotationClass??>
 @${mapperAnnotationClass.simpleName}
 </#if>
-public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}, ${entity}Vo> {
 
 }

@@ -49,6 +49,7 @@ public class GeneratorStarter {
                 .strategyConfig(builder -> {
                     builder.addInclude("sys_user") // 设置需要生成的表名
                             .addTablePrefix("sys_", "iot_") // 设置过滤表前缀
+                            // Entity配置
                             .entityBuilder()
                             .superClass("com.layjava.common.mybatis.core.entity.BaseEntity") // 设置实体父类
                             .enableFileOverride() // 文件覆盖
@@ -58,9 +59,12 @@ public class GeneratorStarter {
                             .logicDeleteColumnName("deleted")
                             .addIgnoreColumns(ENTITY_SUPER_CLASS_COMMONS) // 设置公共字段
                             .disableSerialVersionUID() // 取消生成serialVersionUID
+                            // Controller
                             .controllerBuilder().enableFileOverride()
                             .superClass("com.layjava.common.web.core.BaseController")
-                            .mapperBuilder().enableFileOverride() //
+                            // mapper
+                            .mapperBuilder().superClass("com.layjava.common.mybatis.core.mapper.BaseMapperPlus").enableFileOverride() //
+                            // Service
                             .serviceBuilder() // 设置 service 层代码策略
                             .enableFileOverride() // 开启覆盖已生成文件
                             .formatServiceFileName("%sService"); // 个人不喜欢IService的模式

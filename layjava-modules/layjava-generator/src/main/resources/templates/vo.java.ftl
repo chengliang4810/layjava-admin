@@ -1,5 +1,6 @@
 package ${package.Entity};
 
+import ${package.Entity}.${entity};
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
@@ -16,6 +17,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
+@AutoMapper(target = ${entity}.class, convertGenerate = false)
 public class ${entity}Vo implements Serializable {
 
 <#if entitySerialVersionUID>
