@@ -4,6 +4,7 @@ import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.layjava.common.core.util.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.test.domain.bo.UserBo;
 import com.layjava.test.domain.vo.UserVo;
@@ -13,7 +14,6 @@ import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
 import org.noear.solon.validation.annotation.Validated;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,8 +50,8 @@ public class UserController extends BaseController {
      */
     @Get
     @Mapping("/list/{pageNum}/{pageSize}")
-    public List pageList(UserBo userBo, PageQuery pageQuery) {
-        return Collections.emptyList();
+    public PageResult<UserVo> pageList(UserBo userBo, PageQuery pageQuery) {
+        return userService.getUserVoList(userBo, pageQuery);
     }
 
     /**
