@@ -5,17 +5,18 @@ import io.github.linpeilie.annotations.AutoMapper;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
+
 import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- *
  * 用户信息表
  *
  * @author chengliang4810
- * @since 2024-04-19
+ * @since 2024-04-23
  */
 @Data
 @Accessors(chain = true)

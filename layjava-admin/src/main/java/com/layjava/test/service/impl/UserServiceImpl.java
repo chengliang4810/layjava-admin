@@ -1,6 +1,5 @@
 package com.layjava.test.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -76,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteUserById(List<Long> idList) {
         // 参数校验
-        Assert.isTrue(CollUtil.isNotEmpty(idList), "用户ID不能为空");
+        Assert.notEmpty(idList, "用户ID不能为空");
 
         return userMapper.deleteBatchIds(idList);
     }

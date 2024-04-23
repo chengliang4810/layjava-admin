@@ -12,7 +12,7 @@ import com.layjava.common.web.core.BaseController;
  * 用户信息表 控制器
  *
  * @author chengliang4810
- * @since 2024-04-19
+ * @since 2024-04-23
  */
 @Controller
 @Mapping("/test/user")

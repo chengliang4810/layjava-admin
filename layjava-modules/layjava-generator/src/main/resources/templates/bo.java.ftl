@@ -31,7 +31,7 @@ import lombok.experimental.Accessors;
 @AutoMapper(target = ${entity}.class, reverseConvertGenerate = false)
 public class ${entity}Bo extends ${superEntityClass} {
 <#else>
-@AutoMapper(target = User.class, reverseConvertGenerate = false)
+@AutoMapper(target = ${entity}.class, reverseConvertGenerate = false)
 public class ${entity}Bo {
 </#if>
 
