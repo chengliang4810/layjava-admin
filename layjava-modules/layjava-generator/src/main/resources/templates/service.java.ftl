@@ -19,7 +19,7 @@ public interface ${table.serviceName} {
     /**
      * 查询${table.comment!}列表
      *
-     * @param userBo ${table.comment!}Bo
+     * @param ${table.entityPath}Bo ${table.comment!}Bo
      * @return ${table.comment!}列表
      */
     List<${entity}Vo> get${entity}VoList(${entity}Bo ${table.entityPath}Bo);
@@ -27,7 +27,7 @@ public interface ${table.serviceName} {
     /**
      * 获取${table.comment!}分页列表
      *
-     * @param userBo    ${table.comment!}Bo
+     * @param ${table.entityPath}Bo    ${table.comment!}Bo
      * @param pageQuery 分页查询条件
      * @return {@link List}<{@link ${entity}Vo}>
      */
