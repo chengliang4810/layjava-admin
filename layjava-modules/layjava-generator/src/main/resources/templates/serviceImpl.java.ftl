@@ -80,17 +80,16 @@ public class ${table.serviceImplName} <#if table.serviceInterface> implements ${
     }
 
     @Override
-    public boolean delete${entity}ById(List<Long> idList) {
+    public int delete${entity}ById(List<Long> idList) {
         // 参数校验
         Assert.notEmpty(idList, "${table.comment!}ID不能为空");
 
-        return ${table.entityPath}Mapper.deleteBatchIds(idList) > 0;
+        return ${table.entityPath}Mapper.deleteBatchIds(idList);
     }
 
     /**
      * 构建查询条件
      */
-
     private Wrapper<${entity}> buildWrapper(${entity}Bo ${table.entityPath}Bo) {
         Map<String, Object> params = ${table.entityPath}Bo.getParams();
         LambdaQueryWrapper<${entity}> queryWrapper = Wrappers.lambdaQuery();
@@ -104,4 +103,5 @@ public class ${table.serviceImplName} <#if table.serviceInterface> implements ${
         </#list>
         return queryWrapper;
     }
+
 }

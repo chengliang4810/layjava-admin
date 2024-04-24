@@ -63,6 +63,6 @@ public interface ${table.serviceName} {
      * @param idList {table.comment!}id列表
      * @return {@link boolean} 是否删除成功
      */
-    boolean delete${entity}ById(List<Long> idList);
+    int delete${entity}ById(List<Long> idList);
 
 }
