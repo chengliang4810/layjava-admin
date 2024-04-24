@@ -21,9 +21,11 @@ public class GeneratorStarter {
 
     private final static List<String> ENTITY_SUPER_CLASS_COMMONS = List.of("create_dept", "create_by", "create_time", "update_by", "update_time");
 
+    // 获取当前项目的路径
+    private static final String projectPath = System.getProperty("user.dir");
+
     public static void main(String[] args) {
-        // 获取当前项目的路径
-        String projectPath = System.getProperty("user.dir");
+
         // 临时文件目录
         File tempDir = FileUtil.file(projectPath + "/temp/");
         // Java目录
@@ -76,7 +78,6 @@ public class GeneratorStarter {
                     customFiles.add(new CustomFile.Builder().fileName("Bo.java").templatePath("/templates/bo.java.ftl").packageName("domain.bo").enableFileOverride().build());
                     customFiles.add(new CustomFile.Builder().fileName("Vo.java").templatePath("/templates/vo.java.ftl").packageName("domain.vo").enableFileOverride().build());
                     consumer.customFile(customFiles);
-
                 })
                 .execute();
     }

@@ -81,7 +81,6 @@ public class UserController extends BaseController {
      * 新增用户信息表
      *
      * @param userBo 用户信息表新增对象
-     * @return 新增结果
      */
     @Post
     @Mapping
@@ -105,8 +104,7 @@ public class UserController extends BaseController {
     /**
      * 根据ID删除用户信息表
      *
-     * @param id 用户信息表ID
-     * @return 删除结果
+     * @param ids 用户信息表ID
      */
     @Delete
     @Mapping("/{ids}")
