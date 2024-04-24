@@ -43,14 +43,14 @@ public class GeneratorStarter {
                 // domain
                 // 包配置
                 .packageConfig(builder -> {
-                    builder.parent("com.layjava.generator") // 设置包名
-                            .moduleName("test") // 设置模块名
+                    builder.parent("com.layjava") // 设置包名
+                            .moduleName("system") // 设置模块名
                             .entity("domain") // 设置entity包名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, xmlDir.getAbsolutePath())); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("sys_user") // 设置需要生成的表名
-                            .addTablePrefix("sys_", "iot_") // 设置过滤表前缀
+                            .addTablePrefix("iot_") // 设置过滤表前缀
                             // Entity配置
                             .entityBuilder()
                             .superClass("com.layjava.common.mybatis.core.entity.BaseEntity") // 设置实体父类
