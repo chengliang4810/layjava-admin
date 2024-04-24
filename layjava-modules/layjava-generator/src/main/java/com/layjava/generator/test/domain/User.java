@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
  * 用户信息表
  *
  * @author chengliang4810
- * @since 2024-04-23
+ * @since 2024-04-24
  */
 @Data
 @Accessors(chain = true)

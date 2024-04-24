@@ -80,7 +80,7 @@ public class UserController extends BaseController {
      */
     @Post
     @Mapping
-    public void save(@Validated(Addition.class) UserBo userBo) {
+    public void save(@Validated UserBo userBo) {
         boolean result = userService.saveUser(userBo);
         Assert.isTrue(result, "新增失败");
     }

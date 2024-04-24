@@ -85,7 +85,6 @@ public class ${table.controllerName} {
      * 新增${table.comment!}
      *
      * @param ${table.entityPath}Bo ${table.comment!}新增对象
-     * @return 新增结果
      */
     @Post
     @Mapping
@@ -109,8 +108,7 @@ public class ${table.controllerName} {
     /**
      * 根据ID删除${table.comment!}
      *
-     * @param id ${table.comment!}ID
-     * @return 删除结果
+     * @param ids ${table.comment!}ID
      */
     @Delete
     @Mapping("/{ids}")

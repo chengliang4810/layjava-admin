@@ -1,10 +1,11 @@
 package ${package.Entity};
 
 import ${package.Entity}.${entity};
+import java.io.Serializable;
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
-
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

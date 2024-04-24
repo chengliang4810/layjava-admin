@@ -26,7 +26,7 @@ import java.util.Map;
  * 用户信息表 服务实现类
  *
  * @author chengliang4810
- * @since 2024-04-23
+ * @since 2024-04-24
  */
 @Slf4j
 @Component
@@ -74,17 +74,16 @@ public class UserServiceImpl  implements UserService {
     }
 
     @Override
-    public boolean deleteUserById(List<Long> idList) {
+    public int deleteUserById(List<Long> idList) {
         // 参数校验
         Assert.notEmpty(idList, "用户信息表ID不能为空");
 
-        return userMapper.deleteBatchIds(idList) > 0;
+        return userMapper.deleteBatchIds(idList);
     }
 
     /**
      * 构建查询条件
      */
-
     private Wrapper<User> buildWrapper(UserBo userBo) {
         Map<String, Object> params = userBo.getParams();
         LambdaQueryWrapper<User> queryWrapper = Wrappers.lambdaQuery();
@@ -108,4 +107,5 @@ public class UserServiceImpl  implements UserService {
         queryWrapper.eq(StrUtil.isNotBlank(userBo.getRemark()), User::getRemark, userBo.getRemark());
         return queryWrapper;
     }
+
 }

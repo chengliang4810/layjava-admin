@@ -1,18 +1,34 @@
 package com.layjava.generator.test.controller;
 
+import cn.hutool.core.convert.Convert;
+import cn.zhxu.bs.BeanSearcher;
+import cn.zhxu.bs.SearchResult;
+import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
+import com.layjava.generator.test.domain.User;
+import com.layjava.generator.test.domain.bo.UserBo;
+import com.layjava.generator.test.domain.vo.UserVo;
 import com.layjava.generator.test.service.UserService;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
-
+import org.noear.solon.annotation.*;
+import org.noear.solon.validation.annotation.NotBlank;
+import org.noear.solon.validation.annotation.NotNull;
+import org.noear.solon.validation.annotation.Validated;
+import com.layjava.common.core.util.MapstructUtils;
+import com.layjava.common.core.util.StringUtils;
 import com.layjava.common.web.core.BaseController;
+
+import java.util.List;
 
 /**
  *
  * 用户信息表 控制器
  *
  * @author chengliang4810
- * @since 2024-04-23
+ * @since 2024-04-24
  */
 @Controller
 @Mapping("/test/user")
@@ -20,5 +36,84 @@ public class UserController extends BaseController {
 
     @Inject
     private UserService userService;
+    @Inject
+    private BeanSearcher beanSearcher;
+
+    /**
+     * 查询用户信息表列表
+     *
+     * @param userBo 用户信息表查询条件
+     * @return 用户信息表列表数据
+     */
+    @Get
+    @Mapping("/list")
+    public List<UserVo> list(UserBo userBo) {
+        List<User> searchAll = beanSearcher.searchAll(User.class);
+        return MapstructUtils.convert(searchAll, UserVo.class);
+    }
+
+    /**
+     * 分页查询用户信息表列表
+     *
+     * @param pageQuery 分页查询条件
+     * @return 用户信息表分页列表数据
+     */
+    @Get
+    @Mapping("/list/{pageNum}/{pageSize}")
+    public PageResult<UserVo> pageList(PageQuery pageQuery) {
+        SearchResult<User> search = beanSearcher.search(User.class);
+        return PageResult.build(search, UserVo.class);
+    }
+
+    /**
+     * 根据ID查询用户信息表
+     *
+     * @param id 用户信息表ID
+     * @return 用户信息表数据
+     */
+    @Get
+    @Mapping("/{id}")
+    public UserVo get(@NotNull Long id) {
+        return userService.getUserVoById(id);
+    }
+
+    /**
+     * 新增用户信息表
+     *
+     * @param userBo 用户信息表新增对象
+     * @return 新增结果
+     */
+    @Post
+    @Mapping
+    public void save(@Validated UserBo userBo) {
+        boolean result = userService.saveUser(userBo);
+        Assert.isTrue(result, "新增用户信息表失败");
+    }
+
+    /**
+     * 根据ID更新用户信息表信息
+     *
+     * @param userBo 用户信息表更新对象
+     */
+    @Put
+    @Mapping
+    public void update(@Validated UserBo userBo) {
+        boolean result = userService.updateUserById(userBo);
+        Assert.isTrue(result, "更新用户信息表失败");
+    }
+
+    /**
+     * 根据ID删除用户信息表
+     *
+     * @param id 用户信息表ID
+     * @return 删除结果
+     */
+    @Delete
+    @Mapping("/{ids}")
+    public void delete(@NotBlank(message = "ID不允许为空") String ids) {
+        List<Long> idList = StringUtils.splitTo(ids, Convert::toLong);
+        int result = userService.deleteUserById(idList);
+        Assert.isTrue(result > 0, "删除用户信息表失败");
+    }
 
 }

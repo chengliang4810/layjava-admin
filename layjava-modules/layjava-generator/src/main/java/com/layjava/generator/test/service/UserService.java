@@ -12,7 +12,7 @@ import java.util.List;
  * 用户信息表 实现类
  *
  * @author chengliang4810
- * @since 2024-04-23
+ * @since 2024-04-24
  */
 public interface UserService {
 
@@ -63,6 +63,6 @@ public interface UserService {
      * @param idList {table.comment!}id列表
      * @return {@link boolean} 是否删除成功
      */
-    boolean deleteUserById(List<Long> idList);
+    int deleteUserById(List<Long> idList);
 
 }
