@@ -1,6 +1,7 @@
 package com.layjava.common.web.filter;
 
 import com.layjava.common.core.exception.AuthException;
+import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Context;
@@ -15,6 +16,7 @@ import org.noear.solon.validation.ValidatorException;
  * @author chengliang
  * @since 2024/02/26
  */
+@Slf4j
 @Component
 public class GlobalExceptionFilter implements Filter {
 
@@ -23,21 +25,22 @@ public class GlobalExceptionFilter implements Filter {
         try {
             chain.doFilter(ctx);
 
-            if(!ctx.getHandled()){
+            if (!ctx.getHandled()) {
                 ctx.render(Result.failure(404, "资源不存在"));
             }
         }
         // 参数验证异常
-        catch (ValidatorException e){
+        catch (ValidatorException e) {
             ctx.render(Result.failure(e.getCode(), e.getMessage()));
         }
         // 权限异常
-        catch (AuthException e){
+        catch (AuthException e) {
             ctx.render(Result.failure(e.getCode(), e.getMessage()));
         }
         // 其他异常
         catch (Throwable e) {
-            if ("dev".equals(Solon.cfg().getProperty("solon.env"))){
+            log.error(e.getMessage());
+            if ("dev".equals(Solon.cfg().getProperty("solon.env"))) {
                 e.printStackTrace();
             }
             ctx.render(Result.failure(500, e.getMessage()));
