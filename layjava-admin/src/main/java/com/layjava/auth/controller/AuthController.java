@@ -1,14 +1,17 @@
-package com.layjava.controller;
+package com.layjava.auth.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.layjava.common.core.domain.model.LoginBody;
+import com.layjava.auth.domain.bo.LoginBody;
+import com.layjava.common.core.util.JsonUtil;
 import com.layjava.common.web.core.BaseController;
-import com.layjava.domain.vo.LoginVo;
-import com.layjava.service.AuthService;
+import com.layjava.auth.domain.vo.LoginVo;
+import com.layjava.auth.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
+import org.noear.solon.core.handle.Result;
+import org.noear.solon.validation.ValidatorManager;
 import org.noear.solon.validation.annotation.Validated;
 
 import java.util.HashMap;
@@ -31,12 +34,16 @@ public class AuthController extends BaseController {
     /**
      * 登录
      *
-     * @param loginBody 登录信息
+     * @param body 登录信息
      * @return {@link String}
      */
     @Mapping("/login")
-    public LoginVo login(@Validated LoginBody loginBody) {
-        return authService.login(loginBody);
+    public LoginVo login(@Validated String body) {
+
+        LoginBody loginBody = JsonUtil.toObject(body, LoginBody.class);
+        Result<?> result = ValidatorManager.validateOfEntity(loginBody, null);
+
+        return authService.login(null);
     }
 
     /**

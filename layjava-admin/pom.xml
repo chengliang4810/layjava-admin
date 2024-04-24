@@ -24,6 +24,12 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
+        <!-- 验证码： https://gitee.com/anji-plus/captcha -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>captcha-solon-plugin</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.layjava</groupId>
             <artifactId>layjava-system</artifactId>

@@ -1,8 +1,8 @@
-package com.layjava.service;
+package com.layjava.auth.service;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.layjava.common.core.domain.model.LoginBody;
-import com.layjava.domain.vo.LoginVo;
+import com.layjava.auth.domain.bo.LoginBody;
+import com.layjava.auth.domain.vo.LoginVo;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 
@@ -27,7 +27,7 @@ public class AuthService {
         log.info("登录信息：{}", loginBody);
 
         // 登录
-        StpUtil.login(loginBody.getAccount());
+        // StpUtil.login(loginBody.getAccount());
 
         // 返回 Token
         String tokenValue = StpUtil.getTokenValue();

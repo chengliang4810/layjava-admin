@@ -88,20 +88,13 @@ public class SysUserServiceImpl  implements SysUserService {
         Map<String, Object> params = sysUserBo.getParams();
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
         // 条件构造
-        queryWrapper.eq(sysUserBo.getUserId() != null, SysUser::getUserId, sysUserBo.getUserId());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getTenantId()), SysUser::getTenantId, sysUserBo.getTenantId());
+        queryWrapper.eq(sysUserBo.getUserId() != null, SysUser::getId, sysUserBo.getUserId());
         queryWrapper.eq(sysUserBo.getDeptId() != null, SysUser::getDeptId, sysUserBo.getDeptId());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getUserName()), SysUser::getUserName, sysUserBo.getUserName());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getNickName()), SysUser::getNickName, sysUserBo.getNickName());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getCertificateNumber()), SysUser::getCertificateNumber, sysUserBo.getCertificateNumber());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getUserType()), SysUser::getUserType, sysUserBo.getUserType());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getEmail()), SysUser::getEmail, sysUserBo.getEmail());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getPhonenumber()), SysUser::getPhonenumber, sysUserBo.getPhonenumber());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getSex()), SysUser::getSex, sysUserBo.getSex());
         queryWrapper.eq(sysUserBo.getAvatar() != null, SysUser::getAvatar, sysUserBo.getAvatar());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getPassword()), SysUser::getPassword, sysUserBo.getPassword());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getStatus()), SysUser::getStatus, sysUserBo.getStatus());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getDelFlag()), SysUser::getDelFlag, sysUserBo.getDelFlag());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getLoginIp()), SysUser::getLoginIp, sysUserBo.getLoginIp());
         queryWrapper.eq(sysUserBo.getLoginDate() != null, SysUser::getLoginDate, sysUserBo.getLoginDate());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getRemark()), SysUser::getRemark, sysUserBo.getRemark());
