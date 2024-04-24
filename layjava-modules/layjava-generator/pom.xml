@@ -20,18 +20,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.dtflys.forest</groupId>
-            <artifactId>forest-solon-plugin</artifactId>
-            <version>1.5.36</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>2.0.46</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.layjava</groupId>
             <artifactId>layjava-common-web</artifactId>
         </dependency>
