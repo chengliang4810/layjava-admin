@@ -2,7 +2,9 @@ package com.layjava.auth.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.layjava.auth.domain.bo.LoginBody;
+import com.layjava.auth.service.AuthStrategy;
 import com.layjava.common.core.util.JsonUtil;
+import com.layjava.common.core.util.ValidatorUtil;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthService;
@@ -11,6 +13,7 @@ import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.core.handle.Result;
+import org.noear.solon.validation.BeanValidateInfo;
 import org.noear.solon.validation.ValidatorManager;
 import org.noear.solon.validation.annotation.Validated;
 
@@ -28,9 +31,6 @@ import java.util.Map;
 @Mapping("/auth")
 public class AuthController extends BaseController {
 
-    @Inject
-    private AuthService authService;
-
     /**
      * 登录
      *
@@ -39,11 +39,11 @@ public class AuthController extends BaseController {
      */
     @Mapping("/login")
     public LoginVo login(@Validated String body) {
-
+        // 验证参数
         LoginBody loginBody = JsonUtil.toObject(body, LoginBody.class);
-        Result<?> result = ValidatorManager.validateOfEntity(loginBody, null);
-
-        return authService.login(null);
+        ValidatorUtil.validate(loginBody);
+   
+        return AuthStrategy.login(null, null, null);
     }
 
     /**

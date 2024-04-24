@@ -4,22 +4,23 @@ import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.anji.captcha.properties.AjCaptchaProperties;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.layjava.auth.domain.bo.PasswordLoginBody;
 import com.layjava.auth.domain.vo.LoginVo;
+import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
-import com.layjava.auth.service.IAuthStrategy;
 import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.util.JsonUtil;
+import com.layjava.common.core.util.ValidatorUtil;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.handle.Result;
 import org.noear.solon.validation.ValidatorManager;
@@ -27,21 +28,24 @@ import org.noear.solon.validation.ValidatorManager;
 /**
  * 密码认证策略
  *
- * @author Michelle.Chung
+ * @author chengliang
+ * @since 2024/04/24
  */
 @Slf4j
-@Component("password" + IAuthStrategy.BASE_NAME)
-@RequiredArgsConstructor
+@Component("password" + AuthStrategy.BASE_NAME)
 public class PasswordAuthStrategy implements AuthStrategyService {
 
     //private final AjCaptchaProperties captchaProperties;
     // private final SysLoginService loginService;
-    private final SysUserMapper userMapper;
+    @Db
+    private SysUserMapper userMapper;
 
     @Override
     public LoginVo login(String body, SysClient client) {
+        // 校验参数
         PasswordLoginBody loginBody = JsonUtil.toObject(body, PasswordLoginBody.class);
-        Result<?> result = ValidatorManager.validateOfEntity(loginBody, null);
+        ValidatorUtil.validate(loginBody);
+
         String username = loginBody.getAccount();
         String password = loginBody.getPassword();
         String code = loginBody.getCode();

@@ -11,7 +11,7 @@ import org.noear.solon.Solon;
  *
  * @author Michelle.Chung
  */
-public interface IAuthStrategy {
+public interface AuthStrategy {
 
     String BASE_NAME = "AuthStrategy";
 
