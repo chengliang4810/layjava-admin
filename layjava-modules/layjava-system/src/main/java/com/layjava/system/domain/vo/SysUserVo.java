@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -103,5 +105,30 @@ public class SysUserVo implements Serializable {
      * 备注
      */
     private String remark;
+
+    /**
+     * 部门对象
+     */
+    private SysDeptVo dept;
+
+    /**
+     * 角色对象
+     */
+    private List<SysRoleVo> roles;
+
+    /**
+     * 角色组
+     */
+    private Long[] roleIds;
+
+    /**
+     * 岗位组
+     */
+    private Long[] postIds;
+
+    /**
+     * 数据权限 当前角色ID
+     */
+    private Long roleId;
 
 }

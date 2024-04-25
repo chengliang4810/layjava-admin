@@ -318,4 +318,7 @@ public class StringUtils {
                 .collect(Collectors.toList());
     }
 
+    public static boolean isNotBlank(String str) {
+        return StrUtil.isNotBlank(str);
+    }
 }

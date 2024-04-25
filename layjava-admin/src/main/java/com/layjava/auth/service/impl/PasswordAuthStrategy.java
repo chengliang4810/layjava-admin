@@ -117,7 +117,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
             log.info("登录用户：{} 已被停用.", account);
             throw new ServiceException("登录用户：{} 已被停用.", account);
         }
-        return userMapper.selectVoOne(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getAccount, account));
+        return userMapper.selectUserByAccount(account);
     }
 
 }

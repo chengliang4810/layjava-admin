@@ -1,18 +1,24 @@
 package com.layjava.auth.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.layjava.auth.domain.bo.LoginBody;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.common.core.constant.UserConstants;
+import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.util.JsonUtil;
 import com.layjava.common.core.util.ValidatorUtil;
+import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthService;
 import com.layjava.system.domain.SysClient;
+import com.layjava.system.domain.vo.SysUserVo;
+import com.layjava.system.domain.vo.UserInfoVo;
 import com.layjava.system.service.SysClientService;
+import com.layjava.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
@@ -36,7 +42,10 @@ import java.util.Map;
 public class AuthController extends BaseController {
 
     @Inject
+    private SysUserService userService;
+    @Inject
     private SysClientService clientService;
+
 
     /**
      * 登录
@@ -73,14 +82,19 @@ public class AuthController extends BaseController {
      *
      * @return {@link Map}<{@link String}, {@link Object}>
      */
-    @Mapping("/user-info")
-    public Map<String, Object> userInfo() {
-        Map<String, Object> result = new HashMap<>();
-        result.put("userId", "1");
-        result.put("userName", "admin");
-        result.put("roles", new String[]{"admin"});
-        result.put("buttons", new String[]{"add", "edit", "delete"});
-        return result;
+    @Get
+    @Mapping("/user/info")
+    public UserInfoVo userInfo() {
+        UserInfoVo userInfoVo = new UserInfoVo();
+        LoginUser loginUser = LoginHelper.getLoginUser();
+
+        SysUserVo user = userService.getSysUserVoById(loginUser.getId());
+        Assert.notNull(user, "用户不存在");
+
+        userInfoVo.setUser(user);
+        userInfoVo.setPermissions(loginUser.getMenuPermission());
+        userInfoVo.setRoles(loginUser.getRolePermission());
+        return userInfoVo;
     }
 
     /**

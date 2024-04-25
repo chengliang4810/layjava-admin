@@ -1,6 +1,7 @@
 package com.layjava.common.web.interceptor;
 
 import org.noear.solon.annotation.Component;
+import org.noear.solon.core.handle.Action;
 import org.noear.solon.core.handle.Context;
 import org.noear.solon.core.handle.Handler;
 import org.noear.solon.core.handle.Result;
@@ -27,8 +28,8 @@ public class GlobalResultInterceptor implements RouterInterceptor {
      */
     @Override
     public Object postResult(Context ctx, Object result) throws Throwable {
-        Class<? extends Context> aClass = ctx.getClass();
-        if (!aClass.getName().startsWith("com.layjava")) {
+        Object controller = ctx.controller();
+        if (controller != null && !controller.getClass().getName().startsWith("com.layjava")) {
             return result;
         }
         if (result instanceof Throwable error) {
