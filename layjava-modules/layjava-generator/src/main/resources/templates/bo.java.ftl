@@ -2,6 +2,10 @@ package ${package.Entity};
 
 import ${package.Entity}.${entity};
 import io.github.linpeilie.annotations.AutoMapper;
+import org.noear.solon.validation.annotation.NotNull;
+import org.noear.solon.validation.annotation.NotBlank;
+import com.layjava.common.core.validate.group.AddGroup;
+import com.layjava.common.core.validate.group.UpdateGroup;
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
@@ -12,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
     </#if>
 </#if>
+
 
 /**
  *
@@ -44,6 +49,15 @@ public class ${entity}Bo {
      */
     </#if>
     <#-- 普通字段 -->
+    <#if field.keyFlag>
+    @NotNull(message = "${field.comment}不能为空", groups = { UpdateGroup.class })
+    <#else>
+        <#if field.propertyType == "String">
+    @NotBlank(message = "${field.comment}不能为空", groups = { AddGroup.class, UpdateGroup.class })
+        <#else>
+    @NotNull(message = "${field.comment}不能为空", groups = { AddGroup.class, UpdateGroup.class })
+        </#if>
+    </#if>
     private ${field.propertyType} ${field.propertyName};
 </#list>
 <#------------  END 字段循环遍历  ---------->
