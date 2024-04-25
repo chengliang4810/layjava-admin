@@ -1,9 +1,11 @@
-package com.layjava.system.domain;
+package com.layjava.system.domain.vo;
 
+import com.layjava.system.domain.SysClient;
+import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
@@ -15,9 +17,8 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@TableName("sys_client")
-@EqualsAndHashCode(callSuper = true)
-public class SysClient extends BaseEntity {
+@AutoMapper(target = SysClient.class, convertGenerate = false)
+public class SysClientVo implements Serializable {
 
     /**
      * id
@@ -63,4 +64,5 @@ public class SysClient extends BaseEntity {
      * 状态（0正常 1停用）
      */
     private String status;
+
 }
