@@ -1,9 +1,11 @@
 package ${package.Controller};
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.convert.Convert;
 import cn.zhxu.bs.BeanSearcher;
 import cn.zhxu.bs.SearchResult;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
+import com.layjava.common.core.validate.group.AddGroup;
+import com.layjava.common.core.validate.group.UpdateGroup;
 import ${package.Entity}.${entity};
 import ${package.Entity}.bo.${entity}Bo;
 import ${package.Entity}.vo.${entity}Vo;
@@ -88,7 +90,7 @@ public class ${table.controllerName} {
      */
     @Post
     @Mapping
-    public void save(@Validated ${entity}Bo ${table.entityPath}Bo) {
+    public void save(@Validated(AddGroup.class) ${entity}Bo ${table.entityPath}Bo) {
         boolean result = ${table.entityPath}Service.save${entity}(${table.entityPath}Bo);
         Assert.isTrue(result, "新增${table.comment!}失败");
     }
@@ -100,7 +102,7 @@ public class ${table.controllerName} {
      */
     @Put
     @Mapping
-    public void update(@Validated ${entity}Bo ${table.entityPath}Bo) {
+    public void update(@Validated(UpdateGroup.class) ${entity}Bo ${table.entityPath}Bo) {
         boolean result = ${table.entityPath}Service.update${entity}ById(${table.entityPath}Bo);
         Assert.isTrue(result, "更新${table.comment!}失败");
     }
