@@ -28,12 +28,13 @@ public class GeneratorStarter {
 
         // 临时文件目录
         File tempDir = FileUtil.file(projectPath + "/temp/");
+        FileUtil.del(tempDir);
         // Java目录
         File javaDir = FileUtil.file(tempDir, "/src/main/java/");
         // mapper xml文件目录
         File xmlDir = FileUtil.file(tempDir, "/src/main/resources/mapper/");
 
-        FastAutoGenerator.create("jdbc:mysql://10.0.0.16:3306/ry-vue?serverTimezone=Asia/Shanghai", "root", "P@ssw0rd")
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/layjava_db?serverTimezone=Asia/Shanghai", "root", "P@ssw0rd")
                 .globalConfig(builder -> {
                     builder.author("chengliang4810") // 设置作者
                             .dateType(DateType.TIME_PACK) // 设置时间类型对应策略
@@ -49,7 +50,7 @@ public class GeneratorStarter {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, xmlDir.getAbsolutePath())); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("sys_user") // 设置需要生成的表名
+                    builder.addInclude("sys_client") // 设置需要生成的表名
                             .addTablePrefix("iot_") // 设置过滤表前缀
                             // Entity配置
                             .entityBuilder()

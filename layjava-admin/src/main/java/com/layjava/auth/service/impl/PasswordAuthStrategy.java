@@ -10,20 +10,20 @@ import com.layjava.auth.domain.bo.PasswordLoginBody;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
+import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.util.JsonUtil;
 import com.layjava.common.core.util.ValidatorUtil;
+import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.core.handle.Result;
-import org.noear.solon.validation.ValidatorManager;
+import org.noear.solon.annotation.Inject;
 
 /**
  * 密码认证策略
@@ -35,10 +35,10 @@ import org.noear.solon.validation.ValidatorManager;
 @Component("password" + AuthStrategy.BASE_NAME)
 public class PasswordAuthStrategy implements AuthStrategyService {
 
-    //private final AjCaptchaProperties captchaProperties;
-    // private final SysLoginService loginService;
     @Db
     private SysUserMapper userMapper;
+    @Inject
+    private LoginService loginService;
 
     @Override
     public LoginVo login(String body, SysClient client) {
@@ -46,7 +46,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         PasswordLoginBody loginBody = JsonUtil.toObject(body, PasswordLoginBody.class);
         ValidatorUtil.validate(loginBody);
 
-        String username = loginBody.getAccount();
+        String account = loginBody.getAccount();
         String password = loginBody.getPassword();
         String code = loginBody.getCode();
         String uuid = loginBody.getUuid();
@@ -57,21 +57,26 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 //            validateCaptcha(tenantId, username, code, uuid);
 //        }
 
-        SysUserVo user = loadUserByAccount(username);
-        // loginService.checkLogin(LoginType.PASSWORD, username, () -> !BCrypt.checkpw(password, user.getPassword()));
+        SysUserVo user = loadUserByAccount(account);
+
+        // 校验密码
+        if (!BCrypt.checkpw(password, user.getPassword())){
+            throw new ServiceException("账号/密码错误");
+        }
         // 此处可根据登录用户的数据不同 自行创建 loginUser
-//        LoginUser loginUser = loginService.buildLoginUser(user);
-//        loginUser.setClientKey(client.getClientKey());
-//        loginUser.setDeviceType(client.getDeviceType());
+        LoginUser loginUser = loginService.buildLoginUser(user);
+        loginUser.setClientKey(client.getClientKey());
+        loginUser.setDeviceType(client.getDeviceType());
+
         SaLoginModel model = new SaLoginModel();
         model.setDevice(client.getDeviceType());
         // 自定义分配 不同用户体系 不同 token 授权时间 不设置默认走全局 yml 配置
         // 例如: 后台用户30分钟过期 app用户1天过期
-        // model.setTimeout(client.getTimeout());
-        // model.setActiveTimeout(client.getActiveTimeout());
-        // model.setExtra(LoginHelper.CLIENT_KEY, client.getClientId());
+         model.setTimeout(client.getTimeout());
+         model.setActiveTimeout(client.getActiveTimeout());
+         model.setExtra(LoginHelper.CLIENT_KEY, client.getClientId());
         // 生成token
-        //LoginHelper.login(loginUser, model);
+        LoginHelper.login(loginUser, model);
 
         LoginVo loginVo = new LoginVo();
         loginVo.setToken(StpUtil.getTokenValue());

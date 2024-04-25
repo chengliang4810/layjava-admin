@@ -1,5 +1,6 @@
 package com.layjava.common.mybatis.core.entity;
 
+import cn.zhxu.bs.bean.DbIgnore;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class BaseEntity implements Serializable {
     /**
      * 搜索值
      */
+    @DbIgnore
     @TableField(exist = false)
     private transient String searchValue;
 
@@ -61,7 +63,7 @@ public class BaseEntity implements Serializable {
     /**
      * 请求参数
      */
-    // @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @DbIgnore
     @TableField(exist = false)
     private Map<String, Object> params = new HashMap<>();
 

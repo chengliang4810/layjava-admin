@@ -48,6 +48,11 @@
             <artifactId>layjava-common-doc</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
