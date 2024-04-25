@@ -4,12 +4,10 @@ import com.layjava.common.core.validate.group.AddGroup;
 import com.layjava.common.core.validate.group.UpdateGroup;
 import com.layjava.system.domain.SysClient;
 import io.github.linpeilie.annotations.AutoMapper;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.apache.ibatis.annotations.Update;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
 

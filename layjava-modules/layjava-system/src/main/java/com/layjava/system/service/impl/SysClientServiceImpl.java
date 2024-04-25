@@ -1,8 +1,10 @@
 package com.layjava.system.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Assert;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -51,7 +53,16 @@ public class SysClientServiceImpl  implements SysClientService {
 
     @Override
     public SysClientVo getSysClientVoById(Long id) {
-        return sysClientMapper.selectVoById(id);
+        SysClientVo sysClientVo = sysClientMapper.selectVoById(id);
+        sysClientVo.setGrantTypeList(List.of(sysClientVo.getGrantType().split(",")));
+        return sysClientVo;
+    }
+
+    @Override
+    public SysClient getByClientId(String clientId) {
+        return sysClientMapper.selectOne(new LambdaQueryWrapper<SysClient>()
+                .eq(SysClient::getClientId, clientId)
+        );
     }
 
     @Override
@@ -60,6 +71,10 @@ public class SysClientServiceImpl  implements SysClientService {
         Assert.notNull(sysClientBo, "系统授权表不能为空");
 
         SysClient sysClient = MapstructUtils.convert(sysClientBo, SysClient.class);
+        sysClient.setGrantType(String.join(",", sysClientBo.getGrantTypeList()));
+        String clientKey = sysClientBo.getClientKey();
+        String clientSecret = sysClientBo.getClientSecret();
+        sysClient.setClientId(SecureUtil.md5(clientKey + clientSecret));
         return sysClientMapper.insert(sysClient) > 0;
     }
 
@@ -70,7 +85,16 @@ public class SysClientServiceImpl  implements SysClientService {
         Assert.notNull(sysClientBo.getId(), "系统授权表ID不能为空" );
 
         SysClient sysClient = MapstructUtils.convert(sysClientBo, SysClient.class);
+        sysClient.setGrantType(String.join(",", sysClientBo.getGrantTypeList()));
         return sysClientMapper.updateById(sysClient) > 0;
+    }
+
+    @Override
+    public boolean updateUserStatus(Long id, String status) {
+        return sysClientMapper.update(null,
+                new LambdaUpdateWrapper<SysClient>()
+                        .set(SysClient::getStatus, status)
+                        .eq(SysClient::getId, id)) > 0;
     }
 
     @Override
@@ -88,15 +112,11 @@ public class SysClientServiceImpl  implements SysClientService {
         Map<String, Object> params = sysClientBo.getParams();
         LambdaQueryWrapper<SysClient> queryWrapper = Wrappers.lambdaQuery();
         // 条件构造
-        queryWrapper.eq(sysClientBo.getId() != null, SysClient::getId, sysClientBo.getId());
         queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getClientId()), SysClient::getClientId, sysClientBo.getClientId());
         queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getClientKey()), SysClient::getClientKey, sysClientBo.getClientKey());
         queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getClientSecret()), SysClient::getClientSecret, sysClientBo.getClientSecret());
-        queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getGrantType()), SysClient::getGrantType, sysClientBo.getGrantType());
-        queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getDeviceType()), SysClient::getDeviceType, sysClientBo.getDeviceType());
-        queryWrapper.eq(sysClientBo.getActiveTimeout() != null, SysClient::getActiveTimeout, sysClientBo.getActiveTimeout());
-        queryWrapper.eq(sysClientBo.getTimeout() != null, SysClient::getTimeout, sysClientBo.getTimeout());
         queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getStatus()), SysClient::getStatus, sysClientBo.getStatus());
+        queryWrapper.orderByAsc(SysClient::getId);
         return queryWrapper;
     }
 

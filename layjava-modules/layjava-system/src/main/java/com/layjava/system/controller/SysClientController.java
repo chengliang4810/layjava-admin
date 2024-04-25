@@ -3,7 +3,9 @@ package com.layjava.system.controller;
 import cn.hutool.core.convert.Convert;
 import cn.zhxu.bs.BeanSearcher;
 import cn.zhxu.bs.SearchResult;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
+import cn.hutool.core.lang.Assert;
+import com.layjava.common.core.validate.group.AddGroup;
+import com.layjava.common.core.validate.group.UpdateGroup;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysClient;
@@ -40,19 +42,6 @@ public class SysClientController extends BaseController {
     private BeanSearcher beanSearcher;
 
     /**
-     * 查询系统授权表列表
-     *
-     * @param sysClientBo 系统授权表查询条件
-     * @return 系统授权表列表数据
-     */
-    @Get
-    @Mapping("/list")
-    public List<SysClientVo> list(SysClientBo sysClientBo) {
-        List<SysClient> searchAll = beanSearcher.searchAll(SysClient.class);
-        return MapstructUtils.convert(searchAll, SysClientVo.class);
-    }
-
-    /**
      * 分页查询系统授权表列表
      *
      * @param pageQuery 分页查询条件
@@ -62,7 +51,9 @@ public class SysClientController extends BaseController {
     @Mapping("/list/{pageNum}/{pageSize}")
     public PageResult<SysClientVo> pageList(PageQuery pageQuery) {
         SearchResult<SysClient> search = beanSearcher.search(SysClient.class);
-        return PageResult.build(search, SysClientVo.class);
+        PageResult<SysClientVo> build = PageResult.build(search, SysClientVo.class);
+        build.getRows().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split(","))));
+        return build;
     }
 
     /**
@@ -84,7 +75,7 @@ public class SysClientController extends BaseController {
      */
     @Post
     @Mapping
-    public void save(@Validated SysClientBo sysClientBo) {
+    public void save(@Validated(AddGroup.class) SysClientBo sysClientBo) {
         boolean result = sysClientService.saveSysClient(sysClientBo);
         Assert.isTrue(result, "新增系统授权表失败");
     }
@@ -96,7 +87,7 @@ public class SysClientController extends BaseController {
      */
     @Put
     @Mapping
-    public void update(@Validated SysClientBo sysClientBo) {
+    public void update(@Validated(UpdateGroup.class) SysClientBo sysClientBo) {
         boolean result = sysClientService.updateSysClientById(sysClientBo);
         Assert.isTrue(result, "更新系统授权表失败");
     }

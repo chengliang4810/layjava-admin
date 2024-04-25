@@ -2,6 +2,8 @@ package com.layjava.system.domain.vo;
 
 import com.layjava.system.domain.SysClient;
 import java.io.Serializable;
+import java.util.List;
+
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -39,6 +41,11 @@ public class SysClientVo implements Serializable {
      * 客户端秘钥
      */
     private String clientSecret;
+
+    /**
+     * 授权类型
+     */
+    private List<String> grantTypeList;
 
     /**
      * 授权类型

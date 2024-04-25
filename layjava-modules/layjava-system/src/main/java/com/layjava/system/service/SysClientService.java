@@ -1,5 +1,6 @@
 package com.layjava.system.service;
 
+import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
 import com.layjava.common.mybatis.core.page.PageQuery;
@@ -42,6 +43,11 @@ public interface SysClientService {
     SysClientVo getSysClientVoById(Long id);
 
     /**
+     * 查询客户端信息基于客户端id
+     */
+    SysClient getByClientId(String clientId);
+
+    /**
      * 保存系统授权表
      *
      * @param sysClientBo 系统授权表
@@ -56,6 +62,11 @@ public interface SysClientService {
      * @return {@link boolean} 是否更新成功
      */
     boolean updateSysClientById(SysClientBo sysClientBo);
+
+    /**
+     * 修改状态
+     */
+    boolean updateUserStatus(Long id, String status);
 
     /**
      * 根据id删除系统授权表
