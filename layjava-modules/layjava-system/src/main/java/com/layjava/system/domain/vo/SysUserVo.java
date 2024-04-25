@@ -1,5 +1,6 @@
 package com.layjava.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.layjava.system.domain.SysUser;
 import java.io.Serializable;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -40,17 +41,12 @@ public class SysUserVo implements Serializable {
     /**
      * 用户账号
      */
-    private String userName;
+    private String account;
 
     /**
      * 用户昵称
      */
-    private String nickName;
-
-    /**
-     * 执法证号
-     */
-    private String certificateNumber;
+    private String name;
 
     /**
      * 用户类型（sys_user系统用户）
@@ -65,12 +61,12 @@ public class SysUserVo implements Serializable {
     /**
      * 手机号码
      */
-    private String phonenumber;
+    private String phone;
 
     /**
      * 用户性别（0男 1女 2未知）
      */
-    private String sex;
+    private String gender;
 
     /**
      * 头像地址
@@ -80,6 +76,7 @@ public class SysUserVo implements Serializable {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
 
     /**

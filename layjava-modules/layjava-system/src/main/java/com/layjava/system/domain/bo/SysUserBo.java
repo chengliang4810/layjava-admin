@@ -42,20 +42,15 @@ public class SysUserBo extends BaseEntity {
     /**
      * 用户账号
      */
-    private String userName;
+    private String account;
 
     /**
      * 用户昵称
      */
-    private String nickName;
+    private String name;
 
     /**
-     * 执法证号
-     */
-    private String certificateNumber;
-
-    /**
-     * 用户类型（sys_user系统用户）
+     * 用户类型（pc_user系统用户）
      */
     private String userType;
 
@@ -67,12 +62,12 @@ public class SysUserBo extends BaseEntity {
     /**
      * 手机号码
      */
-    private String phonenumber;
+    private String phone;
 
     /**
      * 用户性别（0男 1女 2未知）
      */
-    private String sex;
+    private String gender;
 
     /**
      * 头像地址
@@ -88,11 +83,6 @@ public class SysUserBo extends BaseEntity {
      * 帐号状态（0正常 1停用）
      */
     private String status;
-
-    /**
-     * 删除标志（0代表存在 2代表删除）
-     */
-    private String delFlag;
 
     /**
      * 最后登录IP

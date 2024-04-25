@@ -38,8 +38,6 @@ public class SysClientController extends BaseController {
 
     @Inject
     private SysClientService sysClientService;
-    @Inject
-    private BeanSearcher beanSearcher;
 
     /**
      * 分页查询系统授权表列表
@@ -49,11 +47,8 @@ public class SysClientController extends BaseController {
      */
     @Get
     @Mapping("/list/{pageNum}/{pageSize}")
-    public PageResult<SysClientVo> pageList(PageQuery pageQuery) {
-        SearchResult<SysClient> search = beanSearcher.search(SysClient.class);
-        PageResult<SysClientVo> build = PageResult.build(search, SysClientVo.class);
-        build.getRows().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split(","))));
-        return build;
+    public PageResult<SysClientVo> pageList(SysClientBo sysClientBo, PageQuery pageQuery) {
+        return sysClientService.getSysClientVoList(sysClientBo, pageQuery);
     }
 
     /**

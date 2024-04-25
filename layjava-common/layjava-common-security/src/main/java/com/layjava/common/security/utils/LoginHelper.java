@@ -101,8 +101,8 @@ public class LoginHelper {
     /**
      * 获取用户账户
      */
-    public static String getUsername() {
-        return getLoginUser().getUsername();
+    public static String getAccount() {
+        return getLoginUser().getAccount();
     }
 
     /**
@@ -144,7 +144,7 @@ public class LoginHelper {
         }
     }
 
-    public static String getNickName() {
-        return getLoginUser().getNickname();
+    public static String getName() {
+        return getLoginUser().getName();
     }
 }

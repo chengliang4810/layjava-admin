@@ -25,8 +25,8 @@ public class LoginService {
         LoginUser loginUser = new LoginUser();
         loginUser.setId(user.getId());
         loginUser.setDeptId(user.getDeptId());
-        loginUser.setUsername(user.getUserName());
-        loginUser.setNickname(user.getNickName());
+        loginUser.setAccount(user.getAccount());
+        loginUser.setName(user.getName());
         loginUser.setUserType(user.getUserType());
         // loginUser.setMenuPermission(permissionService.getMenuPermission(user.getUserId()));
         // loginUser.setRolePermission(permissionService.getRolePermission(user.getUserId()));

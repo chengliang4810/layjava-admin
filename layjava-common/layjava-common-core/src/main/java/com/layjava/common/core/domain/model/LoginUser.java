@@ -90,12 +90,12 @@ public class LoginUser implements Serializable {
     /**
      * 用户名
      */
-    private String username;
+    private String account;
 
     /**
      * 用户昵称
      */
-    private String nickname;
+    private String name;
 
     /**
      * 角色对象

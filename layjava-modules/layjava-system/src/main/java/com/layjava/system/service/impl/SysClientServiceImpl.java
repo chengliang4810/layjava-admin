@@ -48,6 +48,7 @@ public class SysClientServiceImpl  implements SysClientService {
         Wrapper<SysClient> sysClientWrapper = buildWrapper(sysClientBo);
 
         IPage<SysClientVo> voPage = sysClientMapper.selectVoPage(pageQuery.build(), sysClientWrapper);
+        voPage.getRecords().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split(","))));
         return PageResult.build(voPage);
     }
 
