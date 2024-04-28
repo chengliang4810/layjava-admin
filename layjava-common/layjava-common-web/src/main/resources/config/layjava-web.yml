@@ -11,6 +11,8 @@ server.request.maxHeaderSize: 8kb #kb,mb
 server.request.encoding: "utf-8"
 #设定响应体编码
 server.response.encoding: "utf-8"
+# 开启临时文件模式
+server.request.useTempfile: true
 
 # 序列化json配置
 solon.serialization.json:
