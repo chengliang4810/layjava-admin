@@ -1,7 +1,16 @@
 # 应用环境配置
 solon.env: @profiles.active@
 
-# security url放行配置
+# 加载配置
+solon.config.load: "config/layjava-*.yml"
+
+# 缓存配置 (caffeine/redis)
+layjava.cache:
+  driverType: redis
+  server: 10.0.0.16:6379
+  defSeconds: 30
+
+# url放行配置
 security:
   # 排除路径
   excludes:
@@ -10,6 +19,5 @@ security:
     - /auth/login
     - /swagger/v2
     - /test/user/**
+    - /cache
 
---- ## 加载common项目配置文件
-solon.config.load: "config/*.yml"

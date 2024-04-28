@@ -19,6 +19,12 @@
             <artifactId>solon.cache.caffeine</artifactId>
         </dependency>
 
+        <!-- redisson 缓存 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.cache.redisson</artifactId>
+        </dependency>
+
     </dependencies>
 
 
