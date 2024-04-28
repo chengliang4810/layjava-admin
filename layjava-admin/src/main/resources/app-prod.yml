@@ -1,1 +1,4 @@
-
+# 线上环境关闭接口文档
+solon:
+  docs:
+    enabled: false
