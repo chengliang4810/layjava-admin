@@ -2,13 +2,9 @@
 solon.env: @profiles.active@
 
 # 加载配置
+# 注意!!! 该部分引入的文件会覆盖当前配置,也就是外部加载的配置优先级更高,或者说是覆盖了当前配置
+# 当你需要修改默认配置时应修改common模块中对应的信息.
 solon.config.load: "config/layjava-*.yml"
-
-# 缓存配置 (caffeine/redis)
-layjava.cache:
-  driverType: redis
-  server: 10.0.0.16:6379
-  defSeconds: 30
 
 # url放行配置
 security:
@@ -20,4 +16,17 @@ security:
     - /swagger/v2
     - /test/user/**
     - /cache
+
+# 接口文档配置
+solon:
+  docs:
+    group-configs:
+      - group: 1.演示模块
+        packageName: com.layjava.test
+      - group: 2.通用模块
+        packageName: com.layjava.web
+      - group: 3.系统模块
+        packageName: com.layjava.system
+      - group: 4.代码生成模块
+        packageName: com.layjava.generator
 
