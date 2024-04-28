@@ -14,6 +14,11 @@ server.response.encoding: "utf-8"
 # 开启临时文件模式
 server.request.useTempfile: true
 
+#添加静态目录映射。
+solon.staticfiles.mappings:
+  - path: "/file/" #文件访问路径
+    repository: "/layjava/data/file/" #1.添加本地绝对目录（仓库只能是目录）
+
 # 序列化json配置
 solon.serialization.json:
   dateAsFormat: 'yyyy-MM-dd HH:mm:ss' #配置日期格式（默认输出为时间戳）

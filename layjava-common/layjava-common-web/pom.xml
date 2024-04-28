@@ -53,6 +53,13 @@
             <groupId>org.noear</groupId>
             <artifactId>solon.logging.logback</artifactId>
         </dependency>
+
+        <!-- 静态文件支持,用于本地文件上传的访问 -->
+        <dependency>
+            <groupId>org.noear</groupId>
+            <artifactId>solon.web.staticfiles</artifactId>
+        </dependency>
+
     </dependencies>
 
 
