@@ -40,7 +40,7 @@
 
         <dependency>
             <groupId>com.layjava</groupId>
-            <artifactId>layjava-common-redis</artifactId>
+            <artifactId>layjava-common-cache</artifactId>
         </dependency>
 
         <dependency>

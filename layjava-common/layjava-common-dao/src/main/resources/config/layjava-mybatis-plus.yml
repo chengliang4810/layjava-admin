@@ -1,8 +1,16 @@
-# 内置配置 不允许修改  如需修改请在写相同配置覆盖
+# 内置配置 不允许修改  如需修改请使用相同配置覆盖
 # MyBatisPlus配置
 # https://baomidou.com/config/
 # 配置数据源对应的 mybatis 信息（要与 DataSource bean 的名字对上）
 mybatis.default:
+  # 实体扫描，多个package用逗号或者分号分隔
+  typeAliases:
+    - "com.layjava.**.domain"
+  # 对应Mapper接口位置
+  mappers:
+    - "com.layjava.**.mapper.*Mapper"
+    # 对应的 XML 文件位置
+    - "classpath:mapper/**/*Mapper.xml"
   configuration:
     # 自动驼峰命名规则（camel case）映射
     mapUnderscoreToCamelCase: true

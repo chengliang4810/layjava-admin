@@ -9,6 +9,5 @@ import org.noear.solon.annotation.Import;
  * @since 2024/04/02
  */
 @Configuration
-@Import(profilesIfAbsent = "classpath:common-web.yml")
 public class WebConfig {
 }

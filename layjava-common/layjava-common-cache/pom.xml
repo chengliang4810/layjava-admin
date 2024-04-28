@@ -9,13 +9,16 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>layjava-common-redis</artifactId>
+    <artifactId>layjava-common-cache</artifactId>
 
     <dependencies>
+
+        <!-- 默认本地缓存 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>redisson-solon-plugin</artifactId>
+            <artifactId>solon.cache.caffeine</artifactId>
         </dependency>
+
     </dependencies>
 
 

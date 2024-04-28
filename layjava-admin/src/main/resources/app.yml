@@ -1,37 +1,5 @@
-# common配置，非必要情况下不用修改
 # 应用环境配置
 solon.env: @profiles.active@
-#应用名称
-solon.app.name: layjava-admin
-#应用标题
-solon.app.title: "LayJavaAdmin"
-#应用组
-solon.app.group: "layjava"
-
-# 添加外部扩展配置
----
-solon.env.on: prod
-solon.config.add: "./app.yml"
-
---- # mybatis plus
-mybatis.default:
-  # 实体扫描，多个package用逗号或者分号分隔
-  typeAliases:
-    - "com.layjava.**.domain"
-  # 对应Mapper接口位置
-  mappers:
-    - "com.layjava.**.mapper.*Mapper"
-    # 对应的 XML 文件位置
-    - "classpath:mapper/**/*Mapper.xml"
-
---- # bean searcher配置统一分页条件
-bean-searcher:
-  enable: false
-  params:
-    pagination:
-      page: pageNum
-      size: pageSize
-      start: 1
 
 # security url放行配置
 security:
@@ -43,16 +11,5 @@ security:
     - /swagger/v2
     - /test/user/**
 
---- ## Web序列化配置
-solon.serialization.json:
-  dateAsFormat: 'yyyy-MM-dd HH:mm:ss' #配置日期格式（默认输出为时间戳）
-  dateAsTimeZone: 'GMT+8' #配置时区
-  dateAsTicks: false #将date转为毫秒数（和 dateAsFormat 二选一）
-  longAsString: true #将long型转为字符串输出 （默认为false）
-  boolAsInt: false   #将bool型转为字符串输出 （默认为false）
-  nullStringAsEmpty: false
-  nullBoolAsFalse: false
-  nullNumberAsZero: false
-  nullArrayAsEmpty: false
-  nullAsWriteable: false #输出所有null值
-  enumAsName: true #枚举使用名字（v2.2.1 后支持）
+--- ## 加载common项目配置文件
+solon.config.load: "config/*.yml"

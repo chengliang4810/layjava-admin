@@ -24,7 +24,6 @@ import javax.sql.DataSource;
  * @since  2024/02/27
  */
 @Configuration
-@Import(profilesIfAbsent = "classpath:common-mybatis-plus.yml")
 public class MybatisPlusConfig {
 
     @Bean(value = "default", typed = true)

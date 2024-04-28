@@ -1,0 +1,12 @@
+# common配置，非必要情况下不用修改
+#应用名称
+solon.app.name: layjava-admin
+#应用标题
+solon.app.title: "LayJavaAdmin"
+#应用组
+solon.app.group: "layjava"
+
+# 添加外部扩展配置
+---
+solon.env.on: prod
+solon.config.add: "./app.yml"

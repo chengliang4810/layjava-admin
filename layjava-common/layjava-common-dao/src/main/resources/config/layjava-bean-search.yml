@@ -1,0 +1,9 @@
+# 内置配置 不建议修改  如需修改请使用相同配置覆盖
+--- # bean searcher配置统一分页条件
+bean-searcher:
+  enable: true
+  params:
+    pagination:
+      page: pageNum
+      size: pageSize
+      start: 1
