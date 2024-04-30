@@ -1,0 +1,2 @@
+# 关闭插件自带的controller
+layjava.file.upload.controller.enable: false

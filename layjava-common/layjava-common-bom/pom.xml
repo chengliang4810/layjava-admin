@@ -67,18 +67,14 @@
                 <artifactId>layjava-common-web</artifactId>
                 <version>${revision}</version>
             </dependency>
+
+            <!-- 文件模块 -->
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-common-oss</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <distributionManagement>
-        <repository>
-            <id>gitea</id>
-            <url>http://10.0.0.149:3000/api/packages/chengliang4810/maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>gitea</id>
-            <url>http://10.0.0.149:3000/api/packages/chengliang4810/maven</url>
-        </snapshotRepository>
-    </distributionManagement>
 
 </project>

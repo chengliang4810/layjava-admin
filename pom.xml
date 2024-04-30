@@ -72,67 +72,6 @@
                 <logging.level>warn</logging.level>
             </properties>
         </profile>
-
-        <profile>
-            <id>gitea</id>
-            <repositories>
-                <repository>
-                    <id>release</id>
-                    <url>http://10.0.0.149:3000/api/packages/chengliang4810/maven</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </snapshots>
-                </repository>
-                <repository>
-                    <id>snapshot</id>
-                    <url>http://10.0.0.149:3000/api/packages/chengliang4810/maven</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </snapshots>
-                </repository>
-            </repositories>
-            <pluginRepositories>
-                <pluginRepository>
-                    <id>release</id>
-                    <url>http://10.0.0.149:3000/api/packages/chengliang4810/maven</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </snapshots>
-                </pluginRepository>
-
-                <pluginRepository>
-                    <id>snapshot</id>
-                    <url>http://10.0.0.149:3000/api/packages/chengliang4810/maven</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                        <updatePolicy>always</updatePolicy>
-                    </snapshots>
-                </pluginRepository>
-            </pluginRepositories>
-            <activation>
-                <!-- 默认环境 -->
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
     </profiles>
 
     <dependencyManagement>
@@ -212,6 +151,7 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgument>-parameters</compilerArgument>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>com.github.therapi</groupId>

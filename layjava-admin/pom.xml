@@ -29,6 +29,12 @@
             <artifactId>layjava-system</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.layjava.solon</groupId>
+            <artifactId>layjava-file-plugin-local</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

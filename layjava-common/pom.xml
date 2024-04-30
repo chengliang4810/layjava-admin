@@ -24,6 +24,7 @@
         <module>layjava-common-cache</module>
         <module>layjava-common-security</module>
         <module>layjava-common-log</module>
+        <module>layjava-common-oss</module>
     </modules>
 
 </project>
