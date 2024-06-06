@@ -4,7 +4,7 @@
 
     <!-- 多结构嵌套自动映射需带上每个实体的主键id 否则映射会失败 -->
     <resultMap type="com.layjava.system.domain.vo.SysUserVo" id="SysUserResult">
-        <id property="id" column="id"/>
+        <id property="userId" column="user_id"/>
         <result property="deptId" column="dept_id"/>
         <association property="dept" column="dept_id" resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
@@ -24,7 +24,7 @@
     </resultMap>
 
     <sql id="selectUserVo">
-        select u.id,
+        select u.user_id,
                u.dept_id,
                u.account,
                u.name,
@@ -57,12 +57,12 @@
                r.status as role_status
         from sys_user u
                  left join sys_dept d on u.dept_id = d.dept_id
-                 left join sys_user_role sur on u.id = sur.user_id
+                 left join sys_user_role sur on u.user_id = sur.user_id
                  left join sys_role r on r.role_id = sur.role_id
     </sql>
 
     <select id="selectPageUserList" resultMap="SysUserResult">
-        select u.id, u.dept_id, u.name, u.account,  u.email, u.avatar, u.phone, u.gender,
+        select u.user_id, u.dept_id, u.name, u.account,  u.email, u.avatar, u.phone, u.gender,
                u.status, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
                d.dept_name, d.leader, u1.account as leaderName
         from sys_user u
@@ -72,7 +72,7 @@
     </select>
 
     <select id="selectUserList" resultMap="SysUserResult">
-        select u.id, u.dept_id, u.name, u.account, u.email, u.avatar, u.phone, u.gender,
+        select u.user_id, u.dept_id, u.name, u.account, u.email, u.avatar, u.phone, u.gender,
                u.status, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark,
                d.dept_name, d.leader, u1.account as leaderName
         from sys_user u
@@ -94,7 +94,7 @@
         select distinct u.id, u.dept_id, u.account, u.name, u.email, u.phone, u.status, u.create_time
         from sys_user u
                  left join sys_dept d on u.dept_id = d.dept_id
-                 left join sys_user_role sur on u.id = sur.user_id
+                 left join sys_user_role sur on u.user_id = sur.user_id
                  left join sys_role r on r.role_id = sur.role_id
             ${ew.getCustomSqlSegment}
     </select>
@@ -116,7 +116,7 @@
 
     <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
-        where u.id = #{userId}
+        where u.user_id = #{userId}
     </select>
 
 </mapper>

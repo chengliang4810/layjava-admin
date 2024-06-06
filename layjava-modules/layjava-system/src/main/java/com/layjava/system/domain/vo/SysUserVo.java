@@ -2,19 +2,15 @@ package com.layjava.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.layjava.system.domain.SysUser;
-import java.io.Serializable;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.List;
+
 /**
- *
  * 用户信息表
  *
  * @author chengliang4810
@@ -28,7 +24,7 @@ public class SysUserVo implements Serializable {
     /**
      * 用户ID
      */
-    private Long id;
+    private Long userId;
 
     /**
      * 租户编号

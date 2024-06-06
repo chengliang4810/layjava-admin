@@ -25,7 +25,7 @@ public class LoginUser implements Serializable {
     /**
      * 用户ID
      */
-    private Long id;
+    private Long userId;
 
     /**
      * 部门ID
@@ -124,10 +124,10 @@ public class LoginUser implements Serializable {
         if (userType == null) {
             throw new IllegalArgumentException("用户类型不能为空");
         }
-        if (id == null) {
+        if (userId == null) {
             throw new IllegalArgumentException("用户ID不能为空");
         }
-        return userType + ":" + id;
+        return userType + ":" + userId;
     }
 
 }

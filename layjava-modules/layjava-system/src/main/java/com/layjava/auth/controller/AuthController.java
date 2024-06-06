@@ -82,7 +82,7 @@ public class AuthController extends BaseController {
         UserInfoVo userInfoVo = new UserInfoVo();
         LoginUser loginUser = LoginHelper.getLoginUser();
 
-        SysUserVo user = userService.getSysUserVoById(loginUser.getId());
+        SysUserVo user = userService.getSysUserVoById(loginUser.getUserId());
         Assert.notNull(user, "用户不存在");
 
         userInfoVo.setUser(user);

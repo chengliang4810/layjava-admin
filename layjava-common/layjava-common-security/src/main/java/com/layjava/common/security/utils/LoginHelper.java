@@ -45,12 +45,12 @@ public class LoginHelper {
     public static void login(LoginUser loginUser, SaLoginModel model) {
         SaStorage storage = SaHolder.getStorage();
         storage.set(LOGIN_USER_KEY, loginUser);
-        storage.set(USER_KEY, loginUser.getId());
+        storage.set(USER_KEY, loginUser.getUserId());
         storage.set(DEPT_KEY, loginUser.getDeptId());
         model = ObjectUtil.defaultIfNull(model, new SaLoginModel());
         StpUtil.login(loginUser.getLoginId(),
-            model.setExtra(USER_KEY, loginUser.getId())
-                .setExtra(DEPT_KEY, loginUser.getDeptId()));
+                model.setExtra(USER_KEY, loginUser.getUserId())
+                        .setExtra(DEPT_KEY, loginUser.getDeptId()));
         SaSession tokenSession = StpUtil.getTokenSession();
         tokenSession.updateTimeout(model.getTimeout());
         tokenSession.set(LOGIN_USER_KEY, loginUser);
@@ -84,7 +84,7 @@ public class LoginHelper {
      * 获取用户id
      */
     public static Long getUserId() {
-        return  Convert.toLong(getExtra(USER_KEY));
+        return Convert.toLong(getExtra(USER_KEY));
     }
 
     /**
