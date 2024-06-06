@@ -18,7 +18,7 @@
             <artifactId>layjava-common-core</artifactId>
         </dependency>
 
-        <!-- satoken -->
+        <!-- sa-token -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>sa-token-solon-plugin</artifactId>

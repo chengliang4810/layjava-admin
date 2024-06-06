@@ -1,8 +1,10 @@
 # 配置默认数据源
 layjava.datasource:
     default:
-      ## p6spy: true
-      ## driverClassName: com.mysql.cj.jdbc.Driver
+      # p6spy: true
+      # driverClassName: com.mysql.cj.jdbc.Driver
+      # jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+      # 存在异常
       driverClassName: com.p6spy.engine.spy.P6SpyDriver
       jdbcUrl: jdbc:p6spy:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
       username: root
