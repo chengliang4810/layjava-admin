@@ -78,7 +78,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         LoginHelper.login(loginUser, model);
 
         LoginVo loginVo = new LoginVo();
-        loginVo.setToken(StpUtil.getTokenValue());
+        loginVo.setAccessToken(StpUtil.getTokenValue());
         loginVo.setExpireIn(StpUtil.getTokenTimeout());
         loginVo.setClientId(client.getClientId());
         return loginVo;

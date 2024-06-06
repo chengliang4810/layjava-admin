@@ -24,7 +24,7 @@ public class LoginVo implements Serializable {
      * 授权令牌
      */
     @JsonProperty("access_token")
-    private String token;
+    private String accessToken;
 
     /**
      * 授权令牌 access_token 的有效期
