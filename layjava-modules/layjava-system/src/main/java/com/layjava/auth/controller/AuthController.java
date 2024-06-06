@@ -13,7 +13,6 @@ import com.layjava.common.core.util.ValidatorUtil;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.auth.domain.vo.LoginVo;
-import com.layjava.auth.service.AuthService;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.domain.vo.UserInfoVo;
@@ -22,12 +21,7 @@ import com.layjava.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
-import org.noear.solon.validation.BeanValidateInfo;
-import org.noear.solon.validation.ValidatorManager;
-import org.noear.solon.validation.annotation.NotBlank;
-import org.noear.solon.validation.annotation.Validated;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -70,7 +64,7 @@ public class AuthController extends BaseController {
             log.info("客户端id: {} 认证类型：{} 异常!.", clientId, grantType);
             return Result.failure("认证权限类型错误");
         } else if (!UserConstants.NORMAL.equals(client.getStatus())) {
-            return  Result.failure("认证权限类型已禁用");
+            return Result.failure("认证权限类型已禁用");
         }
 
         //登录
