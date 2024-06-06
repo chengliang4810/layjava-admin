@@ -5,7 +5,6 @@ import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.layjava.auth.domain.bo.PasswordLoginBody;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
@@ -60,7 +59,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         SysUserVo user = loadUserByAccount(account);
 
         // 校验密码
-        if (!BCrypt.checkpw(password, user.getPassword())){
+        if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new ServiceException("账号/密码错误");
         }
         // 此处可根据登录用户的数据不同 自行创建 loginUser
@@ -72,9 +71,9 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         model.setDevice(client.getDeviceType());
         // 自定义分配 不同用户体系 不同 token 授权时间 不设置默认走全局 yml 配置
         // 例如: 后台用户30分钟过期 app用户1天过期
-         model.setTimeout(client.getTimeout());
-         model.setActiveTimeout(client.getActiveTimeout());
-         model.setExtra(LoginHelper.CLIENT_KEY, client.getClientId());
+        model.setTimeout(client.getTimeout());
+        model.setActiveTimeout(client.getActiveTimeout());
+        model.setExtra(LoginHelper.CLIENT_KEY, client.getClientId());
         // 生成token
         LoginHelper.login(loginUser, model);
 
@@ -106,6 +105,12 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 //        }
 //    }
 
+    /**
+     * 根据账号查询用户信息
+     *
+     * @param account 账号
+     * @return 用户信息
+     */
     private SysUserVo loadUserByAccount(String account) {
         SysUser user = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
                 .select(SysUser::getAccount, SysUser::getStatus)
@@ -117,6 +122,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
             log.info("登录用户：{} 已被停用.", account);
             throw new ServiceException("登录用户：{} 已被停用.", account);
         }
+        // 关联查询用户详细信息
         return userMapper.selectUserByAccount(account);
     }
 

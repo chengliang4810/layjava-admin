@@ -7,6 +7,12 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * 登录返回对象
+ *
+ * @author chengliang
+ * @date 2024/05/28
+ */
 @Data
 @Accessors(chain = true)
 public class LoginVo implements Serializable {
