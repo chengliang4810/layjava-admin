@@ -82,16 +82,16 @@
     </select>
 
     <select id="selectAllocatedList" resultMap="SysUserResult">
-        select distinct u.id, u.dept_id, u.account, u.name, u.email, u.phone, u.status, u.create_time
+        select distinct u.user_id, u.dept_id, u.account, u.name, u.email, u.phone, u.status, u.create_time
         from sys_user u
                  left join sys_dept d on u.dept_id = d.dept_id
-                 left join sys_user_role sur on u.id = sur.user_id
+                 left join sys_user_role sur on u.user_id = sur.user_id
                  left join sys_role r on r.role_id = sur.role_id
             ${ew.getCustomSqlSegment}
     </select>
 
     <select id="selectUnallocatedList" resultMap="SysUserResult">
-        select distinct u.id, u.dept_id, u.account, u.name, u.email, u.phone, u.status, u.create_time
+        select distinct u.user_id, u.dept_id, u.account, u.name, u.email, u.phone, u.status, u.create_time
         from sys_user u
                  left join sys_dept d on u.dept_id = d.dept_id
                  left join sys_user_role sur on u.user_id = sur.user_id

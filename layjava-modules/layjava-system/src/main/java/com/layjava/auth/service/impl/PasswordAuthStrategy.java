@@ -57,7 +57,6 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 //        }
 
         SysUserVo user = loadUserByAccount(account);
-
         // 校验密码
         if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new ServiceException("账号/密码错误");

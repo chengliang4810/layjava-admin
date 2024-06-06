@@ -12,7 +12,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
-import org.noear.solon.annotation.Import;
 import org.noear.solon.annotation.Inject;
 
 import javax.sql.DataSource;
@@ -24,7 +23,6 @@ import javax.sql.DataSource;
  * @since 2024/02/27
  */
 @Configuration
-@Import(profilesIfAbsent = "classpath:common-mybatis-plus.yml")
 public class MybatisPlusConfig {
 
     @Bean(value = "default", typed = true)

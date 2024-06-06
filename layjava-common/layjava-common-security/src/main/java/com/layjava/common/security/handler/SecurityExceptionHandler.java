@@ -18,12 +18,12 @@ public class SecurityExceptionHandler implements SaFilterErrorStrategy {
 
     @Override
     public SecurityExceptionHandler run(Throwable throwable) {
-        if (throwable instanceof NotPermissionException){
+        if (throwable instanceof NotPermissionException) {
             throw new AuthException(403, "没有访问权限，请联系管理员授权");
         } else if (throwable instanceof NotRoleException) {
             throw new AuthException(403, "没有访问权限，请联系管理员授权");
         } else if (throwable instanceof NotLoginException) {
-            throw new AuthException(403, "认证失败，无法访问系统资源");
+            throw new AuthException(401, "认证失败，无法访问系统资源");
         } else {
             throw new AuthException(500, throwable.getMessage());
         }

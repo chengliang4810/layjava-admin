@@ -26,6 +26,10 @@ solon:
 solon.env.on: prod
 solon.config.add: "./app.yml"
 
+---
+solon.config.load:
+  - "config/*.yml"
+
 --- # mybatis plus
 mybatis.default:
   # 实体扫描，多个package用逗号或者分号分隔

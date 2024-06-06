@@ -5,6 +5,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.layjava.auth.domain.bo.LoginBody;
+import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.model.LoginUser;
@@ -12,7 +13,6 @@ import com.layjava.common.core.util.JsonUtil;
 import com.layjava.common.core.util.ValidatorUtil;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
-import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.domain.vo.UserInfoVo;
@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.Result;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,6 +90,15 @@ public class AuthController extends BaseController {
         userInfoVo.setPermissions(loginUser.getMenuPermission());
         userInfoVo.setRoles(loginUser.getRolePermission());
         return userInfoVo;
+    }
+
+    /**
+     * 用户路由
+     */
+    @Get
+    @Mapping("/user/routes")
+    public List<Object> userRoutes() {
+        return List.of();
     }
 
     /**
