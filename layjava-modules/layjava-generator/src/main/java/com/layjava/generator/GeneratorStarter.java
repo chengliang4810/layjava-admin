@@ -1,6 +1,8 @@
 package com.layjava.generator;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.text.NamingCase;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
@@ -30,10 +32,13 @@ public class GeneratorStarter {
         File tempDir = FileUtil.file(projectPath + "/temp/");
         FileUtil.del(tempDir);
         // Java目录
-        File javaDir = FileUtil.file(tempDir, "/src/main/java/");
+        File javaDir = FileUtil.file(tempDir, "/main/java/");
         // mapper xml文件目录
-        File xmlDir = FileUtil.file(tempDir, "/src/main/resources/mapper/");
-
+        File xmlDir = FileUtil.file(tempDir, "/main/resources/mapper/");
+        // 前端目录
+        File webDir = FileUtil.file(tempDir, "/src/");
+        // 模块名
+        String modelName = "system";
         FastAutoGenerator.create("jdbc:mysql://localhost:3306/layjava_db?serverTimezone=Asia/Shanghai", "root", "P@ssw0rd")
                 .globalConfig(builder -> {
                     builder.author("chengliang4810") // 设置作者
@@ -45,12 +50,12 @@ public class GeneratorStarter {
                 // 包配置
                 .packageConfig(builder -> {
                     builder.parent("com.layjava") // 设置包名
-                            .moduleName("system") // 设置模块名
+                            .moduleName(modelName) // 设置模块名
                             .entity("domain") // 设置entity包名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, xmlDir.getAbsolutePath())); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("sys_client") // 设置需要生成的表名
+                    builder.addInclude("sys_test") // 设置需要生成的表名
                             .addTablePrefix("iot_") // 设置过滤表前缀
                             // Entity配置
                             .entityBuilder()
@@ -76,8 +81,37 @@ public class GeneratorStarter {
                 .templateEngine(new FreemarkerTemplateEngine())
                 .injectionConfig(consumer -> {
                     List<CustomFile> customFiles = new ArrayList<>();
+                    // 自定义模板文件 Bo Vo
                     customFiles.add(new CustomFile.Builder().fileName("Bo.java").templatePath("/templates/bo.java.ftl").packageName("domain.bo").enableFileOverride().build());
                     customFiles.add(new CustomFile.Builder().fileName("Vo.java").templatePath("/templates/vo.java.ftl").packageName("domain.vo").enableFileOverride().build());
+
+                    // Vue模板
+                    customFiles.add(new CustomFile.Builder().fileName(".vue").templatePath("/templates/web.vue.ftl")
+                            // 文件存放路径
+                            .filePath(webDir.getAbsolutePath() + "/views/" + modelName + "/")
+                            // 自定义文件名
+                            .formatNameFunction(tableInfo -> NamingCase.toKebabCase(tableInfo.getEntityName()))
+                            .enableFileOverride()
+                            .build());
+
+                    // 类型文件
+                    customFiles.add(new CustomFile.Builder().fileName(".d.ts").templatePath("/templates/web.types.ftl")
+                            // 文件存放路径
+                            .filePath(webDir.getAbsolutePath() + "/service/types/" + modelName + "/")
+                            // 自定义文件名
+                            .formatNameFunction(tableInfo -> NamingCase.toKebabCase(tableInfo.getEntityName()))
+                            .enableFileOverride()
+                            .build());
+
+                    // api文件
+                    customFiles.add(new CustomFile.Builder().fileName(".ts").templatePath("/templates/web.api.ftl")
+                            // 文件存放路径
+                            .filePath(webDir.getAbsolutePath() + "/service/api/" + modelName + "/")
+                            // 自定义文件名
+                            .formatNameFunction(tableInfo -> NamingCase.toKebabCase(tableInfo.getEntityName()))
+                            .enableFileOverride()
+                            .build());
+
                     consumer.customFile(customFiles);
                 })
                 .execute();
