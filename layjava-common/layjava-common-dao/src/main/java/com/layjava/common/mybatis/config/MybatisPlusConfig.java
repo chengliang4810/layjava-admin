@@ -1,6 +1,7 @@
 package com.layjava.common.mybatis.config;
 
 import cn.hutool.core.net.NetUtil;
+import cn.hutool.core.util.BooleanUtil;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.incrementer.DefaultIdentifierGenerator;
@@ -21,14 +22,17 @@ import javax.sql.DataSource;
  * 数据源配置
  *
  * @author chengliang
- * @since  2024/02/27
+ * @since 2024/02/27
  */
 @Configuration
 @Import(profilesIfAbsent = "classpath:common-mybatis-plus.yml")
 public class MybatisPlusConfig {
 
     @Bean(value = "default", typed = true)
-    public DataSource defaultDataSource(@Inject("${layjava.datasource.default}") HikariDataSource dataSource) {
+    public DataSource defaultDataSource(@Inject("${layjava.datasource.default}") HikariDataSource dataSource, @Inject(value = "${layjava.datasource.default.p6spy}", required = false) Boolean p6spy) {
+        if (BooleanUtil.isTrue(p6spy)) {
+            dataSource.setDriverClassName("com.p6spy.engine.spy.P6SpyDriver");
+        }
         return dataSource;
     }
 

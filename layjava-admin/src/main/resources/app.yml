@@ -8,6 +8,19 @@ solon.app.title: "LayJavaAdmin"
 #应用组
 solon.app.group: "layjava"
 
+# 接口文档配置
+solon:
+  docs:
+    group-configs:
+      - group: 1.演示模块
+        packageName: com.layjava.test
+      - group: 2.通用模块
+        packageName: com.layjava.web
+      - group: 3.系统模块
+        packageName: com.layjava.system
+      - group: 4.代码生成模块
+        packageName: com.layjava.generator
+
 # 添加外部扩展配置
 ---
 solon.env.on: prod
