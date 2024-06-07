@@ -14,17 +14,14 @@ import com.layjava.common.core.util.StringUtils;
 import com.layjava.common.core.util.TreeBuildUtils;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
-import com.layjava.system.domain.SysRole;
 import com.layjava.system.domain.SysRoleMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
-import com.layjava.system.domain.vo.MetaVo;
 import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
 import com.layjava.system.mapper.SysMenuMapper;
 import com.layjava.system.mapper.SysRoleMapper;
 import com.layjava.system.mapper.SysRoleMenuMapper;
 import com.layjava.system.service.SysMenuService;
-
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 
@@ -69,19 +66,19 @@ public class SysMenuServiceImpl implements SysMenuService {
         // 管理员显示所有菜单信息
         if (LoginHelper.isSuperAdmin(userId)) {
             menuList = baseMapper.selectVoList(new LambdaQueryWrapper<SysMenu>()
-                .like(StringUtils.isNotBlank(menu.getMenuName()), SysMenu::getMenuName, menu.getMenuName())
-                .eq(StringUtils.isNotBlank(menu.getVisible()), SysMenu::getVisible, menu.getVisible())
-                .eq(StringUtils.isNotBlank(menu.getStatus()), SysMenu::getStatus, menu.getStatus())
-                .orderByAsc(SysMenu::getParentId)
-                .orderByAsc(SysMenu::getOrderNum));
+                    .like(StringUtils.isNotBlank(menu.getMenuName()), SysMenu::getMenuName, menu.getMenuName())
+                    .eq(StringUtils.isNotBlank(menu.getVisible()), SysMenu::getVisible, menu.getVisible())
+                    .eq(StringUtils.isNotBlank(menu.getStatus()), SysMenu::getStatus, menu.getStatus())
+                    .orderByAsc(SysMenu::getParentId)
+                    .orderByAsc(SysMenu::getOrderNum));
         } else {
             QueryWrapper<SysMenu> wrapper = Wrappers.query();
             wrapper.eq("sur.user_id", userId)
-                .like(StringUtils.isNotBlank(menu.getMenuName()), "m.menu_name", menu.getMenuName())
-                .eq(StringUtils.isNotBlank(menu.getVisible()), "m.visible", menu.getVisible())
-                .eq(StringUtils.isNotBlank(menu.getStatus()), "m.status", menu.getStatus())
-                .orderByAsc("m.parent_id")
-                .orderByAsc("m.order_num");
+                    .like(StringUtils.isNotBlank(menu.getMenuName()), "m.menu_name", menu.getMenuName())
+                    .eq(StringUtils.isNotBlank(menu.getVisible()), "m.visible", menu.getVisible())
+                    .eq(StringUtils.isNotBlank(menu.getStatus()), "m.status", menu.getStatus())
+                    .orderByAsc("m.parent_id")
+                    .orderByAsc("m.order_num");
 //            List<SysMenu> list = baseMapper.selectMenuListByUserId(wrapper);
 //            menuList = MapstructUtils.convert(list, SysMenuVo.class);
         }
@@ -167,7 +164,7 @@ public class SysMenuServiceImpl implements SysMenuService {
             RouterVo router = new RouterVo();
             router.setName(menu.getRouteName());
             router.setPath(menu.getRouterPath());
-            router.setComponentPath(menu.getComponentInfo());
+            router.setComponentPath(menu.getComponent());
             router.setTitle(menu.getMenuName());
             router.setIcon(menu.getIcon());
 
@@ -178,7 +175,6 @@ public class SysMenuServiceImpl implements SysMenuService {
             router.setHide("1".equals(menu.getVisible()));
             router.setKeepAlive(StrUtil.equals("1", menu.getIsCache()));
             router.setOrder(menu.getOrderNum());
-            router.setComponentPath(menu.getRouterPath());
             router.setMenuType(UserConstants.TYPE_DIR.equals(menu.getMenuType()) ? "dir" : "page");
             // 是否校验权限
             router.setRequiresAuth(true);
@@ -201,10 +197,10 @@ public class SysMenuServiceImpl implements SysMenuService {
             return CollUtil.newArrayList();
         }
         return TreeBuildUtils.build(menus, (menu, tree) ->
-            tree.setId(menu.getMenuId())
-                .setParentId(menu.getParentId())
-                .setName(menu.getMenuName())
-                .setWeight(menu.getOrderNum()));
+                tree.setId(menu.getMenuId())
+                        .setParentId(menu.getParentId())
+                        .setName(menu.getMenuName())
+                        .setWeight(menu.getOrderNum()));
     }
 
     /**
@@ -284,9 +280,9 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public boolean checkMenuNameUnique(SysMenuBo menu) {
         boolean exist = baseMapper.exists(new LambdaQueryWrapper<SysMenu>()
-            .eq(SysMenu::getMenuName, menu.getMenuName())
-            .eq(SysMenu::getParentId, menu.getParentId())
-            .ne(ObjectUtil.isNotNull(menu.getMenuId()), SysMenu::getMenuId, menu.getMenuId()));
+                .eq(SysMenu::getMenuName, menu.getMenuName())
+                .eq(SysMenu::getParentId, menu.getParentId())
+                .ne(ObjectUtil.isNotNull(menu.getMenuId()), SysMenu::getMenuId, menu.getMenuId()));
         return !exist;
     }
 

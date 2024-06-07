@@ -1,10 +1,8 @@
 package com.layjava.system.domain;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.layjava.common.core.constant.Constants;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
@@ -21,8 +19,8 @@ import java.util.List;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("sys_menu")
+@EqualsAndHashCode(callSuper = true)
 public class SysMenu extends BaseEntity {
 
     /**
@@ -129,36 +127,7 @@ public class SysMenu extends BaseEntity {
      * 获取路由地址
      */
     public String getRouterPath() {
-        String routerPath = this.path;
-        // 内链打开外网方式
-        if (getParentId() != 0L && isInnerLink()) {
-            // routerPath = innerLinkReplaceEach(routerPath);
-        }
-        // 非外链并且是一级目录（类型为目录）
-        if (0L == getParentId() && UserConstants.TYPE_DIR.equals(getMenuType())
-            && UserConstants.NO_FRAME.equals(getIsFrame())) {
-            routerPath = "/" + this.path;
-        }
-        // 非外链并且是一级目录（类型为菜单）
-        else if (isMenuFrame()) {
-            routerPath = "/";
-        }
-        return routerPath;
-    }
-
-    /**
-     * 获取组件信息
-     */
-    public String getComponentInfo() {
-        String component = UserConstants.LAYOUT;
-        if (StrUtil.isNotEmpty(this.component) && !isMenuFrame()) {
-            component = this.component;
-        } else if (StringUtils.isEmpty(this.component) && getParentId() != 0L && isInnerLink()) {
-            component = UserConstants.INNER_LINK;
-        } else if (StringUtils.isEmpty(this.component) && isParentView()) {
-            component = UserConstants.PARENT_VIEW;
-        }
-        return component;
+        return this.path;
     }
 
     /**
@@ -172,7 +141,7 @@ public class SysMenu extends BaseEntity {
      * 是否为内链组件
      */
     public boolean isInnerLink() {
-        return isFrame.equals(UserConstants.NO_FRAME) ;//&& StringUtils.ishttp(path);
+        return isFrame.equals(UserConstants.NO_FRAME);//&& StringUtils.ishttp(path);
     }
 
     /**
@@ -187,6 +156,6 @@ public class SysMenu extends BaseEntity {
      */
     public static String innerLinkReplaceEach(String path) {
         return path;// StringUtils.replaceEach(path, new String[]{Constants.HTTP, Constants.HTTPS, Constants.WWW, ".", ":"},
-            //new String[]{"", "", "", "/", "/"});
+        //new String[]{"", "", "", "/", "/"});
     }
 }

@@ -105,7 +105,6 @@ public class AuthController extends BaseController {
     public List<RouterVo> userRoutes() {
         LoginUser loginUser = LoginHelper.getLoginUser();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
-        System.out.println(menus);
         return menuService.buildMenus(menus);
     }
 
