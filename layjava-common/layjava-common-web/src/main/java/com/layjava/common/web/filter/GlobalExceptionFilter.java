@@ -17,7 +17,7 @@ import org.noear.solon.validation.ValidatorException;
  * @since 2024/02/26
  */
 @Slf4j
-@Component
+@Component(index = 1)
 public class GlobalExceptionFilter implements Filter {
 
     @Override

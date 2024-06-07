@@ -84,7 +84,7 @@ public class LoginHelper {
      * 获取用户id
      */
     public static Long getUserId() {
-        return Convert.toLong(getExtra(USER_KEY));
+        return getLoginUser().getUserId();
     }
 
     /**

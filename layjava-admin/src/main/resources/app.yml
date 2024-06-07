@@ -1,4 +1,7 @@
 # common配置，非必要情况下不用修改
+# server配置
+server.port: 8989
+
 # 应用环境配置
 solon.env: @profiles.active@
 #应用名称
@@ -59,6 +62,7 @@ security:
     - /auth/login
     - /swagger/v2
     - /test/user/**
+    - /system/user/list
 
 --- ## Web序列化配置
 solon.serialization.json:

@@ -14,9 +14,12 @@ import com.layjava.common.core.util.ValidatorUtil;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.SysClient;
+import com.layjava.system.domain.SysMenu;
+import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.domain.vo.UserInfoVo;
 import com.layjava.system.service.SysClientService;
+import com.layjava.system.service.SysMenuService;
 import com.layjava.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.*;
@@ -40,6 +43,8 @@ public class AuthController extends BaseController {
     private SysUserService userService;
     @Inject
     private SysClientService clientService;
+    @Inject
+    private SysMenuService menuService;
 
 
     /**
@@ -97,8 +102,11 @@ public class AuthController extends BaseController {
      */
     @Get
     @Mapping("/user/routes")
-    public List<Object> userRoutes() {
-        return List.of();
+    public List<RouterVo> userRoutes() {
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
+        System.out.println(menus);
+        return menuService.buildMenus(menus);
     }
 
     /**

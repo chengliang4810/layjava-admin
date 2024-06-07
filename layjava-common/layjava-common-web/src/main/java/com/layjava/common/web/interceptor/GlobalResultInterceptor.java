@@ -15,7 +15,7 @@ import org.noear.solon.core.route.RouterInterceptorChain;
  * @author chengliang
  * @since 2024/02/26
  */
-@Component
+@Component(index = 0)
 public class GlobalResultInterceptor implements RouterInterceptor {
 
     @Override
@@ -33,6 +33,7 @@ public class GlobalResultInterceptor implements RouterInterceptor {
             return result;
         }
         if (result instanceof Throwable error) {
+            error.printStackTrace();
             // 如果是异常，包装成Result返回
             return Result.failure(error.getMessage());
         } else if (result instanceof Result) {

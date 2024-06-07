@@ -88,7 +88,7 @@ public class SysUserServiceImpl  implements SysUserService {
         Map<String, Object> params = sysUserBo.getParams();
         LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
         // 条件构造
-        queryWrapper.eq(sysUserBo.getUserId() != null, SysUser::getId, sysUserBo.getUserId());
+        queryWrapper.eq(sysUserBo.getUserId() != null, SysUser::getUserId, sysUserBo.getUserId());
         queryWrapper.eq(sysUserBo.getDeptId() != null, SysUser::getDeptId, sysUserBo.getDeptId());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getUserType()), SysUser::getUserType, sysUserBo.getUserType());
         queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getEmail()), SysUser::getEmail, sysUserBo.getEmail());

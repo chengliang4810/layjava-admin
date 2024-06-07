@@ -1,7 +1,6 @@
 package com.layjava.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -66,7 +65,7 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public List<SysMenuVo> selectMenuList(SysMenuBo menu, Long userId) {
-        List<SysMenuVo> menuList;
+        List<SysMenuVo> menuList = new ArrayList<>();
         // 管理员显示所有菜单信息
         if (LoginHelper.isSuperAdmin(userId)) {
             menuList = baseMapper.selectVoList(new LambdaQueryWrapper<SysMenu>()
@@ -83,8 +82,8 @@ public class SysMenuServiceImpl implements SysMenuService {
                 .eq(StringUtils.isNotBlank(menu.getStatus()), "m.status", menu.getStatus())
                 .orderByAsc("m.parent_id")
                 .orderByAsc("m.order_num");
-            List<SysMenu> list = baseMapper.selectMenuListByUserId(wrapper);
-            menuList = MapstructUtils.convert(list, SysMenuVo.class);
+//            List<SysMenu> list = baseMapper.selectMenuListByUserId(wrapper);
+//            menuList = MapstructUtils.convert(list, SysMenuVo.class);
         }
         return menuList;
     }
@@ -97,13 +96,13 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public Set<String> selectMenuPermsByUserId(Long userId) {
-        List<String> perms = baseMapper.selectMenuPermsByUserId(userId);
+//        List<String> perms = baseMapper.selectMenuPermsByUserId(userId);
         Set<String> permsSet = new HashSet<>();
-        for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(StringUtils.splitList(perm.trim()));
-            }
-        }
+//        for (String perm : perms) {
+//            if (StringUtils.isNotEmpty(perm)) {
+//                permsSet.addAll(StringUtils.splitList(perm.trim()));
+//            }
+//        }
         return permsSet;
     }
 
@@ -115,13 +114,13 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public Set<String> selectMenuPermsByRoleId(Long roleId) {
-        List<String> perms = baseMapper.selectMenuPermsByRoleId(roleId);
+        // List<String> perms = baseMapper.selectMenuPermsByRoleId(roleId);
         Set<String> permsSet = new HashSet<>();
-        for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(StringUtils.splitList(perm.trim()));
-            }
-        }
+//        for (String perm : perms) {
+//            if (StringUtils.isNotEmpty(perm)) {
+//                permsSet.addAll(StringUtils.splitList(perm.trim()));
+//            }
+//        }
         return permsSet;
     }
 
@@ -133,13 +132,13 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public List<SysMenu> selectMenuTreeByUserId(Long userId) {
-        List<SysMenu> menus;
+        List<SysMenu> menus = new ArrayList<>();
         if (LoginHelper.isSuperAdmin(userId)) {
             menus = baseMapper.selectMenuTreeAll();
         } else {
-            menus = baseMapper.selectMenuTreeByUserId(userId);
+            // menus = baseMapper.selectMenuTreeByUserId(userId);
         }
-        return getChildPerms(menus, 0);
+        return menus;
     }
 
     /**
@@ -150,8 +149,9 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public List<Long> selectMenuListByRoleId(Long roleId) {
-        SysRole role = roleMapper.selectById(roleId);
-        return baseMapper.selectMenuListByRoleId(roleId, role.getMenuCheckStrictly());
+        return List.of();
+//        SysRole role = roleMapper.selectById(roleId);
+//        return baseMapper.selectMenuListByRoleId(roleId, role.getMenuCheckStrictly());
     }
 
     /**
@@ -165,41 +165,25 @@ public class SysMenuServiceImpl implements SysMenuService {
         List<RouterVo> routers = new LinkedList<>();
         for (SysMenu menu : menus) {
             RouterVo router = new RouterVo();
-            router.setHidden("1".equals(menu.getVisible()));
             router.setName(menu.getRouteName());
             router.setPath(menu.getRouterPath());
-            router.setComponent(menu.getComponentInfo());
-            router.setQuery(menu.getQueryParam());
-            router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StrUtil.equals("1", menu.getIsCache()), menu.getPath()));
-            List<SysMenu> cMenus = menu.getChildren();
-            if (CollUtil.isNotEmpty(cMenus) && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
-                router.setAlwaysShow(true);
-                router.setRedirect("noRedirect");
-                router.setChildren(buildMenus(cMenus));
-            } else if (menu.isMenuFrame()) {
-                router.setMeta(null);
-                List<RouterVo> childrenList = new ArrayList<>();
-                RouterVo children = new RouterVo();
-                children.setPath(menu.getPath());
-                children.setComponent(menu.getComponent());
-                children.setName(StrUtil.upperFirst(menu.getPath()));
-                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StrUtil.equals("1", menu.getIsCache()), menu.getPath()));
-                children.setQuery(menu.getQueryParam());
-                childrenList.add(children);
-                router.setChildren(childrenList);
-            } else if (menu.getParentId().intValue() == 0 && menu.isInnerLink()) {
-                router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon()));
-                router.setPath("/");
-                List<RouterVo> childrenList = new ArrayList<>();
-                RouterVo children = new RouterVo();
-                String routerPath = SysMenu.innerLinkReplaceEach(menu.getPath());
-                children.setPath(routerPath);
-                children.setComponent(UserConstants.INNER_LINK);
-                children.setName(StrUtil.upperFirst(routerPath));
-                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getPath()));
-                childrenList.add(children);
-                router.setChildren(childrenList);
-            }
+            router.setComponentPath(menu.getComponentInfo());
+            router.setTitle(menu.getMenuName());
+            router.setIcon(menu.getIcon());
+
+            // 表达父子关系
+            router.setId(menu.getMenuId());
+            router.setPid(menu.getParentId());
+            // 是否隐藏
+            router.setHide("1".equals(menu.getVisible()));
+            router.setKeepAlive(StrUtil.equals("1", menu.getIsCache()));
+            router.setOrder(menu.getOrderNum());
+            router.setComponentPath(menu.getRouterPath());
+            router.setMenuType(UserConstants.TYPE_DIR.equals(menu.getMenuType()) ? "dir" : "page");
+            // 是否校验权限
+            router.setRequiresAuth(true);
+            // 外链url
+            router.setHref("");
             routers.add(router);
         }
         return routers;

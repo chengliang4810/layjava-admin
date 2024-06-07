@@ -23,7 +23,7 @@ public class SysUser extends BaseEntity {
     /**
      * 用户ID
      */
-    private Long id;
+    private Long userId;
 
     /**
      * 部门ID
