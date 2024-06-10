@@ -2,7 +2,6 @@ package com.layjava.generator;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.text.NamingCase;
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.builder.CustomFile;
@@ -10,7 +9,9 @@ import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 代码生成器启动类
@@ -55,7 +56,7 @@ public class GeneratorStarter {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, xmlDir.getAbsolutePath())); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("sys_test") // 设置需要生成的表名
+                    builder.addInclude("sys_user") // 设置需要生成的表名
                             .addTablePrefix("iot_") // 设置过滤表前缀
                             // Entity配置
                             .entityBuilder()
@@ -97,8 +98,8 @@ public class GeneratorStarter {
                     // 类型文件
                     customFiles.add(new CustomFile.Builder().fileName(".d.ts").templatePath("/templates/web.types.ftl")
                             // 文件存放路径
-                            .filePath(webDir.getAbsolutePath() + "/service/types/" + modelName + "/")
-                            // 自定义文件名
+                            .filePath(webDir.getAbsolutePath() + "/typings/entities/")
+                            // 自定义文件名: 例 sys-user
                             .formatNameFunction(tableInfo -> NamingCase.toKebabCase(tableInfo.getEntityName()))
                             .enableFileOverride()
                             .build());
