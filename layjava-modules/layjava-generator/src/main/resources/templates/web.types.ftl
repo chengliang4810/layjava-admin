@@ -1,7 +1,7 @@
 /**
 * ${table.comment!} 模块
 */
-namespace ${package.ModuleName?cap_first } {
+namespace ${package.ModuleName?cap_first} {
   /** ${table.comment!}Vo */
   interface ${entity}Vo {
 <#list table.fields as field>
