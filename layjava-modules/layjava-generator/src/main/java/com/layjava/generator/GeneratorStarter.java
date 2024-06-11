@@ -69,7 +69,9 @@ public class GeneratorStarter {
                             .addIgnoreColumns(ENTITY_SUPER_CLASS_COMMONS) // 设置公共字段
                             .disableSerialVersionUID() // 取消生成serialVersionUID
                             // Controller
-                            .controllerBuilder().enableFileOverride()
+                            .controllerBuilder()
+                            .enableHyphenStyle() // 驼峰转连字符
+                            .enableFileOverride()
                             .superClass("com.layjava.common.web.core.BaseController")
                             // mapper
                             .mapperBuilder().superClass("com.layjava.common.mybatis.core.mapper.BaseMapperPlus").enableFileOverride() //
