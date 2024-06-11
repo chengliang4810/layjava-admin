@@ -59,7 +59,7 @@ public class SysUserController extends BaseController {
      * @return 用户信息表分页列表数据
      */
     @Get
-    @Mapping("/list/{pageNum}/{pageSize}")
+    @Mapping("/page/list")
     public PageResult<SysUserVo> pageList(PageQuery pageQuery) {
         SearchResult<SysUser> search = beanSearcher.search(SysUser.class);
         return PageResult.build(search, SysUserVo.class);
