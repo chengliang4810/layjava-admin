@@ -109,7 +109,7 @@ public class GeneratorStarter {
                     // api文件
                     customFiles.add(new CustomFile.Builder().fileName(".ts").templatePath("/templates/web.api.ftl")
                             // 文件存放路径
-                            .filePath(webDir.getAbsolutePath() + "/service/api/" + modelName + "/")
+                            .filePath(webDir.getAbsolutePath() + "/api/" + modelName + "/")
                             // 自定义文件名
                             .formatNameFunction(tableInfo -> NamingCase.toKebabCase(tableInfo.getEntityName()))
                             .enableFileOverride()
