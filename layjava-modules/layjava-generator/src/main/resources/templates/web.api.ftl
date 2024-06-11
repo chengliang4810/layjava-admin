@@ -4,7 +4,7 @@ import { request } from '@/service/http'
  * 查询${table.comment!}列表
  * @returns ${table.comment!}列表
  */
-export const get${entity}List = (params: ${package.ModuleName?cap_first}.${entity}Query) => {
+export const get${entity}List = (params?: ${package.ModuleName?cap_first}.${entity}Query) => {
   return request.Get<Service.PageDataResult<${package.ModuleName?cap_first}.${entity}Vo>>('/${package.ModuleName}/${controllerMappingHyphen}/page/list', { params })
 }
 
