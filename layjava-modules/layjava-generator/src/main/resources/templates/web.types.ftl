@@ -23,7 +23,7 @@ namespace ${package.ModuleName?cap_first} {
 </#list>
   }
   /** ${table.comment!}Query */
-  interface ${entity}Query  extends PageQuery{
+  interface ${entity}Query extends PageQuery{
     <#list table.fields as field>
         <#if field.comment!?length gt 0>
     /** ${field.comment} */
@@ -47,7 +47,7 @@ namespace ${package.ModuleName?cap_first} {
     params?: any;
   }
   /** ${table.comment!}Form */
-  interface ${entity}Form  extends BaseEntity{
+  interface ${entity}Form extends BaseEntity{
     <#list table.fields as field>
         <#if field.comment!?length gt 0>
     /** ${field.comment} */
