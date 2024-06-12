@@ -46,7 +46,7 @@ mybatis.default:
 
 --- # bean searcher配置统一分页条件
 bean-searcher:
-  enable: false
+  enable: true
   params:
     pagination:
       page: pageNum

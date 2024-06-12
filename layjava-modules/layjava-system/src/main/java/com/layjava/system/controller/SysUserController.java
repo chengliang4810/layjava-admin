@@ -36,8 +36,6 @@ public class SysUserController extends BaseController {
 
     @Inject
     private SysUserService sysUserService;
-    @Inject
-    private BeanSearcher beanSearcher;
 
     /**
      * 查询用户信息表列表
@@ -48,8 +46,7 @@ public class SysUserController extends BaseController {
     @Get
     @Mapping("/list")
     public List<SysUserVo> list(SysUserBo sysUserBo) {
-        List<SysUser> searchAll = beanSearcher.searchAll(SysUser.class);
-        return MapstructUtils.convert(searchAll, SysUserVo.class);
+        return sysUserService.getSysUserVoList(sysUserBo);
     }
 
     /**
@@ -60,9 +57,8 @@ public class SysUserController extends BaseController {
      */
     @Get
     @Mapping("/page/list")
-    public PageResult<SysUserVo> pageList(PageQuery pageQuery) {
-        SearchResult<SysUser> search = beanSearcher.search(SysUser.class);
-        return PageResult.build(search, SysUserVo.class);
+    public PageResult<SysUserVo> pageList(SysUserBo sysUserBo, PageQuery pageQuery) {
+        return sysUserService.getSysUserVoList(sysUserBo, pageQuery);
     }
 
     /**
