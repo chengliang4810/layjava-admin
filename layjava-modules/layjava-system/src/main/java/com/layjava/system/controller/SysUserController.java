@@ -1,25 +1,18 @@
 package com.layjava.system.controller;
 
 import cn.hutool.core.convert.Convert;
-import cn.zhxu.bs.BeanSearcher;
-import cn.zhxu.bs.SearchResult;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
-import com.layjava.system.domain.SysUser;
+import cn.hutool.core.lang.Assert;
+import com.layjava.common.core.util.StringUtils;
+import com.layjava.common.dao.core.page.PageQuery;
+import com.layjava.common.dao.core.page.PageResult;
+import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.service.SysUserService;
-import org.noear.solon.annotation.Inject;
-import org.noear.solon.annotation.Mapping;
-import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.*;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
 import org.noear.solon.validation.annotation.Validated;
-import com.layjava.common.core.util.MapstructUtils;
-import com.layjava.common.core.util.StringUtils;
-import com.layjava.common.web.core.BaseController;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
-package com.layjava.common.mybatis.core.page;
+package com.layjava.common.dao.core.page;
 
-import cn.zhxu.bs.SearchResult;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.layjava.common.core.util.MapstructUtils;
+import cn.hutool.core.collection.CollUtil;
+import com.easy.query.core.api.pagination.EasyPageResult;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 分页数据对象
+ * 统一分页结果对象
  *
  * @author chengliang
  * @since  2024/04/17
@@ -44,9 +43,9 @@ public class PageResult<T> implements Serializable {
         this.total = total;
     }
 
-    public static <T> PageResult<T> build(IPage<T> page) {
+    public static <T> PageResult<T> build(EasyPageResult<T> page) {
         PageResult<T> rspData = new PageResult<>();
-        rspData.setRows(page.getRecords());
+        rspData.setRows(page.getData());
         rspData.setTotal(page.getTotal());
         return rspData;
     }
@@ -62,22 +61,12 @@ public class PageResult<T> implements Serializable {
         return new PageResult<>();
     }
 
-    public static <T> PageResult<T> build(SearchResult<T> search) {
-        PageResult<T> rspData = new PageResult<>();
-        rspData.setRows(search.getDataList());
-        rspData.setTotal(search.getTotalCount().intValue());
-        return rspData;
+    public static <T> PageResult<T> build(List<T> data, long total) {
+        return new PageResult<>(data, total);
     }
 
-    public static <V> PageResult<V> build(SearchResult<?> search, Class<V> toClass) {
-        List<V> convertDataList = MapstructUtils.convert(search.getDataList(), toClass);
-        if (convertDataList == null) {
-            return new PageResult<>();
-        }
-        PageResult<V> rspData = new PageResult<>();
-        rspData.setRows(convertDataList);
-        rspData.setTotal(search.getTotalCount().intValue());
-        return rspData;
+    public static <T> PageResult<T> build(long total) {
+        return new PageResult<>(CollUtil.newArrayList(), total);
     }
 
 }

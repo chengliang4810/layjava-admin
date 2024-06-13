@@ -2,8 +2,8 @@ package com.layjava.system.service;
 
 import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.domain.vo.SysUserVo;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
+import com.layjava.common.dao.core.page.PageQuery;
+import com.layjava.common.dao.core.page.PageResult;
 
 import java.util.List;
 

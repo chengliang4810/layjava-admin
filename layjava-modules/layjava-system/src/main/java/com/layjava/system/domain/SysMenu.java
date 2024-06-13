@@ -1,10 +1,10 @@
 package com.layjava.system.domain;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.easy.query.core.annotation.*;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.core.constant.UserConstants;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.system.domain.proxy.SysMenuProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.smartboot.http.common.utils.StringUtils;
@@ -15,18 +15,21 @@ import java.util.List;
 /**
  * 菜单权限表 sys_menu
  *
- * @author Lion Li
+ * @author chengliang
+ * @date 2024/06/13
  */
 
 @Data
-@TableName("sys_menu")
+@EntityProxy
+@Table("sys_menu")
+@EasyAlias("sysMenu")
 @EqualsAndHashCode(callSuper = true)
-public class SysMenu extends BaseEntity {
+public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu , SysMenuProxy> {
 
     /**
      * 菜单ID
      */
-    @TableId(value = "menu_id")
+    @Column(primaryKey = true)
     private Long menuId;
 
     /**
@@ -102,13 +105,13 @@ public class SysMenu extends BaseEntity {
     /**
      * 父菜单名称
      */
-    @TableField(exist = false)
+    @ColumnIgnore
     private String parentName;
 
     /**
      * 子菜单
      */
-    @TableField(exist = false)
+    @ColumnIgnore
     private List<SysMenu> children = new ArrayList<>();
 
     /**

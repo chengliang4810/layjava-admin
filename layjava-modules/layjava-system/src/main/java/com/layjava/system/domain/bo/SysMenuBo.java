@@ -1,7 +1,7 @@
 package com.layjava.system.domain.bo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.dao.core.entity.BaseEntity;
 import com.layjava.system.domain.SysMenu;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;

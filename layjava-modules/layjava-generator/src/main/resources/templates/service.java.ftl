@@ -2,8 +2,8 @@ package ${package.Service};
 
 import ${package.Entity}.bo.${entity}Bo;
 import ${package.Entity}.vo.${entity}Vo;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
+import com.layjava.common.dao.core.page.PageQuery;
+import com.layjava.common.dao.core.page.PageResult;
 
 import java.util.List;
 

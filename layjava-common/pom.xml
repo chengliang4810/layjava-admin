@@ -23,7 +23,7 @@
         <module>layjava-common-dao</module>
         <module>layjava-common-redis</module>
         <module>layjava-common-security</module>
-        <module>layjava-common-log</module>
+        <module>layjava-common-satoken</module>
     </modules>
 
 </project>

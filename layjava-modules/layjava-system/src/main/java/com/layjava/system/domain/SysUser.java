@@ -1,11 +1,16 @@
 package com.layjava.system.domain;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
-import java.time.LocalDateTime;
+import com.easy.query.core.annotation.EasyAlias;
+import com.easy.query.core.annotation.EntityProxy;
+import com.easy.query.core.annotation.Table;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.system.domain.proxy.SysUserProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+
+import java.time.LocalDateTime;
 
 /**
  *
@@ -15,10 +20,12 @@ import lombok.experimental.Accessors;
  * @since 2024-04-24
  */
 @Data
+@EntityProxy
+@Table("sys_user")
+@EasyAlias("sysUser")
 @Accessors(chain = true)
-@TableName("sys_user")
 @EqualsAndHashCode(callSuper = true)
-public class SysUser extends BaseEntity {
+public class SysUser extends BaseEntity implements ProxyEntityAvailable<SysUser , SysUserProxy> {
 
     /**
      * 用户ID

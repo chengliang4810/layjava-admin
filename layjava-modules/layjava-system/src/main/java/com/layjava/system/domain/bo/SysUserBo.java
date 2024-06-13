@@ -2,9 +2,7 @@ package com.layjava.system.domain.bo;
 
 import com.layjava.system.domain.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.dao.core.entity.BaseEntity;
 import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

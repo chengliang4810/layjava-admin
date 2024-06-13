@@ -1,14 +1,11 @@
 package com.layjava.system.controller;
 
 import cn.hutool.core.convert.Convert;
-import cn.zhxu.bs.BeanSearcher;
-import cn.zhxu.bs.SearchResult;
 import cn.hutool.core.lang.Assert;
 import com.layjava.common.core.validate.group.AddGroup;
 import com.layjava.common.core.validate.group.UpdateGroup;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
-import com.layjava.system.domain.SysClient;
+import com.layjava.common.dao.core.page.PageQuery;
+import com.layjava.common.dao.core.page.PageResult;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
 import com.layjava.system.service.SysClientService;
@@ -19,7 +16,6 @@ import org.noear.solon.annotation.*;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
 import org.noear.solon.validation.annotation.Validated;
-import com.layjava.common.core.util.MapstructUtils;
 import com.layjava.common.core.util.StringUtils;
 import com.layjava.common.web.core.BaseController;
 

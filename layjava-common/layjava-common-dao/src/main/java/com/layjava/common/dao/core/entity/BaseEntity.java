@@ -1,9 +1,9 @@
-package com.layjava.common.mybatis.core.entity;
+package com.layjava.common.dao.core.entity;
 
-import cn.zhxu.bs.bean.DbIgnore;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
+import com.easy.query.core.annotation.ColumnIgnore;
+import com.easy.query.core.annotation.UpdateIgnore;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,10 +14,13 @@ import java.util.Map;
 /**
  * Entity基类
  *
- * @author Lion Li
+ * @author chengliang
+ * @date 2024/06/13
  */
 
+
 @Data
+@FieldNameConstants(onlyExplicitlyIncluded = true)
 public class BaseEntity implements Serializable {
 
     @Serial
@@ -26,45 +29,43 @@ public class BaseEntity implements Serializable {
     /**
      * 搜索值
      */
-    @DbIgnore
-    @TableField(exist = false)
+    @ColumnIgnore
     private transient String searchValue;
 
     /**
      * 创建部门
      */
-    @TableField(fill = FieldFill.INSERT)
+    @UpdateIgnore
     private Long createDept;
 
     /**
      * 创建者
      */
-    @TableField(fill = FieldFill.INSERT)
+    @UpdateIgnore
     private Long createBy;
 
     /**
      * 创建时间
      */
-    @TableField(fill = FieldFill.INSERT)
+    @UpdateIgnore
     private LocalDateTime createTime;
 
     /**
      * 更新者
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @FieldNameConstants.Include
     private Long updateBy;
 
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @FieldNameConstants.Include
     private LocalDateTime updateTime;
 
     /**
      * 请求参数
      */
-    @DbIgnore
-    @TableField(exist = false)
+    @ColumnIgnore
     private Map<String, Object> params = new HashMap<>();
 
 }

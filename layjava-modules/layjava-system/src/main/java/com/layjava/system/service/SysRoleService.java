@@ -1,7 +1,7 @@
 package com.layjava.system.service;
 
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
+import com.layjava.common.dao.core.page.PageQuery;
+import com.layjava.common.dao.core.page.PageResult;
 import com.layjava.system.domain.SysUserRole;
 import com.layjava.system.domain.bo.SysRoleBo;
 import com.layjava.system.domain.vo.SysRoleVo;

@@ -1,29 +1,35 @@
 package com.layjava.system.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.easy.query.core.annotation.Column;
+import com.easy.query.core.annotation.EasyAlias;
+import com.easy.query.core.annotation.EntityProxy;
+import com.easy.query.core.annotation.Table;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.layjava.system.domain.proxy.SysUserRoleProxy;
 import lombok.Data;
 
 /**
  * 用户和角色关联 sys_user_role
  *
- * @author Lion Li
+ * @author chengliang
+ * @date 2024/06/13
  */
-
 @Data
-@TableName("sys_user_role")
-public class SysUserRole {
+@EntityProxy
+@Table("sys_user_role")
+@EasyAlias("sysUserRole")
+public class SysUserRole implements ProxyEntityAvailable<SysUserRole , SysUserRoleProxy> {
 
     /**
      * 用户ID
      */
-    @TableId(type = IdType.INPUT)
+    @Column(primaryKey = true)
     private Long userId;
 
     /**
      * 角色ID
      */
+    @Column(primaryKey = true)
     private Long roleId;
 
 }

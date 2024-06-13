@@ -4,7 +4,7 @@ import com.layjava.common.core.validate.group.AddGroup;
 import com.layjava.common.core.validate.group.UpdateGroup;
 import com.layjava.system.domain.SysClient;
 import io.github.linpeilie.annotations.AutoMapper;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.dao.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;

@@ -9,7 +9,7 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>layjava-common-log</artifactId>
+    <artifactId>layjava-common-satoken</artifactId>
 
 
 

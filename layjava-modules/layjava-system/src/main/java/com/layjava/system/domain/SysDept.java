@@ -1,9 +1,10 @@
 package com.layjava.system.domain;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.easy.query.core.annotation.*;
+import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.system.domain.proxy.SysDeptProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,13 +13,16 @@ import java.io.Serial;
 /**
  * 部门表 sys_dept
  *
- * @author Lion Li
+ * @author chengliang
+ * @since 2024/06/13
  */
 
 @Data
+@EntityProxy
+@Table("sys_dept")
+@EasyAlias("sysDept")
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_dept")
-public class SysDept extends BaseEntity {
+public class SysDept extends BaseEntity implements ProxyEntityAvailable<SysDept , SysDeptProxy> {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -26,7 +30,7 @@ public class SysDept extends BaseEntity {
     /**
      * 部门ID
      */
-    @TableId(value = "dept_id")
+    @Column(primaryKey = true)
     private Long deptId;
 
     /**
@@ -67,7 +71,7 @@ public class SysDept extends BaseEntity {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @TableLogic
+    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
     private String delFlag;
 
     /**

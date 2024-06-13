@@ -1,25 +1,14 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.layjava.system.domain.SysUser;
+import com.layjava.common.dao.core.page.PageQuery;
+import com.layjava.common.dao.core.page.PageResult;
 import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.domain.vo.SysUserVo;
-import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
-import org.apache.ibatis.solon.annotation.Db;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
-import com.layjava.common.core.util.MapstructUtils;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -32,73 +21,70 @@ import java.util.Map;
 @Component
 public class SysUserServiceImpl  implements SysUserService {
 
-    @Db
-    private SysUserMapper sysUserMapper;
-
+    /**
+     * 查询用户信息表列表
+     *
+     * @param sysUserBo 用户信息表Bo
+     * @return 用户信息表列表
+     */
     @Override
     public List<SysUserVo> getSysUserVoList(SysUserBo sysUserBo) {
-        Wrapper<SysUser> sysUserWrapper = buildWrapper(sysUserBo);
-        return sysUserMapper.selectVoList(sysUserWrapper);
-    }
-
-    @Override
-    public PageResult<SysUserVo> getSysUserVoList(SysUserBo sysUserBo, PageQuery pageQuery) {
-        Wrapper<SysUser> sysUserWrapper = buildWrapper(sysUserBo);
-
-        IPage<SysUserVo> voPage = sysUserMapper.selectVoPage(pageQuery.build(), sysUserWrapper);
-        return PageResult.build(voPage);
-    }
-
-    @Override
-    public SysUserVo getSysUserVoById(Long id) {
-        return sysUserMapper.selectUserById(id);
-    }
-
-    @Override
-    public boolean saveSysUser(SysUserBo sysUserBo) {
-        // 参数校验
-        Assert.notNull(sysUserBo, "用户信息表不能为空");
-
-        SysUser sysUser = MapstructUtils.convert(sysUserBo, SysUser.class);
-        return sysUserMapper.insert(sysUser) > 0;
-    }
-
-    @Override
-    public boolean updateSysUserById(SysUserBo sysUserBo) {
-        // 参数校验
-        Assert.notNull(sysUserBo, "用户信息表不能为空");
-        Assert.notNull(sysUserBo.getUserId(), "用户信息表ID不能为空" );
-
-        SysUser sysUser = MapstructUtils.convert(sysUserBo, SysUser.class);
-        return sysUserMapper.updateById(sysUser) > 0;
-    }
-
-    @Override
-    public int deleteSysUserById(List<Long> idList) {
-        // 参数校验
-        Assert.notEmpty(idList, "用户信息表ID不能为空");
-
-        return sysUserMapper.deleteBatchIds(idList);
+        return List.of();
     }
 
     /**
-     * 构建查询条件
+     * 获取用户信息表分页列表
+     *
+     * @param sysUserBo 用户信息表Bo
+     * @param pageQuery 分页查询条件
+     * @return {@link List}<{@link SysUserVo}>
      */
-    private Wrapper<SysUser> buildWrapper(SysUserBo sysUserBo) {
-        Map<String, Object> params = sysUserBo.getParams();
-        LambdaQueryWrapper<SysUser> queryWrapper = Wrappers.lambdaQuery();
-        // 条件构造
-        queryWrapper.eq(sysUserBo.getUserId() != null, SysUser::getUserId, sysUserBo.getUserId());
-        queryWrapper.eq(sysUserBo.getDeptId() != null, SysUser::getDeptId, sysUserBo.getDeptId());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getUserType()), SysUser::getUserType, sysUserBo.getUserType());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getEmail()), SysUser::getEmail, sysUserBo.getEmail());
-        queryWrapper.eq(sysUserBo.getAvatar() != null, SysUser::getAvatar, sysUserBo.getAvatar());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getPassword()), SysUser::getPassword, sysUserBo.getPassword());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getStatus()), SysUser::getStatus, sysUserBo.getStatus());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getLoginIp()), SysUser::getLoginIp, sysUserBo.getLoginIp());
-        queryWrapper.eq(sysUserBo.getLoginDate() != null, SysUser::getLoginDate, sysUserBo.getLoginDate());
-        queryWrapper.eq(StrUtil.isNotBlank(sysUserBo.getRemark()), SysUser::getRemark, sysUserBo.getRemark());
-        return queryWrapper;
+    @Override
+    public PageResult<SysUserVo> getSysUserVoList(SysUserBo sysUserBo, PageQuery pageQuery) {
+        return null;
     }
 
+    /**
+     * 通过id查询用户信息表Vo
+     *
+     * @param id 用户信息表id
+     * @return {@link SysUserVo} 用户信息表
+     */
+    @Override
+    public SysUserVo getSysUserVoById(Long id) {
+        return null;
+    }
+
+    /**
+     * 保存用户信息表
+     *
+     * @param sysUserBo 用户信息表
+     * @return {@link boolean} 是否新增成功
+     */
+    @Override
+    public boolean saveSysUser(SysUserBo sysUserBo) {
+        return false;
+    }
+
+    /**
+     * 根据id更新用户信息表
+     *
+     * @param sysUserBo 用户信息表
+     * @return {@link boolean} 是否更新成功
+     */
+    @Override
+    public boolean updateSysUserById(SysUserBo sysUserBo) {
+        return false;
+    }
+
+    /**
+     * 根据id删除用户信息表
+     *
+     * @param idList {table.comment!}id列表
+     * @return {@link boolean} 是否删除成功
+     */
+    @Override
+    public int deleteSysUserById(List<Long> idList) {
+        return 0;
+    }
 }

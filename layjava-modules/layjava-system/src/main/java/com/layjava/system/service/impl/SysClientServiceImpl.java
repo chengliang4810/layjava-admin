@@ -1,27 +1,15 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.Assert;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.layjava.common.dao.core.page.PageQuery;
+import com.layjava.common.dao.core.page.PageResult;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
-import com.layjava.system.mapper.SysClientMapper;
 import com.layjava.system.service.SysClientService;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
-import org.apache.ibatis.solon.annotation.Db;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
-import com.layjava.common.core.util.MapstructUtils;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -34,91 +22,91 @@ import java.util.Map;
 @Component
 public class SysClientServiceImpl  implements SysClientService {
 
-    @Db
-    private SysClientMapper sysClientMapper;
-
+    /**
+     * 查询系统授权表列表
+     *
+     * @param sysClientBo 系统授权表Bo
+     * @return 系统授权表列表
+     */
     @Override
     public List<SysClientVo> getSysClientVoList(SysClientBo sysClientBo) {
-        Wrapper<SysClient> sysClientWrapper = buildWrapper(sysClientBo);
-        return sysClientMapper.selectVoList(sysClientWrapper);
-    }
-
-    @Override
-    public PageResult<SysClientVo> getSysClientVoList(SysClientBo sysClientBo, PageQuery pageQuery) {
-        Wrapper<SysClient> sysClientWrapper = buildWrapper(sysClientBo);
-
-        IPage<SysClientVo> voPage = sysClientMapper.selectVoPage(pageQuery.build(), sysClientWrapper);
-        voPage.getRecords().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split(","))));
-        return PageResult.build(voPage);
-    }
-
-    @Override
-    public SysClientVo getSysClientVoById(Long id) {
-        SysClientVo sysClientVo = sysClientMapper.selectVoById(id);
-        sysClientVo.setGrantTypeList(List.of(sysClientVo.getGrantType().split(",")));
-        return sysClientVo;
-    }
-
-    @Override
-    public SysClient getByClientId(String clientId) {
-        return sysClientMapper.selectOne(new LambdaQueryWrapper<SysClient>()
-                .eq(SysClient::getClientId, clientId)
-        );
-    }
-
-    @Override
-    public boolean saveSysClient(SysClientBo sysClientBo) {
-        // 参数校验
-        Assert.notNull(sysClientBo, "系统授权表不能为空");
-
-        SysClient sysClient = MapstructUtils.convert(sysClientBo, SysClient.class);
-        sysClient.setGrantType(String.join(",", sysClientBo.getGrantTypeList()));
-        String clientKey = sysClientBo.getClientKey();
-        String clientSecret = sysClientBo.getClientSecret();
-        sysClient.setClientId(SecureUtil.md5(clientKey + clientSecret));
-        return sysClientMapper.insert(sysClient) > 0;
-    }
-
-    @Override
-    public boolean updateSysClientById(SysClientBo sysClientBo) {
-        // 参数校验
-        Assert.notNull(sysClientBo, "系统授权表不能为空");
-        Assert.notNull(sysClientBo.getId(), "系统授权表ID不能为空" );
-
-        SysClient sysClient = MapstructUtils.convert(sysClientBo, SysClient.class);
-        sysClient.setGrantType(String.join(",", sysClientBo.getGrantTypeList()));
-        return sysClientMapper.updateById(sysClient) > 0;
-    }
-
-    @Override
-    public boolean updateUserStatus(Long id, String status) {
-        return sysClientMapper.update(null,
-                new LambdaUpdateWrapper<SysClient>()
-                        .set(SysClient::getStatus, status)
-                        .eq(SysClient::getId, id)) > 0;
-    }
-
-    @Override
-    public int deleteSysClientById(List<Long> idList) {
-        // 参数校验
-        Assert.notEmpty(idList, "系统授权表ID不能为空");
-
-        return sysClientMapper.deleteBatchIds(idList);
+        return List.of();
     }
 
     /**
-     * 构建查询条件
+     * 获取系统授权表分页列表
+     *
+     * @param sysClientBo 系统授权表Bo
+     * @param pageQuery   分页查询条件
+     * @return {@link List}<{@link SysClientVo}>
      */
-    private Wrapper<SysClient> buildWrapper(SysClientBo sysClientBo) {
-        Map<String, Object> params = sysClientBo.getParams();
-        LambdaQueryWrapper<SysClient> queryWrapper = Wrappers.lambdaQuery();
-        // 条件构造
-        queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getClientId()), SysClient::getClientId, sysClientBo.getClientId());
-        queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getClientKey()), SysClient::getClientKey, sysClientBo.getClientKey());
-        queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getClientSecret()), SysClient::getClientSecret, sysClientBo.getClientSecret());
-        queryWrapper.eq(StrUtil.isNotBlank(sysClientBo.getStatus()), SysClient::getStatus, sysClientBo.getStatus());
-        queryWrapper.orderByAsc(SysClient::getId);
-        return queryWrapper;
+    @Override
+    public PageResult<SysClientVo> getSysClientVoList(SysClientBo sysClientBo, PageQuery pageQuery) {
+        return null;
     }
 
+    /**
+     * 通过id查询系统授权表Vo
+     *
+     * @param id 系统授权表id
+     * @return {@link SysClientVo} 系统授权表
+     */
+    @Override
+    public SysClientVo getSysClientVoById(Long id) {
+        return null;
+    }
+
+    /**
+     * 查询客户端信息基于客户端id
+     *
+     * @param clientId
+     */
+    @Override
+    public SysClient getByClientId(String clientId) {
+        return null;
+    }
+
+    /**
+     * 保存系统授权表
+     *
+     * @param sysClientBo 系统授权表
+     * @return {@link boolean} 是否新增成功
+     */
+    @Override
+    public boolean saveSysClient(SysClientBo sysClientBo) {
+        return false;
+    }
+
+    /**
+     * 根据id更新系统授权表
+     *
+     * @param sysClientBo 系统授权表
+     * @return {@link boolean} 是否更新成功
+     */
+    @Override
+    public boolean updateSysClientById(SysClientBo sysClientBo) {
+        return false;
+    }
+
+    /**
+     * 修改状态
+     *
+     * @param id
+     * @param status
+     */
+    @Override
+    public boolean updateUserStatus(Long id, String status) {
+        return false;
+    }
+
+    /**
+     * 根据id删除系统授权表
+     *
+     * @param idList {table.comment!}id列表
+     * @return {@link boolean} 是否删除成功
+     */
+    @Override
+    public int deleteSysClientById(List<Long> idList) {
+        return 0;
+    }
 }

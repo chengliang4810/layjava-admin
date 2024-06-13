@@ -1,9 +1,10 @@
 package com.layjava.system.domain;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.easy.query.core.annotation.*;
+import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
+import com.easy.query.core.proxy.ProxyEntityAvailable;
+import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.system.domain.proxy.SysRoleProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,19 +12,22 @@ import lombok.NoArgsConstructor;
 /**
  * 角色表 sys_role
  *
- * @author Lion Li
+ * @author chengliang
+ * @date 2024/06/13
  */
 
 @Data
+@EntityProxy
+@Table("sys_role")
 @NoArgsConstructor
+@EasyAlias("sysRole")
 @EqualsAndHashCode(callSuper = true)
-@TableName("sys_role")
-public class SysRole extends BaseEntity {
+public class SysRole extends BaseEntity implements ProxyEntityAvailable<SysRole , SysRoleProxy> {
 
     /**
      * 角色ID
      */
-    @TableId(value = "role_id")
+    @Column(primaryKey = true)
     private Long roleId;
 
     /**
@@ -64,7 +68,7 @@ public class SysRole extends BaseEntity {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @TableLogic
+    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
     private String delFlag;
 
     /**

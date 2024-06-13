@@ -21,18 +21,24 @@
          </dependency>
 
          <dependency>
+             <groupId>com.layjava</groupId>
+             <artifactId>layjava-common-security</artifactId>
+         </dependency>
+
+         <!-- 连接池 -->
+         <dependency>
              <groupId>com.zaxxer</groupId>
              <artifactId>HikariCP</artifactId>
          </dependency>
 
          <dependency>
-             <groupId>org.noear</groupId>
-             <artifactId>mybatis-plus-extension-solon-plugin</artifactId>
+             <groupId>com.easy-query</groupId>
+             <artifactId>sql-solon-plugin</artifactId>
          </dependency>
 
          <dependency>
-             <groupId>org.noear</groupId>
-             <artifactId>bean-searcher-solon-plugin</artifactId>
+             <groupId>com.easy-query</groupId>
+             <artifactId>sql-processor</artifactId>
          </dependency>
 
          <!-- sql性能分析插件 -->
