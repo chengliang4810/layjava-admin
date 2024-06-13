@@ -33,25 +33,13 @@ solon.config.add: "./app.yml"
 solon.config.load:
   - "config/*.yml"
 
---- # mybatis plus
-mybatis.default:
-  # 实体扫描，多个package用逗号或者分号分隔
-  typeAliases:
-    - "com.layjava.**.domain"
-  # 对应Mapper接口位置
-  mappers:
-    - "com.layjava.**.mapper.*Mapper"
-    # 对应的 XML 文件位置
-    - "classpath:mapper/**/*Mapper.xml"
 
---- # bean searcher配置统一分页条件
-bean-searcher:
-  enable: true
-  params:
-    pagination:
-      page: pageNum
-      size: pageSize
-      start: 1
+# 记录器级别的配置示例
+solon.logging.logger:
+  "root": #默认记录器配置
+    level: TRACE
+  "com.zaxxer.hikari":
+    level: WARN
 
 # security url放行配置
 security:

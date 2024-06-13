@@ -52,12 +52,6 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-crypto</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.easy-query</groupId>
-            <artifactId>sql-processor</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>
