@@ -1,5 +1,7 @@
 package com.layjava.system.service.impl;
 
+import com.easy.query.api.proxy.client.EasyEntityQuery;
+import com.easy.query.solon.annotation.Db;
 import com.layjava.common.dao.core.page.PageQuery;
 import com.layjava.common.dao.core.page.PageResult;
 import com.layjava.system.domain.SysClient;
@@ -21,6 +23,9 @@ import java.util.List;
 @Slf4j
 @Component
 public class SysClientServiceImpl  implements SysClientService {
+
+    @Db
+    private EasyEntityQuery entityQuery;
 
     /**
      * 查询系统授权表列表
@@ -59,11 +64,13 @@ public class SysClientServiceImpl  implements SysClientService {
     /**
      * 查询客户端信息基于客户端id
      *
-     * @param clientId
+     * @param clientId 客户端id
      */
     @Override
     public SysClient getByClientId(String clientId) {
-        return null;
+        return entityQuery.queryable(SysClient.class)
+                .where(sysClient -> sysClient.clientId().eq(clientId))
+                .firstOrNull();
     }
 
     /**
