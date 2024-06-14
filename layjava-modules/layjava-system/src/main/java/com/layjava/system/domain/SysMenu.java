@@ -7,6 +7,7 @@ import com.layjava.common.dao.core.entity.BaseEntity;
 import com.layjava.system.domain.proxy.SysMenuProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 import org.smartboot.http.common.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Data
 @EntityProxy
+@FieldNameConstants
 @Table("sys_menu")
 @EasyAlias("sysMenu")
 @EqualsAndHashCode(callSuper = true)

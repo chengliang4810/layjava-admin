@@ -1,5 +1,7 @@
 package com.layjava.system.domain.vo;
 
+import com.easy.query.core.annotation.Navigate;
+import com.easy.query.core.enums.RelationTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.layjava.system.domain.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -105,26 +107,27 @@ public class SysUserVo implements Serializable {
     /**
      * 部门对象
      */
+    @Navigate(value = RelationTypeEnum.OneToOne)
     private SysDeptVo dept;
 
     /**
      * 角色对象
      */
+    @Navigate(value = RelationTypeEnum.ManyToMany)
     private List<SysRoleVo> roles;
 
     /**
      * 角色组
      */
-    private Long[] roleIds;
+//    @NavigateFlat(value = RelationMappingTypeEnum.ToMany,mappingPath = {
+//            SysUser.Fields.roles,
+//            SysRole.Fields.roleId
+//    })
+    private List<Long> roleIds;
 
     /**
      * 岗位组
      */
     private Long[] postIds;
-
-    /**
-     * 数据权限 当前角色ID
-     */
-    private Long roleId;
 
 }

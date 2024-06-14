@@ -1,13 +1,16 @@
 package com.layjava.system.domain;
 
 import com.easy.query.core.annotation.*;
-import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
+import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.dao.core.entity.BaseEntity;
 import com.layjava.system.domain.proxy.SysRoleProxy;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldNameConstants;
+
+import java.util.List;
 
 /**
  * 角色表 sys_role
@@ -20,6 +23,7 @@ import lombok.NoArgsConstructor;
 @EntityProxy
 @Table("sys_role")
 @NoArgsConstructor
+@FieldNameConstants
 @EasyAlias("sysRole")
 @EqualsAndHashCode(callSuper = true)
 public class SysRole extends BaseEntity implements ProxyEntityAvailable<SysRole , SysRoleProxy> {
@@ -29,6 +33,12 @@ public class SysRole extends BaseEntity implements ProxyEntityAvailable<SysRole 
      */
     @Column(primaryKey = true)
     private Long roleId;
+
+    @Navigate(value = RelationTypeEnum.ManyToMany,
+            mappingClass = SysUserRole.class,
+            selfMappingProperty = "roleId",
+            targetMappingProperty = "userId")
+    private List<SysUser> users;
 
     /**
      * 角色名称
@@ -68,7 +78,7 @@ public class SysRole extends BaseEntity implements ProxyEntityAvailable<SysRole 
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
+//    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
     private String delFlag;
 
     /**

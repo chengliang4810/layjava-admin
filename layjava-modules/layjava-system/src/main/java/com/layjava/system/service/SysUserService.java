@@ -65,4 +65,11 @@ public interface SysUserService {
      */
     int deleteSysUserById(List<Long> idList);
 
+    /**
+     * 根据账号查询用户
+     *
+     * @param account 账号
+     * @return 用户信息
+     */
+    SysUserVo selectUserByAccount(String account);
 }

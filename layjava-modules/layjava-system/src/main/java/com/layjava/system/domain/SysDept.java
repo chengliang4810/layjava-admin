@@ -1,7 +1,9 @@
 package com.layjava.system.domain;
 
-import com.easy.query.core.annotation.*;
-import com.easy.query.core.basic.extension.logicdel.LogicDeleteStrategyEnum;
+import com.easy.query.core.annotation.Column;
+import com.easy.query.core.annotation.EasyAlias;
+import com.easy.query.core.annotation.EntityProxy;
+import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.dao.core.entity.BaseEntity;
 import com.layjava.system.domain.proxy.SysDeptProxy;
@@ -71,7 +73,7 @@ public class SysDept extends BaseEntity implements ProxyEntityAvailable<SysDept 
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
+//    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
     private String delFlag;
 
     /**

@@ -1,7 +1,13 @@
 package com.layjava.system.service.impl;
 
+import com.easy.query.api.proxy.client.EasyEntityQuery;
+import com.easy.query.solon.annotation.Db;
 import com.layjava.common.dao.core.page.PageQuery;
 import com.layjava.common.dao.core.page.PageResult;
+import com.layjava.system.domain.SysDept;
+import com.layjava.system.domain.SysRole;
+import com.layjava.system.domain.SysUser;
+import com.layjava.system.domain.SysUserRole;
 import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.service.SysUserService;
@@ -21,6 +27,8 @@ import java.util.List;
 @Component
 public class SysUserServiceImpl  implements SysUserService {
 
+    @Db
+    private EasyEntityQuery entityQuery;
     /**
      * 查询用户信息表列表
      *
@@ -87,4 +95,30 @@ public class SysUserServiceImpl  implements SysUserService {
     public int deleteSysUserById(List<Long> idList) {
         return 0;
     }
+
+    /**
+     * @param account
+     * @return
+     */
+    @Override
+    public SysUserVo selectUserByAccount(String account) {
+        return entityQuery.queryable(SysUser.class)
+                // 表关联查询
+                .leftJoin(SysDept.class, (sysUser, sysDept) -> sysUser.deptId().eq(sysDept.deptId()))
+                .leftJoin(SysUserRole.class, (sysUser, sysUserRole) -> sysUser.userId().eq(sysUserRole.userId()))
+                .leftJoin(SysRole.class, (sysUser, sysUserRole, sysRoleProxy) -> sysUserRole.roleId().eq(sysRoleProxy.roleId()))
+                .where(sysUser -> sysUser.account().eq(account))
+                .select(SysUserVo.class)
+//                .select(SysUserVo.class, sysUser -> Select.of(sysUser.FETCHER
+//                        ,sysUser.dept().deptId()
+//                        ,sysUser.dept().parentId()
+//                        ,sysUser.dept().deptName()
+//                        ,sysUser.dept().orderNum()
+//                        ,sysUser.dept().leader()
+//                        ,sysUser.dept().status()
+//                        ,sysUser.dept().ancestors()
+//                        ))
+                .firstOrNull();
+    }
+
 }

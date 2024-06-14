@@ -3,17 +3,21 @@ package com.layjava.auth.service.impl;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.easy.query.solon.annotation.Db;
 import com.layjava.auth.domain.bo.PasswordLoginBody;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
 import com.layjava.common.core.domain.model.LoginUser;
+import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.util.JsonUtil;
 import com.layjava.common.core.util.ValidatorUtil;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
+import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +35,8 @@ import org.noear.solon.annotation.Inject;
 public class PasswordAuthStrategy implements AuthStrategyService {
 
     @Db
+    private EasyEntityQuery entityQuery;
+    @Inject
     private SysUserService userService;
     @Inject
     private LoginService loginService;
@@ -53,6 +59,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 //        }
 
         SysUserVo user = loadUserByAccount(account);
+        log.info("用户信息: {}", user);
         // 校验密码
         if (!BCrypt.checkpw(password, user.getPassword())) {
             throw new ServiceException("账号/密码错误");
@@ -107,19 +114,22 @@ public class PasswordAuthStrategy implements AuthStrategyService {
      * @return 用户信息
      */
     private SysUserVo loadUserByAccount(String account) {
-//        SysUser user = userService.selectOne(new LambdaQueryWrapper<SysUser>()
-//                .select(SysUser::getAccount, SysUser::getStatus)
-//                .eq(SysUser::getAccount, account));
-//        if (ObjectUtil.isNull(user)) {
-//            log.info("登录用户：{} 不存在.", account);
-//            throw new ServiceException("登录用户：{} 不存在.", account);
-//        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-//            log.info("登录用户：{} 已被停用.", account);
-//            throw new ServiceException("登录用户：{} 已被停用.", account);
-//        }
-//        // 关联查询用户详细信息
-//        return userMapper.selectUserByAccount(account);
-        return null;
+
+        SysUser user = entityQuery.queryable(SysUser.class)
+                .where(sysUser -> sysUser.account().eq(account))
+                .select(sysUser -> sysUser.FETCHER.account().status().fetchProxy())
+                .firstOrNull();
+
+        if (ObjectUtil.isNull(user)) {
+            log.info("登录用户：{} 不存在.", account);
+            throw new ServiceException("登录用户：{} 不存在.", account);
+        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+            log.info("登录用户：{} 已被停用.", account);
+            throw new ServiceException("登录用户：{} 已被停用.", account);
+        }
+
+        // 关联查询用户详细信息
+        return userService.selectUserByAccount(account);
     }
 
 }
