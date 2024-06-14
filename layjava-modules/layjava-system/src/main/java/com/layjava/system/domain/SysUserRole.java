@@ -7,6 +7,7 @@ import com.easy.query.core.annotation.Table;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.system.domain.proxy.SysUserRoleProxy;
 import lombok.Data;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * 用户和角色关联 sys_user_role
@@ -16,6 +17,7 @@ import lombok.Data;
  */
 @Data
 @EntityProxy
+@FieldNameConstants
 @Table("sys_user_role")
 @EasyAlias("sysUserRole")
 public class SysUserRole implements ProxyEntityAvailable<SysUserRole , SysUserRoleProxy> {
@@ -29,7 +31,6 @@ public class SysUserRole implements ProxyEntityAvailable<SysUserRole , SysUserRo
     /**
      * 角色ID
      */
-    @Column(primaryKey = true)
     private Long roleId;
 
 }

@@ -45,8 +45,8 @@ public class SysUser extends BaseEntity implements ProxyEntityAvailable<SysUser 
 
     @Navigate(value = RelationTypeEnum.ManyToMany,
             mappingClass = SysUserRole.class,
-            selfMappingProperty = "userId",
-            targetMappingProperty = "roleId")
+            selfMappingProperty = SysUserRole.Fields.userId,
+            targetMappingProperty = SysUserRole.Fields.roleId)
     private List<SysRole> roles;
 
     /**

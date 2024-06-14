@@ -4,7 +4,6 @@ import com.easy.query.api.proxy.client.EasyEntityQuery;
 import com.easy.query.solon.annotation.Db;
 import com.layjava.common.dao.core.page.PageQuery;
 import com.layjava.common.dao.core.page.PageResult;
-import com.layjava.system.domain.SysDept;
 import com.layjava.system.domain.SysRole;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.SysUserRole;
@@ -103,13 +102,14 @@ public class SysUserServiceImpl  implements SysUserService {
     @Override
     public SysUserVo selectUserByAccount(String account) {
         return entityQuery.queryable(SysUser.class)
-                // 表关联查询
-                .leftJoin(SysDept.class, (sysUser, sysDept) -> sysUser.deptId().eq(sysDept.deptId()))
+                // 多对多
                 .leftJoin(SysUserRole.class, (sysUser, sysUserRole) -> sysUser.userId().eq(sysUserRole.userId()))
                 .leftJoin(SysRole.class, (sysUser, sysUserRole, sysRoleProxy) -> sysUserRole.roleId().eq(sysRoleProxy.roleId()))
+                // 一对一
+                // .leftJoin(SysDept.class, (sysUser, sysDept) -> sysUser.deptId().eq(sysDept.deptId()))
                 .where(sysUser -> sysUser.account().eq(account))
-                .select(SysUserVo.class)
-//                .select(SysUserVo.class, sysUser -> Select.of(sysUser.FETCHER
+                .selectAutoInclude(SysUserVo.class)
+                //.select(SysUserVo.class, (sysUser, sysUserRole, sysRole) -> Select.of( sysUser.FETCHER.allFields()
 //                        ,sysUser.dept().deptId()
 //                        ,sysUser.dept().parentId()
 //                        ,sysUser.dept().deptName()
@@ -117,7 +117,7 @@ public class SysUserServiceImpl  implements SysUserService {
 //                        ,sysUser.dept().leader()
 //                        ,sysUser.dept().status()
 //                        ,sysUser.dept().ancestors()
-//                        ))
+                //        ))
                 .firstOrNull();
     }
 
