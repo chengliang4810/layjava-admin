@@ -9,3 +9,6 @@ layjava.datasource:
       # jdbcUrl: jdbc:p6spy:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
       username: root
       password: P@ssw0rd
+
+# 打印SQL
+easy-query.default.print-sql: true

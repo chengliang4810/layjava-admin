@@ -33,6 +33,8 @@ solon.config.add: "./app.yml"
 solon.config.load:
   - "config/*.yml"
 
+# 打印SQL
+easy-query.default.print-sql: false
 
 # 记录器级别的配置示例
 solon.logging.logger:
