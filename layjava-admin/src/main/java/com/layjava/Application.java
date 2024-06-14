@@ -1,6 +1,8 @@
 package com.layjava;
 
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.SolonMain;
 
 /**
@@ -10,10 +12,17 @@ import org.noear.solon.annotation.SolonMain;
  * @since 2024/02/26
  */
 @SolonMain
+@Controller
 public class Application {
 
     public static void main(String[] args) {
         Solon.start(Application.class, args);
+    }
+
+
+    @Mapping("/")
+    public String index(){
+        return "欢迎使用LayJava-Admin";
     }
 
 }
