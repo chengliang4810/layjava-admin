@@ -104,7 +104,6 @@ public class AuthController extends BaseController {
     @Get
     @Mapping("/user/routes")
     public List<RouterVo> userRoutes() {
-        LoginUser loginUser = LoginHelper.getLoginUser();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
         return menuService.buildMenus(menus);
     }

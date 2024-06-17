@@ -1,6 +1,7 @@
 package com.layjava.system.domain;
 
 import com.easy.query.core.annotation.*;
+import com.easy.query.core.enums.RelationTypeEnum;
 import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.dao.core.entity.BaseEntity;
@@ -104,6 +105,14 @@ public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu 
      */
     private String remark;
 
+
+    @Navigate(value = RelationTypeEnum.ManyToMany,
+            mappingClass = SysRoleMenu.class,
+            selfMappingProperty = "menuId",
+            targetMappingProperty = "roleId")
+    private List<SysRole> roles;
+
+
     /**
      * 父菜单名称
      */
@@ -120,12 +129,12 @@ public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu 
      * 获取路由名称
      */
     public String getRouteName() {
-        String routerName = "";//StringUtils.capitalize(path);
-        // 非外链并且是一级目录（类型为目录）
-        if (isMenuFrame()) {
-            routerName = StringUtils.EMPTY;
-        }
-        return routerName;
+//        String routerName = "";//StringUtils.capitalize(path);
+//        // 非外链并且是一级目录（类型为目录）
+//        if (isMenuFrame()) {
+//            routerName = StringUtils.EMPTY;
+//        }
+        return path;
     }
 
     /**

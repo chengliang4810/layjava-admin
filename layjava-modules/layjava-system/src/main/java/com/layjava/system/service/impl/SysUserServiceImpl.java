@@ -1,6 +1,7 @@
 package com.layjava.system.service.impl;
 
 import com.easy.query.api.proxy.client.EasyEntityQuery;
+import com.easy.query.api.proxy.entity.select.EntityQueryable3;
 import com.easy.query.solon.annotation.Db;
 import com.layjava.common.dao.core.page.PageQuery;
 import com.layjava.common.dao.core.page.PageResult;
@@ -8,6 +9,9 @@ import com.layjava.system.domain.SysRole;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.SysUserRole;
 import com.layjava.system.domain.bo.SysUserBo;
+import com.layjava.system.domain.proxy.SysRoleProxy;
+import com.layjava.system.domain.proxy.SysUserProxy;
+import com.layjava.system.domain.proxy.SysUserRoleProxy;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -59,7 +63,10 @@ public class SysUserServiceImpl  implements SysUserService {
      */
     @Override
     public SysUserVo getSysUserVoById(Long id) {
-        return null;
+        return joinQuery()
+                .whereById(id)
+                .selectAutoInclude(SysUserVo.class)
+                .firstOrNull();
     }
 
     /**
@@ -91,34 +98,30 @@ public class SysUserServiceImpl  implements SysUserService {
      * @return {@link boolean} 是否删除成功
      */
     @Override
-    public int deleteSysUserById(List<Long> idList) {
-        return 0;
+    public long deleteSysUserById(List<Long> idList) {
+        return entityQuery.deletable(SysUser.class).where(sysUser -> sysUser.userId().in(idList)).executeRows();
     }
 
-    /**
-     * @param account
+    /** 通过账号查询
+     * @param account 账号
      * @return
      */
     @Override
     public SysUserVo selectUserByAccount(String account) {
+        return joinQuery().where(sysUser -> sysUser.account().eq(account))
+                .selectAutoInclude(SysUserVo.class)
+                .firstOrNull();
+    }
+
+    /**
+     * 关联查询
+     * @return EntityQueryable3
+     */
+    private EntityQueryable3<SysUserProxy, SysUser, SysUserRoleProxy, SysUserRole, SysRoleProxy, SysRole> joinQuery(){
         return entityQuery.queryable(SysUser.class)
                 // 多对多
                 .leftJoin(SysUserRole.class, (sysUser, sysUserRole) -> sysUser.userId().eq(sysUserRole.userId()))
-                .leftJoin(SysRole.class, (sysUser, sysUserRole, sysRoleProxy) -> sysUserRole.roleId().eq(sysRoleProxy.roleId()))
-                // 一对一
-                // .leftJoin(SysDept.class, (sysUser, sysDept) -> sysUser.deptId().eq(sysDept.deptId()))
-                .where(sysUser -> sysUser.account().eq(account))
-                .selectAutoInclude(SysUserVo.class)
-                //.select(SysUserVo.class, (sysUser, sysUserRole, sysRole) -> Select.of( sysUser.FETCHER.allFields()
-//                        ,sysUser.dept().deptId()
-//                        ,sysUser.dept().parentId()
-//                        ,sysUser.dept().deptName()
-//                        ,sysUser.dept().orderNum()
-//                        ,sysUser.dept().leader()
-//                        ,sysUser.dept().status()
-//                        ,sysUser.dept().ancestors()
-                //        ))
-                .firstOrNull();
+                .leftJoin(SysRole.class, (sysUser, sysUserRole, sysRoleProxy) -> sysUserRole.roleId().eq(sysRoleProxy.roleId()));
     }
 
 }

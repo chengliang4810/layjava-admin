@@ -1,14 +1,29 @@
 package com.layjava.system.service.impl;
+import com.layjava.common.core.constant.Constants;
+import com.layjava.common.core.constant.UserConstants;
+import com.layjava.system.domain.SysRole;
+import java.util.Map;
+import java.time.LocalDateTime;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.util.NumberUtil;
+import com.easy.query.api.proxy.client.EasyEntityQuery;
+import com.easy.query.api.proxy.entity.select.EntityQueryable;
+import com.easy.query.solon.annotation.Db;
+import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
+import com.layjava.system.domain.proxy.SysMenuProxy;
 import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
 import com.layjava.system.service.SysMenuService;
 import org.noear.solon.annotation.Component;
 
+import javax.swing.text.html.parser.Entity;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -18,6 +33,9 @@ import java.util.Set;
  */
 @Component
 public class SysMenuServiceImpl implements SysMenuService {
+
+    @Db
+    private EasyEntityQuery entityQuery;
 
     /**
      * 根据用户查询系统菜单列表
@@ -72,7 +90,16 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public List<SysMenu> selectMenuTreeByUserId(Long userId) {
-        return List.of();
+        if (LoginHelper.isSuperAdmin(userId)){
+            return entityQuery.queryable(SysMenu.class).toList();
+        }
+
+        return entityQuery.queryable(SysMenu.class)
+                .where(s -> {
+                    s.status().eq("0");
+                    //判断菜单下的角色存在角色的用户叫做小明的
+                    s.roles().flatElement().users().flatElement().userId().eq(userId);//如果只有一个条件name可以这么写
+                }).toList();
     }
 
     /**
@@ -94,7 +121,31 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public List<RouterVo> buildMenus(List<SysMenu> menus) {
-        return List.of();
+        if (CollUtil.isEmpty(menus)){
+            return CollUtil.newArrayList();
+        }
+
+        return menus.stream()
+                // 排序
+                .sorted((menu, menu2) -> NumberUtil.compare(menu.getOrderNum(), menu2.getOrderNum()))
+                // 构建前端路由对象
+                .map(menu -> {
+                    RouterVo router = new RouterVo();
+                    router.setId(menu.getMenuId());
+                    router.setPid(menu.getParentId());
+                    router.setName(menu.getRouteName());
+                    router.setTitle(menu.getMenuName());
+                    router.setHide("1".equals(menu.getVisible()));
+                    router.setKeepAlive("0".equals(menu.getIsCache()));
+                    router.setPath(menu.getRouterPath());
+                    router.setMenuType("C".equals(menu.getMenuType()) ? "page" : "dir");
+                    router.setIcon(menu.getIcon());
+                    router.setOrder(menu.getOrderNum());
+                    router.setRequiresAuth(true);
+                    // router.setHref(menu.getRouterPath());
+                    router.setComponentPath(menu.getComponent());
+                    return router;
+                }).toList();
     }
 
     /**

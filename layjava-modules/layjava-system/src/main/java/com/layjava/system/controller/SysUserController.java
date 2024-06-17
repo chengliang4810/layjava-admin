@@ -99,7 +99,7 @@ public class SysUserController extends BaseController {
     @Mapping("/{ids}")
     public void delete(@NotBlank(message = "ID不允许为空") String ids) {
         List<Long> idList = StringUtils.splitTo(ids, Convert::toLong);
-        int result = sysUserService.deleteSysUserById(idList);
+        long result = sysUserService.deleteSysUserById(idList);
         Assert.isTrue(result > 0, "删除用户信息表失败");
     }
 

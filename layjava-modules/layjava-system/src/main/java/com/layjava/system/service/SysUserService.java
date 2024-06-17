@@ -63,7 +63,7 @@ public interface SysUserService {
      * @param idList {table.comment!}id列表
      * @return {@link boolean} 是否删除成功
      */
-    int deleteSysUserById(List<Long> idList);
+    long deleteSysUserById(List<Long> idList);
 
     /**
      * 根据账号查询用户
