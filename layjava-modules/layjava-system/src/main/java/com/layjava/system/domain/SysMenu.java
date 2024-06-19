@@ -46,54 +46,19 @@ public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu 
     private String menuName;
 
     /**
-     * 显示顺序
+     * 路由名称
      */
-    private Integer orderNum;
-
-    /**
-     * 路由地址
-     */
-    private String path;
+    private String routeName;
 
     /**
      * 组件路径
      */
-    private String component;
+    private String componentPath;
 
     /**
-     * 路由参数
+     * 路由地址
      */
-    private String queryParam;
-
-    /**
-     * 是否为外链（0是 1否）
-     */
-    private String isFrame;
-
-    /**
-     * 是否缓存（0缓存 1不缓存）
-     */
-    private String isCache;
-
-    /**
-     * 类型（M目录 C菜单 F按钮）
-     */
-    private String menuType;
-
-    /**
-     * 显示状态（0显示 1隐藏）
-     */
-    private String visible;
-
-    /**
-     * 菜单状态（0正常 1停用）
-     */
-    private String status;
-
-    /**
-     * 权限字符串
-     */
-    private String perms;
+    private String routePath;
 
     /**
      * 菜单图标
@@ -101,9 +66,70 @@ public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu 
     private String icon;
 
     /**
+     * 显示顺序
+     */
+    private Integer orderNum;
+
+    /**
+     * 路由重定向
+     */
+    private String redirect;
+
+    /**
+     * 显示状态（0显示 1隐藏）
+     */
+    private Boolean hide;
+
+    /**
+     * 是否缓存（0缓存 1不缓存）
+     */
+    private Boolean keepAlive;
+
+    /**
+     * 菜单状态（0正常 1停用）
+     */
+    private Boolean status;
+
+    /**
+     * 是否需要登录权限
+     */
+    private Boolean requiresAuth;
+
+    /**
+     * 当前路由是否会被添加到Tab中
+     */
+    private Boolean withoutTab;
+
+    /**
+     * 当前路由是否会被固定在Tab中,用于一些常驻页面
+     */
+    private Boolean pinTab;
+
+    /**
+     * 外链URL地址
+     */
+    private String href;
+
+    /**
+     * 权限
+     */
+    private String permissions;
+
+    /**
+     * 菜单类型 dir' | 'page'
+     */
+    private String menuType;
+
+    /**
      * 备注
      */
     private String remark;
+
+
+    /**
+     * 高亮菜单
+     */
+    private String activeMenu;
 
 
     @Navigate(value = RelationTypeEnum.ManyToMany,
@@ -125,51 +151,4 @@ public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu 
     @ColumnIgnore
     private List<SysMenu> children = new ArrayList<>();
 
-    /**
-     * 获取路由名称
-     */
-    public String getRouteName() {
-//        String routerName = "";//StringUtils.capitalize(path);
-//        // 非外链并且是一级目录（类型为目录）
-//        if (isMenuFrame()) {
-//            routerName = StringUtils.EMPTY;
-//        }
-        return path;
-    }
-
-    /**
-     * 获取路由地址
-     */
-    public String getRouterPath() {
-        return this.path;
-    }
-
-    /**
-     * 是否为菜单内部跳转
-     */
-    public boolean isMenuFrame() {
-        return getParentId() == 0L && UserConstants.TYPE_MENU.equals(menuType) && isFrame.equals(UserConstants.NO_FRAME);
-    }
-
-    /**
-     * 是否为内链组件
-     */
-    public boolean isInnerLink() {
-        return isFrame.equals(UserConstants.NO_FRAME);//&& StringUtils.ishttp(path);
-    }
-
-    /**
-     * 是否为parent_view组件
-     */
-    public boolean isParentView() {
-        return getParentId() != 0L && UserConstants.TYPE_DIR.equals(menuType);
-    }
-
-    /**
-     * 内链域名特殊字符替换
-     */
-    public static String innerLinkReplaceEach(String path) {
-        return path;// StringUtils.replaceEach(path, new String[]{Constants.HTTP, Constants.HTTPS, Constants.WWW, ".", ":"},
-        //new String[]{"", "", "", "/", "/"});
-    }
 }

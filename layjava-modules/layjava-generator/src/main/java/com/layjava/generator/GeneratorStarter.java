@@ -56,7 +56,7 @@ public class GeneratorStarter {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, xmlDir.getAbsolutePath())); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("sys_user") // 设置需要生成的表名
+                    builder.addInclude("sys_menu") // 设置需要生成的表名
                             .addTablePrefix("iot_") // 设置过滤表前缀
                             // Entity配置
                             .entityBuilder()
