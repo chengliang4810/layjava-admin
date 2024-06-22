@@ -31,9 +31,11 @@
              <artifactId>HikariCP</artifactId>
          </dependency>
 
+         <!-- mybatis flex -->
          <dependency>
-             <groupId>com.easy-query</groupId>
-             <artifactId>sql-solon-plugin</artifactId>
+             <groupId>com.mybatis-flex</groupId>
+             <artifactId>mybatis-flex-solon-plugin</artifactId>
+             <version>${mybatis-flex.version}</version>
          </dependency>
 
          <!-- sql性能分析插件 -->

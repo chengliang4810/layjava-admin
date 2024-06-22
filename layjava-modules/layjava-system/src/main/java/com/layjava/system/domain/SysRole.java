@@ -1,10 +1,8 @@
 package com.layjava.system.domain;
 
-import com.easy.query.core.annotation.*;
-import com.easy.query.core.enums.RelationTypeEnum;
-import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.dao.core.entity.BaseEntity;
-import com.layjava.system.domain.proxy.SysRoleProxy;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,24 +18,22 @@ import java.util.List;
  */
 
 @Data
-@EntityProxy
 @Table("sys_role")
 @NoArgsConstructor
 @FieldNameConstants
-@EasyAlias("sysRole")
 @EqualsAndHashCode(callSuper = true)
-public class SysRole extends BaseEntity implements ProxyEntityAvailable<SysRole , SysRoleProxy> {
+public class SysRole extends BaseEntity {
 
     /**
      * 角色ID
      */
-    @Column(primaryKey = true)
+    @Id
     private Long roleId;
 
-    @Navigate(value = RelationTypeEnum.ManyToMany,
-            mappingClass = SysUserRole.class,
-            selfMappingProperty = "roleId",
-            targetMappingProperty = "userId")
+//    @Navigate(value = RelationTypeEnum.ManyToMany,
+//            mappingClass = SysUserRole.class,
+//            selfMappingProperty = "roleId",
+//            targetMappingProperty = "userId")
     private List<SysUser> users;
 
     /**

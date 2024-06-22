@@ -1,17 +1,20 @@
 package com.layjava.system.service.impl;
 
-import com.easy.query.api.proxy.client.EasyEntityQuery;
-import com.easy.query.solon.annotation.Db;
 import com.layjava.common.dao.core.page.PageQuery;
 import com.layjava.common.dao.core.page.PageResult;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
+import com.layjava.system.mapper.SysClientMapper;
 import com.layjava.system.service.SysClientService;
+import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 
 import java.util.List;
+
+import static com.layjava.system.domain.table.SysClientTableDef.SYS_CLIENT;
 
 /**
  *
@@ -25,7 +28,7 @@ import java.util.List;
 public class SysClientServiceImpl  implements SysClientService {
 
     @Db
-    private EasyEntityQuery entityQuery;
+    private SysClientMapper clientMapper;
 
     /**
      * 查询系统授权表列表
@@ -68,9 +71,9 @@ public class SysClientServiceImpl  implements SysClientService {
      */
     @Override
     public SysClient getByClientId(String clientId) {
-        return entityQuery.queryable(SysClient.class)
-                .where(sysClient -> sysClient.clientId().eq(clientId))
-                .firstOrNull();
+        return clientMapper.selectOneByQuery(QueryWrapper.create()
+                .where(SYS_CLIENT.CLIENT_ID.eq(clientId))
+        );
     }
 
     /**

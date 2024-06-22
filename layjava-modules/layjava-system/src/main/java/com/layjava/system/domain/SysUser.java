@@ -1,17 +1,14 @@
 package com.layjava.system.domain;
 
-import com.easy.query.core.annotation.*;
-import com.easy.query.core.enums.RelationTypeEnum;
-import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.dao.core.entity.BaseEntity;
-import com.layjava.system.domain.proxy.SysUserProxy;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  *
@@ -21,33 +18,22 @@ import java.util.List;
  * @since 2024-04-24
  */
 @Data
-@EntityProxy
 @Table("sys_user")
-@EasyAlias("sysUser")
 @FieldNameConstants
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class SysUser extends BaseEntity implements ProxyEntityAvailable<SysUser , SysUserProxy> {
+public class SysUser extends BaseEntity {
 
     /**
      * 用户ID
      */
-    @Column(primaryKey = true)
+    @Id
     private Long userId;
 
     /**
      * 部门ID
      */
     private Long deptId;
-
-    @Navigate(value = RelationTypeEnum.OneToOne, selfProperty = "deptId", targetProperty = "deptId")
-    private SysDept dept;
-
-    @Navigate(value = RelationTypeEnum.ManyToMany,
-            mappingClass = SysUserRole.class,
-            selfMappingProperty = SysUserRole.Fields.userId,
-            targetMappingProperty = SysUserRole.Fields.roleId)
-    private List<SysRole> roles;
 
     /**
      * 用户账号
@@ -108,7 +94,5 @@ public class SysUser extends BaseEntity implements ProxyEntityAvailable<SysUser 
      * 备注
      */
     private String remark;
-
-
 
 }

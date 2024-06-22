@@ -1,11 +1,7 @@
 package com.layjava.system.domain;
 
-import com.easy.query.core.annotation.EasyAlias;
-import com.easy.query.core.annotation.EntityProxy;
-import com.easy.query.core.annotation.Table;
-import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.dao.core.entity.BaseEntity;
-import com.layjava.system.domain.proxy.SysClientProxy;
+import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -18,12 +14,10 @@ import lombok.experimental.Accessors;
  * @since 2024-04-25
  */
 @Data
-@EntityProxy
 @Table("sys_client")
-@EasyAlias("sysClient")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class SysClient extends BaseEntity implements ProxyEntityAvailable<SysClient , SysClientProxy> {
+public class SysClient extends BaseEntity {
 
     /**
      * id

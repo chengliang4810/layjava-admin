@@ -1,11 +1,6 @@
 package com.layjava.system.domain;
 
-import com.easy.query.core.annotation.Column;
-import com.easy.query.core.annotation.EasyAlias;
-import com.easy.query.core.annotation.EntityProxy;
-import com.easy.query.core.annotation.Table;
-import com.easy.query.core.proxy.ProxyEntityAvailable;
-import com.layjava.system.domain.proxy.SysRoleDeptProxy;
+import com.mybatisflex.annotation.Table;
 import lombok.Data;
 
 /**
@@ -16,21 +11,17 @@ import lombok.Data;
  */
 
 @Data
-@EntityProxy
 @Table("sys_role_dept")
-@EasyAlias("sysRoleDept")
-public class SysRoleDept implements ProxyEntityAvailable<SysRoleDept , SysRoleDeptProxy> {
+public class SysRoleDept {
 
     /**
      * 角色ID
      */
-    @Column(primaryKey = true)
     private Long roleId;
 
     /**
      * 部门ID
      */
-    @Column(primaryKey = true)
     private Long deptId;
 
 }

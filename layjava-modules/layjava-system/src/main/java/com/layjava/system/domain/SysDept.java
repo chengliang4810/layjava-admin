@@ -1,12 +1,8 @@
 package com.layjava.system.domain;
 
-import com.easy.query.core.annotation.Column;
-import com.easy.query.core.annotation.EasyAlias;
-import com.easy.query.core.annotation.EntityProxy;
-import com.easy.query.core.annotation.Table;
-import com.easy.query.core.proxy.ProxyEntityAvailable;
 import com.layjava.common.dao.core.entity.BaseEntity;
-import com.layjava.system.domain.proxy.SysDeptProxy;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,11 +16,9 @@ import java.io.Serial;
  */
 
 @Data
-@EntityProxy
 @Table("sys_dept")
-@EasyAlias("sysDept")
 @EqualsAndHashCode(callSuper = true)
-public class SysDept extends BaseEntity implements ProxyEntityAvailable<SysDept , SysDeptProxy> {
+public class SysDept extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -32,7 +26,7 @@ public class SysDept extends BaseEntity implements ProxyEntityAvailable<SysDept 
     /**
      * 部门ID
      */
-    @Column(primaryKey = true)
+    @Id
     private Long deptId;
 
     /**

@@ -3,14 +3,14 @@ package com.layjava.system.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.NumberUtil;
-import com.easy.query.api.proxy.client.EasyEntityQuery;
-import com.easy.query.solon.annotation.Db;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
 import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
+import com.layjava.system.mapper.SysMenuMapper;
 import com.layjava.system.service.SysMenuService;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 
 import java.util.List;
@@ -25,7 +25,7 @@ import java.util.Set;
 public class SysMenuServiceImpl implements SysMenuService {
 
     @Db
-    private EasyEntityQuery entityQuery;
+    private SysMenuMapper menuMapper;
 
     /**
      * 根据用户查询系统菜单列表
@@ -81,15 +81,16 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public List<SysMenu> selectMenuTreeByUserId(Long userId) {
         if (LoginHelper.isSuperAdmin(userId)) {
-            return entityQuery.queryable(SysMenu.class).toList();
+            return menuMapper.selectAll();
         }
 
-        return entityQuery.queryable(SysMenu.class)
-                .where(s -> {
-                    s.status().eq(true);
-                    //判断菜单下的角色存在角色的用户叫做小明的
-                    s.roles().flatElement().users().flatElement().userId().eq(userId);//如果只有一个条件name可以这么写
-                }).toList();
+        return null;
+//        return entityQuery.queryable(SysMenu.class)
+//                .where(s -> {
+//                    s.status().eq(true);
+//                    //判断菜单下的角色存在角色的用户叫做小明的
+//                    s.roles().flatElement().users().flatElement().userId().eq(userId);//如果只有一个条件name可以这么写
+//                }).toList();
     }
 
     /**

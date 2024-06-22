@@ -1,23 +1,19 @@
 package com.layjava.system.service.impl;
 
-import com.easy.query.api.proxy.client.EasyEntityQuery;
-import com.easy.query.api.proxy.entity.select.EntityQueryable3;
-import com.easy.query.solon.annotation.Db;
 import com.layjava.common.dao.core.page.PageQuery;
 import com.layjava.common.dao.core.page.PageResult;
-import com.layjava.system.domain.SysRole;
-import com.layjava.system.domain.SysUser;
-import com.layjava.system.domain.SysUserRole;
 import com.layjava.system.domain.bo.SysUserBo;
-import com.layjava.system.domain.proxy.SysRoleProxy;
-import com.layjava.system.domain.proxy.SysUserProxy;
-import com.layjava.system.domain.proxy.SysUserRoleProxy;
 import com.layjava.system.domain.vo.SysUserVo;
+import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.SysUserService;
+import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 
 import java.util.List;
+
+import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 
 /**
  *
@@ -31,7 +27,7 @@ import java.util.List;
 public class SysUserServiceImpl  implements SysUserService {
 
     @Db
-    private EasyEntityQuery entityQuery;
+    private SysUserMapper userMapper;
     /**
      * 查询用户信息表列表
      *
@@ -63,10 +59,7 @@ public class SysUserServiceImpl  implements SysUserService {
      */
     @Override
     public SysUserVo getSysUserVoById(Long id) {
-        return joinQuery()
-                .whereById(id)
-                .selectAutoInclude(SysUserVo.class)
-                .firstOrNull();
+        return userMapper.selectOneWithRelationsByIdAs(id, SysUserVo.class);
     }
 
     /**
@@ -99,7 +92,7 @@ public class SysUserServiceImpl  implements SysUserService {
      */
     @Override
     public long deleteSysUserById(List<Long> idList) {
-        return entityQuery.deletable(SysUser.class).where(sysUser -> sysUser.userId().in(idList)).executeRows();
+        return userMapper.deleteBatchByIds(idList);
     }
 
     /** 通过账号查询
@@ -108,20 +101,9 @@ public class SysUserServiceImpl  implements SysUserService {
      */
     @Override
     public SysUserVo selectUserByAccount(String account) {
-        return joinQuery().where(sysUser -> sysUser.account().eq(account))
-                .selectAutoInclude(SysUserVo.class)
-                .firstOrNull();
-    }
-
-    /**
-     * 关联查询
-     * @return EntityQueryable3
-     */
-    private EntityQueryable3<SysUserProxy, SysUser, SysUserRoleProxy, SysUserRole, SysRoleProxy, SysRole> joinQuery(){
-        return entityQuery.queryable(SysUser.class)
-                // 多对多
-                .leftJoin(SysUserRole.class, (sysUser, sysUserRole) -> sysUser.userId().eq(sysUserRole.userId()))
-                .leftJoin(SysRole.class, (sysUser, sysUserRole, sysRoleProxy) -> sysUserRole.roleId().eq(sysRoleProxy.roleId()));
+        return userMapper.selectOneByQueryAs(QueryWrapper.create().select(SYS_USER.DEFAULT_COLUMNS)
+                .where(SYS_USER.ACCOUNT.eq(account))
+                ,SysUserVo.class);
     }
 
 }

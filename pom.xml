@@ -32,7 +32,7 @@
         <mysql.version>8.3.0</mysql.version>
         <p6spy.version>3.9.1</p6spy.version>
         <hikaricp.version>4.0.3</hikaricp.version>
-        <easy-query.version>2.0.28</easy-query.version>
+        <mybatis-flex.version>1.9.3</mybatis-flex.version>
         <doc-docket.version>1.0.1</doc-docket.version>
 
         <lombok.version>1.18.30</lombok.version>
@@ -121,15 +121,11 @@
             </dependency>
 
             <dependency>
-                <groupId>com.easy-query</groupId>
-                <artifactId>sql-solon-plugin</artifactId>
-                <version>${easy-query.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.easy-query</groupId>
-                <artifactId>sql-processor</artifactId>
-                <version>${easy-query.version}</version>
+                <groupId>com.mybatis-flex</groupId>
+                <artifactId>mybatis-flex-dependencies</artifactId>
+                <version>${mybatis-flex.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
@@ -158,11 +154,6 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <annotationProcessorPaths>
                         <path>
-                            <groupId>com.github.therapi</groupId>
-                            <artifactId>therapi-runtime-javadoc-scribe</artifactId>
-                            <version>0.13.0</version>
-                        </path>
-                        <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
@@ -173,9 +164,9 @@
                             <version>${mapstruct-plus.version}</version>
                         </path>
                         <path>
-                            <groupId>com.easy-query</groupId>
-                            <artifactId>sql-processor</artifactId>
-                            <version>${easy-query.version}</version>
+                            <groupId>com.mybatis-flex</groupId>
+                            <artifactId>mybatis-flex-processor</artifactId>
+                            <version>${mybatis-flex.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>

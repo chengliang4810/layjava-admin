@@ -4,8 +4,6 @@ import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.easy.query.api.proxy.client.EasyEntityQuery;
-import com.easy.query.solon.annotation.Db;
 import com.layjava.auth.domain.bo.PasswordLoginBody;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
@@ -19,10 +17,16 @@ import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
+import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.SysUserService;
+import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+
+import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
+
 
 /**
  * 密码认证策略
@@ -35,7 +39,7 @@ import org.noear.solon.annotation.Inject;
 public class PasswordAuthStrategy implements AuthStrategyService {
 
     @Db
-    private EasyEntityQuery entityQuery;
+    private SysUserMapper userMapper;
     @Inject
     private SysUserService userService;
     @Inject
@@ -115,10 +119,9 @@ public class PasswordAuthStrategy implements AuthStrategyService {
      */
     private SysUserVo loadUserByAccount(String account) {
 
-        SysUser user = entityQuery.queryable(SysUser.class)
-                .where(sysUser -> sysUser.account().eq(account))
-                .select(sysUser -> sysUser.FETCHER.account().status().fetchProxy())
-                .firstOrNull();
+        SysUser user = userMapper.selectOneByQuery(QueryWrapper.create()
+                .select(SYS_USER.STATUS, SYS_USER.ACCOUNT)
+                .where(SYS_USER.ACCOUNT.eq(account)));
 
         if (ObjectUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", account);

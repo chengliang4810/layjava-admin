@@ -1,7 +1,6 @@
 package com.layjava.common.dao.core.page;
 
 import cn.hutool.core.collection.CollUtil;
-import com.easy.query.core.api.pagination.EasyPageResult;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -41,13 +40,6 @@ public class PageResult<T> implements Serializable {
     public PageResult(List<T> list, long total) {
         this.rows = list;
         this.total = total;
-    }
-
-    public static <T> PageResult<T> build(EasyPageResult<T> page) {
-        PageResult<T> rspData = new PageResult<>();
-        rspData.setRows(page.getData());
-        rspData.setTotal(page.getTotal());
-        return rspData;
     }
 
     public static <T> PageResult<T> build(List<T> list) {

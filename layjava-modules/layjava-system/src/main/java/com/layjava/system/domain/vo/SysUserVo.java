@@ -1,12 +1,13 @@
 package com.layjava.system.domain.vo;
 
-import com.easy.query.core.annotation.Navigate;
-import com.easy.query.core.enums.RelationTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.layjava.system.domain.SysUser;
+import com.mybatisflex.annotation.RelationManyToMany;
+import com.mybatisflex.annotation.RelationOneToOne;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ import java.util.List;
  * @since 2024-04-24
  */
 @Data
+@FieldNameConstants
 @Accessors(chain = true)
 @AutoMapper(target = SysUser.class, convertGenerate = false)
 public class SysUserVo implements Serializable {
@@ -107,27 +109,32 @@ public class SysUserVo implements Serializable {
     /**
      * 部门对象
      */
-    @Navigate(value = RelationTypeEnum.OneToOne)
+    @RelationOneToOne(selfField = Fields.deptId, targetTable = "sys_dept", targetField = "deptId")
     private SysDeptVo dept;
 
     /**
      * 角色对象
      */
-    @Navigate(value = RelationTypeEnum.ManyToMany)
+    @RelationManyToMany(
+            joinTable = "sys_user_role", // 中间表
+            targetTable = "sys_role",
+            selfField = "userId", joinSelfColumn = "user_id",
+            targetField = "roleId", joinTargetColumn = "rol  ml.k= 999999999999999999999999999999999999999e_id"
+    )
     private List<SysRoleVo> roles;
-
-    /**
-     * 角色组
-     */
-//    @NavigateFlat(value = RelationMappingTypeEnum.ToMany,mappingPath = {
-//            SysUser.Fields.roles,
-//            SysRole.Fields.roleId
-//    })
-    private List<Long> roleIds;
 
     /**
      * 岗位组
      */
-    private Long[] postIds;
+//    @RelationManyToMany(
+//            selfField = "userId",
+//            targetTable = "sys_post",
+//            targetField = "postId",
+//            valueField = "postName",
+//            joinTable = "sys_user_post",
+//            joinSelfColumn = "user_id",
+//            joinTargetColumn = "post_id"
+//    )
+    private List<String> postIds;
 
 }

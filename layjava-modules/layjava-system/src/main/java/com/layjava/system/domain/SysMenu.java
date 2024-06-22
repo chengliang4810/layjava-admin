@@ -1,15 +1,12 @@
 package com.layjava.system.domain;
 
-import com.easy.query.core.annotation.*;
-import com.easy.query.core.enums.RelationTypeEnum;
-import com.easy.query.core.proxy.ProxyEntityAvailable;
-import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.dao.core.entity.BaseEntity;
-import com.layjava.system.domain.proxy.SysMenuProxy;
+import com.mybatisflex.annotation.Column;
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
-import org.smartboot.http.common.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +19,15 @@ import java.util.List;
  */
 
 @Data
-@EntityProxy
 @FieldNameConstants
 @Table("sys_menu")
-@EasyAlias("sysMenu")
 @EqualsAndHashCode(callSuper = true)
-public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu , SysMenuProxy> {
+public class SysMenu extends BaseEntity {
 
     /**
      * 菜单ID
      */
-    @Column(primaryKey = true)
+    @Id
     private Long menuId;
 
     /**
@@ -132,23 +127,23 @@ public class SysMenu extends BaseEntity implements ProxyEntityAvailable<SysMenu 
     private String activeMenu;
 
 
-    @Navigate(value = RelationTypeEnum.ManyToMany,
-            mappingClass = SysRoleMenu.class,
-            selfMappingProperty = "menuId",
-            targetMappingProperty = "roleId")
+//    @Navigate(value = RelationTypeEnum.ManyToMany,
+//            mappingClass = SysRoleMenu.class,
+//            selfMappingProperty = "menuId",
+//            targetMappingProperty = "roleId")
     private List<SysRole> roles;
 
 
     /**
      * 父菜单名称
      */
-    @ColumnIgnore
+    @Column(ignore = true)
     private String parentName;
 
     /**
      * 子菜单
      */
-    @ColumnIgnore
+    @Column(ignore = true)
     private List<SysMenu> children = new ArrayList<>();
 
 }

@@ -13,8 +13,8 @@ import lombok.experimental.FieldNameConstants;
  */
 @Data
 @FieldNameConstants
-@Table("sys_user_role")
-public class SysUserRole {
+@Table("sys_user_post")
+public class SysUserPost {
 
     /**
      * 用户ID
@@ -23,8 +23,8 @@ public class SysUserRole {
     private Long userId;
 
     /**
-     * 角色ID
+     * 部门ID
      */
-    private Long roleId;
+    private Long postId;
 
 }
