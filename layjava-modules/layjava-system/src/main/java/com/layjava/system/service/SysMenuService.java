@@ -115,10 +115,10 @@ public interface SysMenuService {
     /**
      * 删除菜单管理信息
      *
-     * @param menuId 菜单ID
+     * @param menuIds 菜单ID
      * @return 结果
      */
-    int deleteMenuById(Long menuId);
+    int deleteMenuById(List<String> menuIds);
 
     /**
      * 校验菜单名称是否唯一

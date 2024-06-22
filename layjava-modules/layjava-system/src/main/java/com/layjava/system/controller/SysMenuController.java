@@ -1,6 +1,7 @@
 package com.layjava.system.controller;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysMenuBo;
@@ -78,12 +79,14 @@ public class SysMenuController extends BaseController {
     /**
      * 根据ID删除用户信息表
      *
-     * @param id 用户信息表ID
+     * @param ids 用户信息表ID
      */
     @Delete
-    @Mapping("/{id}")
-    public void delete(@NotBlank(message = "ID不允许为空") Long id) {
-        long result = sysMenuService.deleteMenuById(id);
+    @Mapping("/{ids}")
+    public void delete(@NotBlank(message = "ID不允许为空") String ids) {
+        System.out.println(ids);
+        List<String> strIds = StrUtil.split(ids, ",");
+        long result = sysMenuService.deleteMenuById(strIds);
         Assert.isTrue(result > 0, "删除用户信息表失败");
     }
 

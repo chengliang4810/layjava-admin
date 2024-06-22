@@ -1,6 +1,8 @@
 package com.layjava.system.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
+import com.layjava.common.core.util.MapstructUtils;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
@@ -160,7 +162,8 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public int insertMenu(SysMenuBo bo) {
-        return 0;
+        SysMenu menu = MapstructUtils.convert(bo, SysMenu.class);
+        return menuMapper.insertSelective(menu);
     }
 
     /**
@@ -171,18 +174,22 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public int updateMenu(SysMenuBo bo) {
-        return 0;
+        SysMenu menu = MapstructUtils.convert(bo, SysMenu.class);
+        return menuMapper.update(menu, true);
     }
 
     /**
      * 删除菜单管理信息
      *
-     * @param menuId 菜单ID
+     * @param menuIds 菜单ID
      * @return 结果
      */
     @Override
-    public int deleteMenuById(Long menuId) {
-        return 0;
+    public int deleteMenuById(List<String> menuIds) {
+        if (CollUtil.isEmpty(menuIds)){
+            return 0;
+        }
+        return menuMapper.deleteBatchByIds(menuIds);
     }
 
     /**
