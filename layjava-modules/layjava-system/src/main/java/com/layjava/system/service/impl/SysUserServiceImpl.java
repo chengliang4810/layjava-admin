@@ -1,7 +1,9 @@
 package com.layjava.system.service.impl;
 
+import com.layjava.common.core.util.MapstructUtils;
 import com.layjava.common.dao.core.page.PageQuery;
 import com.layjava.common.dao.core.page.PageResult;
+import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
@@ -28,6 +30,7 @@ public class SysUserServiceImpl  implements SysUserService {
 
     @Db
     private SysUserMapper userMapper;
+
     /**
      * 查询用户信息表列表
      *
@@ -48,8 +51,9 @@ public class SysUserServiceImpl  implements SysUserService {
      */
     @Override
     public PageResult<SysUserVo> getSysUserVoList(SysUserBo sysUserBo, PageQuery pageQuery) {
-        return null;
+        return PageResult.build(0L);
     }
+
 
     /**
      * 通过id查询用户信息表Vo
@@ -70,7 +74,8 @@ public class SysUserServiceImpl  implements SysUserService {
      */
     @Override
     public boolean saveSysUser(SysUserBo sysUserBo) {
-        return false;
+        SysUser sysUser = MapstructUtils.convert(sysUserBo, SysUser.class);
+        return userMapper.insertSelective(sysUser) > 0;
     }
 
     /**
@@ -81,7 +86,8 @@ public class SysUserServiceImpl  implements SysUserService {
      */
     @Override
     public boolean updateSysUserById(SysUserBo sysUserBo) {
-        return false;
+        SysUser sysUser = MapstructUtils.convert(sysUserBo, SysUser.class);
+        return userMapper.update(sysUser, true) > 0;
     }
 
     /**
