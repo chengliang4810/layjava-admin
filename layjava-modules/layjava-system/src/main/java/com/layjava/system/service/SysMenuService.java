@@ -3,7 +3,6 @@ package com.layjava.system.service;
 import cn.hutool.core.lang.tree.Tree;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
-import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
 
 import java.util.List;
@@ -64,22 +63,6 @@ public interface SysMenuService {
      * @return 选中菜单列表
      */
     List<Long> selectMenuListByRoleId(Long roleId);
-
-//    /**
-//     * 根据租户套餐ID查询菜单树信息
-//     *
-//     * @param packageId 租户套餐ID
-//     * @return 选中菜单列表
-//     */
-//    List<Long> selectMenuListByPackageId(Long packageId);
-
-    /**
-     * 构建前端路由所需要的菜单
-     *
-     * @param menus 菜单列表
-     * @return 路由列表
-     */
-    List<RouterVo> buildMenus(List<SysMenu> menus);
 
     /**
      * 构建前端所需要下拉树结构

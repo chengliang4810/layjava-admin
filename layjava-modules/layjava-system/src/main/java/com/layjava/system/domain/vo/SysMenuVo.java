@@ -1,14 +1,13 @@
 package com.layjava.system.domain.vo;
 
 import com.layjava.system.domain.SysMenu;
+import com.mybatisflex.annotation.Id;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -26,22 +25,28 @@ public class SysMenuVo implements Serializable {
     /**
      * 菜单ID
      */
-    private Long menuId;
-
-    /**
-     * 菜单名称
-     */
-    private String menuName;
+    @Id
+    private Long id;
 
     /**
      * 父菜单ID
      */
-    private Long parentId;
+    private Long pid;
 
     /**
-     * 显示顺序
+     * 菜单名称
      */
-    private Integer orderNum;
+    private String title;
+
+    /**
+     * 路由名称
+     */
+    private String name;
+
+    /**
+     * 组件路径
+     */
+    private String componentPath;
 
     /**
      * 路由地址
@@ -49,49 +54,69 @@ public class SysMenuVo implements Serializable {
     private String path;
 
     /**
-     * 组件路径
+     * 菜单图标
      */
-    private String component;
+    private String icon;
 
     /**
-     * 路由参数
+     * 显示顺序
      */
-    private String queryParam;
+    private Integer order;
 
     /**
-     * 是否为外链（0是 1否）
+     * 路由重定向
      */
-    private String isFrame;
-
-    /**
-     * 是否缓存（0缓存 1不缓存）
-     */
-    private String isCache;
-
-    /**
-     * 菜单类型（M目录 C菜单 F按钮）
-     */
-    private String menuType;
+    private String redirect;
 
     /**
      * 显示状态（0显示 1隐藏）
      */
-    private String visible;
+    private Boolean hide;
+
+    /**
+     * 是否缓存（0缓存 1不缓存）
+     */
+    private Boolean keepAlive;
 
     /**
      * 菜单状态（0正常 1停用）
      */
-    private String status;
+    private Boolean status;
 
     /**
-     * 权限标识
+     * 是否需要登录权限
      */
-    private String perms;
+    private Boolean requiresAuth;
 
     /**
-     * 菜单图标
+     * 当前路由是否会被添加到Tab中
      */
-    private String icon;
+    private Boolean withoutTab;
+
+    /**
+     * 当前路由是否会被固定在Tab中,用于一些常驻页面
+     */
+    private Boolean pinTab;
+
+    /**
+     * 外链URL地址
+     */
+    private String href;
+
+    /**
+     * 权限
+     */
+    private String permissions;
+
+    /**
+     * 菜单类型 dir' | 'page'
+     */
+    private String menuType;
+
+    /**
+     * 高亮菜单
+     */
+    private String activeMenu;
 
     /**
      * 创建部门
@@ -99,18 +124,13 @@ public class SysMenuVo implements Serializable {
     private Long createDept;
 
     /**
-     * 备注
-     */
-    private String remark;
-
-    /**
      * 创建时间
      */
     private Date createTime;
 
     /**
-     * 子菜单
+     * 备注
      */
-    private List<SysMenuVo> children = new ArrayList<>();
+    private String remark;
 
 }

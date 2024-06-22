@@ -28,22 +28,22 @@ public class SysMenu extends BaseEntity {
      * 菜单ID
      */
     @Id
-    private Long menuId;
+    private Long id;
 
     /**
      * 父菜单ID
      */
-    private Long parentId;
+    private Long pid;
 
     /**
      * 菜单名称
      */
-    private String menuName;
+    private String title;
 
     /**
      * 路由名称
      */
-    private String routeName;
+    private String name;
 
     /**
      * 组件路径
@@ -53,7 +53,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 路由地址
      */
-    private String routePath;
+    private String path;
 
     /**
      * 菜单图标
@@ -63,7 +63,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 显示顺序
      */
-    private Integer orderNum;
+    private Integer order;
 
     /**
      * 路由重定向

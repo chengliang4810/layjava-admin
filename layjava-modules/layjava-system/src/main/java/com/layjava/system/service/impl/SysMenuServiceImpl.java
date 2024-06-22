@@ -1,15 +1,13 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
-import cn.hutool.core.util.NumberUtil;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
-import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
 import com.layjava.system.mapper.SysMenuMapper;
 import com.layjava.system.service.SysMenuService;
+import com.mybatisflex.core.query.QueryWrapper;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 
@@ -35,6 +33,9 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public List<SysMenuVo> selectMenuList(Long userId) {
+        if (LoginHelper.isSuperAdmin(userId)) {
+            return menuMapper.selectListByQueryAs(QueryWrapper.create(), SysMenuVo.class);
+        }
         return List.of();
     }
 
@@ -47,6 +48,9 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public List<SysMenuVo> selectMenuList(SysMenuBo menu, Long userId) {
+        if (LoginHelper.isSuperAdmin(userId)) {
+            return menuMapper.selectListByQueryAs(QueryWrapper.create(), SysMenuVo.class);
+        }
         return List.of();
     }
 
@@ -102,41 +106,6 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public List<Long> selectMenuListByRoleId(Long roleId) {
         return List.of();
-    }
-
-    /**
-     * 构建前端路由所需要的菜单
-     *
-     * @param menus 菜单列表
-     * @return 路由列表
-     */
-    @Override
-    public List<RouterVo> buildMenus(List<SysMenu> menus) {
-        if (CollUtil.isEmpty(menus)) {
-            return CollUtil.newArrayList();
-        }
-
-        return menus.stream()
-                // 排序
-                .sorted((menu, menu2) -> NumberUtil.compare(menu.getOrderNum(), menu2.getOrderNum()))
-                // 构建前端路由对象
-                .map(menu -> {
-                    RouterVo router = new RouterVo();
-                    router.setId(menu.getMenuId());
-                    router.setPid(menu.getParentId());
-                    router.setName(menu.getRouteName());
-                    router.setTitle(menu.getMenuName());
-                    router.setHide(menu.getHide());
-                    router.setKeepAlive(menu.getKeepAlive());
-                    router.setPath(menu.getRoutePath());
-                    router.setMenuType(menu.getMenuType());
-                    router.setIcon(menu.getIcon());
-                    router.setOrder(menu.getOrderNum());
-                    router.setRequiresAuth(menu.getRequiresAuth());
-                    router.setHref(menu.getHref());
-                    router.setComponentPath(menu.getComponentPath());
-                    return router;
-                }).toList();
     }
 
     /**

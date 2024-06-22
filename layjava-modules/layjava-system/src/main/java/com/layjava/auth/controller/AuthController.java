@@ -14,8 +14,7 @@ import com.layjava.common.core.util.ValidatorUtil;
 import com.layjava.common.security.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.SysClient;
-import com.layjava.system.domain.SysMenu;
-import com.layjava.system.domain.vo.RouterVo;
+import com.layjava.system.domain.vo.SysMenuVo;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.domain.vo.UserInfoVo;
 import com.layjava.system.service.SysClientService;
@@ -103,9 +102,8 @@ public class AuthController extends BaseController {
      */
     @Get
     @Mapping("/user/routes")
-    public List<RouterVo> userRoutes() {
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
-        return menuService.buildMenus(menus);
+    public List<SysMenuVo> userRoutes() {
+        return menuService.selectMenuList(LoginHelper.getUserId());
     }
 
     /**
