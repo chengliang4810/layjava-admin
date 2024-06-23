@@ -1,0 +1,3 @@
+[submodule "layjava-ui"]
+	path = layjava-ui
+	url = https://gitee.com/chengliang4810/layjava-admin-ui.git
