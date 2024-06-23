@@ -6,7 +6,7 @@ package com.layjava.common.core.exception;
  * @author chengliang
  * @since  2024/04/16
  */
-public class ParameterException extends RuntimeException {
+public class ParameterException extends ServiceException {
 
     private static final String DEFAULT_MESSAGE = "参数错误";
 

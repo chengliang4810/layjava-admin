@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class AuthException extends RuntimeException {
+public class AuthException extends ServiceException {
 
     private Integer code;
 
