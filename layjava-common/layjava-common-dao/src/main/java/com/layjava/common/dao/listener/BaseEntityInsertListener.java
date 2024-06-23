@@ -2,7 +2,7 @@ package com.layjava.common.dao.listener;
 
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.dao.core.entity.BaseEntity;
-import com.layjava.common.security.utils.LoginHelper;
+import com.layjava.common.satoken.utils.LoginHelper;
 import com.mybatisflex.annotation.AbstractInsertListener;
 
 import java.time.LocalDateTime;

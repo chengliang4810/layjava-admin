@@ -15,15 +15,15 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon-docs-openapi2-javadoc</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.noear</groupId>-->
+<!--            <artifactId>solon-docs-openapi2-javadoc</artifactId>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.layjava.solon.docs</groupId>
-            <artifactId>doc-docket</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.layjava.solon.docs</groupId>-->
+<!--            <artifactId>doc-docket</artifactId>-->
+<!--        </dependency>-->
 
     </dependencies>
 

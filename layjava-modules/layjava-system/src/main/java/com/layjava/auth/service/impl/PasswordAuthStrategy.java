@@ -13,7 +13,7 @@ import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.util.JsonUtil;
 import com.layjava.common.core.util.ValidatorUtil;
-import com.layjava.common.security.utils.LoginHelper;
+import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;

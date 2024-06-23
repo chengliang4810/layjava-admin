@@ -1,7 +1,7 @@
 package com.layjava.system.service.impl;
 
 import com.layjava.common.core.constant.TenantConstants;
-import com.layjava.common.security.utils.LoginHelper;
+import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.service.SysMenuService;
 import com.layjava.system.service.SysPermissionService;
 import com.layjava.system.service.SysRoleService;

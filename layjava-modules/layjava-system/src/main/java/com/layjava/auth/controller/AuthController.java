@@ -11,7 +11,7 @@ import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.util.JsonUtil;
 import com.layjava.common.core.util.ValidatorUtil;
-import com.layjava.common.security.utils.LoginHelper;
+import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.vo.SysMenuVo;

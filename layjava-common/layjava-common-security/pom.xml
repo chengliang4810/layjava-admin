@@ -12,23 +12,11 @@
     <artifactId>layjava-common-security</artifactId>
 
     <dependencies>
-
-        <dependency>
-            <groupId>com.layjava</groupId>
-            <artifactId>layjava-common-core</artifactId>
-        </dependency>
-
         <!-- sa-token -->
         <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>sa-token-solon-plugin</artifactId>
+            <groupId>com.layjava</groupId>
+            <artifactId>layjava-common-satoken</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>sa-token-dao-redisson-jackson</artifactId>
-        </dependency>
-
     </dependencies>
 
 

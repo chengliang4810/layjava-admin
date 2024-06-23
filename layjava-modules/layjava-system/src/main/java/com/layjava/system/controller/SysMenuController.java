@@ -2,7 +2,7 @@ package com.layjava.system.controller;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
-import com.layjava.common.security.utils.LoginHelper;
+import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysMenuBo;
 import com.layjava.system.domain.vo.SysMenuVo;

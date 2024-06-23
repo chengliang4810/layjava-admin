@@ -3,7 +3,7 @@ package com.layjava.system.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.tree.Tree;
 import com.layjava.common.core.util.MapstructUtils;
-import com.layjava.common.security.utils.LoginHelper;
+import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
 import com.layjava.system.domain.vo.SysMenuVo;

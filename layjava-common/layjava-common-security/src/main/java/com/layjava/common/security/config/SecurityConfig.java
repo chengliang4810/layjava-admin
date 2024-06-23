@@ -11,7 +11,6 @@ import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 
 @Configuration
-//@Import(profilesIfAbsent = "classpath:common-security.yml")
 public class SecurityConfig {
 
     /**

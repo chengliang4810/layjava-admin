@@ -1,4 +1,4 @@
-package com.layjava.common.security.utils;
+package com.layjava.common.satoken.utils;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaStorage;
