@@ -8,7 +8,7 @@ import com.mybatisflex.annotation.AbstractUpdateListener;
 import java.time.LocalDateTime;
 
 /**
- * 新增数据自动填充
+ * 更新数据自动填充
  *
  * @author chengliang
  * @date 2024/06/21
