@@ -11,5 +11,5 @@ mybatis.default:
     printBanner: false
     keyConfig:
       # 配置雪花ID作为主键
-      keyType: "Generator"
-      value: "snowFlakeId"
+      keyType: Generator
+      value: snowFlakeId

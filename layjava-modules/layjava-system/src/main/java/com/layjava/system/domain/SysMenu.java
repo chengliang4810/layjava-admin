@@ -3,7 +3,6 @@ package com.layjava.system.domain;
 import com.layjava.common.dao.core.entity.BaseEntity;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,7 +27,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 菜单ID
      */
-    @Id(keyType = KeyType.Generator)
+    @Id
     private Long id;
 
     /**
