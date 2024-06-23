@@ -40,13 +40,6 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- redis模块 -->
-            <dependency>
-                <groupId>com.layjava</groupId>
-                <artifactId>layjava-common-redis</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
             <!-- 数据库模块 -->
             <dependency>
                 <groupId>com.layjava</groupId>

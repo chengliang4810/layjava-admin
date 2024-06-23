@@ -38,11 +38,6 @@
             <artifactId>layjava-common-dao</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.layjava</groupId>
-            <artifactId>layjava-common-redis</artifactId>
-        </dependency>
-
         <!-- 接口文档 -->
 <!--        <dependency>-->
 <!--            <groupId>com.layjava</groupId>-->
