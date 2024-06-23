@@ -1,5 +1,8 @@
 package com.layjava.common.dao.config;
 
+import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.common.dao.listener.BaseEntityInsertListener;
+import com.layjava.common.dao.listener.BaseEntityUpdateListener;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.mybatis.FlexConfiguration;
 import org.apache.ibatis.solon.annotation.Db;
@@ -15,9 +18,8 @@ import org.noear.solon.annotation.Configuration;
 @Configuration
 public class MybatisFlexConfig {
 
-
     /**
-     * 配置
+     * MybatisFlex配置
      *
      * @param flexConfiguration flexConfiguration
      * @param globalConfig      globalConfig
@@ -25,10 +27,9 @@ public class MybatisFlexConfig {
     @Bean
     public void configuration(@Db("default") FlexConfiguration flexConfiguration
             , @Db("default") FlexGlobalConfig globalConfig) {
-
-        // 数据填充
-        // globalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
-        // globalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);
+        // BaseEntity数据填充
+        globalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
+        globalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);
     }
 
 }
