@@ -12,7 +12,7 @@ import org.noear.solon.annotation.Inject;
  */
 @Data
 @Configuration
-@Inject("${security}")
+@Inject(value = "${security}", required = false)
 public class SecurityProperties {
 
     /**

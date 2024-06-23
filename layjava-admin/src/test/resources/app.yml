@@ -1,0 +1,23 @@
+# 配置默认数据源
+datasource.default:
+  schema: system
+  driverClassName: com.p6spy.engine.spy.P6SpyDriver
+  jdbcUrl: jdbc:p6spy:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  username: root
+  password: P@ssw0rd
+
+# 配置数据源对应的 mybatis 信息（要与 DataSource bean 的名字对上）
+mybatis.default:
+  typeAliases:    #支持包名 或 类名（大写开头 或 *）//支持 ** 或 * 占位符
+    - "com.layjava.**.model"
+  mappers:        #支持包名 或 类名（大写开头 或 *）或 xml（.xml结尾）//支持 ** 或 * 占位符
+    - "com.layjava.**.mapper.*Mapper"
+  configuration:  #扩展配置（要与 FlexConfiguration 类的属性一一对应）
+    mapperVerifyEnabled: false #如果为 true，则要求所有 mapper 有 @Mapper 主解
+    mapUnderscoreToCamelCase: true
+  globalConfig:   #全局配置（要与 FlexGlobalConfig 类的属性一一对应）//只是示例，别照抄
+    printBanner: false
+    keyConfig:
+      # 配置雪花ID作为主键
+      keyType: Generator
+      value: snowFlakeId

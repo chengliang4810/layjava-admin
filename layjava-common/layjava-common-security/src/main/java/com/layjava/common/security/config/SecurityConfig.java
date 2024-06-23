@@ -21,12 +21,16 @@ public class SecurityConfig {
      */
     @Bean(index = -100)
     public SaTokenInterceptor saTokenInterceptor(@Inject SecurityProperties securityProperties) {
+        String[] excludes = {};
+        if (securityProperties != null && securityProperties.getExcludes() != null){
+            excludes = securityProperties.getExcludes();
+        }
         return new SaTokenInterceptor()
                 // 指定 [拦截路由] 与 [放行路由]
                 .addInclude("/**")
                 .addExclude("/favicon.ico")
                 // 排除不需要拦截的路径
-                .addExclude(securityProperties.getExcludes())
+                .addExclude(excludes)
                 // 认证函数: 每次请求执行
                 .setAuth(req -> {
                     SaRouter.match("/**", StpUtil::checkLogin);
