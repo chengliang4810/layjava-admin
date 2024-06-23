@@ -4,10 +4,13 @@ import com.layjava.common.dao.core.entity.BaseEntity;
 import com.layjava.common.dao.listener.BaseEntityInsertListener;
 import com.layjava.common.dao.listener.BaseEntityUpdateListener;
 import com.mybatisflex.core.FlexGlobalConfig;
+import com.mybatisflex.core.audit.AuditManager;
 import com.mybatisflex.core.mybatis.FlexConfiguration;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ORM框架配置
@@ -18,6 +21,7 @@ import org.noear.solon.annotation.Configuration;
 @Configuration
 public class MybatisFlexConfig {
 
+    private static final Logger logger = LoggerFactory.getLogger("mybatis-flex-sql");
     /**
      * MybatisFlex配置
      *
@@ -27,6 +31,14 @@ public class MybatisFlexConfig {
     @Bean
     public void configuration(@Db("default") FlexConfiguration flexConfiguration
             , @Db("default") FlexGlobalConfig globalConfig) {
+
+        //开启审计功能
+        AuditManager.setAuditEnable(true);
+        //设置 SQL 审计收集器
+        AuditManager.setMessageCollector(auditMessage ->
+                logger.info("{},{}ms", auditMessage.getFullSql(), auditMessage.getElapsedTime())
+        );
+
         // BaseEntity数据填充
         globalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
         globalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);

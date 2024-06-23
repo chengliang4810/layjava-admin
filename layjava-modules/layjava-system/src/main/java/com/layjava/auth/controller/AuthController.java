@@ -63,7 +63,6 @@ public class AuthController extends BaseController {
         String clientId = loginBody.getClientId();
         String grantType = loginBody.getGrantType();
         SysClient client = clientService.getByClientId(clientId);
-        System.out.println("client:" + client);
 
         // 查询不到 client 或 client 内不包含 grantType
         if (ObjectUtil.isNull(client) || !StrUtil.contains(client.getGrantType(), grantType)) {

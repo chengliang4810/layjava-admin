@@ -84,7 +84,6 @@ public class SysMenuController extends BaseController {
     @Delete
     @Mapping("/{ids}")
     public void delete(@NotBlank(message = "ID不允许为空") String ids) {
-        System.out.println(ids);
         List<String> strIds = StrUtil.split(ids, ",");
         long result = sysMenuService.deleteMenuById(strIds);
         Assert.isTrue(result > 0, "删除用户信息表失败");

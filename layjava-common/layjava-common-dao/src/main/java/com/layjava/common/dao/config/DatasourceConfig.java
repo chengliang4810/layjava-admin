@@ -1,5 +1,6 @@
 package com.layjava.common.dao.config;
 
+import com.p6spy.engine.spy.P6DataSource;
 import com.zaxxer.hikari.HikariDataSource;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
@@ -22,7 +23,11 @@ public class DatasourceConfig {
      * @return 数据源
      */
     @Bean(value = "default", typed = true)
-    public DataSource defaultDataSource(@Inject("${datasource.default}") HikariDataSource dataSource) {
+    public DataSource defaultDataSource(@Inject("${layjava.datasource.default}") HikariDataSource dataSource
+            , @Inject(value = "${layjava.datasource.default.p6spy: false}", required = false) Boolean p6spy) {
+        if(Boolean.TRUE.equals(p6spy)){
+            return new P6DataSource(dataSource);
+        }
         return dataSource;
     }
 
