@@ -21,8 +21,8 @@ public class DatasourceConfig {
      * @param dataSource 数据源
      * @return 数据源
      */
-    @Bean(value = "default", typed = true)
-    public DataSource defaultDataSource(@Inject("${datasource.default}") HikariDataSource dataSource) {
+    @Bean(value = "db1", typed = true)
+    public DataSource defaultDataSource(@Inject("${datasource.db1}") HikariDataSource dataSource) {
         return dataSource;
     }
 

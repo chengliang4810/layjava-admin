@@ -29,7 +29,7 @@
         <java.version>17</java.version>
 
         <!-- 数据源 -->
-        <mysql.version>8.3.0</mysql.version>
+        <mysql.version>8.4.0</mysql.version>
         <p6spy.version>3.9.1</p6spy.version>
         <hikaricp.version>4.0.3</hikaricp.version>
         <mybatis-flex.version>1.9.3</mybatis-flex.version>
