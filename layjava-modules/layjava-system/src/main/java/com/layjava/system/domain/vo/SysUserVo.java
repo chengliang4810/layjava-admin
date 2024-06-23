@@ -1,6 +1,5 @@
 package com.layjava.system.domain.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.layjava.system.domain.SysUser;
 import com.mybatisflex.annotation.RelationManyToMany;
 import com.mybatisflex.annotation.RelationOneToOne;
@@ -8,6 +7,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.noear.snack.annotation.ONodeAttr;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -78,7 +78,7 @@ public class SysUserVo implements Serializable {
     /**
      * 密码
      */
-    @JsonIgnore
+    @ONodeAttr(ignore = true)
     private String password;
 
     /**

@@ -18,7 +18,7 @@
 
     <modules>
         <module>layjava-system</module>
-        <module>layjava-generator</module>
+<!--        <module>layjava-generator</module>-->
     </modules>
 
 </project>

@@ -1,6 +1,5 @@
 package com.layjava.system.domain.bo;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.layjava.common.dao.core.entity.BaseEntity;
 import com.layjava.system.domain.SysMenu;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -13,7 +12,8 @@ import org.noear.solon.validation.annotation.NotNull;
 /**
  * 菜单权限业务对象 sys_menu
  *
- * @author Michelle.Chung
+ * @author chengliang
+ * @date 2024/06/23
  */
 
 @Data
@@ -113,7 +113,6 @@ public class SysMenuBo extends BaseEntity {
     /**
      * 权限标识
      */
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @Length(min = 0, max = 100, message = "权限标识长度不能超过{max}个字符")
     private String permissions;
 

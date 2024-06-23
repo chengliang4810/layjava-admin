@@ -1,1 +1,6 @@
-
+# 配置默认数据源
+datasource.default:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+    username: root
+    password: P@ssw0rd

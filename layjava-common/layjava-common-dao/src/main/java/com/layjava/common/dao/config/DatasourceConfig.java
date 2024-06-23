@@ -22,7 +22,7 @@ public class DatasourceConfig {
      * @return 数据源
      */
     @Bean(value = "default", typed = true)
-    public DataSource defaultDataSource(@Inject("${layjava.datasource.default}") HikariDataSource dataSource) {
+    public DataSource defaultDataSource(@Inject("${datasource.default}") HikariDataSource dataSource) {
         return dataSource;
     }
 

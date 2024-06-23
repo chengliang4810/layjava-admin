@@ -33,19 +33,13 @@
         <!-- Json序列化支持组件 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>solon.serialization.jackson</artifactId>
+            <artifactId>solon.serialization.snack3</artifactId>
         </dependency>
 
         <!-- 跨域处理组件 -->
         <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon.web.cors</artifactId>
-        </dependency>
-
-        <!-- 验证扩展组件 -->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.validation</artifactId>
         </dependency>
 
         <!-- 日志 -->
