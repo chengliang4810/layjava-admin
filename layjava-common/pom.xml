@@ -23,6 +23,10 @@
         <module>layjava-common-dao</module>
         <module>layjava-common-security</module>
         <module>layjava-common-satoken</module>
+        <module>layjava-common-log</module>
+        <module>layjava-common-json</module>
+        <module>layjava-common-social</module>
+        <module>layjava-common-excel</module>
     </modules>
 
 </project>

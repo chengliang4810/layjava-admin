@@ -1,10 +1,11 @@
 package com.layjava.system.service.impl;
 
+
 import com.layjava.common.core.constant.TenantConstants;
 import com.layjava.common.satoken.utils.LoginHelper;
-import com.layjava.system.service.SysMenuService;
-import com.layjava.system.service.SysPermissionService;
-import com.layjava.system.service.SysRoleService;
+import com.layjava.system.service.ISysMenuService;
+import com.layjava.system.service.ISysPermissionService;
+import com.layjava.system.service.ISysRoleService;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 
@@ -16,18 +17,19 @@ import java.util.Set;
  *
  * @author ruoyi
  */
+
 @Component
-public class SysPermissionServiceImpl implements SysPermissionService {
+public class SysPermissionServiceImpl implements ISysPermissionService {
 
     @Inject
-    private SysRoleService roleService;
+    private ISysRoleService roleService;
     @Inject
-    private SysMenuService menuService;
+    private ISysMenuService menuService;
 
     /**
      * 获取角色数据权限
      *
-     * @param userId  用户id
+     * @param userId 用户id
      * @return 角色权限信息
      */
     @Override
@@ -45,7 +47,7 @@ public class SysPermissionServiceImpl implements SysPermissionService {
     /**
      * 获取菜单数据权限
      *
-     * @param userId  用户id
+     * @param userId 用户id
      * @return 菜单权限信息
      */
     @Override

@@ -1,6 +1,8 @@
 package com.layjava.system.domain.vo;
 
+import com.layjava.common.core.utils.StringUtils;
 import lombok.Data;
+
 
 /**
  * 路由显示信息
@@ -52,9 +54,9 @@ public class MetaVo {
         this.title = title;
         this.icon = icon;
         this.noCache = noCache;
-//        if (StrUtil.ishttp(link)) {
-//            this.link = link;
-//        }
+        if (StringUtils.ishttp(link)) {
+            this.link = link;
+        }
     }
 
 }

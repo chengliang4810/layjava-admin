@@ -1,11 +1,14 @@
 package com.layjava.common.dao.core.entity;
 
+import com.mybatisflex.annotation.Column;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Entity基类
@@ -45,5 +48,12 @@ public class BaseEntity implements Serializable {
      * 更新时间
      */
     private LocalDateTime updateTime;
+
+    /**
+     * 请求参数
+     */
+    // @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @Column(ignore = true)
+    private Map<String, Object> params = new HashMap<>();
 
 }

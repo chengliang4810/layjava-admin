@@ -7,9 +7,10 @@ import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.noear.solon.validation.annotation.Length;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
-import org.noear.solon.validation.annotation.Size;
+
 
 /**
  * 角色信息业务对象 sys_role
@@ -32,14 +33,14 @@ public class SysRoleBo extends BaseEntity {
      * 角色名称
      */
     @NotBlank(message = "角色名称不能为空")
-    @Size(min = 0, max = 30, message = "角色名称长度不能超过{max}个字符")
+    @Length(min = 0, max = 30, message = "角色名称长度不能超过{max}个字符")
     private String roleName;
 
     /**
      * 角色权限字符串
      */
     @NotBlank(message = "角色权限字符串不能为空")
-    @Size(min = 0, max = 100, message = "权限字符长度不能超过{max}个字符")
+    @Length(min = 0, max = 100, message = "权限字符长度不能超过{max}个字符")
     private String roleKey;
 
     /**

@@ -1,37 +1,44 @@
 package com.layjava.auth.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serial;
-import java.io.Serializable;
 
 /**
- * 登录返回对象
+ * 登录验证信息
  *
- * @author chengliang
- * @date 2024/05/28
+ * @author Michelle.Chung
  */
 @Data
-@Accessors(chain = true)
-public class LoginVo implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class LoginVo {
 
     /**
      * 授权令牌
      */
+    @JsonProperty("access_token")
     private String accessToken;
+
+    /**
+     * 刷新令牌
+     */
+    @JsonProperty("refresh_token")
+    private String refreshToken;
 
     /**
      * 授权令牌 access_token 的有效期
      */
+    @JsonProperty("expire_in")
     private Long expireIn;
+
+    /**
+     * 刷新令牌 refresh_token 的有效期
+     */
+    @JsonProperty("refresh_expire_in")
+    private Long refreshExpireIn;
 
     /**
      * 应用id
      */
+    @JsonProperty("client_id")
     private String clientId;
 
     /**
@@ -43,6 +50,5 @@ public class LoginVo implements Serializable {
      * 用户 openid
      */
     private String openid;
-
 
 }

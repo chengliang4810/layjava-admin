@@ -6,6 +6,7 @@ import com.layjava.common.dao.listener.BaseEntityUpdateListener;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.audit.AuditManager;
 import com.mybatisflex.core.mybatis.FlexConfiguration;
+import com.mybatisflex.core.query.QueryColumnBehavior;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
@@ -22,6 +23,14 @@ import org.slf4j.LoggerFactory;
 public class MybatisFlexConfig {
 
     private static final Logger logger = LoggerFactory.getLogger("mybatis-flex-sql");
+
+    static {
+        // 全局自动忽略策略
+        QueryColumnBehavior.setIgnoreFunction(QueryColumnBehavior.IGNORE_BLANK);
+        // 当 IN(...) 条件只有 1 个参数时，自动把的内容转换为相等。
+        QueryColumnBehavior.setSmartConvertInToEquals(true);
+    }
+
     /**
      * MybatisFlex配置
      *

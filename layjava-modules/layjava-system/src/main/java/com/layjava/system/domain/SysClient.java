@@ -1,27 +1,32 @@
 package com.layjava.system.domain;
 
 import com.layjava.common.dao.core.entity.BaseEntity;
+import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+
+
+import java.io.Serial;
 
 /**
+ * 授权管理对象 sys_client
  *
- * 系统授权表
- *
- * @author chengliang4810
- * @since 2024-04-25
+ * @author Michelle.Chung
+ * @date 2023-05-15
  */
 @Data
-@Table("sys_client")
-@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
+@Table("sys_client")
 public class SysClient extends BaseEntity {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
+    @Id
     private Long id;
 
     /**
@@ -52,15 +57,22 @@ public class SysClient extends BaseEntity {
     /**
      * token活跃超时时间
      */
-    private Integer activeTimeout;
+    private Long activeTimeout;
 
     /**
-     * token固定超时
+     * token固定超时时间
      */
-    private Integer timeout;
+    private Long timeout;
 
     /**
      * 状态（0正常 1停用）
      */
     private String status;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    private String delFlag;
+
+
 }

@@ -33,6 +33,30 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-common-json</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-common-log</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-common-excel</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-common-social</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <!-- 安全模块 -->
             <dependency>
                 <groupId>com.layjava</groupId>

@@ -11,8 +11,17 @@ import ${package.Entity}.bo.${entity}Bo;
 import ${package.Entity}.vo.${entity}Vo;
 import ${package.Service}.${table.serviceName};
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.annotation.Get;
+import org.noear.solon.annotation.Post;
+import org.noear.solon.annotation.Put;
+import org.noear.solon.annotation.Delete;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Get;
+import org.noear.solon.annotation.Post;
+import org.noear.solon.annotation.Put;
+import org.noear.solon.annotation.Delete;
+import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.*;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
@@ -90,7 +99,7 @@ public class ${table.controllerName} {
      */
     @Post
     @Mapping
-    public void save(@Validated(AddGroup.class) ${entity}Bo ${table.entityPath}Bo) {
+    public void save((AddGroup.class) ${entity}Bo ${table.entityPath}Bo) {
         boolean result = ${table.entityPath}Service.save${entity}(${table.entityPath}Bo);
         Assert.isTrue(result, "新增${table.comment!}失败");
     }
@@ -102,7 +111,7 @@ public class ${table.controllerName} {
      */
     @Put
     @Mapping
-    public void update(@Validated(UpdateGroup.class) ${entity}Bo ${table.entityPath}Bo) {
+    public void update((UpdateGroup.class) ${entity}Bo ${table.entityPath}Bo) {
         boolean result = ${table.entityPath}Service.update${entity}ById(${table.entityPath}Bo);
         Assert.isTrue(result, "更新${table.comment!}失败");
     }

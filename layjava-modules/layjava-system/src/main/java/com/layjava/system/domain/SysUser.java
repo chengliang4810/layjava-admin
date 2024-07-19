@@ -1,27 +1,25 @@
 package com.layjava.system.domain;
 
+import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.dao.core.entity.BaseEntity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-import lombok.experimental.FieldNameConstants;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
+ * 用户对象 sys_user
  *
- * 用户信息表
- *
- * @author chengliang4810
- * @since 2024-04-24
+ * @author Lion Li
  */
+
 @Data
-@Table("sys_user")
-@FieldNameConstants
-@Accessors(chain = true)
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Table("sys_user")
 public class SysUser extends BaseEntity {
 
     /**
@@ -38,17 +36,12 @@ public class SysUser extends BaseEntity {
     /**
      * 用户账号
      */
-    private String account;
-
-    /**
-     * 密码
-     */
-    private String password;
+    private String userName;
 
     /**
      * 用户昵称
      */
-    private String name;
+    private String nickName;
 
     /**
      * 用户类型（sys_user系统用户）
@@ -63,22 +56,38 @@ public class SysUser extends BaseEntity {
     /**
      * 手机号码
      */
-    private String phone;
+    private String phonenumber;
 
     /**
-     * 用户性别（0男 1女 2未知）
+     * 用户性别
      */
-    private String gender;
+    private String sex;
 
     /**
-     * 头像地址
+     * 用户头像
      */
     private Long avatar;
+
+    /**
+     * 密码
+     */
+//    @TableField(
+//        insertStrategy = FieldStrategy.NOT_EMPTY,
+//        updateStrategy = FieldStrategy.NOT_EMPTY,
+//        whereStrategy = FieldStrategy.NOT_EMPTY
+//    )
+//        todo
+    private String password;
 
     /**
      * 帐号状态（0正常 1停用）
      */
     private String status;
+
+    /**
+     * 删除标志（0代表存在 2代表删除）
+     */
+    private String delFlag;
 
     /**
      * 最后登录IP
@@ -88,11 +97,20 @@ public class SysUser extends BaseEntity {
     /**
      * 最后登录时间
      */
-    private LocalDateTime loginDate;
+    private Date loginDate;
 
     /**
      * 备注
      */
     private String remark;
+
+
+    public SysUser(Long userId) {
+        this.userId = userId;
+    }
+
+    public boolean isSuperAdmin() {
+        return UserConstants.SUPER_ADMIN_ID.equals(this.userId);
+    }
 
 }

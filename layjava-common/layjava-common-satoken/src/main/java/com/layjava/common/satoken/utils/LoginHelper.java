@@ -7,12 +7,14 @@ import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
+import com.layjava.common.core.constant.TenantConstants;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.enums.UserType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -31,9 +33,11 @@ import java.util.function.Supplier;
 public class LoginHelper {
 
     public static final String LOGIN_USER_KEY = "loginUser";
+    public static final String TENANT_KEY = "tenantId";
     public static final String USER_KEY = "userId";
     public static final String DEPT_KEY = "deptId";
-    public static final String CLIENT_KEY = "clientId";
+    public static final String CLIENT_KEY = "clientid";
+    public static final String TENANT_ADMIN_KEY = "isTenantAdmin";
 
     /**
      * 登录系统 基于 设备类型
@@ -45,11 +49,13 @@ public class LoginHelper {
     public static void login(LoginUser loginUser, SaLoginModel model) {
         SaStorage storage = SaHolder.getStorage();
         storage.set(LOGIN_USER_KEY, loginUser);
+        storage.set(TENANT_KEY, loginUser.getTenantId());
         storage.set(USER_KEY, loginUser.getUserId());
         storage.set(DEPT_KEY, loginUser.getDeptId());
         model = ObjectUtil.defaultIfNull(model, new SaLoginModel());
         StpUtil.login(loginUser.getLoginId(),
-                model.setExtra(USER_KEY, loginUser.getUserId())
+                model.setExtra(TENANT_KEY, loginUser.getTenantId())
+                        .setExtra(USER_KEY, loginUser.getUserId())
                         .setExtra(DEPT_KEY, loginUser.getDeptId()));
         SaSession tokenSession = StpUtil.getTokenSession();
         tokenSession.updateTimeout(model.getTimeout());
@@ -84,7 +90,14 @@ public class LoginHelper {
      * 获取用户id
      */
     public static Long getUserId() {
-        return getLoginUser().getUserId();
+        return Convert.toLong(getExtra(USER_KEY));
+    }
+
+    /**
+     * 获取租户ID
+     */
+    public static String getTenantId() {
+        return Convert.toStr(getExtra(TENANT_KEY));
     }
 
     /**
@@ -101,8 +114,8 @@ public class LoginHelper {
     /**
      * 获取用户账户
      */
-    public static String getAccount() {
-        return getLoginUser().getAccount();
+    public static String getUsername() {
+        return getLoginUser().getUsername();
     }
 
     /**
@@ -127,6 +140,23 @@ public class LoginHelper {
         return isSuperAdmin(getUserId());
     }
 
+    /**
+     * 是否为超级管理员
+     *
+     * @param rolePermission 角色权限标识组
+     * @return 结果
+     */
+    public static boolean isTenantAdmin(Set<String> rolePermission) {
+        return rolePermission.contains(TenantConstants.TENANT_ADMIN_ROLE_KEY);
+    }
+
+    public static boolean isTenantAdmin() {
+        Object value = getStorageIfAbsentSet(TENANT_ADMIN_KEY, () -> {
+            return isTenantAdmin(getLoginUser().getRolePermission());
+        });
+        return Convert.toBool(value);
+    }
+
     public static boolean isLogin() {
         return getLoginUser() != null;
     }
@@ -142,9 +172,5 @@ public class LoginHelper {
         } catch (Exception e) {
             return null;
         }
-    }
-
-    public static String getName() {
-        return getLoginUser().getName();
     }
 }

@@ -11,13 +11,12 @@ import java.io.Serial;
 /**
  * 部门表 sys_dept
  *
- * @author chengliang
- * @since 2024/06/13
+ * @author Lion Li
  */
 
 @Data
-@Table("sys_dept")
 @EqualsAndHashCode(callSuper = true)
+@Table("sys_dept")
 public class SysDept extends BaseEntity {
 
     @Serial
@@ -67,7 +66,6 @@ public class SysDept extends BaseEntity {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-//    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
     private String delFlag;
 
     /**

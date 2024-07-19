@@ -1,116 +1,171 @@
 package com.layjava.auth.controller;
 
-import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.lang.Assert;
+import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import com.layjava.auth.domain.bo.LoginBody;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
+import com.layjava.auth.service.SysLoginService;
+import com.layjava.auth.service.SysRegisterService;
 import com.layjava.common.core.constant.UserConstants;
-import com.layjava.common.core.domain.model.LoginUser;
-import com.layjava.common.core.util.JsonUtil;
-import com.layjava.common.core.util.ValidatorUtil;
+import com.layjava.common.core.domain.R;
+import com.layjava.common.core.domain.model.LoginBody;
+import com.layjava.common.core.domain.model.RegisterBody;
+import com.layjava.common.core.domain.model.SocialLoginBody;
+import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.ValidatorUtils;
+import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
-import com.layjava.common.web.core.BaseController;
+import com.layjava.common.social.config.properties.SocialLoginConfigProperties;
+import com.layjava.common.social.config.properties.SocialProperties;
+import com.layjava.common.social.utils.SocialUtils;
 import com.layjava.system.domain.SysClient;
-import com.layjava.system.domain.vo.SysMenuVo;
-import com.layjava.system.domain.vo.SysUserVo;
-import com.layjava.system.domain.vo.UserInfoVo;
-import com.layjava.system.service.SysClientService;
-import com.layjava.system.service.SysMenuService;
-import com.layjava.system.service.SysUserService;
+import com.layjava.system.service.ISysClientService;
+import com.layjava.system.service.ISysConfigService;
+import com.layjava.system.service.ISysSocialService;
 import lombok.extern.slf4j.Slf4j;
+import me.zhyd.oauth.model.AuthResponse;
+import me.zhyd.oauth.model.AuthUser;
+import me.zhyd.oauth.request.AuthRequest;
+import me.zhyd.oauth.utils.AuthStateUtils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.handle.Result;
 
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
- * 身份验证控制器
+ * 认证
  *
- * @author chengliang
- * @since 2024/04/02
+ * @author Lion Li
  */
 @Slf4j
+@SaIgnore
+
 @Controller
 @Mapping("/auth")
-public class AuthController extends BaseController {
+public class AuthController {
 
     @Inject
-    private SysUserService userService;
+    private SocialProperties socialProperties;
     @Inject
-    private SysClientService clientService;
+    private SysLoginService loginService;
     @Inject
-    private SysMenuService menuService;
+    private SysRegisterService registerService;
+    @Inject
+    private ISysConfigService configService;
+    @Inject
+    private ISysSocialService socialUserService;
+    @Inject
+    private ISysClientService clientService;
+    @Inject
+    private ScheduledExecutorService scheduledExecutorService;
 
 
     /**
-     * 登录
+     * 登录方法
      *
      * @param body 登录信息
-     * @return {@link String}
+     * @return 结果
      */
     @Post
     @Mapping("/login")
-    public Result<LoginVo> login(@Body String body) {
-        // 验证参数
-        LoginBody loginBody = JsonUtil.toObject(body, LoginBody.class);
-        ValidatorUtil.validate(loginBody);
-
+    public R<LoginVo> login(@Body String body) {
+        LoginBody loginBody = JsonUtils.parseObject(body, LoginBody.class);
+        ValidatorUtils.validate(loginBody);
         // 授权类型和客户端id
         String clientId = loginBody.getClientId();
         String grantType = loginBody.getGrantType();
-        SysClient client = clientService.getByClientId(clientId);
-
+        SysClient client = clientService.queryByClientId(clientId);
         // 查询不到 client 或 client 内不包含 grantType
-        if (ObjectUtil.isNull(client) || !StrUtil.contains(client.getGrantType(), grantType)) {
+        if (ObjectUtil.isNull(client) || !StringUtils.contains(client.getGrantType(), grantType)) {
             log.info("客户端id: {} 认证类型：{} 异常!.", clientId, grantType);
-            return Result.failure("认证权限类型错误");
+            return R.fail("认证权限类型错误");
         } else if (!UserConstants.NORMAL.equals(client.getStatus())) {
-            return Result.failure("认证权限类型已禁用");
+            return R.fail("认证权限类型已禁用");
         }
 
-        //登录
-        return Result.succeed(AuthStrategy.login(body, client, grantType));
+        // 登录
+        LoginVo loginVo = AuthStrategy.login(body, client, grantType);
+
+        Long userId = LoginHelper.getUserId();
+//        scheduledExecutorService.schedule(() -> {
+//            WebSocketUtils.sendMessage(userId, "欢迎登录RuoYi-Vue-Plus后台管理系统");
+//        }, 3, TimeUnit.SECONDS);
+        return R.ok(loginVo);
     }
 
     /**
-     * 用户信息
+     * 第三方登录请求
      *
-     * @return {@link Map}<{@link String}, {@link Object}>
+     * @param source 登录来源
+     * @return 结果
      */
-    @Get
-    @Mapping("/user/info")
-    public UserInfoVo userInfo() {
-        UserInfoVo userInfoVo = new UserInfoVo();
-        LoginUser loginUser = LoginHelper.getLoginUser();
-
-        SysUserVo user = userService.getSysUserVoById(loginUser.getUserId());
-        Assert.notNull(user, "用户不存在");
-
-        userInfoVo.setUser(user);
-        userInfoVo.setPermissions(loginUser.getMenuPermission());
-        userInfoVo.setRoles(loginUser.getRolePermission());
-        return userInfoVo;
+    @Mapping("/binding/{source}")
+    public R<String> authBinding(String source) {
+        SocialLoginConfigProperties obj = socialProperties.getType().get(source);
+        if (ObjectUtil.isNull(obj)) {
+            return R.fail(source + "平台账号暂不支持");
+        }
+        AuthRequest authRequest = SocialUtils.getAuthRequest(source, socialProperties);
+        String authorizeUrl = authRequest.authorize(AuthStateUtils.createState());
+        return R.ok("操作成功", authorizeUrl);
     }
 
     /**
-     * 用户路由
+     * 第三方登录回调业务处理 绑定授权
+     *
+     * @param loginBody 请求体
+     * @return 结果
      */
-    @Get
-    @Mapping("/user/routes")
-    public List<SysMenuVo> userRoutes() {
-        return menuService.selectMenuList(LoginHelper.getUserId());
+    @Post
+    @Mapping("/social/callback")
+    public R<Void> socialCallback(SocialLoginBody loginBody) {
+        // 获取第三方登录信息
+        AuthResponse<AuthUser> response = SocialUtils.loginAuth(
+                loginBody.getSource(), loginBody.getSocialCode(),
+                loginBody.getSocialState(), socialProperties);
+        AuthUser authUserData = response.getData();
+        // 判断授权响应是否成功
+        if (!response.ok()) {
+            return R.fail(response.getMsg());
+        }
+        loginService.socialRegister(authUserData);
+        return R.ok();
     }
 
+
     /**
-     * 注销
+     * 取消授权
+     *
+     * @param socialId socialId
      */
+    @Delete
+    @Mapping(value = "/unlock/{socialId}")
+    public R<Void> unlockSocial(Long socialId) {
+        Boolean rows = socialUserService.deleteWithValidById(socialId);
+        return rows ? R.ok() : R.fail("取消授权失败");
+    }
+
+
+    /**
+     * 退出登录
+     */
+    @Post
     @Mapping("/logout")
-    public void logout() {
-        StpUtil.logout();
+    public R<Void> logout() {
+        loginService.logout();
+        return R.ok("退出成功");
+    }
+
+    /**
+     * 用户注册
+     */
+    @Post
+    @Mapping("/register")
+    public R<Void> register(RegisterBody user) {
+        if (!configService.selectRegisterEnabled(user.getTenantId())) {
+            return R.fail("当前系统没有开启注册功能！");
+        }
+        registerService.register(user);
+        return R.ok();
     }
 
 }

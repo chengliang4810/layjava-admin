@@ -4,6 +4,7 @@ import com.layjava.common.core.domain.dto.RoleDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -21,6 +22,11 @@ public class LoginUser implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 租户ID
+     */
+    private String tenantId;
 
     /**
      * 用户ID
@@ -60,7 +66,7 @@ public class LoginUser implements Serializable {
     /**
      * 登录IP地址
      */
-    private String ipAddress;
+    private String ipaddr;
 
     /**
      * 登录地点
@@ -90,12 +96,12 @@ public class LoginUser implements Serializable {
     /**
      * 用户名
      */
-    private String account;
+    private String username;
 
     /**
      * 用户昵称
      */
-    private String name;
+    private String nickname;
 
     /**
      * 角色对象

@@ -4,7 +4,7 @@ import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
 import cn.dev33.satoken.filter.SaFilterErrorStrategy;
-import com.layjava.common.core.exception.AuthException;
+import com.layjava.common.core.exception.auth.AuthException;
 import lombok.extern.slf4j.Slf4j;
 
 /**

@@ -1,25 +1,24 @@
 package com.layjava.system.domain;
 
 import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
 
 /**
  * 用户和角色关联 sys_user_role
  *
- * @author chengliang
- * @date 2024/06/13
+ * @author Lion Li
  */
+
 @Data
-@FieldNameConstants
 @Table("sys_user_role")
 public class SysUserRole {
 
     /**
      * 用户ID
      */
-    @Id
+    @Id(keyType = KeyType.None)
     private Long userId;
 
     /**

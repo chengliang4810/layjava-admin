@@ -1,31 +1,51 @@
 package com.layjava.system.domain;
 
+import com.layjava.common.dao.core.entity.BaseEntity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
+import lombok.EqualsAndHashCode;
 
 /**
- * 用户和角色关联 sys_user_role
+ * 岗位表 sys_post
  *
- * @author chengliang
- * @date 2024/06/13
+ * @author Lion Li
  */
+
 @Data
-@FieldNameConstants
+@EqualsAndHashCode(callSuper = true)
 @Table("sys_post")
-public class SysPost {
+public class SysPost extends BaseEntity {
 
     /**
-     * 部门ID
+     * 岗位序号
      */
     @Id
     private Long postId;
 
+    /**
+     * 岗位编码
+     */
+    private String postCode;
 
     /**
-     * 部门名称
+     * 岗位名称
      */
     private String postName;
+
+    /**
+     * 岗位排序
+     */
+    private Integer postSort;
+
+    /**
+     * 状态（0正常 1停用）
+     */
+    private String status;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
 }

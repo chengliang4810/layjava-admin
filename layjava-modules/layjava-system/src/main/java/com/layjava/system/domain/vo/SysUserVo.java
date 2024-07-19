@@ -1,29 +1,30 @@
 package com.layjava.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.layjava.system.domain.SysUser;
 import com.mybatisflex.annotation.RelationManyToMany;
 import com.mybatisflex.annotation.RelationOneToOne;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
-import lombok.experimental.Accessors;
-import lombok.experimental.FieldNameConstants;
-import org.noear.snack.annotation.ONodeAttr;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
+
 /**
- * 用户信息表
+ * 用户信息视图对象 sys_user
  *
- * @author chengliang4810
- * @since 2024-04-24
+ * @author Michelle.Chung
  */
 @Data
-@FieldNameConstants
-@Accessors(chain = true)
-@AutoMapper(target = SysUser.class, convertGenerate = false)
+@AutoMapper(target = SysUser.class)
 public class SysUserVo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
@@ -31,7 +32,7 @@ public class SysUserVo implements Serializable {
     private Long userId;
 
     /**
-     * 租户编号
+     * 租户ID
      */
     private String tenantId;
 
@@ -43,12 +44,12 @@ public class SysUserVo implements Serializable {
     /**
      * 用户账号
      */
-    private String account;
+    private String userName;
 
     /**
      * 用户昵称
      */
-    private String name;
+    private String nickName;
 
     /**
      * 用户类型（sys_user系统用户）
@@ -58,38 +59,37 @@ public class SysUserVo implements Serializable {
     /**
      * 用户邮箱
      */
+    // @Sensitive(strategy = SensitiveStrategy.EMAIL)
     private String email;
 
     /**
      * 手机号码
      */
-    private String phone;
+    // @Sensitive(strategy = SensitiveStrategy.PHONE)
+    private String phonenumber;
 
     /**
      * 用户性别（0男 1女 2未知）
      */
-    private String gender;
+    private String sex;
 
     /**
      * 头像地址
      */
+    // @Translation(type = TransConstant.OSS_ID_TO_URL)
     private Long avatar;
 
     /**
      * 密码
      */
-    @ONodeAttr(ignore = true)
+    @JsonIgnore
+    @JsonProperty
     private String password;
 
     /**
      * 帐号状态（0正常 1停用）
      */
     private String status;
-
-    /**
-     * 删除标志（0代表存在 2代表删除）
-     */
-    private String delFlag;
 
     /**
      * 最后登录IP
@@ -99,7 +99,7 @@ public class SysUserVo implements Serializable {
     /**
      * 最后登录时间
      */
-    private LocalDateTime loginDate;
+    private Date loginDate;
 
     /**
      * 备注
@@ -107,34 +107,35 @@ public class SysUserVo implements Serializable {
     private String remark;
 
     /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
      * 部门对象
      */
-    @RelationOneToOne(selfField = Fields.deptId, targetTable = "sys_dept", targetField = "deptId")
+    @RelationOneToOne(selfField = "deptId", joinSelfColumn = "dept_id", targetField = "deptId", joinTargetColumn = "dept_id", targetTable = "sys_dept")
     private SysDeptVo dept;
 
     /**
      * 角色对象
      */
-    @RelationManyToMany(
-            joinTable = "sys_user_role", // 中间表
-            targetTable = "sys_role",
-            selfField = "userId", joinSelfColumn = "user_id",
-            targetField = "roleId", joinTargetColumn = "rol  ml.k= 999999999999999999999999999999999999999e_id"
-    )
+    @RelationManyToMany(selfField = "userId", joinSelfColumn = "user_id", targetTable = "sys_role", targetField = "roleId", joinTargetColumn = "role_id", joinTable = "sys_user_role")
     private List<SysRoleVo> roles;
+
+    /**
+     * 角色组
+     */
+    private Long[] roleIds;
 
     /**
      * 岗位组
      */
-//    @RelationManyToMany(
-//            selfField = "userId",
-//            targetTable = "sys_post",
-//            targetField = "postId",
-//            valueField = "postName",
-//            joinTable = "sys_user_post",
-//            joinSelfColumn = "user_id",
-//            joinTargetColumn = "post_id"
-//    )
-    private List<String> postIds;
+    private Long[] postIds;
+
+    /**
+     * 数据权限 当前角色ID
+     */
+    private Long roleId;
 
 }

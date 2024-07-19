@@ -1,13 +1,14 @@
 package com.layjava.system.domain;
 
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 
 /**
  * 角色和部门关联 sys_role_dept
  *
- * @author chengliang
- * @date 2024/06/13
+ * @author Lion Li
  */
 
 @Data
@@ -17,6 +18,7 @@ public class SysRoleDept {
     /**
      * 角色ID
      */
+    @Id(keyType = KeyType.None)
     private Long roleId;
 
     /**

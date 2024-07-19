@@ -1,122 +1,145 @@
 package com.layjava.system.service.impl;
 
+import cn.hutool.crypto.SecureUtil;
+import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.dao.core.page.PageQuery;
-import com.layjava.common.dao.core.page.PageResult;
+import com.layjava.common.dao.core.page.TableDataInfo;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
 import com.layjava.system.mapper.SysClientMapper;
-import com.layjava.system.service.SysClientService;
+import com.layjava.system.service.ISysClientService;
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.core.update.UpdateChain;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.layjava.system.domain.table.SysClientTableDef.SYS_CLIENT;
 
 /**
+ * 客户端管理Service业务层处理
  *
- * 系统授权表 服务实现类
- *
- * @author chengliang4810
- * @since 2024-04-25
+ * @author Michelle.Chung
+ * @date 2023-06-18
  */
 @Slf4j
 @Component
-public class SysClientServiceImpl  implements SysClientService {
+public class SysClientServiceImpl implements ISysClientService {
 
     @Db
-    private SysClientMapper clientMapper;
+    private SysClientMapper baseMapper;
 
     /**
-     * 查询系统授权表列表
-     *
-     * @param sysClientBo 系统授权表Bo
-     * @return 系统授权表列表
+     * 查询客户端管理
      */
     @Override
-    public List<SysClientVo> getSysClientVoList(SysClientBo sysClientBo) {
-        return List.of();
+    public SysClientVo queryById(Long id) {
+        SysClientVo vo = baseMapper.selectOneWithRelationsByIdAs(id, SysClientVo.class);
+        vo.setGrantTypeList(List.of(vo.getGrantType().split(",")));
+        return vo;
+    }
+
+
+    /**
+     * 查询客户端管理
+     */
+    @Override
+    public SysClient queryByClientId(String clientId) {
+        return baseMapper.selectOneByQuery(QueryWrapper.create().from(SYS_CLIENT).where(SYS_CLIENT.CLIENT_ID.eq(clientId)));
     }
 
     /**
-     * 获取系统授权表分页列表
-     *
-     * @param sysClientBo 系统授权表Bo
-     * @param pageQuery   分页查询条件
-     * @return {@link List}<{@link SysClientVo}>
+     * 查询客户端管理列表
      */
     @Override
-    public PageResult<SysClientVo> getSysClientVoList(SysClientBo sysClientBo, PageQuery pageQuery) {
-        return null;
+    public TableDataInfo<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery) {
+        QueryWrapper lqw = buildQueryWrapper(bo);
+        Page<SysClientVo> result = baseMapper.paginateAs(pageQuery, lqw, SysClientVo.class);
+        result.getRecords().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split(","))));
+        return TableDataInfo.build(result);
     }
 
     /**
-     * 通过id查询系统授权表Vo
-     *
-     * @param id 系统授权表id
-     * @return {@link SysClientVo} 系统授权表
+     * 查询客户端管理列表
      */
     @Override
-    public SysClientVo getSysClientVoById(Long id) {
-        return null;
+    public List<SysClientVo> queryList(SysClientBo bo) {
+        QueryWrapper lqw = buildQueryWrapper(bo);
+        return baseMapper.selectListByQueryAs(lqw, SysClientVo.class);
+    }
+
+    private QueryWrapper buildQueryWrapper(SysClientBo bo) {
+        return QueryWrapper.create()
+                .from(SYS_CLIENT)
+                .where(SYS_CLIENT.CLIENT_ID.eq(bo.getClientId()))
+                .and(SYS_CLIENT.CLIENT_KEY.eq(bo.getClientKey()))
+                .and(SYS_CLIENT.CLIENT_SECRET.eq(bo.getClientSecret()))
+                .and(SYS_CLIENT.STATUS.eq(bo.getStatus()))
+                .orderBy(SYS_CLIENT.ID, true);
     }
 
     /**
-     * 查询客户端信息基于客户端id
-     *
-     * @param clientId 客户端id
+     * 新增客户端管理
      */
     @Override
-    public SysClient getByClientId(String clientId) {
-        return clientMapper.selectOneByQuery(QueryWrapper.create()
-                .where(SYS_CLIENT.CLIENT_ID.eq(clientId))
-        );
+    public Boolean insertByBo(SysClientBo bo) {
+        SysClient add = MapstructUtils.convert(bo, SysClient.class);
+        validEntityBeforeSave(add);
+        add.setGrantType(String.join(",", bo.getGrantTypeList()));
+        // 生成clientid
+        String clientKey = bo.getClientKey();
+        String clientSecret = bo.getClientSecret();
+        add.setClientId(SecureUtil.md5(clientKey + clientSecret));
+        boolean flag = baseMapper.insert(add, true) > 0;
+        if (flag) {
+            bo.setId(add.getId());
+        }
+        return flag;
     }
 
     /**
-     * 保存系统授权表
-     *
-     * @param sysClientBo 系统授权表
-     * @return {@link boolean} 是否新增成功
+     * 修改客户端管理
      */
     @Override
-    public boolean saveSysClient(SysClientBo sysClientBo) {
-        return false;
-    }
-
-    /**
-     * 根据id更新系统授权表
-     *
-     * @param sysClientBo 系统授权表
-     * @return {@link boolean} 是否更新成功
-     */
-    @Override
-    public boolean updateSysClientById(SysClientBo sysClientBo) {
-        return false;
+    public Boolean updateByBo(SysClientBo bo) {
+        SysClient update = MapstructUtils.convert(bo, SysClient.class);
+        validEntityBeforeSave(update);
+        update.setGrantType(String.join(",", bo.getGrantTypeList()));
+        return baseMapper.update(update) > 0;
     }
 
     /**
      * 修改状态
-     *
-     * @param id
-     * @param status
      */
     @Override
     public boolean updateUserStatus(Long id, String status) {
-        return false;
+        return UpdateChain.of(SysClient.class)
+                .set(SysClient::getStatus, status)
+                .from(SysClient.class)
+                .where(SysClient::getId).eq(id)
+                .update();
     }
 
     /**
-     * 根据id删除系统授权表
-     *
-     * @param idList {table.comment!}id列表
-     * @return {@link boolean} 是否删除成功
+     * 保存前的数据校验
+     */
+    private void validEntityBeforeSave(SysClient entity) {
+        //TODO 做一些数据校验,如唯一约束
+    }
+
+    /**
+     * 批量删除客户端管理
      */
     @Override
-    public int deleteSysClientById(List<Long> idList) {
-        return 0;
+    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
+        if (isValid) {
+            //TODO 做一些业务上的校验,判断是否需要校验
+        }
+        return baseMapper.deleteBatchByIds(ids) > 0;
     }
 }

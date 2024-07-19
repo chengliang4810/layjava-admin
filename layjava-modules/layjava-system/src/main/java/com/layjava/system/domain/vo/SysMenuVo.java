@@ -1,13 +1,14 @@
 package com.layjava.system.domain.vo;
 
 import com.layjava.system.domain.SysMenu;
-import com.mybatisflex.annotation.Id;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -25,28 +26,22 @@ public class SysMenuVo implements Serializable {
     /**
      * 菜单ID
      */
-    @Id
-    private Long id;
-
-    /**
-     * 父菜单ID
-     */
-    private Long pid;
+    private Long menuId;
 
     /**
      * 菜单名称
      */
-    private String title;
+    private String menuName;
 
     /**
-     * 路由名称
+     * 父菜单ID
      */
-    private String name;
+    private Long parentId;
 
     /**
-     * 组件路径
+     * 显示顺序
      */
-    private String componentPath;
+    private Integer orderNum;
 
     /**
      * 路由地址
@@ -54,69 +49,49 @@ public class SysMenuVo implements Serializable {
     private String path;
 
     /**
-     * 菜单图标
+     * 组件路径
      */
-    private String icon;
+    private String component;
 
     /**
-     * 显示顺序
+     * 路由参数
      */
-    private Integer order;
+    private String queryParam;
 
     /**
-     * 路由重定向
+     * 是否为外链（0是 1否）
      */
-    private String redirect;
-
-    /**
-     * 显示状态（0显示 1隐藏）
-     */
-    private Boolean hide;
+    private String isFrame;
 
     /**
      * 是否缓存（0缓存 1不缓存）
      */
-    private Boolean keepAlive;
+    private String isCache;
 
     /**
-     * 菜单状态（0正常 1停用）
-     */
-    private Boolean status;
-
-    /**
-     * 是否需要登录权限
-     */
-    private Boolean requiresAuth;
-
-    /**
-     * 当前路由是否会被添加到Tab中
-     */
-    private Boolean withoutTab;
-
-    /**
-     * 当前路由是否会被固定在Tab中,用于一些常驻页面
-     */
-    private Boolean pinTab;
-
-    /**
-     * 外链URL地址
-     */
-    private String href;
-
-    /**
-     * 权限
-     */
-    private String permissions;
-
-    /**
-     * 菜单类型 dir' | 'page'
+     * 菜单类型（M目录 C菜单 F按钮）
      */
     private String menuType;
 
     /**
-     * 高亮菜单
+     * 显示状态（0显示 1隐藏）
      */
-    private String activeMenu;
+    private String visible;
+
+    /**
+     * 菜单状态（0正常 1停用）
+     */
+    private String status;
+
+    /**
+     * 权限标识
+     */
+    private String perms;
+
+    /**
+     * 菜单图标
+     */
+    private String icon;
 
     /**
      * 创建部门
@@ -124,13 +99,18 @@ public class SysMenuVo implements Serializable {
     private Long createDept;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 创建时间
      */
     private Date createTime;
 
     /**
-     * 备注
+     * 子菜单
      */
-    private String remark;
+    private List<SysMenuVo> children = new ArrayList<>();
 
 }

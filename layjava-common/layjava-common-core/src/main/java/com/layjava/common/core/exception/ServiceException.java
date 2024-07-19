@@ -1,42 +1,70 @@
 package com.layjava.common.core.exception;
 
-import cn.hutool.core.util.StrUtil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+import java.io.Serial;
 
 /**
- * 服务异常
+ * 业务异常
  *
- * @author chengliang
- * @since  2024/04/24
+ * @author ruoyi
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ServiceException extends RuntimeException {
+@NoArgsConstructor
+@AllArgsConstructor
+public final class ServiceException extends RuntimeException {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * 错误码
      */
-    private Integer code = 500;
-    private static final String DEFAULT_MESSAGE = "服务器发生异常";
+    private Integer code;
 
-    public ServiceException(){
-        super(DEFAULT_MESSAGE);
+    /**
+     * 错误提示
+     */
+    private String message;
+
+    /**
+     * 错误明细，内部调试错误
+     */
+    private String detailMessage;
+
+    public ServiceException(String message) {
+        this.message = message;
     }
 
-    public ServiceException(Integer code){
-        super(DEFAULT_MESSAGE);
+    public ServiceException(String message, Integer code) {
+        this.message = message;
         this.code = code;
     }
 
-    public ServiceException(String message, Object... params){
-        super(StrUtil.format(message, params));
+    public String getDetailMessage() {
+        return detailMessage;
     }
 
-    public ServiceException(Integer code, String message, Object... params){
-        super(StrUtil.format(message, params));
-        this.code = code;
+    @Override
+    public String getMessage() {
+        return message;
     }
 
+    public Integer getCode() {
+        return code;
+    }
 
+    public ServiceException setMessage(String message) {
+        this.message = message;
+        return this;
+    }
+
+    public ServiceException setDetailMessage(String detailMessage) {
+        this.detailMessage = detailMessage;
+        return this;
+    }
 }

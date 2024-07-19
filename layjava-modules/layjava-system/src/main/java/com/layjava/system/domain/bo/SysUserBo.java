@@ -1,36 +1,34 @@
 package com.layjava.system.domain.bo;
 
+import com.layjava.common.core.constant.UserConstants;
+import com.layjava.common.core.xss.Xss;
+import com.layjava.common.dao.core.entity.BaseEntity;
 import com.layjava.system.domain.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
-import com.layjava.common.dao.core.entity.BaseEntity;
-import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
+import lombok.NoArgsConstructor;
+import org.noear.solon.validation.annotation.Email;
+import org.noear.solon.validation.annotation.NotBlank;
+import org.noear.solon.validation.annotation.Size;
+
 
 /**
+ * 用户信息业务对象 sys_user
  *
- * 用户信息表
- *
- * @author chengliang4810
- * @since 2024-04-24
+ * @author Michelle.Chung
  */
+
 @Data
-@Accessors(chain = true)
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysUser.class, reverseConvertGenerate = false)
 public class SysUserBo extends BaseEntity {
-
 
     /**
      * 用户ID
      */
     private Long userId;
-
-    /**
-     * 租户编号
-     */
-    private String tenantId;
 
     /**
      * 部门ID
@@ -40,37 +38,40 @@ public class SysUserBo extends BaseEntity {
     /**
      * 用户账号
      */
-    private String account;
+    @Xss(message = "用户账号不能包含脚本字符")
+    @NotBlank(message = "用户账号不能为空")
+    @Size(min = 0, max = 30, message = "用户账号长度不能超过{max}个字符")
+    private String userName;
 
     /**
      * 用户昵称
      */
-    private String name;
+    @Xss(message = "用户昵称不能包含脚本字符")
+    @NotBlank(message = "用户昵称不能为空")
+    @Size(min = 0, max = 30, message = "用户昵称长度不能超过{max}个字符")
+    private String nickName;
 
     /**
-     * 用户类型（pc_user系统用户）
+     * 用户类型（sys_user系统用户）
      */
     private String userType;
 
     /**
      * 用户邮箱
      */
+    @Email(message = "邮箱格式不正确")
+    @Size(min = 0, max = 50, message = "邮箱长度不能超过{max}个字符")
     private String email;
 
     /**
      * 手机号码
      */
-    private String phone;
+    private String phonenumber;
 
     /**
      * 用户性别（0男 1女 2未知）
      */
-    private String gender;
-
-    /**
-     * 头像地址
-     */
-    private Long avatar;
+    private String sex;
 
     /**
      * 密码
@@ -83,18 +84,32 @@ public class SysUserBo extends BaseEntity {
     private String status;
 
     /**
-     * 最后登录IP
-     */
-    private String loginIp;
-
-    /**
-     * 最后登录时间
-     */
-    private LocalDateTime loginDate;
-
-    /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 角色组
+     */
+    @Size(min = 1, message = "用户角色不能为空")
+    private Long[] roleIds;
+
+    /**
+     * 岗位组
+     */
+    private Long[] postIds;
+
+    /**
+     * 数据权限 当前角色ID
+     */
+    private Long roleId;
+
+    public SysUserBo(Long userId) {
+        this.userId = userId;
+    }
+
+    public boolean isSuperAdmin() {
+        return UserConstants.SUPER_ADMIN_ID.equals(this.userId);
+    }
 
 }

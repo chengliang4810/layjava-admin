@@ -6,22 +6,18 @@ import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldNameConstants;
 
-import java.util.List;
 
 /**
  * 角色表 sys_role
  *
- * @author chengliang
- * @date 2024/06/13
+ * @author Lion Li
  */
 
 @Data
-@Table("sys_role")
 @NoArgsConstructor
-@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
+@Table("sys_role")
 public class SysRole extends BaseEntity {
 
     /**
@@ -29,12 +25,6 @@ public class SysRole extends BaseEntity {
      */
     @Id
     private Long roleId;
-
-//    @Navigate(value = RelationTypeEnum.ManyToMany,
-//            mappingClass = SysUserRole.class,
-//            selfMappingProperty = "roleId",
-//            targetMappingProperty = "userId")
-    private List<SysUser> users;
 
     /**
      * 角色名称
@@ -54,7 +44,7 @@ public class SysRole extends BaseEntity {
     /**
      * 数据范围（1：所有数据权限；2：自定义数据权限；3：本部门数据权限；4：本部门及以下数据权限；5：仅本人数据权限）
      */
-    // private String dataScope;
+    private String dataScope;
 
     /**
      * 菜单树选择项是否关联显示（ 0：父子不互相关联显示 1：父子互相关联显示）
@@ -74,7 +64,6 @@ public class SysRole extends BaseEntity {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-//    @LogicDelete(strategy = LogicDeleteStrategyEnum.DELETE_LONG_TIMESTAMP)
     private String delFlag;
 
     /**

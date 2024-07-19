@@ -1,6 +1,6 @@
 package com.layjava.common.core.enums;
 
-import cn.hutool.core.util.StrUtil;
+import com.layjava.common.core.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -28,7 +28,7 @@ public enum UserType {
 
     public static UserType getUserType(String str) {
         for (UserType value : values()) {
-            if (StrUtil.contains(str, value.getUserType())) {
+            if (StringUtils.contains(str, value.getUserType())) {
                 return value;
             }
         }

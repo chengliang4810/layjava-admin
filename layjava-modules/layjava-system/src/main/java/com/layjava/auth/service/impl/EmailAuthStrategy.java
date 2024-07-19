@@ -1,0 +1,110 @@
+package com.layjava.auth.service.impl;
+
+import cn.dev33.satoken.stp.SaLoginModel;
+import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.layjava.auth.domain.vo.LoginVo;
+import com.layjava.auth.service.AuthStrategy;
+import com.layjava.auth.service.AuthStrategyService;
+import com.layjava.auth.service.SysLoginService;
+import com.layjava.common.core.constant.Constants;
+import com.layjava.common.core.constant.GlobalConstants;
+import com.layjava.common.core.domain.model.EmailLoginBody;
+import com.layjava.common.core.domain.model.LoginUser;
+import com.layjava.common.core.enums.LoginType;
+import com.layjava.common.core.enums.UserStatus;
+import com.layjava.common.core.exception.user.CaptchaExpireException;
+import com.layjava.common.core.exception.user.UserException;
+import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.ValidatorUtils;
+import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.satoken.utils.LoginHelper;
+import com.layjava.system.domain.SysClient;
+import com.layjava.system.domain.SysUser;
+import com.layjava.system.domain.vo.SysUserVo;
+import com.layjava.system.mapper.SysUserMapper;
+import com.mybatisflex.core.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
+import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
+import org.noear.solon.data.cache.CacheService;
+
+import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
+
+
+/**
+ * 邮件认证策略
+ *
+ * @author Michelle.Chung
+ */
+@Slf4j
+@Component("email" + AuthStrategy.BASE_NAME)
+public class EmailAuthStrategy implements AuthStrategyService {
+
+    @Inject
+    private SysLoginService loginService;
+    @Inject
+    private CacheService cacheService;
+    @Inject
+    private SysUserMapper userMapper;
+
+    @Override
+    public LoginVo login(String body, SysClient client) {
+        EmailLoginBody loginBody = JsonUtils.parseObject(body, EmailLoginBody.class);
+        ValidatorUtils.validate(loginBody);
+        String tenantId = loginBody.getTenantId();
+        String email = loginBody.getEmail();
+        String emailCode = loginBody.getEmailCode();
+
+        // 通过邮箱查找用户
+        SysUserVo user = loadUserByEmail(email);
+
+        loginService.checkLogin(LoginType.EMAIL, tenantId, user.getUserName(), () -> !validateEmailCode(email, emailCode));
+        // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
+        LoginUser loginUser = loginService.buildLoginUser(user);
+        loginUser.setClientKey(client.getClientKey());
+        loginUser.setDeviceType(client.getDeviceType());
+        SaLoginModel model = new SaLoginModel();
+        model.setDevice(client.getDeviceType());
+        // 自定义分配 不同用户体系 不同 token 授权时间 不设置默认走全局 yml 配置
+        // 例如: 后台用户30分钟过期 app用户1天过期
+        model.setTimeout(client.getTimeout());
+        model.setActiveTimeout(client.getActiveTimeout());
+        model.setExtra(LoginHelper.CLIENT_KEY, client.getClientId());
+        // 生成token
+        LoginHelper.login(loginUser, model);
+
+        LoginVo loginVo = new LoginVo();
+        loginVo.setAccessToken(StpUtil.getTokenValue());
+        loginVo.setExpireIn(StpUtil.getTokenTimeout());
+        loginVo.setClientId(client.getClientId());
+        return loginVo;
+    }
+
+    /**
+     * 校验邮箱验证码
+     */
+    private boolean validateEmailCode(String email, String emailCode) {
+        String code = cacheService.get(GlobalConstants.CAPTCHA_CODE_KEY + email, String.class);
+        if (StringUtils.isBlank(code)) {
+            loginService.recordLogininfor(email, Constants.LOGIN_FAIL, "验证码已失效");
+            throw new CaptchaExpireException();
+        }
+        return code.equals(emailCode);
+    }
+
+    private SysUserVo loadUserByEmail(String email) {
+        SysUser user = userMapper.selectOneByQuery(QueryWrapper.create().from(SYS_USER)
+                .select(SYS_USER.EMAIL, SYS_USER.STATUS)
+                .and(SYS_USER.EMAIL.eq(email)));
+        if (ObjectUtil.isNull(user)) {
+            log.info("登录用户：{} 不存在.", email);
+            throw new UserException("user.not.exists", email);
+        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+            log.info("登录用户：{} 已被停用.", email);
+            throw new UserException("user.blocked", email);
+        }
+        return userMapper.selectUserByEmail(email);
+    }
+
+}

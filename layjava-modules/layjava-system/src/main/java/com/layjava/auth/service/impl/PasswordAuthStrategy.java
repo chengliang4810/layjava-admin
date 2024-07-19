@@ -4,74 +4,76 @@ import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.layjava.auth.domain.bo.PasswordLoginBody;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
+import com.layjava.auth.service.SysLoginService;
+import com.layjava.common.core.constant.Constants;
+import com.layjava.common.core.constant.GlobalConstants;
 import com.layjava.common.core.domain.model.LoginUser;
+import com.layjava.common.core.domain.model.PasswordLoginBody;
+import com.layjava.common.core.enums.LoginType;
 import com.layjava.common.core.enums.UserStatus;
-import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.util.JsonUtil;
-import com.layjava.common.core.util.ValidatorUtil;
+import com.layjava.common.core.exception.user.CaptchaException;
+import com.layjava.common.core.exception.user.CaptchaExpireException;
+import com.layjava.common.core.exception.user.UserException;
+import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.ValidatorUtils;
+import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
+import com.layjava.common.web.config.properties.CaptchaProperties;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
-import com.layjava.system.service.SysUserService;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.data.cache.CacheService;
 
 import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
-
 
 /**
  * 密码认证策略
  *
- * @author chengliang
- * @since 2024/04/24
+ * @author Michelle.Chung
  */
 @Slf4j
 @Component("password" + AuthStrategy.BASE_NAME)
 public class PasswordAuthStrategy implements AuthStrategyService {
 
-    @Db
+    @Inject
+    private CaptchaProperties captchaProperties;
+    @Inject
+    private CacheService cacheService;
+    @Inject
+    private SysLoginService loginService;
+    @Inject
     private SysUserMapper userMapper;
-    @Inject
-    private SysUserService userService;
-    @Inject
-    private LoginService loginService;
 
     @Override
     public LoginVo login(String body, SysClient client) {
-        // 校验参数
-        PasswordLoginBody loginBody = JsonUtil.toObject(body, PasswordLoginBody.class);
-        ValidatorUtil.validate(loginBody);
-
-        String account = loginBody.getAccount();
+        PasswordLoginBody loginBody = JsonUtils.parseObject(body, PasswordLoginBody.class);
+        ValidatorUtils.validate(loginBody);
+        String tenantId = loginBody.getTenantId();
+        String username = loginBody.getUsername();
         String password = loginBody.getPassword();
         String code = loginBody.getCode();
         String uuid = loginBody.getUuid();
 
-//        boolean captchaEnabled = captchaProperties.getEnable();
-//        // 验证码开关
-//        if (captchaEnabled) {
-//            validateCaptcha(tenantId, username, code, uuid);
-//        }
-
-        SysUserVo user = loadUserByAccount(account);
-        // 校验密码
-        if (!BCrypt.checkpw(password, user.getPassword())) {
-            throw new ServiceException("账号/密码错误");
+        boolean captchaEnabled = captchaProperties.getEnable();
+        // 验证码开关
+        if (captchaEnabled) {
+            validateCaptcha(tenantId, username, code, uuid);
         }
+
+        SysUserVo user = loadUserByUsername(tenantId, username);
+        loginService.checkLogin(LoginType.PASSWORD, tenantId, username, () -> !BCrypt.checkpw(password, user.getPassword()));
         // 此处可根据登录用户的数据不同 自行创建 loginUser
         LoginUser loginUser = loginService.buildLoginUser(user);
         loginUser.setClientKey(client.getClientKey());
         loginUser.setDeviceType(client.getDeviceType());
-
         SaLoginModel model = new SaLoginModel();
         model.setDevice(client.getDeviceType());
         // 自定义分配 不同用户体系 不同 token 授权时间 不设置默认走全局 yml 配置
@@ -89,49 +91,41 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         return loginVo;
     }
 
-//    /**
-//     * 校验验证码
-//     *
-//     * @param username 用户名
-//     * @param code     验证码
-//     * @param uuid     唯一标识
-//     */
-//    private void validateCaptcha(String tenantId, String username, String code, String uuid) {
-//        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
-//        String captcha = RedisUtils.getCacheObject(verifyKey);
-//        RedisUtils.deleteObject(verifyKey);
-//        if (captcha == null) {
-//            loginService.recordLogininfor(tenantId, username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire"));
-//            throw new CaptchaExpireException();
-//        }
-//        if (!code.equalsIgnoreCase(captcha)) {
-//            loginService.recordLogininfor(tenantId, username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error"));
-//            throw new CaptchaException();
-//        }
-//    }
-
     /**
-     * 根据账号查询用户信息
+     * 校验验证码
      *
-     * @param account 账号
-     * @return 用户信息
+     * @param username 用户名
+     * @param code     验证码
+     * @param uuid     唯一标识
      */
-    private SysUserVo loadUserByAccount(String account) {
-
-        SysUser user = userMapper.selectOneByQuery(QueryWrapper.create()
-                .select(SYS_USER.STATUS, SYS_USER.ACCOUNT)
-                .where(SYS_USER.ACCOUNT.eq(account)));
-
-        if (ObjectUtil.isNull(user)) {
-            log.info("登录用户：{} 不存在.", account);
-            throw new ServiceException("登录用户：{} 不存在.", account);
-        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            log.info("登录用户：{} 已被停用.", account);
-            throw new ServiceException("登录用户：{} 已被停用.", account);
+    private void validateCaptcha(String tenantId, String username, String code, String uuid) {
+        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
+        String captcha = cacheService.get(verifyKey, String.class);
+        cacheService.remove(verifyKey);
+        if (captcha == null) {
+            loginService.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码过期");
+            throw new CaptchaExpireException();
         }
+        if (!code.equalsIgnoreCase(captcha)) {
+            loginService.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码错误");
+            throw new CaptchaException();
+        }
+    }
 
-        // 关联查询用户详细信息
-        return userService.selectUserByAccount(account);
+    private SysUserVo loadUserByUsername(String tenantId, String username) {
+        SysUser user = userMapper.selectOneByQuery(
+                QueryWrapper.create()
+                        .select(SYS_USER.USER_NAME, SYS_USER.STATUS)
+                        .from(SYS_USER)
+                        .and(SYS_USER.USER_NAME.eq(username)));
+        if (ObjectUtil.isNull(user)) {
+            log.info("登录用户：{} 不存在.", username);
+            throw new UserException("user.not.exists", username);
+        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+            log.info("登录用户：{} 已被停用.", username);
+            throw new UserException("user.blocked", username);
+        }
+        return userMapper.selectUserByUserName(username);
     }
 
 }
