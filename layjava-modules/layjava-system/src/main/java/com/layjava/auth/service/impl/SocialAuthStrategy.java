@@ -4,6 +4,7 @@ import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -14,7 +15,6 @@ import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.exception.user.UserException;
 import com.layjava.common.core.utils.ValidatorUtils;
-import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.social.config.properties.SocialProperties;
 import com.layjava.common.social.utils.SocialUtils;
@@ -64,7 +64,7 @@ public class SocialAuthStrategy implements AuthStrategyService {
      */
     @Override
     public LoginVo login(String body, SysClient client) {
-        SocialLoginBody loginBody = JsonUtils.parseObject(body, SocialLoginBody.class);
+        SocialLoginBody loginBody = JSONUtil.toBean(body, SocialLoginBody.class);
         ValidatorUtils.validate(loginBody);
         AuthResponse<AuthUser> response = SocialUtils.loginAuth(
                 loginBody.getSource(), loginBody.getSocialCode(),
