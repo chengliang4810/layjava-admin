@@ -13,7 +13,7 @@ import org.noear.solon.annotation.Inject;
  */
 @Data
 @Configuration
-@Inject("${captcha}")
+@Inject(value = "${captcha}", required = false)
 public class CaptchaProperties {
 
     private Boolean enable;

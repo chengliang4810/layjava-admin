@@ -16,7 +16,7 @@ import java.util.Map;
 @Data
 @Component
 @Configuration
-@Inject("${justauth}")
+@Inject(value = "${justauth}", required = false)
 public class SocialProperties {
 
     /**

@@ -29,8 +29,6 @@ import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.noear.solon.annotation.*;
 
-import java.util.concurrent.ScheduledExecutorService;
-
 /**
  * 认证
  *
@@ -55,9 +53,6 @@ public class AuthController {
     private ISysSocialService socialUserService;
     @Inject
     private ISysClientService clientService;
-    @Inject
-    private ScheduledExecutorService scheduledExecutorService;
-
 
     /**
      * 登录方法

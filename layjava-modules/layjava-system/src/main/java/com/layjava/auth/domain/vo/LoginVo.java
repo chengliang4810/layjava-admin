@@ -2,6 +2,7 @@ package com.layjava.auth.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 登录验证信息
@@ -9,6 +10,7 @@ import lombok.Data;
  * @author Michelle.Chung
  */
 @Data
+@Accessors(chain = true)
 public class LoginVo {
 
     /**

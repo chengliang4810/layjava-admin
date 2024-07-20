@@ -11,7 +11,7 @@ import org.noear.solon.annotation.Inject;
  */
 @Data
 @Configuration
-@Inject("${xss}")
+@Inject(value = "${xss}", required = false)
 public class XssProperties {
 
     /**

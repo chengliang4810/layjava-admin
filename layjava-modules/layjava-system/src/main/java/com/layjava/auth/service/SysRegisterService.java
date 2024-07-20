@@ -21,6 +21,8 @@ import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
 
+import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
+
 
 /**
  * 注册校验方法
@@ -64,7 +66,7 @@ public class SysRegisterService {
         boolean exist = userMapper.selectCountByQuery(QueryWrapper.create()
                 .from(SYS_USER)
                 .and(SYS_USER.USER_NAME.eq(sysUser.getUserName()))
-                .and(SYS_USER.USER_ID.ne(sysUser.getUserId())));
+                .and(SYS_USER.USER_ID.ne(sysUser.getUserId()))) > 0;
         if (exist) {
             throw new UserException("保存用户 {} 失败，注册账号已存在", username);
         }

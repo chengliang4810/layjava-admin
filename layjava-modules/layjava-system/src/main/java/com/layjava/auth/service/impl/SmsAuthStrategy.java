@@ -29,6 +29,8 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
 
+import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
+
 
 /**
  * 短信认证策略

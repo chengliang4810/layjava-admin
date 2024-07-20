@@ -43,9 +43,9 @@ import java.util.function.Supplier;
 @Component
 public class SysLoginService {
 
-    @Inject("${user.password.maxRetryCount}")
+    @Inject(value = "${user.password.maxRetryCount}", required = false)
     private Integer maxRetryCount;
-    @Inject("${user.password.lockTime}")
+    @Inject(value = "${user.password.lockTime}", required = false)
     private Integer lockTime;
     @Inject
     private ISysPermissionService permissionService;
@@ -169,7 +169,7 @@ public class SysLoginService {
         int errorNumber = ObjectUtil.defaultIfNull(cacheService.get(errorKey, Integer.class), 0);
         // 锁定时间内登录 则踢出
         if (errorNumber >= maxRetryCount) {
-            recordLogininfor(tenantId, username, loginFail, StrUtil.format(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
+            recordLogininfor(username, loginFail, StrUtil.format(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
             throw new UserException(loginType.getRetryLimitExceed(), maxRetryCount, lockTime);
         }
 
@@ -179,11 +179,11 @@ public class SysLoginService {
             cacheService.store(errorKey, errorNumber, lockTime * 1000 * 60 * 60);
             // 达到规定错误次数 则锁定登录
             if (errorNumber >= maxRetryCount) {
-                recordLogininfor(tenantId, username, loginFail, StrUtil.format(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
+                recordLogininfor(username, loginFail, StrUtil.format(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
                 throw new UserException(loginType.getRetryLimitExceed(), maxRetryCount, lockTime);
             } else {
                 // 未达到规定错误次数
-                recordLogininfor(tenantId, username, loginFail, StrUtil.format(loginType.getRetryLimitCount(), errorNumber));
+                recordLogininfor(username, loginFail, StrUtil.format(loginType.getRetryLimitCount(), errorNumber));
                 throw new UserException(loginType.getRetryLimitCount(), errorNumber);
             }
         }

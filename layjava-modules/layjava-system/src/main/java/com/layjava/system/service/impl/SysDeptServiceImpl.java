@@ -308,10 +308,10 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
             list.add(dept);
         }
         if (CollUtil.isNotEmpty(list)) {
-            if (Db.updateEntitiesBatch(list) > 0) {
-                // TODO 重要未修改
-                // list.forEach(dept -> CacheUtils.evict(CacheNames.SYS_DEPT, dept.getDeptId()));
-            }
+//            if (Db.updateEntitiesBatch(list) > 0) {
+//                // TODO 重要未修改
+//                // list.forEach(dept -> CacheUtils.evict(CacheNames.SYS_DEPT, dept.getDeptId()));
+//            }
         }
     }
 

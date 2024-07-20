@@ -38,6 +38,8 @@ import org.noear.solon.annotation.Inject;
 import java.util.List;
 import java.util.Optional;
 
+import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
+
 
 /**
  * 第三方授权策略
