@@ -1,7 +1,6 @@
 package com.layjava.common.dao.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.noear.solon.annotation.Component;
 
 /**
  * 数据权限处理器
@@ -10,7 +9,7 @@ import org.noear.solon.annotation.Component;
  * @see <a href="https://gitee.com/dromara/RuoYi-Vue-Plus/blob/5.X/ruoyi-common/ruoyi-common-mybatis/src/main/java/org/dromara/common/mybatis/handler/PlusDataPermissionHandler.java">参考</a>
  */
 @Slf4j
-@Component
+// @Component
 public class PlusDataPermissionHandler {
 
 //    /**

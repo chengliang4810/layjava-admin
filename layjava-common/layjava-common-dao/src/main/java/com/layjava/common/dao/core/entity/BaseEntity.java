@@ -2,7 +2,6 @@ package com.layjava.common.dao.core.entity;
 
 import com.mybatisflex.annotation.Column;
 import lombok.Data;
-import lombok.experimental.FieldNameConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -18,7 +17,7 @@ import java.util.Map;
  */
 
 @Data
-@FieldNameConstants(onlyExplicitlyIncluded = true)
+// @FieldNameConstants(onlyExplicitlyIncluded = true)
 public class BaseEntity implements Serializable {
 
     @Serial

@@ -1,5 +1,6 @@
 package com.layjava.system.domain;
 
+import com.layjava.common.core.utils.StringUtils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

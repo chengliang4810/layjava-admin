@@ -1,7 +1,7 @@
 # 配置数据源对应的 mybatis 信息（要与 DataSource bean 的名字对上）
 mybatis.default:
   typeAliases:    #支持包名 或 类名（大写开头 或 *）//支持 ** 或 * 占位符
-    - "com.layjava.**.model"
+    - "com.layjava.**.domain"
   mappers:        #支持包名 或 类名（大写开头 或 *）或 xml（.xml结尾）//支持 ** 或 * 占位符
     - "com.layjava.**.mapper.*Mapper"
   configuration:  #扩展配置（要与 FlexConfiguration 类的属性一一对应）

@@ -23,23 +23,23 @@ public class ValidatorUtils {
      * @param entity 实体
      */
     public static void validate(Object entity, Class<?>... groups) {
-        Result result = ValidatorManager.validateOfEntity(entity, groups);
+        Result<?> result = ValidatorManager.validateOfEntity(entity, groups);
         if (result.getCode() == Result.SUCCEED_CODE) {
             return;
         }
         Object data = result.getData();
         if (data instanceof BeanValidateInfo beanValidateInfo) {
             throw new ServiceException(beanValidateInfo.message);
-        } else if (data instanceof List beanValidateInfoList) {
+        } else if (data instanceof List<?> beanValidateInfoList) {
             if (CollUtil.isEmpty(beanValidateInfoList)) {
                 return;
             }
             StringBuilder stringBuilder = new StringBuilder();
-            beanValidateInfoList.forEach(o -> {
+            for (Object o : beanValidateInfoList) {
                 if (o instanceof BeanValidateInfo beanValidateInfo) {
                     stringBuilder.append(beanValidateInfo.message).append(";");
                 }
-            });
+            }
             throw new ServiceException(stringBuilder.toString());
         } else {
             throw new ServiceException();
