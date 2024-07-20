@@ -90,13 +90,13 @@ public class SocialAuthStrategy implements AuthStrategyService {
         if (CollUtil.isEmpty(list)) {
             throw new ServiceException("你还没有绑定第三方账号，绑定后才可以登录！");
         }
-        Optional<SysSocialVo> opt = list.stream().filter(x -> x.getTenantId().equals(loginBody.getTenantId())).findAny();
+        Optional<SysSocialVo> opt = list.stream().findAny();
         if (opt.isEmpty()) {
             throw new ServiceException("对不起，你没有权限登录当前租户！");
         }
         SysSocialVo social = opt.get();
         // 查找用户
-        SysUserVo user = loadUser(social.getTenantId(), social.getUserId());
+        SysUserVo user = loadUser(social.getUserId());
 
         // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
         LoginUser loginUser = loginService.buildLoginUser(user);
@@ -119,7 +119,7 @@ public class SocialAuthStrategy implements AuthStrategyService {
         return loginVo;
     }
 
-    private SysUserVo loadUser(String tenantId, Long userId) {
+    private SysUserVo loadUser(Long userId) {
         SysUser user = userMapper.selectOneByQuery(
                 QueryWrapper.create().from(SYS_USER)
                         .select(SYS_USER.USER_NAME, SYS_USER.STATUS)

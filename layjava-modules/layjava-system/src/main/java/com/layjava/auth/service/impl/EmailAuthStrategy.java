@@ -3,6 +3,7 @@ package com.layjava.auth.service.impl;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -17,7 +18,6 @@ import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ValidatorUtils;
-import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
@@ -50,16 +50,15 @@ public class EmailAuthStrategy implements AuthStrategyService {
 
     @Override
     public LoginVo login(String body, SysClient client) {
-        EmailLoginBody loginBody = JsonUtils.parseObject(body, EmailLoginBody.class);
+        EmailLoginBody loginBody = JSONUtil.toBean(body, EmailLoginBody.class);
         ValidatorUtils.validate(loginBody);
-        String tenantId = loginBody.getTenantId();
         String email = loginBody.getEmail();
         String emailCode = loginBody.getEmailCode();
 
         // 通过邮箱查找用户
         SysUserVo user = loadUserByEmail(email);
 
-        loginService.checkLogin(LoginType.EMAIL, tenantId, user.getUserName(), () -> !validateEmailCode(email, emailCode));
+        loginService.checkLogin(LoginType.EMAIL, user.getUserName(), () -> !validateEmailCode(email, emailCode));
         // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
         LoginUser loginUser = loginService.buildLoginUser(user);
         loginUser.setClientKey(client.getClientKey());

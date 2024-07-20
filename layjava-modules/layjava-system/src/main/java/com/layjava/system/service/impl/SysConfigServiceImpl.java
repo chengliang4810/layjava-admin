@@ -77,11 +77,10 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
     /**
      * 获取注册开关
      *
-     * @param tenantId 租户id
      * @return true开启，false关闭
      */
     @Override
-    public boolean selectRegisterEnabled(String tenantId) {
+    public boolean selectRegisterEnabled() {
         SysConfig retConfig = baseMapper.selectOneByQuery(QueryWrapper.create().from(SYS_CONFIG)
                 .where(SYS_CONFIG.CONFIG_KEY.eq("sys.account.registerUser")));
         if (ObjectUtil.isNull(retConfig)) {

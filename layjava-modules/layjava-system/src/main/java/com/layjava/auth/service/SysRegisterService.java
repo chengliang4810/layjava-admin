@@ -45,7 +45,6 @@ public class SysRegisterService {
      * 注册
      */
     public void register(RegisterBody registerBody) {
-        String tenantId = registerBody.getTenantId();
         String username = registerBody.getUsername();
         String password = registerBody.getPassword();
         // 校验用户类型是否存在
@@ -54,7 +53,7 @@ public class SysRegisterService {
         boolean captchaEnabled = captchaProperties.getEnable();
         // 验证码开关
         if (captchaEnabled) {
-            validateCaptcha(tenantId, username, registerBody.getCode(), registerBody.getUuid());
+            validateCaptcha(username, registerBody.getCode(), registerBody.getUuid());
         }
         SysUserBo sysUser = new SysUserBo();
         sysUser.setUserName(username);
@@ -70,11 +69,11 @@ public class SysRegisterService {
         if (exist) {
             throw new UserException("保存用户 {} 失败，注册账号已存在", username);
         }
-        boolean regFlag = userService.registerUser(sysUser, tenantId);
+        boolean regFlag = userService.registerUser(sysUser);
         if (!regFlag) {
             throw new UserException("user.register.error");
         }
-        recordLogininfor(tenantId, username, Constants.REGISTER, "注册成功");
+        recordLogininfor(username, Constants.REGISTER, "注册成功");
     }
 
     /**
@@ -84,16 +83,16 @@ public class SysRegisterService {
      * @param code     验证码
      * @param uuid     唯一标识
      */
-    public void validateCaptcha(String tenantId, String username, String code, String uuid) {
+    public void validateCaptcha(String username, String code, String uuid) {
         String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
         String captcha = cacheService.get(verifyKey, String.class);
         cacheService.remove(verifyKey);
         if (captcha == null) {
-            recordLogininfor(tenantId, username, Constants.REGISTER, "验证码已失效");
+            recordLogininfor(username, Constants.REGISTER, "验证码已失效");
             throw new CaptchaExpireException();
         }
         if (!code.equalsIgnoreCase(captcha)) {
-            recordLogininfor(tenantId, username, Constants.REGISTER, "验证码错误");
+            recordLogininfor(username, Constants.REGISTER, "验证码错误");
             throw new CaptchaException();
         }
     }
@@ -101,15 +100,13 @@ public class SysRegisterService {
     /**
      * 记录登录信息
      *
-     * @param tenantId 租户ID
      * @param username 用户名
      * @param status   状态
      * @param message  消息内容
      * @return
      */
-    private void recordLogininfor(String tenantId, String username, String status, String message) {
+    private void recordLogininfor(String username, String status, String message) {
         LogininforEvent logininforEvent = new LogininforEvent();
-        logininforEvent.setTenantId(tenantId);
         logininforEvent.setUsername(username);
         logininforEvent.setStatus(status);
         logininforEvent.setMessage(message);

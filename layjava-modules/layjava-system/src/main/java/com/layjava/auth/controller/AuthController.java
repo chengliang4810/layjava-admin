@@ -2,6 +2,7 @@ package com.layjava.auth.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.SysLoginService;
@@ -13,7 +14,6 @@ import com.layjava.common.core.domain.model.RegisterBody;
 import com.layjava.common.core.domain.model.SocialLoginBody;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ValidatorUtils;
-import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.social.config.properties.SocialLoginConfigProperties;
 import com.layjava.common.social.config.properties.SocialProperties;
@@ -63,7 +63,7 @@ public class AuthController {
     @Post
     @Mapping("/login")
     public R<LoginVo> login(@Body String body) {
-        LoginBody loginBody = JsonUtils.parseObject(body, LoginBody.class);
+        LoginBody loginBody = JSONUtil.toBean(body, LoginBody.class);
         ValidatorUtils.validate(loginBody);
         // 授权类型和客户端id
         String clientId = loginBody.getClientId();
@@ -156,7 +156,7 @@ public class AuthController {
     @Post
     @Mapping("/register")
     public R<Void> register(RegisterBody user) {
-        if (!configService.selectRegisterEnabled(user.getTenantId())) {
+        if (!configService.selectRegisterEnabled()) {
             return R.fail("当前系统没有开启注册功能！");
         }
         registerService.register(user);

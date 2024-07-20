@@ -4,6 +4,7 @@ import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -19,7 +20,6 @@ import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ValidatorUtils;
-import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.web.config.properties.CaptchaProperties;
 import com.layjava.system.domain.SysClient;
@@ -54,9 +54,8 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 
     @Override
     public LoginVo login(String body, SysClient client) {
-        PasswordLoginBody loginBody = JsonUtils.parseObject(body, PasswordLoginBody.class);
+        PasswordLoginBody loginBody = JSONUtil.toBean(body, PasswordLoginBody.class);
         ValidatorUtils.validate(loginBody);
-        String tenantId = loginBody.getTenantId();
         String username = loginBody.getUsername();
         String password = loginBody.getPassword();
         String code = loginBody.getCode();
@@ -65,11 +64,11 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         boolean captchaEnabled = captchaProperties.getEnable();
         // 验证码开关
         if (captchaEnabled) {
-            validateCaptcha(tenantId, username, code, uuid);
+            validateCaptcha(username, code, uuid);
         }
 
-        SysUserVo user = loadUserByUsername(tenantId, username);
-        loginService.checkLogin(LoginType.PASSWORD, tenantId, username, () -> !BCrypt.checkpw(password, user.getPassword()));
+        SysUserVo user = loadUserByUsername(username);
+        loginService.checkLogin(LoginType.PASSWORD, username, () -> !BCrypt.checkpw(password, user.getPassword()));
         // 此处可根据登录用户的数据不同 自行创建 loginUser
         LoginUser loginUser = loginService.buildLoginUser(user);
         loginUser.setClientKey(client.getClientKey());
@@ -98,7 +97,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
      * @param code     验证码
      * @param uuid     唯一标识
      */
-    private void validateCaptcha(String tenantId, String username, String code, String uuid) {
+    private void validateCaptcha(String username, String code, String uuid) {
         String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
         String captcha = cacheService.get(verifyKey, String.class);
         cacheService.remove(verifyKey);
@@ -112,7 +111,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         }
     }
 
-    private SysUserVo loadUserByUsername(String tenantId, String username) {
+    private SysUserVo loadUserByUsername(String username) {
         SysUser user = userMapper.selectOneByQuery(
                 QueryWrapper.create()
                         .select(SYS_USER.USER_NAME, SYS_USER.STATUS)

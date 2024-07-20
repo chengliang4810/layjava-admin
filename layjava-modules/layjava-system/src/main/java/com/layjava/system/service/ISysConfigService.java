@@ -37,10 +37,9 @@ public interface ISysConfigService {
     /**
      * 获取注册开关
      *
-     * @param tenantId 租户id
      * @return true开启，false关闭
      */
-    boolean selectRegisterEnabled(String tenantId);
+    boolean selectRegisterEnabled();
 
     /**
      * 查询参数配置列表

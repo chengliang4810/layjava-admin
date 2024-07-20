@@ -21,19 +21,14 @@ public class LoginBody implements Serializable {
     /**
      * 客户端id
      */
-    @NotBlank(message = "{auth.clientid.not.blank}")
+    @NotBlank(message = "客户端编号不能为空")
     private String clientId;
 
     /**
      * 授权类型
      */
-    @NotBlank(message = "{auth.grant.type.not.blank}")
+    @NotBlank(message = "授权类型不能为空")
     private String grantType;
-
-    /**
-     * 租户ID
-     */
-    private String tenantId;
 
     /**
      * 验证码

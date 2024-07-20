@@ -161,7 +161,7 @@ public class SysLoginService {
     /**
      * 登录校验
      */
-    public void checkLogin(LoginType loginType, String tenantId, String username, Supplier<Boolean> supplier) {
+    public void checkLogin(LoginType loginType, String username, Supplier<Boolean> supplier) {
         String errorKey = GlobalConstants.PWD_ERR_CNT_KEY + username;
         String loginFail = Constants.LOGIN_FAIL;
 

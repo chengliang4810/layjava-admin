@@ -52,14 +52,13 @@ public class SmsAuthStrategy implements AuthStrategyService {
     public LoginVo login(String body, SysClient client) {
         SmsLoginBody loginBody = JsonUtils.parseObject(body, SmsLoginBody.class);
         ValidatorUtils.validate(loginBody);
-        String tenantId = loginBody.getTenantId();
         String phonenumber = loginBody.getPhonenumber();
         String smsCode = loginBody.getSmsCode();
 
         // 通过手机号查找用户
-        SysUserVo user = loadUserByPhonenumber(tenantId, phonenumber);
+        SysUserVo user = loadUserByPhonenumber(phonenumber);
 
-        loginService.checkLogin(LoginType.SMS, tenantId, user.getUserName(), () -> !validateSmsCode(tenantId, phonenumber, smsCode));
+        loginService.checkLogin(LoginType.SMS, user.getUserName(), () -> !validateSmsCode(phonenumber, smsCode));
         // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
         LoginUser loginUser = loginService.buildLoginUser(user);
         loginUser.setClientKey(client.getClientKey());
@@ -84,7 +83,7 @@ public class SmsAuthStrategy implements AuthStrategyService {
     /**
      * 校验短信验证码
      */
-    private boolean validateSmsCode(String tenantId, String phonenumber, String smsCode) {
+    private boolean validateSmsCode(String phonenumber, String smsCode) {
         String code = cacheService.get(GlobalConstants.CAPTCHA_CODE_KEY + phonenumber, String.class);
         if (StringUtils.isBlank(code)) {
             loginService.recordLogininfor(phonenumber, Constants.LOGIN_FAIL, "验证码过期");
@@ -93,7 +92,7 @@ public class SmsAuthStrategy implements AuthStrategyService {
         return code.equals(smsCode);
     }
 
-    private SysUserVo loadUserByPhonenumber(String tenantId, String phonenumber) {
+    private SysUserVo loadUserByPhonenumber(String phonenumber) {
         SysUser user = userMapper.selectOneByQuery(
                 QueryWrapper.create().from(SYS_USER)
                         .select(SYS_USER.PHONENUMBER, SYS_USER.STATUS)
