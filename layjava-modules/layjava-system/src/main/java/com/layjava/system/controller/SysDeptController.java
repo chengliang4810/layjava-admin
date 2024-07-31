@@ -20,8 +20,6 @@ import java.util.List;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/dept")
 public class SysDeptController extends BaseController {

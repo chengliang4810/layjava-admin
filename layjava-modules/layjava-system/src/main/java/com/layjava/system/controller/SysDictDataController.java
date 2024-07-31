@@ -23,8 +23,6 @@ import java.util.List;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/dict/data")
 public class SysDictDataController extends BaseController {

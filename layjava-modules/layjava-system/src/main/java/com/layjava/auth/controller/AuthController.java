@@ -35,9 +35,7 @@ import org.noear.solon.annotation.*;
  * @author Lion Li
  */
 @Slf4j
-@SaIgnore
-
-@Controller
+@SaIgnore@Controller
 @Mapping("/auth")
 public class AuthController {
 

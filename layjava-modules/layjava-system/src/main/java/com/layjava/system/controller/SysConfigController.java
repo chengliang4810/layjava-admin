@@ -19,8 +19,6 @@ import java.util.List;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/config")
 public class SysConfigController extends BaseController {

@@ -37,8 +37,6 @@ import java.util.List;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/user")
 public class SysUserController extends BaseController {

@@ -30,8 +30,6 @@ import java.util.Arrays;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/user/profile")
 public class SysProfileController extends BaseController {

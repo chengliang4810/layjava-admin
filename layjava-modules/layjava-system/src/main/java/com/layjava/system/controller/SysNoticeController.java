@@ -18,8 +18,6 @@ import org.noear.solon.annotation.*;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/notice")
 public class SysNoticeController extends BaseController {

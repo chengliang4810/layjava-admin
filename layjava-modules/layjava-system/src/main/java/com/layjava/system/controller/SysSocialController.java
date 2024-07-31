@@ -18,8 +18,6 @@ import java.util.List;
  * @author thiszhc
  * @date 2023-06-16
  */
-
-
 @Controller
 @Mapping("/system/social")
 public class SysSocialController extends BaseController {

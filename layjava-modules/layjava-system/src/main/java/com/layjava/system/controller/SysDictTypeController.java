@@ -18,9 +18,7 @@ import java.util.List;
  * 数据字典信息
  *
  * @author Lion Li
- */
-
-@Controller
+ */@Controller
 @Mapping("/system/dict/type")
 public class SysDictTypeController extends BaseController {
 

@@ -26,8 +26,6 @@ import java.util.List;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/role")
 public class SysRoleController extends BaseController {

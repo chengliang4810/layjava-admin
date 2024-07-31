@@ -21,8 +21,6 @@ import java.util.List;
  *
  * @author Lion Li
  */
-
-
 @Controller
 @Mapping("/system/post")
 public class SysPostController extends BaseController {
