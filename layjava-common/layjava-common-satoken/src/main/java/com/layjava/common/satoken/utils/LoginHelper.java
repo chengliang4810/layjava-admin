@@ -5,16 +5,13 @@ import cn.dev33.satoken.context.model.SaStorage;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
-import com.layjava.common.core.constant.TenantConstants;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.enums.UserType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 import java.util.function.Supplier;
 
 /**
@@ -49,14 +46,10 @@ public class LoginHelper {
     public static void login(LoginUser loginUser, SaLoginModel model) {
         SaStorage storage = SaHolder.getStorage();
         storage.set(LOGIN_USER_KEY, loginUser);
-        storage.set(TENANT_KEY, loginUser.getTenantId());
         storage.set(USER_KEY, loginUser.getUserId());
         storage.set(DEPT_KEY, loginUser.getDeptId());
         model = ObjectUtil.defaultIfNull(model, new SaLoginModel());
-        StpUtil.login(loginUser.getLoginId(),
-                model.setExtra(TENANT_KEY, loginUser.getTenantId())
-                        .setExtra(USER_KEY, loginUser.getUserId())
-                        .setExtra(DEPT_KEY, loginUser.getDeptId()));
+        StpUtil.login(loginUser.getLoginId());
         SaSession tokenSession = StpUtil.getTokenSession();
         tokenSession.updateTimeout(model.getTimeout());
         tokenSession.set(LOGIN_USER_KEY, loginUser);
@@ -90,25 +83,22 @@ public class LoginHelper {
      * 获取用户id
      */
     public static Long getUserId() {
-        return Convert.toLong(getExtra(USER_KEY));
-    }
-
-    /**
-     * 获取租户ID
-     */
-    public static String getTenantId() {
-        return Convert.toStr(getExtra(TENANT_KEY));
+        LoginUser loginUser = getLoginUser();
+        if (ObjectUtil.isNull(loginUser)) {
+            return null;
+        }
+        return loginUser.getUserId();
     }
 
     /**
      * 获取部门ID
      */
     public static Long getDeptId() {
-        return Convert.toLong(getExtra(DEPT_KEY));
-    }
-
-    private static Object getExtra(String key) {
-        return getStorageIfAbsentSet(key, () -> StpUtil.getExtra(key));
+        LoginUser loginUser = getLoginUser();
+        if (ObjectUtil.isNull(loginUser)) {
+            return null;
+        }
+        return loginUser.getDeptId();
     }
 
     /**
@@ -138,23 +128,6 @@ public class LoginHelper {
 
     public static boolean isSuperAdmin() {
         return isSuperAdmin(getUserId());
-    }
-
-    /**
-     * 是否为超级管理员
-     *
-     * @param rolePermission 角色权限标识组
-     * @return 结果
-     */
-    public static boolean isTenantAdmin(Set<String> rolePermission) {
-        return rolePermission.contains(TenantConstants.TENANT_ADMIN_ROLE_KEY);
-    }
-
-    public static boolean isTenantAdmin() {
-        Object value = getStorageIfAbsentSet(TENANT_ADMIN_KEY, () -> {
-            return isTenantAdmin(getLoginUser().getRolePermission());
-        });
-        return Convert.toBool(value);
     }
 
     public static boolean isLogin() {

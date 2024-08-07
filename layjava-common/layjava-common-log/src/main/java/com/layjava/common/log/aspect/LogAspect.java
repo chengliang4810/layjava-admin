@@ -83,7 +83,6 @@ public class LogAspect implements RouterInterceptor {
 
             // *========数据库日志=========*//
             OperLogEvent operLog = new OperLogEvent();
-            operLog.setTenantId(LoginHelper.getTenantId());
             operLog.setStatus(BusinessStatus.SUCCESS.ordinal());
             // 请求的地址
             String ip = joinPoint.realIp();

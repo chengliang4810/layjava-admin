@@ -42,7 +42,7 @@ public class SysMenuController extends BaseController {
      * @return 路由信息
      */
     @Get
-    @Mapping("/getRouters")
+    @Mapping("/routers")
     public R<List<RouterVo>> getRouters() {
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
         return R.ok(menuService.buildMenus(menus));
@@ -53,11 +53,8 @@ public class SysMenuController extends BaseController {
      */
     @Get
     @Mapping("/list")
-    @SaCheckRole(value = {
-            TenantConstants.SUPER_ADMIN_ROLE_KEY,
-            TenantConstants.TENANT_ADMIN_ROLE_KEY
-    }, mode = SaMode.OR)
     @SaCheckPermission("system:menu:list")
+    @SaCheckRole(value = TenantConstants.SUPER_ADMIN_ROLE_KEY)
     public R<List<SysMenuVo>> list(SysMenuBo menu) {
         List<SysMenuVo> menus = menuService.selectMenuList(menu, LoginHelper.getUserId());
         return R.ok(menus);
