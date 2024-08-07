@@ -1,6 +1,7 @@
 package com.layjava.common.core.exception.user;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.layjava.common.core.exception.base.BaseException;
 
 import java.io.Serial;
@@ -15,7 +16,7 @@ public class UserException extends BaseException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public UserException(String code, Object... args) {
-        super("user", code, args, null);
+    public UserException(String msg, Object... args) {
+        super("user", 500, msg, args);
     }
 }

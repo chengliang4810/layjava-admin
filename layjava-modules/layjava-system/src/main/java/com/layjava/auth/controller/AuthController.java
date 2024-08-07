@@ -1,6 +1,7 @@
 package com.layjava.auth.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
@@ -12,8 +13,11 @@ import com.layjava.common.core.domain.R;
 import com.layjava.common.core.domain.model.LoginBody;
 import com.layjava.common.core.domain.model.RegisterBody;
 import com.layjava.common.core.domain.model.SocialLoginBody;
+import com.layjava.common.core.utils.MapstructUtils;
+import com.layjava.common.core.utils.StreamUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ValidatorUtils;
+import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.social.config.properties.SocialLoginConfigProperties;
 import com.layjava.common.social.config.properties.SocialProperties;
@@ -28,6 +32,11 @@ import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.noear.solon.annotation.*;
+import org.noear.solon.validation.annotation.Validated;
+
+import java.net.URL;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 认证
@@ -35,7 +44,8 @@ import org.noear.solon.annotation.*;
  * @author Lion Li
  */
 @Slf4j
-@SaIgnore@Controller
+@SaIgnore
+@Controller
 @Mapping("/auth")
 public class AuthController {
 
@@ -61,7 +71,7 @@ public class AuthController {
     @Post
     @Mapping("/login")
     public R<LoginVo> login(@Body String body) {
-        LoginBody loginBody = JSONUtil.toBean(body, LoginBody.class);
+        LoginBody loginBody = JsonUtils.parseObject(body, LoginBody.class);
         ValidatorUtils.validate(loginBody);
         // 授权类型和客户端id
         String clientId = loginBody.getClientId();
@@ -74,11 +84,10 @@ public class AuthController {
         } else if (!UserConstants.NORMAL.equals(client.getStatus())) {
             return R.fail("认证权限类型已禁用");
         }
-
         // 登录
         LoginVo loginVo = AuthStrategy.login(body, client, grantType);
 
-        Long userId = LoginHelper.getUserId();
+//        Long userId = LoginHelper.getUserId();
 //        scheduledExecutorService.schedule(() -> {
 //            WebSocketUtils.sendMessage(userId, "欢迎登录RuoYi-Vue-Plus后台管理系统");
 //        }, 3, TimeUnit.SECONDS);
@@ -91,6 +100,7 @@ public class AuthController {
      * @param source 登录来源
      * @return 结果
      */
+    @Get
     @Mapping("/binding/{source}")
     public R<String> authBinding(String source) {
         SocialLoginConfigProperties obj = socialProperties.getType().get(source);
@@ -124,7 +134,6 @@ public class AuthController {
         return R.ok();
     }
 
-
     /**
      * 取消授权
      *
@@ -136,7 +145,6 @@ public class AuthController {
         Boolean rows = socialUserService.deleteWithValidById(socialId);
         return rows ? R.ok() : R.fail("取消授权失败");
     }
-
 
     /**
      * 退出登录

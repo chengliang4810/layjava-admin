@@ -1,5 +1,6 @@
 package com.layjava.common.core.exception.base;
 
+import com.layjava.common.core.utils.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,12 +11,13 @@ import java.io.Serial;
 /**
  * 基础异常
  *
- * @author ruoyi
+ * @author chengliang
+ * @date 2024/08/07
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class BaseException extends RuntimeException {
 
     @Serial
@@ -29,37 +31,27 @@ public class BaseException extends RuntimeException {
     /**
      * 错误码
      */
-    private String code;
-
-    /**
-     * 错误码对应的参数
-     */
-    private Object[] args;
+    private Integer code;
 
     /**
      * 错误消息
      */
-    private String defaultMessage;
+    private String message;
 
-    public BaseException(String module, String code, Object[] args) {
-        this(module, code, args, null);
-    }
+    /**
+     * 消息内容对应的参数
+     */
+    private Object[] args;
 
-    public BaseException(String module, String defaultMessage) {
-        this(module, null, null, defaultMessage);
-    }
-
-    public BaseException(String code, Object[] args) {
-        this(null, code, args, null);
-    }
-
-    public BaseException(String defaultMessage) {
-        this(null, null, null, defaultMessage);
+    public BaseException(String module, Integer code, String message) {
+        this.module = module;
+        this.code = code;
+        this.message = message;
     }
 
     @Override
     public String getMessage() {
-        return defaultMessage;
+        return StringUtils.format(message, args);
     }
 
 }

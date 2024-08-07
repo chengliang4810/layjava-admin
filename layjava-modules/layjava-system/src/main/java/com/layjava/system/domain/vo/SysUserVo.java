@@ -82,8 +82,6 @@ public class SysUserVo implements Serializable {
     /**
      * 密码
      */
-    @JsonIgnore
-    @JsonProperty
     private String password;
 
     /**

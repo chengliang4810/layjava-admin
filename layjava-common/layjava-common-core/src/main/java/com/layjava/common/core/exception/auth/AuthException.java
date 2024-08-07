@@ -14,16 +14,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 public class AuthException extends BaseException {
 
-    private String code;
+    private Integer code;
 
-    // TODO 整合完成后重新处理异常类
     public AuthException(Integer code, String message) {
-        super(message);
-        this.code = code + "";
+        super("auth", code, message);
+        this.code = code;
     }
 
     public AuthException(String message) {
-        super(message);
+        super("auth", 403, message);
     }
 
 }

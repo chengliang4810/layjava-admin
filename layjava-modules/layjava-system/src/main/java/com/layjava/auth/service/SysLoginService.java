@@ -43,9 +43,9 @@ import java.util.function.Supplier;
 @Component
 public class SysLoginService {
 
-    @Inject(value = "${user.password.maxRetryCount}", required = false)
+    @Inject(value = "${user.password.maxRetryCount: 5}", required = false)
     private Integer maxRetryCount;
-    @Inject(value = "${user.password.lockTime}", required = false)
+    @Inject(value = "${user.password.lockTime: 10}", required = false)
     private Integer lockTime;
     @Inject
     private ISysPermissionService permissionService;

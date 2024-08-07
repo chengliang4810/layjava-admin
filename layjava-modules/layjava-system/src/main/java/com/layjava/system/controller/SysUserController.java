@@ -104,7 +104,7 @@ public class SysUserController extends BaseController {
      * @return 用户信息
      */
     @Get
-    @Mapping("/getInfo")
+    @Mapping("/info")
     public R<UserInfoVo> getInfo() {
         UserInfoVo userInfoVo = new UserInfoVo();
         LoginUser loginUser = LoginHelper.getLoginUser();

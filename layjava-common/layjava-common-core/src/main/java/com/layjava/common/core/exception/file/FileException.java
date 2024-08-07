@@ -15,8 +15,8 @@ public class FileException extends BaseException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public FileException(String code, Object[] args) {
-        super("file", code, args, null);
+    public FileException(String message, Object[] args) {
+        super("file", 500, message, args);
     }
 
 }

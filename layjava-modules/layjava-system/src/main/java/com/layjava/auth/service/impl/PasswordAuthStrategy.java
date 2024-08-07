@@ -18,6 +18,7 @@ import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.user.CaptchaException;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
+import com.layjava.common.core.service.ConfigService;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ValidatorUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
@@ -32,6 +33,8 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
 
+import java.util.Optional;
+
 import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 
 /**
@@ -44,7 +47,7 @@ import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 public class PasswordAuthStrategy implements AuthStrategyService {
 
     @Inject
-    private CaptchaProperties captchaProperties;
+    private ConfigService configService;
     @Inject
     private CacheService cacheService;
     @Inject
@@ -56,14 +59,14 @@ public class PasswordAuthStrategy implements AuthStrategyService {
     public LoginVo login(String body, SysClient client) {
         PasswordLoginBody loginBody = JSONUtil.toBean(body, PasswordLoginBody.class);
         ValidatorUtils.validate(loginBody);
-        String username = loginBody.getUsername();
+        String username = loginBody.getUserName();
         String password = loginBody.getPassword();
         String code = loginBody.getCode();
         String uuid = loginBody.getUuid();
 
-        boolean captchaEnabled = captchaProperties.getEnable();
-        // 验证码开关
-        if (captchaEnabled) {
+        String captchaEnabled = configService.getConfigValue("system_captcha_enable");
+        // TODO 验证码开关
+        if ("on".equals(captchaEnabled)) {
             validateCaptcha(username, code, uuid);
         }
 

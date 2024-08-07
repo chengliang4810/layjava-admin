@@ -72,6 +72,7 @@ public class BaseController implements Render {
                     // 非手动校验或抛出的ServiceException
                     obj = R.fail(StrUtil.format("服务端异常, 请联系管理员, 异常信息: [{}]", err.getMessage()));
                 }
+                err.printStackTrace();
             } else if (!(obj instanceof R<?>)) {
                 //非Result结构构建为Result
                 obj = R.ok(obj);
