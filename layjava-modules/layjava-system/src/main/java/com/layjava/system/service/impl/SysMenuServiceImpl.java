@@ -19,6 +19,7 @@ import com.layjava.system.mapper.SysRoleMapper;
 import com.layjava.system.mapper.SysRoleMenuMapper;
 import com.layjava.system.service.ISysMenuService;
 import com.mybatisflex.core.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 
@@ -29,13 +30,14 @@ import static com.layjava.system.domain.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
 import static com.layjava.system.domain.table.SysRoleTableDef.SYS_ROLE;
 import static com.layjava.system.domain.table.SysUserRoleTableDef.SYS_USER_ROLE;
 import static com.mybatisflex.core.query.QueryMethods.distinct;
+import static com.mybatisflex.core.query.QueryMethods.user;
 
 /**
  * 菜单 业务层处理
  *
  * @author Lion Li
  */
-
+@Slf4j
 @Component
 public class SysMenuServiceImpl implements ISysMenuService {
 
@@ -140,14 +142,26 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 菜单列表
      */
     @Override
-    public List<SysMenu> selectMenuTreeByUserId(Long userId) {
+    public List<SysMenu> selectMenuByUserId(Long userId) {
         List<SysMenu> menus;
         if (LoginHelper.isSuperAdmin(userId)) {
             menus = baseMapper.selectMenuTreeAll();
         } else {
             menus = baseMapper.selectMenuTreeByUserId(userId);
         }
-        return getChildPerms(menus, 0);
+        return menus;
+    }
+
+    /**
+     * 根据用户ID查询菜单
+     *
+     * @param userId 用户名称
+     * @return 菜单列表
+     */
+    @Override
+    public List<SysMenu> selectMenuTreeByUserId(Long userId) {
+        List<SysMenu> sysMenus = this.selectMenuByUserId(userId);
+        return getChildPerms(sysMenus, 0);
     }
 
     /**
@@ -163,54 +177,42 @@ public class SysMenuServiceImpl implements ISysMenuService {
     }
 
     /**
-     * 构建前端路由所需要的菜单
+     * 构建前端路由所需要的菜单路由
      *
      * @param menus 菜单列表
      * @return 路由列表
      */
     @Override
     public List<RouterVo> buildMenus(List<SysMenu> menus) {
-        List<RouterVo> routers = new LinkedList<>();
-        for (SysMenu menu : menus) {
-            RouterVo router = new RouterVo();
-            router.setHidden("1".equals(menu.getVisible()));
-            router.setName(menu.getRouteName());
-            router.setPath(menu.getRouterPath());
-            router.setComponent(menu.getComponentInfo());
-            router.setQuery(menu.getQueryParam());
-            router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
-            List<SysMenu> cMenus = menu.getChildren();
-            if (CollUtil.isNotEmpty(cMenus) && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
-                router.setAlwaysShow(true);
-                router.setRedirect("noRedirect");
-                router.setChildren(buildMenus(cMenus));
-            } else if (menu.isMenuFrame()) {
-                router.setMeta(null);
-                List<RouterVo> childrenList = new ArrayList<>();
-                RouterVo children = new RouterVo();
-                children.setPath(menu.getPath());
-                children.setComponent(menu.getComponent());
-                children.setName(StringUtils.capitalize(menu.getPath()));
-                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtils.equals("1", menu.getIsCache()), menu.getPath()));
-                children.setQuery(menu.getQueryParam());
-                childrenList.add(children);
-                router.setChildren(childrenList);
-            } else if (menu.getParentId().intValue() == 0 && menu.isInnerLink()) {
-                router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon()));
-                router.setPath("/");
-                List<RouterVo> childrenList = new ArrayList<>();
-                RouterVo children = new RouterVo();
-                String routerPath = SysMenu.innerLinkReplaceEach(menu.getPath());
-                children.setPath(routerPath);
-                children.setComponent(UserConstants.INNER_LINK);
-                children.setName(StringUtils.capitalize(routerPath));
-                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getPath()));
-                childrenList.add(children);
-                router.setChildren(childrenList);
-            }
-            routers.add(router);
+        if (CollUtil.isEmpty(menus)){
+            return Collections.emptyList();
         }
-        return routers;
+        log.info("菜单列表：{}", menus);
+
+        return menus.stream().map(menu -> {
+            RouterVo router = new RouterVo();
+
+            router.setId(menu.getMenuId());
+            router.setPid(menu.getParentId());
+
+            router.setComponentPath(menu.getComponent());
+            // 后端 M目录 C菜单  前端 dir page
+            router.setMenuType("M".equals(menu.getMenuType()) ? "dir" : "page");
+            router.setName(menu.getRouterName());
+            if (UserConstants.NO_FRAME.equals(menu.getIsFrame())){
+                router.setPath(menu.getPath());
+            } else {
+                router.setHref(menu.getPath());
+            }
+            // 固定所有菜单都需要权限
+            router.setRequiresAuth(menu.getRequiresAuth());
+            router.setTitle(menu.getMenuName());
+            router.setIcon(menu.getIcon());
+            router.setPinTab(menu.getPinTab());
+            router.setKeepAlive("0".equals(menu.getIsCache()));
+            router.setHide("1".equals(menu.getVisible()));
+            return router;
+        }).toList();
     }
 
     /**
