@@ -6,6 +6,7 @@ import com.layjava.system.domain.SysMenu;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.noear.solon.validation.annotation.Length;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
 import org.noear.solon.validation.annotation.Size;
@@ -36,7 +37,7 @@ public class SysMenuBo extends BaseEntity {
      * 菜单名称
      */
     @NotBlank(message = "菜单名称不能为空")
-    @Size(min = 0, max = 50, message = "菜单名称长度不能超过{max}个字符")
+    @Length(min = 0, max = 50, message = "菜单名称长度不能超过{max}个字符")
     private String menuName;
 
     /**
@@ -48,13 +49,13 @@ public class SysMenuBo extends BaseEntity {
     /**
      * 路由地址
      */
-    @Size(min = 0, max = 200, message = "路由地址不能超过{max}个字符")
+    @Length(min = 0, max = 200, message = "路由地址不能超过{max}个字符")
     private String path;
 
     /**
      * 组件路径
      */
-    @Size(min = 0, max = 200, message = "组件路径不能超过{max}个字符")
+    @Length(min = 0, max = 200, message = "组件路径不能超过{max}个字符")
     private String component;
 
     /**

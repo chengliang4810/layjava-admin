@@ -156,7 +156,7 @@ public class LogAspect implements RouterInterceptor {
         String requestMethod = operLog.getRequestMethod();
         if (MapUtil.isEmpty(paramsMap)
                 && SaHttpMethod.PUT.name().equals(requestMethod) || SaHttpMethod.POST.name().equals(requestMethod)) {
-            String params = argsArrayToString(joinPoint.attrMap().values(), excludeParamNames);
+            String params = joinPoint.body();
             operLog.setOperParam(StringUtils.substring(params, 0, 2000));
         } else {
             MapUtil.removeAny(paramsMap, EXCLUDE_PROPERTIES);

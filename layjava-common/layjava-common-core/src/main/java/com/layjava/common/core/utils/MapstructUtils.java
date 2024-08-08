@@ -7,6 +7,7 @@ import io.github.linpeilie.Converter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.noear.solon.Solon;
+import org.noear.solon.annotation.Inject;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,11 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MapstructUtils {
 
-    private final static Converter CONVERTER = Solon.context().getBean(Converter.class);
+    private static Converter CONVERTER;
+
+    static {
+        Solon.context().getBeanAsync(Converter.class, converter -> CONVERTER = converter);
+    }
 
     /**
      * 将 T 类型对象，转换为 desc 类型的对象并返回

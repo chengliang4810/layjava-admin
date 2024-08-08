@@ -109,6 +109,19 @@ public class SysMenuVo implements Serializable {
     private Date createTime;
 
     /**
+     * 路由名称
+     */
+    private String routerName;
+    /**
+     * 是否固定菜单
+     */
+    private Boolean pinTab;
+    /**
+     * 是否需要检查权限
+     */
+    private Boolean requiresAuth;
+
+    /**
      * 子菜单
      */
     private List<SysMenuVo> children = new ArrayList<>();
