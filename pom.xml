@@ -20,6 +20,7 @@
         <module>layjava-admin</module>
         <module>layjava-common</module>
         <module>layjava-modules</module>
+        <module>layjava-plugins</module>
     </modules>
 
     <properties>
@@ -76,6 +77,15 @@
             <dependency>
                 <groupId>com.layjava</groupId>
                 <artifactId>layjava-common-bom</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- plugins 的依赖配置-->
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-plugin-bom</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>

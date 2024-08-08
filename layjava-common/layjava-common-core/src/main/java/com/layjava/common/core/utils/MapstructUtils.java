@@ -7,7 +7,6 @@ import io.github.linpeilie.Converter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.noear.solon.Solon;
-import org.noear.solon.annotation.Inject;
 
 import java.util.List;
 import java.util.Map;

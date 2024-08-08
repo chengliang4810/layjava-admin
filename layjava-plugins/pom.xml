@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.layjava</groupId>
+        <artifactId>layjava-admin-parent</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>layjava-plugins</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        plugin 插件模块
+    </description>
+    <modules>
+        <module>layjava-plugin-bom</module>
+        <module>layjava-plugin-mapstruct-plus</module>
+    </modules>
+
+</project>
