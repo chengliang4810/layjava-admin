@@ -11,10 +11,6 @@
 
     <artifactId>layjava-plugin-mapstruct-plus</artifactId>
 
-    <properties>
-        <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.noear</groupId>
