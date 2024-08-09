@@ -69,6 +69,7 @@
             <groupId>org.lionsoul</groupId>
             <artifactId>ip2region</artifactId>
         </dependency>
+
     </dependencies>
 
 

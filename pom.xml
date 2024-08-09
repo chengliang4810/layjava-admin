@@ -35,7 +35,7 @@
         <hikaricp.version>4.0.3</hikaricp.version>
         <mybatis-flex.version>1.9.5</mybatis-flex.version>
         <alibaba-ttl.version>2.14.4</alibaba-ttl.version>
-        <easyexcel.version>3.3.3</easyexcel.version>
+        <easyexcel.version>4.0.2</easyexcel.version>
         <lombok.version>1.18.34</lombok.version>
         <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
         <mapstruct-plus.lombok.version>0.2.0</mapstruct-plus.lombok.version>
@@ -214,13 +214,13 @@
 <!--                            <version>${mapstruct-plus.lombok.version}</version>-->
 <!--                        </path>-->
                         <path>
-                            <groupId>com.mybatis-flex</groupId>
-                            <artifactId>mybatis-flex-processor</artifactId>
+                            <groupId>io.github.linpeilie</groupId>
+                            <artifactId>mapstruct-plus-processor</artifactId>
                             <version>${mapstruct-plus.version}</version>
                         </path>
                         <path>
-                            <groupId>io.github.linpeilie</groupId>
-                            <artifactId>mapstruct-plus-processor</artifactId>
+                            <groupId>com.mybatis-flex</groupId>
+                            <artifactId>mybatis-flex-processor</artifactId>
                             <version>${mapstruct-plus.version}</version>
                         </path>
                     </annotationProcessorPaths>

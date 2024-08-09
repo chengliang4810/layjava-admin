@@ -354,7 +354,7 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
     }
 
     default <E> Page<E> xmlPaginate(String dataSelectId, Page<E> page, Map<String, Object> otherParams, DataColumn... columns) {
-        return this.xmlPaginate(dataSelectId, dataSelectId + "_COUNT", page, (QueryWrapper) null, otherParams, columns);
+        return this.xmlPaginate(dataSelectId, dataSelectId + "_COUNT", page, null, otherParams, columns);
     }
 
     default <E> Page<E> xmlPaginate(String dataSelectId, Page<E> page, QueryWrapper queryWrapper, Map<String, Object> otherParams, DataColumn... columns) {
