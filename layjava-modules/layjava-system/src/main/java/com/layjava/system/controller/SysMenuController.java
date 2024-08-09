@@ -19,7 +19,6 @@ import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
 import com.layjava.system.service.ISysMenuService;
 import org.noear.solon.annotation.*;
-import org.noear.solon.core.handle.Context;
 import org.noear.solon.validation.annotation.Validated;
 
 import java.util.List;
@@ -159,8 +158,4 @@ public class SysMenuController extends BaseController {
         return toAjax(menuService.deleteMenuById(menuId));
     }
 
-    @Override
-    public boolean matched(Context ctx, String accept) {
-        return super.matched(ctx, accept);
-    }
 }

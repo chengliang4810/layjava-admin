@@ -11,7 +11,6 @@ import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.SysRole;
 import com.layjava.system.domain.bo.SysMenuBo;
-import com.layjava.system.domain.vo.MetaVo;
 import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
 import com.layjava.system.mapper.SysMenuMapper;
@@ -30,7 +29,6 @@ import static com.layjava.system.domain.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
 import static com.layjava.system.domain.table.SysRoleTableDef.SYS_ROLE;
 import static com.layjava.system.domain.table.SysUserRoleTableDef.SYS_USER_ROLE;
 import static com.mybatisflex.core.query.QueryMethods.distinct;
-import static com.mybatisflex.core.query.QueryMethods.user;
 
 /**
  * 菜单 业务层处理
@@ -187,7 +185,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
         if (CollUtil.isEmpty(menus)){
             return Collections.emptyList();
         }
-        log.info("菜单列表：{}", menus);
 
         return menus.stream().map(menu -> {
             RouterVo router = new RouterVo();

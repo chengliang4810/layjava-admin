@@ -106,5 +106,16 @@ public class SysMenuBo extends BaseEntity {
      */
     private String remark;
 
-
+    /**
+     * 路由名称
+     */
+    private String routerName;
+    /**
+     * 是否固定菜单
+     */
+    private Boolean pinTab;
+    /**
+     * 是否需要检查权限
+     */
+    private Boolean requiresAuth;
 }
