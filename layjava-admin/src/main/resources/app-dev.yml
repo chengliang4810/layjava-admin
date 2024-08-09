@@ -1,3 +1,6 @@
+# 打印Sql
+layjava.sql.print: true
+
 # 配置默认数据源
 layjava.datasource.default:
   p6spy: true
