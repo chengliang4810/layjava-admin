@@ -1,6 +1,6 @@
 package com.layjava.system.domain.bo;
 
-import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.system.domain.SysDictType;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;

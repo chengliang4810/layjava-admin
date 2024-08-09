@@ -1,9 +1,6 @@
 package com.layjava.system.domain;
 
-import com.layjava.common.core.constant.Constants;
-import com.layjava.common.core.constant.UserConstants;
-import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;

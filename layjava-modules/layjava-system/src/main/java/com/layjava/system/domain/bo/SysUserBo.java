@@ -2,7 +2,7 @@ package com.layjava.system.domain.bo;
 
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.xss.Xss;
-import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.system.domain.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;

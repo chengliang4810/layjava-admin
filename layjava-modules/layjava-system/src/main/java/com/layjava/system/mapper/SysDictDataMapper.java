@@ -1,6 +1,6 @@
 package com.layjava.system.mapper;
 
-import com.layjava.common.dao.core.mapper.BaseMapperPlus;
+import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
 import com.layjava.system.domain.SysDictData;
 import com.layjava.system.domain.vo.SysDictDataVo;
 import com.mybatisflex.core.query.QueryWrapper;

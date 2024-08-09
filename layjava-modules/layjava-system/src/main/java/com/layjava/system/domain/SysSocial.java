@@ -1,6 +1,6 @@
 package com.layjava.system.domain;
 
-import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package com.layjava.system.service;
 
 
-import com.layjava.common.dao.core.page.PageQuery;
-import com.layjava.common.dao.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.TableDataInfo;
 import com.layjava.system.domain.bo.SysDictTypeBo;
 import com.layjava.system.domain.vo.SysDictDataVo;
 import com.layjava.system.domain.vo.SysDictTypeVo;

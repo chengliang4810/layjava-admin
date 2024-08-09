@@ -3,7 +3,7 @@ package com.layjava.system.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.dao.helper.DataBaseHelper;
+import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.system.domain.SysDept;
 import com.layjava.system.domain.SysRoleDept;
 import com.layjava.system.mapper.SysDeptMapper;

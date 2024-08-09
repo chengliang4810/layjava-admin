@@ -2,8 +2,8 @@ package com.layjava.system.service.impl;
 
 import cn.hutool.crypto.SecureUtil;
 import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.dao.core.page.PageQuery;
-import com.layjava.common.dao.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.TableDataInfo;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;

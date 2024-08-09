@@ -1,8 +1,8 @@
 package com.layjava.system.mapper;
 
-import com.layjava.common.dao.annotation.DataColumn;
-import com.layjava.common.dao.annotation.DataPermission;
-import com.layjava.common.dao.core.mapper.BaseMapperPlus;
+import com.layjava.common.mybatis.annotation.DataColumn;
+import com.layjava.common.mybatis.annotation.DataPermission;
+import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
 import com.layjava.system.domain.SysDept;
 import com.layjava.system.domain.vo.SysDeptVo;
 import com.mybatisflex.core.query.QueryWrapper;

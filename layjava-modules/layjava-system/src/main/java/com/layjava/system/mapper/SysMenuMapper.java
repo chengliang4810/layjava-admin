@@ -1,7 +1,7 @@
 package com.layjava.system.mapper;
 
 import com.layjava.common.core.constant.UserConstants;
-import com.layjava.common.dao.core.mapper.BaseMapperPlus;
+import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
 import com.layjava.system.domain.SysMenu;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.apache.ibatis.annotations.Param;

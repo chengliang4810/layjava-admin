@@ -1,7 +1,7 @@
 package com.layjava.system.domain.bo;
 
 import com.layjava.common.core.xss.Xss;
-import com.layjava.common.dao.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

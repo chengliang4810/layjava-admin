@@ -16,8 +16,8 @@ import ${package.Service}.${table.serviceName};
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.apache.ibatis.solon.annotation.Db;
-import com.layjava.common.dao.core.page.PageQuery;
-import com.layjava.common.dao.core.page.PageResult;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.core.util.MapstructUtils;
 
 import java.util.List;

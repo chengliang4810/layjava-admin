@@ -10,7 +10,7 @@ import com.layjava.common.core.service.DeptService;
 import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.TreeBuildUtils;
-import com.layjava.common.dao.helper.DataBaseHelper;
+import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysDept;
 import com.layjava.system.domain.SysRole;
