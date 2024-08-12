@@ -1,9 +1,7 @@
 package com.layjava.auth.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.SysLoginService;
@@ -13,12 +11,9 @@ import com.layjava.common.core.domain.R;
 import com.layjava.common.core.domain.model.LoginBody;
 import com.layjava.common.core.domain.model.RegisterBody;
 import com.layjava.common.core.domain.model.SocialLoginBody;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StreamUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ValidatorUtils;
 import com.layjava.common.json.utils.JsonUtils;
-import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.social.config.properties.SocialLoginConfigProperties;
 import com.layjava.common.social.config.properties.SocialProperties;
 import com.layjava.common.social.utils.SocialUtils;
@@ -32,11 +27,6 @@ import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.noear.solon.annotation.*;
-import org.noear.solon.validation.annotation.Validated;
-
-import java.net.URL;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 认证
