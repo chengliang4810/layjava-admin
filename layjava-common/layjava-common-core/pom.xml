@@ -60,8 +60,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.layjava</groupId>
-            <artifactId>layjava-plugin-mapstruct-plus</artifactId>
+            <groupId>org.dromara.solon-plugins</groupId>
+            <artifactId>mapstruct-plus-solon-plugin</artifactId>
         </dependency>
 
         <!-- 离线IP地址定位库 -->

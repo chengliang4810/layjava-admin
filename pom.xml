@@ -20,7 +20,6 @@
         <module>layjava-admin</module>
         <module>layjava-common</module>
         <module>layjava-modules</module>
-        <module>layjava-plugins</module>
     </modules>
 
     <properties>
@@ -29,17 +28,21 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>17</java.version>
 
+        <!-- 通用 -->
+        <lombok.version>1.18.34</lombok.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
+
         <!-- 数据源 -->
         <mysql.version>8.4.0</mysql.version>
         <p6spy.version>3.9.1</p6spy.version>
         <hikaricp.version>4.0.3</hikaricp.version>
         <mybatis-flex.version>1.9.5</mybatis-flex.version>
+
+        <!-- excel -->
         <alibaba-ttl.version>2.14.4</alibaba-ttl.version>
         <easyexcel.version>4.0.2</easyexcel.version>
-        <lombok.version>1.18.34</lombok.version>
-        <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
-        <mapstruct-plus.lombok.version>0.2.0</mapstruct-plus.lombok.version>
-        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <!-- 三方认证 -->
         <justauth.version>1.16.6</justauth.version>
         <!-- 离线IP地址定位库 -->
         <ip2region.version>2.7.0</ip2region.version>
@@ -77,15 +80,6 @@
             <dependency>
                 <groupId>com.layjava</groupId>
                 <artifactId>layjava-common-bom</artifactId>
-                <version>${revision}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- plugins 的依赖配置-->
-            <dependency>
-                <groupId>com.layjava</groupId>
-                <artifactId>layjava-plugin-bom</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -204,11 +198,6 @@
                             <version>${lombok.version}</version>
                         </path>
                         <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>${mapstruct-plus.lombok.version}</version>
-                        </path>
-                        <path>
                             <groupId>io.github.linpeilie</groupId>
                             <artifactId>mapstruct-plus-processor</artifactId>
                             <version>${mapstruct-plus.version}</version>
@@ -216,7 +205,7 @@
                         <path>
                             <groupId>com.mybatis-flex</groupId>
                             <artifactId>mybatis-flex-processor</artifactId>
-                            <version>${mapstruct-plus.version}</version>
+                            <version>${mybatis-flex.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>
