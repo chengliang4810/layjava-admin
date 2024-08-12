@@ -2,8 +2,7 @@
 layjava.sql.print: true
 
 # 配置默认数据源
-layjava.datasource.default:
-  p6spy: true
+layjava.datasource.master:
   driverClassName: com.mysql.cj.jdbc.Driver
   jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   username: root
