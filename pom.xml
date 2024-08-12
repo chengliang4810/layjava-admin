@@ -161,6 +161,13 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- velocity代码生成使用模板 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
@@ -176,6 +183,12 @@
             <dependency>
                 <groupId>com.layjava</groupId>
                 <artifactId>layjava-system</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-generator</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>

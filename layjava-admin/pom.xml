@@ -31,6 +31,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.layjava</groupId>
+            <artifactId>layjava-generator</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.noear</groupId>
             <artifactId>solon-test</artifactId>
             <scope>test</scope>
