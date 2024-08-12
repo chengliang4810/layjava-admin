@@ -29,15 +29,16 @@ public class MybatisFlexConfig {
     /**
      * MybatisFlex配置
      *
-     * @param globalConfig      globalConfig
+     * @param globalConfig globalConfig
      */
     @Bean
-    public void configuration(@Db("default") FlexGlobalConfig globalConfig) {
+    public FlexGlobalConfig configuration(@Db("master") FlexGlobalConfig globalConfig) {
         // 指定数据库类型， 提高一点点效率
         globalConfig.setDbType(DbType.MYSQL);
         // BaseEntity数据填充
         globalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
         globalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);
+        return globalConfig;
     }
 
 }

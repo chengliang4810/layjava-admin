@@ -3,6 +3,7 @@ package com.layjava.common.mybatis.helper;
 import cn.hutool.core.convert.Convert;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.mybatis.enums.DataBaseType;
+import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.datasource.FlexDataSource;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,11 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DataBaseHelper {
 
-    private static final FlexDataSource DS = Solon.context().getBean(FlexDataSource.class);
+    private static FlexDataSource DS;
+
+    static {
+        Solon.context().getBeanAsync(FlexGlobalConfig.class, flexGlobalConfig -> DS = flexGlobalConfig.getDataSource());
+    }
 
     /**
      * 获取当前数据库类型
