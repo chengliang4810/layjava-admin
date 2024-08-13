@@ -1,21 +1,11 @@
 package com.layjava.common.json.utils;
 
 import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.layjava.common.core.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.noear.snack.ONode;
-import org.noear.solon.Solon;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * JSON 工具类
@@ -26,6 +16,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JsonUtils {
 
+    /**
+     * 对象转 JsonString
+     *
+     * @param object 实体对象
+     * @return JsonString
+     */
     public static String toJsonString(Object object) {
         if (ObjectUtil.isNull(object)) {
             return null;
@@ -33,19 +29,31 @@ public class JsonUtils {
         return ONode.stringify(object);
     }
 
-    public static <T> T parseObject(String text, Class<T> clazz) {
-        if (StringUtils.isEmpty(text)) {
+    /**
+     * Json字符串转对象
+     *
+     * @param jsonString json 字符串
+     * @param clazz      类型
+     * @return 实体类型
+     */
+    public static <T> T parseObject(String jsonString, Class<T> clazz) {
+        if (StringUtils.isEmpty(jsonString)) {
             return null;
         }
-        return ONode.deserialize(text, clazz);
+        return ONode.deserialize(jsonString, clazz);
     }
 
-    public static Dict parseMap(String text) {
-        if (StringUtils.isBlank(text)) {
+    /**
+     * json 转 map
+     *
+     * @param jsonString json 字符串
+     * @return map 对象
+     */
+    public static Dict parseMap(String jsonString) {
+        if (StringUtils.isBlank(jsonString)) {
             return null;
         }
-            return ONode.deserialize(text, Dict.class);
-
+        return ONode.deserialize(jsonString, Dict.class);
     }
 
 }
