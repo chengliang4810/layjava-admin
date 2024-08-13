@@ -58,10 +58,8 @@ import static com.layjava.generator.domain.table.GenTableTableDef.GEN_TABLE;
 @RequiredArgsConstructor
 public class GenTableServiceImpl implements IGenTableService {
 
-    @org.apache.ibatis.solon.annotation.Db
-    private GenTableMapper baseMapper;
-    @org.apache.ibatis.solon.annotation.Db
-    private GenTableColumnMapper genTableColumnMapper;
+    private final GenTableMapper baseMapper;
+    private final GenTableColumnMapper genTableColumnMapper;
 
     /**
      * 查询业务字段列表
@@ -72,8 +70,8 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId) {
         return genTableColumnMapper.selectListByQuery(QueryWrapper.create()
-            .where(GenTableColumn::getTableId).eq(tableId)
-            .orderBy(GenTableColumn::getSort, true));
+                .where(GenTableColumn::getTableId).eq(tableId)
+                .orderBy(GenTableColumn::getSort, true));
     }
 
     /**
@@ -99,10 +97,10 @@ public class GenTableServiceImpl implements IGenTableService {
     private QueryWrapper buildGenTableQueryWrapper(GenTable genTable) {
         Map<String, Object> params = genTable.getParams();
         return QueryWrapper.create().from(GEN_TABLE)
-            .where(GEN_TABLE.DATA_NAME.eq(genTable.getDataName()))
-            .and(QueryMethods.lower(GEN_TABLE.TABLE_NAME).like(StringUtils.lowerCase(genTable.getTableName())))
-            .and(QueryMethods.lower(GEN_TABLE.TABLE_COMMENT).like(StringUtils.lowerCase(genTable.getTableComment())))
-            .and(GEN_TABLE.CREATE_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null));
+                .where(GEN_TABLE.DATA_NAME.eq(genTable.getDataName()))
+                .and(QueryMethods.lower(GEN_TABLE.TABLE_NAME).like(StringUtils.lowerCase(genTable.getTableName())))
+                .and(QueryMethods.lower(GEN_TABLE.TABLE_COMMENT).like(StringUtils.lowerCase(genTable.getTableComment())))
+                .and(GEN_TABLE.CREATE_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null));
     }
 
     @Override
@@ -126,75 +124,75 @@ public class GenTableServiceImpl implements IGenTableService {
 
         if (DataBaseHelper.isMySql()) {
             QueryWrapper queryWrapper = QueryWrapper.create()
-                .select("table_name", "table_comment", "create_time", "update_time")
-                .from("information_schema.tables")
-                .where("table_schema = (select database())")
-                .and("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'")
-                .and(QueryMethods.column("table_name").notIn(genTableNames, If::isNotEmpty))
-                .and(QueryMethods.column("lower(table_name)").like(tableName))
-                .and(QueryMethods.column("lower(table_comment)").like(tableComment))
-                .orderBy("create_time", false);
+                    .select("table_name", "table_comment", "create_time", "update_time")
+                    .from("information_schema.tables")
+                    .where("table_schema = (select database())")
+                    .and("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'")
+                    .and(QueryMethods.column("table_name").notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("lower(table_name)").like(tableName))
+                    .and(QueryMethods.column("lower(table_comment)").like(tableComment))
+                    .orderBy("create_time", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         if (DataBaseHelper.isOracle()) {
             QueryWrapper queryWrapper = QueryWrapper.create()
-                .select(new QueryColumn("lower(dt.table_name)").as("table_name"),
-                    new QueryColumn("dtc.comments").as("table_comment"),
-                    new QueryColumn("uo.created").as("create_time"),
-                    new QueryColumn("uo.last_ddl_time").as("update_time")
-                )
-                .from(new QueryTable("user_tables").as("dt"), new QueryTable("user_tab_comments").as("dtc"), new QueryTable("user_objects").as("uo"))
-                .where("dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type = 'TABLE'")
-                .and("dt.table_name NOT LIKE 'pj_%' AND dt.table_name NOT LIKE 'GEN_%'")
-                .and(QueryMethods.column("lower(dt.table_name)").notIn(genTableNames, If::isNotEmpty))
-                .and(QueryMethods.column("lower(dt.table_name)").like(tableName))
-                .and(QueryMethods.column("lower(dtc.comments)").like(tableComment))
-                .orderBy("create_time", false);
+                    .select(new QueryColumn("lower(dt.table_name)").as("table_name"),
+                            new QueryColumn("dtc.comments").as("table_comment"),
+                            new QueryColumn("uo.created").as("create_time"),
+                            new QueryColumn("uo.last_ddl_time").as("update_time")
+                    )
+                    .from(new QueryTable("user_tables").as("dt"), new QueryTable("user_tab_comments").as("dtc"), new QueryTable("user_objects").as("uo"))
+                    .where("dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type = 'TABLE'")
+                    .and("dt.table_name NOT LIKE 'pj_%' AND dt.table_name NOT LIKE 'GEN_%'")
+                    .and(QueryMethods.column("lower(dt.table_name)").notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("lower(dt.table_name)").like(tableName))
+                    .and(QueryMethods.column("lower(dtc.comments)").like(tableComment))
+                    .orderBy("create_time", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         if (DataBaseHelper.isPostgerSql()) {
 
             QueryWrapper queryWrapper = QueryWrapper.create()
-                .with("list_table").asRaw("""
-                    SELECT c.relname AS table_name,
-                                            obj_description(c.oid) AS table_comment,
-                                            CURRENT_TIMESTAMP AS create_time,
-                                            CURRENT_TIMESTAMP AS update_time
-                                    FROM pg_class c
-                                        LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
-                                    WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
-                                        AND c.relname != 'spatial_%'::text
-                                        AND n.nspname = 'public'::name
-                                        AND n.nspname <![CDATA[ <> ]]> ''::name
-                    """)
-                .select(new QueryColumn("c.relname").as("table_name"),
-                    new QueryColumn("obj_description(c.oid)").as("table_comment"),
-                    new QueryColumn("CURRENT_TIMESTAMP").as("create_time"),
-                    new QueryColumn("CURRENT_TIMESTAMP").as("update_time")
-                )
-                .from("list_table")
-                .where("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'")
-                .and(QueryMethods.column("table_name").notIn(genTableNames, If::isNotEmpty))
-                .and(QueryMethods.lower("table_name").like(tableName))
-                .and(QueryMethods.lower("table_comment").like(tableComment))
-                .orderBy("create_time", false);
+                    .with("list_table").asRaw("""
+                            SELECT c.relname AS table_name,
+                                                    obj_description(c.oid) AS table_comment,
+                                                    CURRENT_TIMESTAMP AS create_time,
+                                                    CURRENT_TIMESTAMP AS update_time
+                                            FROM pg_class c
+                                                LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+                                            WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
+                                                AND c.relname != 'spatial_%'::text
+                                                AND n.nspname = 'public'::name
+                                                AND n.nspname <![CDATA[ <> ]]> ''::name
+                            """)
+                    .select(new QueryColumn("c.relname").as("table_name"),
+                            new QueryColumn("obj_description(c.oid)").as("table_comment"),
+                            new QueryColumn("CURRENT_TIMESTAMP").as("create_time"),
+                            new QueryColumn("CURRENT_TIMESTAMP").as("update_time")
+                    )
+                    .from("list_table")
+                    .where("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'")
+                    .and(QueryMethods.column("table_name").notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.lower("table_name").like(tableName))
+                    .and(QueryMethods.lower("table_comment").like(tableComment))
+                    .orderBy("create_time", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         if (DataBaseHelper.isSqlServer()) {
-           QueryWrapper queryWrapper = QueryWrapper.create()
-                .select(new QueryColumn("cast(D.NAME as nvarchar)").as("table_name"),
-                    new QueryColumn("cast(F.VALUE as nvarchar)").as("table_comment"),
-                    new QueryColumn("crdate").as("create_time"),
-                    new QueryColumn("refdate").as("update_time")
-                )
-                .from(new QueryTable("SYSOBJECTS").as("D"))
-                .innerJoin("SYS.EXTENDED_PROPERTIES F")
-                .on("D.ID = F.MAJOR_ID")
-                .where("F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES' AND D.NAME NOT LIKE 'pj_%' AND D.NAME NOT LIKE 'gen_%'")
-                .and(QueryMethods.column("D.NAME").notIn(genTableNames, If::isNotEmpty))
-                .and(QueryMethods.lower("D.NAME").like(tableName))
-                .and(QueryMethods.lower("CAST(F.VALUE AS nvarchar)").like(tableComment))
-                .orderBy("crdate", false);
+            QueryWrapper queryWrapper = QueryWrapper.create()
+                    .select(new QueryColumn("cast(D.NAME as nvarchar)").as("table_name"),
+                            new QueryColumn("cast(F.VALUE as nvarchar)").as("table_comment"),
+                            new QueryColumn("crdate").as("create_time"),
+                            new QueryColumn("refdate").as("update_time")
+                    )
+                    .from(new QueryTable("SYSOBJECTS").as("D"))
+                    .innerJoin("SYS.EXTENDED_PROPERTIES F")
+                    .on("D.ID = F.MAJOR_ID")
+                    .where("F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES' AND D.NAME NOT LIKE 'pj_%' AND D.NAME NOT LIKE 'gen_%'")
+                    .and(QueryMethods.column("D.NAME").notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.lower("D.NAME").like(tableName))
+                    .and(QueryMethods.lower("CAST(F.VALUE AS nvarchar)").like(tableComment))
+                    .orderBy("crdate", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         throw new ServiceException("不支持的数据库类型");
@@ -273,7 +271,7 @@ public class GenTableServiceImpl implements IGenTableService {
                 String tableName = table.getTableName();
                 GenUtils.initTable(table, operId);
                 table.setDataName(dataName);
-                int row = baseMapper.insert(table,true);
+                int row = baseMapper.insert(table, true);
                 if (row > 0) {
                     // 保存列信息
                     try {
@@ -416,8 +414,8 @@ public class GenTableServiceImpl implements IGenTableService {
                     column.setQueryType(prevColumn.getQueryType());
                 }
                 if (StringUtils.isNotEmpty(prevColumn.getIsRequired()) && !column.isPk()
-                    && (column.isInsert() || column.isEdit())
-                    && ((column.isUsableColumn()) || (!column.isSuperColumn()))) {
+                        && (column.isInsert() || column.isEdit())
+                        && ((column.isUsableColumn()) || (!column.isSuperColumn()))) {
                     // 如果是(新增/修改&非主键/非忽略及父属性)，继续保留必填/显示类型选项
                     column.setIsRequired(prevColumn.getIsRequired());
                     column.setHtmlType(prevColumn.getHtmlType());
