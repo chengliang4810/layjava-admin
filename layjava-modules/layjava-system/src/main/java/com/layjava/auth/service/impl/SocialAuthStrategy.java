@@ -14,7 +14,6 @@ import com.layjava.common.core.domain.model.SocialLoginBody;
 import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.exception.user.UserException;
-import com.layjava.common.core.utils.ValidatorUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.social.config.properties.SocialProperties;
 import com.layjava.common.social.utils.SocialUtils;
@@ -31,6 +30,7 @@ import me.zhyd.oauth.model.AuthUser;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.validation.ValidUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +65,7 @@ public class SocialAuthStrategy implements AuthStrategyService {
     @Override
     public LoginVo login(String body, SysClient client) {
         SocialLoginBody loginBody = JSONUtil.toBean(body, SocialLoginBody.class);
-        ValidatorUtils.validate(loginBody);
+        ValidUtils.validateEntity(loginBody);
         AuthResponse<AuthUser> response = SocialUtils.loginAuth(
                 loginBody.getSource(), loginBody.getSocialCode(),
                 loginBody.getSocialState(), socialProperties);

@@ -10,7 +10,6 @@ import com.layjava.auth.service.SysLoginService;
 import com.layjava.common.core.domain.model.XcxLoginBody;
 import com.layjava.common.core.domain.model.XcxLoginUser;
 import com.layjava.common.core.enums.UserStatus;
-import com.layjava.common.core.utils.ValidatorUtils;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
@@ -18,6 +17,7 @@ import com.layjava.system.domain.vo.SysUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
+import org.noear.solon.validation.ValidUtils;
 
 /**
  * 邮件认证策略
@@ -34,7 +34,7 @@ public class XcxAuthStrategy implements AuthStrategyService {
     @Override
     public LoginVo login(String body, SysClient client) {
         XcxLoginBody loginBody = JsonUtils.parseObject(body, XcxLoginBody.class);
-        ValidatorUtils.validate(loginBody);
+        ValidUtils.validateEntity(loginBody);
         // xcxCode 为 小程序调用 wx.login 授权后获取
         String xcxCode = loginBody.getXcxCode();
         // 多个小程序识别使用

@@ -4,7 +4,6 @@ import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -20,9 +19,8 @@ import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
 import com.layjava.common.core.service.ConfigService;
 import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.core.utils.ValidatorUtils;
+import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
-import com.layjava.common.web.config.properties.CaptchaProperties;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
@@ -32,8 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
-
-import java.util.Optional;
+import org.noear.solon.validation.ValidUtils;
 
 import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 
@@ -57,8 +54,8 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 
     @Override
     public LoginVo login(String body, SysClient client) {
-        PasswordLoginBody loginBody = JSONUtil.toBean(body, PasswordLoginBody.class);
-        ValidatorUtils.validate(loginBody);
+        PasswordLoginBody loginBody = JsonUtils.parseObject(body, PasswordLoginBody.class);
+        ValidUtils.validateEntity(loginBody);
         String username = loginBody.getUserName();
         String password = loginBody.getPassword();
         String code = loginBody.getCode();

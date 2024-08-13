@@ -12,7 +12,6 @@ import com.layjava.common.core.domain.model.LoginBody;
 import com.layjava.common.core.domain.model.RegisterBody;
 import com.layjava.common.core.domain.model.SocialLoginBody;
 import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.core.utils.ValidatorUtils;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.social.config.properties.SocialLoginConfigProperties;
 import com.layjava.common.social.config.properties.SocialProperties;
@@ -21,12 +20,14 @@ import com.layjava.system.domain.SysClient;
 import com.layjava.system.service.ISysClientService;
 import com.layjava.system.service.ISysConfigService;
 import com.layjava.system.service.ISysSocialService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
 import org.noear.solon.annotation.*;
+import org.noear.solon.validation.ValidUtils;
 
 /**
  * 认证
@@ -37,20 +38,15 @@ import org.noear.solon.annotation.*;
 @SaIgnore
 @Controller
 @Mapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    @Inject
-    private SocialProperties socialProperties;
-    @Inject
-    private SysLoginService loginService;
-    @Inject
-    private SysRegisterService registerService;
-    @Inject
-    private ISysConfigService configService;
-    @Inject
-    private ISysSocialService socialUserService;
-    @Inject
-    private ISysClientService clientService;
+    private final SysLoginService loginService;
+    private final ISysConfigService configService;
+    private final ISysClientService clientService;
+    private final SocialProperties socialProperties;
+    private final SysRegisterService registerService;
+    private final ISysSocialService socialUserService;
 
     /**
      * 登录方法
@@ -62,7 +58,7 @@ public class AuthController {
     @Mapping("/login")
     public R<LoginVo> login(@Body String body) {
         LoginBody loginBody = JsonUtils.parseObject(body, LoginBody.class);
-        ValidatorUtils.validate(loginBody);
+        ValidUtils.validateEntity(loginBody);
         // 授权类型和客户端id
         String clientId = loginBody.getClientId();
         String grantType = loginBody.getGrantType();
