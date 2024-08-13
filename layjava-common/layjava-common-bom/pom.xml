@@ -25,7 +25,12 @@
                 <artifactId>layjava-common-core</artifactId>
                 <version>${revision}</version>
             </dependency>
-
+            <!-- 缓存模块 -->
+            <dependency>
+                <groupId>com.layjava</groupId>
+                <artifactId>layjava-common-cache</artifactId>
+                <version>${revision}</version>
+            </dependency>
             <!-- 接口文档模块 -->
             <dependency>
                 <groupId>com.layjava</groupId>

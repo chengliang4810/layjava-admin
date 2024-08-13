@@ -27,6 +27,7 @@
         <module>layjava-common-json</module>
         <module>layjava-common-social</module>
         <module>layjava-common-excel</module>
+        <module>layjava-common-cache</module>
     </modules>
 
 </project>

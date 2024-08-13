@@ -32,3 +32,8 @@ security:
     - /
     # 登录
     - /auth/login
+
+# 本地缓存
+layjava.cache:
+  driverType: "caffeine" #缓存类型
+  keyHeader: "layjava"

@@ -9,24 +9,25 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>layjava-common-satoken</artifactId>
+    <artifactId>layjava-common-cache</artifactId>
+
+    <description>缓存模块</description>
 
     <dependencies>
         <dependency>
             <groupId>com.layjava</groupId>
             <artifactId>layjava-common-core</artifactId>
         </dependency>
-        <!-- sa-token -->
+        <!--本地缓存-->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>sa-token-solon-plugin</artifactId>
+            <artifactId>solon.cache.caffeine</artifactId>
         </dependency>
-        <!-- sa-token redisson依赖, 使用redis时加入。 -->
+        <!-- redis缓存 -->
         <dependency>
             <groupId>org.noear</groupId>
-            <artifactId>sa-token-dao-redisson-jackson</artifactId>
+            <artifactId>solon.cache.redisson</artifactId>
         </dependency>
     </dependencies>
-
 
 </project>

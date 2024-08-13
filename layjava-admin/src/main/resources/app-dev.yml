@@ -7,3 +7,10 @@ layjava.datasource.master:
   jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   username: root
   password: P@ssw0rd
+
+# redis缓存配置, 自动覆盖 app.yml的配置
+layjava.cache:
+  driverType: "redis" #驱动类型
+  server: "localhost:6379"
+  db: 0 #默认为 0，可不配置
+  #password:
