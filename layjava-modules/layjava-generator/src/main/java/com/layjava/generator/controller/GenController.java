@@ -215,7 +215,7 @@ public class GenController extends BaseController {
      * 查询数据源名称列表
      */
     @Get
-    @Mapping(value = "/datasource")
+    @Mapping(value = "/datasource/name")
     @SaCheckPermission("tool:gen:list")
     public R<Object> getCurrentDataSourceNameList() {
         return R.ok(DataBaseHelper.getDataSourceNameList());
