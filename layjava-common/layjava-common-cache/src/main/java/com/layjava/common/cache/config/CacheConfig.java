@@ -1,6 +1,7 @@
 package com.layjava.common.cache.config;
 
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.cache.redisson.RedissonCacheService;
@@ -18,7 +19,7 @@ public class CacheConfig {
      * @param supplier 缓存供应商
      * @return 缓存服务
      */
-    @Bean(value = "cacheMaster", typed = true)
+    @Bean(typed = true)
     public CacheService cacheService(@Inject("${layjava.cache}") CacheServiceSupplier supplier) {
         LogUtil.global().info("Cache: " + supplier.get().getClass().getSimpleName());
         return supplier.get();
@@ -30,10 +31,8 @@ public class CacheConfig {
      * @return RedissonClient
      */
     @Bean(typed = true)
-    public RedissonClient redissonClient(@Inject(value = "cacheMaster", required = false) RedissonCacheService redissonCacheService) {
-        if (redissonCacheService == null) {
-            return null;
-        }
+    @Condition(onBean = RedissonCacheService.class)
+    public RedissonClient redissonClient(@Inject RedissonCacheService redissonCacheService) {
         return redissonCacheService.client();
     }
 

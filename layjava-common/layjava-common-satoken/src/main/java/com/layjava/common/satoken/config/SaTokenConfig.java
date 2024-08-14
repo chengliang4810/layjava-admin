@@ -4,6 +4,7 @@ import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedissonJackson;
 import cn.dev33.satoken.stp.StpInterface;
 import com.layjava.common.satoken.core.SaPermissionImpl;
 import org.noear.solon.annotation.Bean;
+import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
 import org.redisson.api.RedissonClient;
@@ -26,10 +27,8 @@ public class SaTokenConfig {
      * @return Sa-Token 持久层实现
      */
     @Bean
-    public SaTokenDaoOfRedissonJackson saTokenDaoInit(@Inject(required = false) RedissonClient redissonClient) {
-        if (redissonClient == null) {
-            return null;
-        }
+    @Condition(onBean = RedissonClient.class)
+    public SaTokenDaoOfRedissonJackson saTokenDaoInit(@Inject RedissonClient redissonClient) {
         return new SaTokenDaoOfRedissonJackson(redissonClient);
     }
 }
