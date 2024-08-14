@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysConfigBo;
 import com.layjava.system.domain.vo.SysConfigVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysConfigService {
 
 
-    TableDataInfo<SysConfigVo> selectPageConfigList(SysConfigBo config, PageQuery pageQuery);
+    PageResult<SysConfigVo> selectPageConfigList(SysConfigBo config, PageQuery pageQuery);
 
     /**
      * 查询参数配置信息

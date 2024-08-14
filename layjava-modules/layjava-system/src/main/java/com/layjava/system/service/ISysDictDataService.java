@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysDictDataBo;
 import com.layjava.system.domain.vo.SysDictDataVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysDictDataService {
 
 
-    TableDataInfo<SysDictDataVo> selectPageDictDataList(SysDictDataBo dictData, PageQuery pageQuery);
+    PageResult<SysDictDataVo> selectPageDictDataList(SysDictDataBo dictData, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询字典数据

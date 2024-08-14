@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysPostBo;
 import com.layjava.system.domain.vo.SysPostVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysPostService {
 
 
-    TableDataInfo<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery);
+    PageResult<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery);
 
     /**
      * 查询岗位信息集合

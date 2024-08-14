@@ -11,7 +11,7 @@ import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.file.FileUtils;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.generator.constant.GenConstants;
@@ -88,10 +88,10 @@ public class GenTableServiceImpl implements IGenTableService {
     }
 
     @Override
-    public TableDataInfo<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery) {
+    public PageResult<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery) {
         QueryWrapper queryWrapper = this.buildGenTableQueryWrapper(genTable);
         Page<GenTable> page = baseMapper.paginate(pageQuery, queryWrapper);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     private QueryWrapper buildGenTableQueryWrapper(GenTable genTable) {
@@ -104,13 +104,13 @@ public class GenTableServiceImpl implements IGenTableService {
     }
 
     @Override
-    public TableDataInfo<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery) {
+    public PageResult<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery) {
         try {
             DataSourceKey.use(genTable.getDataName());
             List<String> value = baseMapper.selectTableNameList(genTable.getDataName());
             genTable.getParams().put("genTableNames", value);
             Page<GenTable> page = selectPageDbTableList(pageQuery.build(), genTable);
-            return TableDataInfo.build(page);
+            return PageResult.build(page);
         } finally {
             DataSourceKey.clear();
         }

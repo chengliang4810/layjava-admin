@@ -6,7 +6,7 @@ import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysOssConfig;
 import com.layjava.system.domain.bo.SysOssConfigBo;
 import com.layjava.system.domain.vo.SysOssConfigVo;
@@ -61,10 +61,10 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
     }
 
     @Override
-    public TableDataInfo<SysOssConfigVo> queryPageList(SysOssConfigBo bo, PageQuery pageQuery) {
+    public PageResult<SysOssConfigVo> queryPageList(SysOssConfigBo bo, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(bo);
         Page<SysOssConfigVo> result = baseMapper.paginateAs(pageQuery, lqw, SysOssConfigVo.class);
-        return TableDataInfo.build(result);
+        return PageResult.build(result);
     }
 
 

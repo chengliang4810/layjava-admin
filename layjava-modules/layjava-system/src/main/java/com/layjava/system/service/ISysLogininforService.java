@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysLogininforBo;
 import com.layjava.system.domain.vo.SysLogininforVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysLogininforService {
 
 
-    TableDataInfo<SysLogininforVo> selectPageLogininforList(SysLogininforBo logininfor, PageQuery pageQuery);
+    PageResult<SysLogininforVo> selectPageLogininforList(SysLogininforBo logininfor, PageQuery pageQuery);
 
     /**
      * 新增系统登录日志

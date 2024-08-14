@@ -3,7 +3,7 @@ package com.layjava.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.layjava.common.core.domain.R;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
 import com.layjava.common.web.core.BaseController;
@@ -43,7 +43,7 @@ public class SysRoleController extends BaseController {
     @SaCheckPermission("system:role:list")
     @Get
     @Mapping("/list")
-    public TableDataInfo<SysRoleVo> list(SysRoleBo role, PageQuery pageQuery) {
+    public PageResult<SysRoleVo> list(SysRoleBo role, PageQuery pageQuery) {
         return roleService.selectPageRoleList(role, pageQuery);
     }
 
@@ -168,7 +168,7 @@ public class SysRoleController extends BaseController {
     @SaCheckPermission("system:role:list")
     @Get
     @Mapping("/authUser/allocatedList")
-    public TableDataInfo<SysUserVo> allocatedList(SysUserBo user, PageQuery pageQuery) {
+    public PageResult<SysUserVo> allocatedList(SysUserBo user, PageQuery pageQuery) {
         return userService.selectAllocatedList(user, pageQuery);
     }
 
@@ -178,7 +178,7 @@ public class SysRoleController extends BaseController {
     @SaCheckPermission("system:role:list")
     @Get
     @Mapping("/authUser/unallocatedList")
-    public TableDataInfo<SysUserVo> unallocatedList(SysUserBo user, PageQuery pageQuery) {
+    public PageResult<SysUserVo> unallocatedList(SysUserBo user, PageQuery pageQuery) {
         return userService.selectUnallocatedList(user, pageQuery);
     }
 

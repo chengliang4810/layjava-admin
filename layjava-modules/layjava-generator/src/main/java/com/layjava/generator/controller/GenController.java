@@ -7,7 +7,7 @@ import com.layjava.common.core.utils.DateUtils;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.generator.domain.GenTable;
@@ -41,7 +41,7 @@ public class GenController extends BaseController {
     @Get
     @Mapping("/list")
     @SaCheckPermission("tool:gen:list")
-    public TableDataInfo<GenTable> genList(GenTable genTable, PageQuery pageQuery) {
+    public PageResult<GenTable> genList(GenTable genTable, PageQuery pageQuery) {
         return genTableService.selectPageGenTableList(genTable, pageQuery);
     }
 
@@ -70,7 +70,7 @@ public class GenController extends BaseController {
     @Get
     @Mapping("/db/list")
     @SaCheckPermission("tool:gen:list")
-    public TableDataInfo<GenTable> dataList(GenTable genTable, PageQuery pageQuery) {
+    public PageResult<GenTable> dataList(GenTable genTable, PageQuery pageQuery) {
         return genTableService.selectPageDbTableList(genTable, pageQuery);
     }
 
@@ -82,12 +82,9 @@ public class GenController extends BaseController {
     @Get
     @Mapping("/column/{tableId}")
     @SaCheckPermission("tool:gen:list")
-    public TableDataInfo<GenTableColumn> columnList(Long tableId) {
-        TableDataInfo<GenTableColumn> dataInfo = new TableDataInfo<>();
+    public PageResult<GenTableColumn> columnList(Long tableId) {
         List<GenTableColumn> list = genTableService.selectGenTableColumnListByTableId(tableId);
-        dataInfo.setRows(list);
-        dataInfo.setTotal(list.size());
-        return dataInfo;
+        return PageResult.build(list);
     }
 
     /**

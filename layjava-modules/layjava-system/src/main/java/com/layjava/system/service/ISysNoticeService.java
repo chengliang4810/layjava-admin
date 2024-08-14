@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysNoticeBo;
 import com.layjava.system.domain.vo.SysNoticeVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysNoticeService {
 
 
-    TableDataInfo<SysNoticeVo> selectPageNoticeList(SysNoticeBo notice, PageQuery pageQuery);
+    PageResult<SysNoticeVo> selectPageNoticeList(SysNoticeBo notice, PageQuery pageQuery);
 
     /**
      * 查询公告信息

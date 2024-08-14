@@ -3,7 +3,7 @@ package com.layjava.system.service.impl;
 import cn.hutool.crypto.SecureUtil;
 import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
@@ -57,11 +57,11 @@ public class SysClientServiceImpl implements ISysClientService {
      * 查询客户端管理列表
      */
     @Override
-    public TableDataInfo<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery) {
+    public PageResult<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(bo);
         Page<SysClientVo> result = baseMapper.paginateAs(pageQuery, lqw, SysClientVo.class);
         result.getRecords().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split(","))));
-        return TableDataInfo.build(result);
+        return PageResult.build(result);
     }
 
     /**

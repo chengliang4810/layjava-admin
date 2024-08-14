@@ -4,7 +4,7 @@ import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ip.AddressUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.event.OperLogEvent;
 import com.layjava.system.domain.SysOperLog;
 import com.layjava.system.domain.bo.SysOperLogBo;
@@ -51,13 +51,13 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     }
 
     @Override
-    public TableDataInfo<SysOperLogVo> selectPageOperLogList(SysOperLogBo operLog, PageQuery pageQuery) {
+    public PageResult<SysOperLogVo> selectPageOperLogList(SysOperLogBo operLog, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(operLog);
         if (StringUtils.isBlank(pageQuery.getOrderByColumn())) {
             lqw.orderBy(SYS_OPER_LOG.OPER_ID, false);
         }
         Page<SysOperLogVo> page = baseMapper.paginateAs(pageQuery.build(), lqw, SysOperLogVo.class);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     private static QueryWrapper buildQueryWrapper(SysOperLogBo operLog) {

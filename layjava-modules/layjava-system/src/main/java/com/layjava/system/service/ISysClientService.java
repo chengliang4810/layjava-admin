@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
@@ -31,7 +31,7 @@ public interface ISysClientService {
     /**
      * 查询客户端管理列表
      */
-    TableDataInfo<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery);
+    PageResult<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery);
 
     /**
      * 查询客户端管理列表

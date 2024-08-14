@@ -10,7 +10,7 @@ import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StreamUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysDept;
@@ -65,9 +65,9 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     private SysUserPostMapper userPostMapper;
 
     @Override
-    public TableDataInfo<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery) {
+    public PageResult<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery) {
         Page<SysUserVo> page = baseMapper.selectPageUserList(pageQuery, this.buildQueryWrapper(user));
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**
@@ -109,7 +109,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
      * @return 用户信息集合信息
      */
     @Override
-    public TableDataInfo<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery) {
+    public PageResult<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery) {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select(distinct(SYS_USER.USER_ID, SYS_USER.DEPT_ID, SYS_USER.USER_NAME, SYS_USER.NICK_NAME, SYS_USER.EMAIL, SYS_USER.PHONENUMBER, SYS_USER.STATUS, SYS_USER.CREATE_TIME))
                 .from(SYS_USER).as("u")
@@ -123,7 +123,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
                 .and(SYS_USER.PHONENUMBER.eq(user.getPhonenumber()))
                 .orderBy(SYS_USER.USER_ID, true);
         Page<SysUserVo> page = baseMapper.selectAllocatedList(pageQuery, queryWrapper);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**
@@ -133,7 +133,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
      * @return 用户信息集合信息
      */
     @Override
-    public TableDataInfo<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery) {
+    public PageResult<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery) {
         List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(user.getRoleId());
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select(distinct(SYS_USER.USER_ID, SYS_USER.DEPT_ID, SYS_USER.USER_NAME, SYS_USER.NICK_NAME, SYS_USER.EMAIL, SYS_USER.PHONENUMBER, SYS_USER.STATUS, SYS_USER.CREATE_TIME))
@@ -148,7 +148,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
                 .and(SYS_USER.PHONENUMBER.eq(user.getPhonenumber()))
                 .orderBy(SYS_USER.USER_ID, true);
         Page<SysUserVo> page = baseMapper.selectAllocatedList(pageQuery, queryWrapper);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**

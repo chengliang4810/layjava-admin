@@ -8,7 +8,7 @@ import com.layjava.common.core.service.ConfigService;
 import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysConfig;
 import com.layjava.system.domain.bo.SysConfigBo;
 import com.layjava.system.domain.vo.SysConfigVo;
@@ -39,10 +39,10 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
     private SysConfigMapper baseMapper;
 
     @Override
-    public TableDataInfo<SysConfigVo> selectPageConfigList(SysConfigBo config, PageQuery pageQuery) {
+    public PageResult<SysConfigVo> selectPageConfigList(SysConfigBo config, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(config);
         Page<SysConfigVo> page = baseMapper.paginateAs(pageQuery, lqw, SysConfigVo.class);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**
