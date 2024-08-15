@@ -12,7 +12,7 @@ import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StreamUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
 import com.layjava.common.satoken.utils.LoginHelper;
@@ -56,7 +56,7 @@ public class SysUserController extends BaseController {
     @Get
     @Mapping("/list")
     @SaCheckPermission("system:user:list")
-    public TableDataInfo<SysUserVo> list(SysUserBo user, PageQuery pageQuery) {
+    public PageResult<SysUserVo> list(SysUserBo user, PageQuery pageQuery) {
         return userService.selectPageUserList(user, pageQuery);
     }
 

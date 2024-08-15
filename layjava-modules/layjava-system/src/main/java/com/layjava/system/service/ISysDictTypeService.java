@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysDictTypeBo;
 import com.layjava.system.domain.vo.SysDictDataVo;
 import com.layjava.system.domain.vo.SysDictTypeVo;
@@ -17,7 +17,7 @@ import java.util.List;
 public interface ISysDictTypeService {
 
 
-    TableDataInfo<SysDictTypeVo> selectPageDictTypeList(SysDictTypeBo dictType, PageQuery pageQuery);
+    PageResult<SysDictTypeVo> selectPageDictTypeList(SysDictTypeBo dictType, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询字典类型

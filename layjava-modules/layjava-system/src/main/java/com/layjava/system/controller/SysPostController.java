@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.R;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
 import com.layjava.common.web.core.BaseController;
@@ -33,7 +33,7 @@ public class SysPostController extends BaseController {
     @SaCheckPermission("system:post:list")
     @Get
     @Mapping("/list")
-    public TableDataInfo<SysPostVo> list(SysPostBo post, PageQuery pageQuery) {
+    public PageResult<SysPostVo> list(SysPostBo post, PageQuery pageQuery) {
         return postService.selectPagePostList(post, pageQuery);
     }
 

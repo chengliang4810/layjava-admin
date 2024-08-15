@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysUserRole;
 import com.layjava.system.domain.bo.SysRoleBo;
 import com.layjava.system.domain.vo.SysRoleVo;
@@ -18,7 +18,7 @@ import java.util.Set;
 public interface ISysRoleService {
 
 
-    TableDataInfo<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery);
+    PageResult<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询角色数据

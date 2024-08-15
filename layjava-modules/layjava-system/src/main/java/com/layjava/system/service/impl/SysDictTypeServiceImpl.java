@@ -10,7 +10,7 @@ import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StreamUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysDictData;
 import com.layjava.system.domain.SysDictType;
 import com.layjava.system.domain.bo.SysDictTypeBo;
@@ -48,10 +48,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService 
     private SysDictDataMapper dictDataMapper;
 
     @Override
-    public TableDataInfo<SysDictTypeVo> selectPageDictTypeList(SysDictTypeBo dictType, PageQuery pageQuery) {
+    public PageResult<SysDictTypeVo> selectPageDictTypeList(SysDictTypeBo dictType, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(dictType);
         Page<SysDictTypeVo> page = baseMapper.paginateAs(pageQuery, lqw, SysDictTypeVo.class);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**

@@ -1,7 +1,10 @@
 package com.layjava.common.mybatis.core.page;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.hutool.http.HttpStatus;
+import com.layjava.common.core.domain.R;
+import com.mybatisflex.core.paginate.Page;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
@@ -9,27 +12,18 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 统一分页结果对象
+ * 表格分页数据对象
  *
  * @author chengliang
- * @since  2024/04/17
+ * @date 2024/08/14
  */
 @Data
 @NoArgsConstructor
-public class PageResult<T> implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class PageResult<T> extends R<PageInfo<T>> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 总记录数
-     */
-    private long total;
-
-    /**
-     * 列表数据
-     */
-    private List<T> rows;
 
     /**
      * 分页
@@ -38,27 +32,30 @@ public class PageResult<T> implements Serializable {
      * @param total 总记录数
      */
     public PageResult(List<T> list, long total) {
-        this.rows = list;
-        this.total = total;
+        setData(PageInfo.build(list, total));
+    }
+
+    public static <T> PageResult<T> build(Page<T> page) {
+        PageResult<T> rspData = new PageResult<>();
+        rspData.setCode(HttpStatus.HTTP_OK);
+        rspData.setMsg("查询成功");
+        rspData.setData(PageInfo.build(page.getRecords(), page.getTotalRow()));
+        return rspData;
     }
 
     public static <T> PageResult<T> build(List<T> list) {
         PageResult<T> rspData = new PageResult<>();
-        rspData.setRows(list);
-        rspData.setTotal(list.size());
+        rspData.setCode(HttpStatus.HTTP_OK);
+        rspData.setMsg("查询成功");
+        rspData.setData(PageInfo.build(list, list.size()));
         return rspData;
     }
 
     public static <T> PageResult<T> build() {
-        return new PageResult<>();
-    }
-
-    public static <T> PageResult<T> build(List<T> data, long total) {
-        return new PageResult<>(data, total);
-    }
-
-    public static <T> PageResult<T> build(long total) {
-        return new PageResult<>(CollUtil.newArrayList(), total);
+        PageResult<T> rspData = new PageResult<>();
+        rspData.setCode(HttpStatus.HTTP_OK);
+        rspData.setMsg("查询成功");
+        return rspData;
     }
 
 }

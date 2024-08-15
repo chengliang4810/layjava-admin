@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysNotice;
 import com.layjava.system.domain.bo.SysNoticeBo;
 import com.layjava.system.domain.vo.SysNoticeVo;
@@ -37,10 +37,10 @@ public class SysNoticeServiceImpl implements ISysNoticeService {
     private SysUserMapper userMapper;
 
     @Override
-    public TableDataInfo<SysNoticeVo> selectPageNoticeList(SysNoticeBo notice, PageQuery pageQuery) {
+    public PageResult<SysNoticeVo> selectPageNoticeList(SysNoticeBo notice, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(notice);
         Page<SysNoticeVo> page = baseMapper.paginateAs(pageQuery, lqw, SysNoticeVo.class);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**

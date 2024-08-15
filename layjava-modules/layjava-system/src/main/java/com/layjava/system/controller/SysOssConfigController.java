@@ -6,7 +6,7 @@ import com.layjava.common.core.validate.group.AddGroup;
 import com.layjava.common.core.validate.group.QueryGroup;
 import com.layjava.common.core.validate.group.UpdateGroup;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
 import com.layjava.common.web.core.BaseController;
@@ -41,7 +41,7 @@ public class SysOssConfigController extends BaseController {
     @Get
     @Mapping("/list")
     @SaCheckPermission("system:ossConfig:list")
-    public TableDataInfo<SysOssConfigVo> list(@Validated(QueryGroup.class) SysOssConfigBo bo, PageQuery pageQuery) {
+    public PageResult<SysOssConfigVo> list(@Validated(QueryGroup.class) SysOssConfigBo bo, PageQuery pageQuery) {
         return ossConfigService.queryPageList(bo, pageQuery);
     }
 

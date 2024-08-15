@@ -8,7 +8,7 @@ import com.layjava.common.core.validate.group.QueryGroup;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysOssBo;
 import com.layjava.system.domain.vo.SysOssUploadVo;
@@ -42,7 +42,7 @@ public class SysOssController extends BaseController {
     @Get
     @Mapping("/list")
     @SaCheckPermission("system:oss:list")
-    public TableDataInfo<SysOssVo> list(@Validated(QueryGroup.class) SysOssBo bo, PageQuery pageQuery) {
+    public PageResult<SysOssVo> list(@Validated(QueryGroup.class) SysOssBo bo, PageQuery pageQuery) {
         return ossService.queryPageList(bo, pageQuery);
     }
 

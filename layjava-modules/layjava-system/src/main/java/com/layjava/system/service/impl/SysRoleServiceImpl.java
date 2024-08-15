@@ -13,7 +13,7 @@ import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StreamUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysRole;
 import com.layjava.system.domain.SysRoleDept;
@@ -59,9 +59,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
     private SysRoleDeptMapper roleDeptMapper;
 
     @Override
-    public TableDataInfo<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery) {
+    public PageResult<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery) {
         Page<SysRoleVo> page = baseMapper.selectPageRoleList(pageQuery, this.buildQueryWrapper(role));
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**

@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysOssBo;
 import com.layjava.system.domain.vo.SysOssVo;
 import org.noear.solon.core.handle.DownloadedFile;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public interface ISysOssService {
 
-    TableDataInfo<SysOssVo> queryPageList(SysOssBo sysOss, PageQuery pageQuery);
+    PageResult<SysOssVo> queryPageList(SysOssBo sysOss, PageQuery pageQuery);
 
     List<SysOssVo> listByIds(Collection<Long> ossIds);
 

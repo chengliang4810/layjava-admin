@@ -3,7 +3,7 @@ package com.layjava.system.service.impl;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysPost;
 import com.layjava.system.domain.bo.SysPostBo;
 import com.layjava.system.domain.vo.SysPostVo;
@@ -35,10 +35,10 @@ public class SysPostServiceImpl implements ISysPostService {
     private SysUserPostMapper userPostMapper;
 
     @Override
-    public TableDataInfo<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery) {
+    public PageResult<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(post);
         Page<SysPostVo> page = baseMapper.paginateAs(pageQuery, lqw, SysPostVo.class);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**

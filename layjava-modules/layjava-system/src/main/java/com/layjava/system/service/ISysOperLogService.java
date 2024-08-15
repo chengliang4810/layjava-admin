@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysOperLogBo;
 import com.layjava.system.domain.vo.SysOperLogVo;
 
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface ISysOperLogService {
 
-    TableDataInfo<SysOperLogVo> selectPageOperLogList(SysOperLogBo operLog, PageQuery pageQuery);
+    PageResult<SysOperLogVo> selectPageOperLogList(SysOperLogBo operLog, PageQuery pageQuery);
 
     /**
      * 新增操作日志

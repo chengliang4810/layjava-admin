@@ -7,7 +7,7 @@ import com.layjava.common.core.utils.MapstructUtils;
 import com.layjava.common.core.utils.StringUtils;
 import com.layjava.common.core.utils.ip.AddressUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.event.LogininforEvent;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysLogininfor;
@@ -107,7 +107,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
     }
 
     @Override
-    public TableDataInfo<SysLogininforVo> selectPageLogininforList(SysLogininforBo logininfor, PageQuery pageQuery) {
+    public PageResult<SysLogininforVo> selectPageLogininforList(SysLogininforBo logininfor, PageQuery pageQuery) {
         Map<String, Object> params = logininfor.getParams();
         QueryWrapper lqw = QueryWrapper.create().from(SYS_LOGININFOR)
                 .where(SYS_LOGININFOR.IPADDR.like(logininfor.getIpaddr()))
@@ -120,7 +120,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
             lqw.orderBy(pageQuery.buildOrderBy());
         }
         Page<SysLogininforVo> page = baseMapper.paginateAs(pageQuery.build(), lqw, SysLogininforVo.class);
-        return TableDataInfo.build(page);
+        return PageResult.build(page);
     }
 
     /**

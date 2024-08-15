@@ -2,7 +2,7 @@ package com.layjava.generator.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.generator.domain.GenTable;
 import com.layjava.generator.domain.GenTableColumn;
 
@@ -30,7 +30,7 @@ public interface IGenTableService {
      * @param genTable 业务信息
      * @return 业务集合
      */
-    TableDataInfo<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery);
+    PageResult<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery);
 
     /**
      * 查询据库列表
@@ -38,7 +38,7 @@ public interface IGenTableService {
      * @param genTable 业务信息
      * @return 数据库表集合
      */
-    TableDataInfo<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery);
+    PageResult<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery);
 
     /**
      * 查询据库列表

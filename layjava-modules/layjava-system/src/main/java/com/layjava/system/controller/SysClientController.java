@@ -6,7 +6,7 @@ import com.layjava.common.core.validate.group.AddGroup;
 import com.layjava.common.core.validate.group.UpdateGroup;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.log.enums.BusinessType;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysClientBo;
 import com.layjava.system.domain.vo.SysClientVo;
@@ -40,7 +40,7 @@ public class SysClientController extends BaseController {
     @Get
     @Mapping("/list")
     @SaCheckPermission("system:client:list")
-    public TableDataInfo<SysClientVo> list(SysClientBo bo, PageQuery pageQuery) {
+    public PageResult<SysClientVo> list(SysClientBo bo, PageQuery pageQuery) {
         return sysClientService.queryPageList(bo, pageQuery);
     }
 

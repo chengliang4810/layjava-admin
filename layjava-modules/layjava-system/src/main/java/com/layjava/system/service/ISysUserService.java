@@ -2,7 +2,7 @@ package com.layjava.system.service;
 
 
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.TableDataInfo;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.domain.vo.SysUserVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysUserService {
 
 
-    TableDataInfo<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery);
+    PageResult<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询用户列表
@@ -32,7 +32,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    TableDataInfo<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery);
+    PageResult<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询未分配用户角色列表
@@ -40,7 +40,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    TableDataInfo<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery);
+    PageResult<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery);
 
     /**
      * 通过用户名查询用户
