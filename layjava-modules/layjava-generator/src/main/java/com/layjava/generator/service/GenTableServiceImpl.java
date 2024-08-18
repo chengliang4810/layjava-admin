@@ -207,12 +207,7 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     @Override
     public List<GenTable> selectDbTableListByNames(String[] tableNames, String dataName) {
-        try {
-            DataSourceKey.use(dataName);
-            return baseMapper.selectDbTableListByNames(tableNames);
-        } finally {
-            DataSourceKey.clear();
-        }
+        return baseMapper.selectDbTableListByNames(tableNames);
     }
 
     /**
@@ -275,7 +270,7 @@ public class GenTableServiceImpl implements IGenTableService {
                 if (row > 0) {
                     // 保存列信息
                     try {
-                        DataSourceKey.use(dataName);
+                        // DataSourceKey.use(dataName);
                         List<GenTableColumn> genTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
                         List<GenTableColumn> saveColumns = new ArrayList<>();
                         for (GenTableColumn column : genTableColumns) {
@@ -286,7 +281,7 @@ public class GenTableServiceImpl implements IGenTableService {
                             genTableColumnMapper.insertBatch(saveColumns);
                         }
                     } finally {
-                        DataSourceKey.clear();
+                        // DataSourceKey.clear();
                     }
 
                 }

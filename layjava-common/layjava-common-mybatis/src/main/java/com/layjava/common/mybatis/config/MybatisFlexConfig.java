@@ -4,7 +4,6 @@ import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.common.mybatis.listener.BaseEntityInsertListener;
 import com.layjava.common.mybatis.listener.BaseEntityUpdateListener;
 import com.mybatisflex.core.FlexGlobalConfig;
-import com.mybatisflex.core.dialect.DbType;
 import com.mybatisflex.core.query.QueryColumnBehavior;
 import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
@@ -33,8 +32,6 @@ public class MybatisFlexConfig {
      */
     @Bean
     public FlexGlobalConfig configuration(@Db("master") FlexGlobalConfig globalConfig) {
-        // 指定数据库类型， 提高一点点效率
-        globalConfig.setDbType(DbType.MYSQL);
         // BaseEntity数据填充
         globalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
         globalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);
