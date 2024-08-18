@@ -93,13 +93,19 @@ public class GenController extends BaseController {
      * @param tables 表名串
      */
     @Post
-    @Mapping("/importTable")
+    @Mapping("/import/table")
     @SaCheckPermission("tool:gen:import")
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public R<Void> importTableSave(String tables, String dataName) {
+        System.out.println("tables: " + tables);
+        System.out.println("dataName: " + dataName);
         String[] tableNames = Convert.toStrArray(tables);
+        for (String tableName : tableNames) {
+            System.out.println("tableName: " + tableName);
+        }
         // 查询表信息
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames, dataName);
+        System.out.println("tableList.size(): " + tableList.size());
         genTableService.importGenTable(tableList, dataName);
         return R.ok();
     }
@@ -164,7 +170,7 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/genCode/{tableId}")
+    @Mapping("/gen/code/{tableId}")
     @SaCheckPermission("tool:gen:code")
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     public R<Void> genCode(Long tableId) {
@@ -178,10 +184,10 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/synchDb/{tableId}")
+    @Mapping("/sync/db/{tableId}")
     @SaCheckPermission("tool:gen:edit")
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
-    public R<Void> synchDb(Long tableId) {
+    public R<Void> syncDb(Long tableId) {
         genTableService.synchDb(tableId);
         return R.ok();
     }

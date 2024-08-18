@@ -8,6 +8,7 @@ import com.layjava.generator.domain.GenTableColumn;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RegExUtils;
+import org.noear.solon.Solon;
 
 import java.util.Arrays;
 
@@ -19,16 +20,22 @@ import java.util.Arrays;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class GenUtils {
 
+    private static GenConfig genConfig;
+
+    static {
+        Solon.context().getBeanAsync(GenConfig.class, (config) -> genConfig = config);
+    }
+
     /**
      * 初始化表信息
      */
     public static void initTable(GenTable genTable, Long operId) {
         genTable.setClassName(convertClassName(genTable.getTableName()));
-        genTable.setPackageName(GenConfig.getPackageName());
-        genTable.setModuleName(getModuleName(GenConfig.getPackageName()));
+        genTable.setPackageName(genConfig.getPackageName());
+        genTable.setModuleName(getModuleName(genTable.getPackageName()));
         genTable.setBusinessName(getBusinessName(genTable.getTableName()));
         genTable.setFunctionName(replaceText(genTable.getTableComment()));
-        genTable.setFunctionAuthor(GenConfig.getAuthor());
+        genTable.setFunctionAuthor(genConfig.getAuthor());
         genTable.setCreateBy(operId);
     }
 
@@ -103,7 +110,7 @@ public class GenUtils {
         }
         // 类型&性别字段设置下拉框
         else if (StringUtils.endsWithIgnoreCase(columnName, "type")
-            || StringUtils.endsWithIgnoreCase(columnName, "sex")) {
+                || StringUtils.endsWithIgnoreCase(columnName, "sex")) {
             column.setHtmlType(GenConstants.HTML_SELECT);
         }
         // 图片字段设置图片上传控件
@@ -164,8 +171,8 @@ public class GenUtils {
      * @return 类名
      */
     public static String convertClassName(String tableName) {
-        boolean autoRemovePre = GenConfig.getAutoRemovePre();
-        String tablePrefix = GenConfig.getTablePrefix();
+        boolean autoRemovePre = genConfig.getAutoRemovePre();
+        String tablePrefix = genConfig.getTablePrefix();
         if (autoRemovePre && StringUtils.isNotEmpty(tablePrefix)) {
             String[] searchList = StringUtils.split(tablePrefix, StringUtils.SEPARATOR);
             tableName = replaceFirst(tableName, searchList);

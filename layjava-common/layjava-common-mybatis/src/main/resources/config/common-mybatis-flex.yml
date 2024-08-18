@@ -8,6 +8,7 @@ mybatis.master:
   configuration:  #扩展配置（要与 FlexConfiguration 类的属性一一对应）
     mapperVerifyEnabled: false #如果为 true，则要求所有 mapper 有 @Mapper 主解
     mapUnderscoreToCamelCase: true
+    autoMappingBehavior: full #自动映射策略（NONE/PARTIAL/FULL）
   globalConfig:   #全局配置（要与 FlexGlobalConfig 类的属性一一对应）//只是示例，别照抄
     printBanner: false
     keyConfig:

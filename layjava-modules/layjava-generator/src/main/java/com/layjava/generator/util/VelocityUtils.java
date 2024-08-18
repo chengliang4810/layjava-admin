@@ -14,6 +14,7 @@ import com.layjava.generator.domain.GenTableColumn;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.velocity.VelocityContext;
+import org.noear.solon.Solon;
 
 import java.util.*;
 
@@ -24,6 +25,12 @@ import java.util.*;
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class VelocityUtils {
+
+    private static GenConfig genConfig;
+
+    static {
+        Solon.context().getBeanAsync(GenConfig.class, (config) -> genConfig = config);
+    }
 
     /**
      * 项目空间路径
@@ -129,7 +136,7 @@ public class VelocityUtils {
             templates.add("vm/sql/sql.vm");
         }
 
-        if (StringUtils.equals("vben", GenConfig.getPlatform())) {
+        if (StringUtils.equals("vben", genConfig.getPlatform())) {
             /**
              * 添加vben
              */
@@ -273,14 +280,14 @@ public class VelocityUtils {
     /**
      * 添加字典列表
      *
-     * @param dicts 字典列表
+     * @param dicts   字典列表
      * @param columns 列集合
      */
     public static void addDicts(Set<String> dicts, List<GenTableColumn> columns) {
         for (GenTableColumn column : columns) {
             if (!column.isSuperColumn() && StringUtils.isNotEmpty(column.getDictType()) && StringUtils.equalsAny(
-                column.getHtmlType(),
-                new String[] { GenConstants.HTML_SELECT, GenConstants.HTML_RADIO, GenConstants.HTML_CHECKBOX })) {
+                    column.getHtmlType(),
+                    new String[]{GenConstants.HTML_SELECT, GenConstants.HTML_RADIO, GenConstants.HTML_CHECKBOX})) {
                 dicts.add("'" + column.getDictType() + "'");
             }
         }
@@ -305,7 +312,7 @@ public class VelocityUtils {
      */
     public static String getParentMenuId(Dict paramsObj) {
         if (CollUtil.isNotEmpty(paramsObj) && paramsObj.containsKey(GenConstants.PARENT_MENU_ID)
-            && StringUtils.isNotEmpty(paramsObj.getStr(GenConstants.PARENT_MENU_ID))) {
+                && StringUtils.isNotEmpty(paramsObj.getStr(GenConstants.PARENT_MENU_ID))) {
             return paramsObj.getStr(GenConstants.PARENT_MENU_ID);
         }
         return DEFAULT_PARENT_MENU_ID;
