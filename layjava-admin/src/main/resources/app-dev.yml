@@ -1,29 +1,15 @@
 # 打印Sql
-layjava.sql.print: true
+# layjava.sql.print: true
 
-
-#solon.dataSources:
-#  "master!": #数据源（!结尾表示 typed=true）
-#    class: "com.zaxxer.hikari.HikariDataSource"
-#    driverClassName: com.mysql.cj.jdbc.Driver
-#    jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-#    username: root
-#    password: P@ssw0rd
-#  "slave": #数据源（!结尾表示 typed=true）
-#    class: "com.zaxxer.hikari.HikariDataSource"
-#    driverClassName: com.mysql.cj.jdbc.Driver
-#    jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-#    username: root
-#    password: P@ssw0rd
-
-# 配置数据源
-layjava.datasource:
-  master:
+solon.dataSources:
+  "master!": #数据源（!结尾表示 typed=true）
+    class: "com.zaxxer.hikari.HikariDataSource"
     driverClassName: com.mysql.cj.jdbc.Driver
     jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
     username: root
     password: P@ssw0rd
-  slave:
+  "slave": #数据源（!结尾表示 typed=true）
+    class: "com.zaxxer.hikari.HikariDataSource"
     driverClassName: com.mysql.cj.jdbc.Driver
     jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
     username: root

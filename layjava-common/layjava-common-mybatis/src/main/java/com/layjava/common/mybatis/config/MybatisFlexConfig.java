@@ -31,7 +31,7 @@ public class MybatisFlexConfig {
      * @param globalConfig globalConfig
      */
     @Bean
-    public FlexGlobalConfig configuration(@Db("master") FlexGlobalConfig globalConfig) {
+    public FlexGlobalConfig configuration(@Db FlexGlobalConfig globalConfig) {
         // BaseEntity数据填充
         globalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
         globalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);
