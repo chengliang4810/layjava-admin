@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.json.JSONUtil;
 import com.layjava.common.core.constant.Constants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.utils.StreamUtils;
@@ -211,8 +210,6 @@ public class GenTableServiceImpl implements IGenTableService {
         try {
             DataSourceKey.use(dataName);
             List<GenTable> genTables = baseMapper.selectDbTableListByNames(tableNames);
-
-            System.out.println(JSONUtil.toJsonPrettyStr(genTables));
             return genTables;
         } finally {
             DataSourceKey.clear();
