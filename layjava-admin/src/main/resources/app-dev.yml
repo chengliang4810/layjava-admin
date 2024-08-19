@@ -1,19 +1,13 @@
 # 打印Sql
-# layjava.sql.print: true
+layjava.sql.print: true
 
-solon.dataSources:
-  "master!": #数据源（!结尾表示 typed=true）
-    class: "com.zaxxer.hikari.HikariDataSource"
-    driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-    username: root
-    password: P@ssw0rd
-  "slave": #数据源（!结尾表示 typed=true）
-    class: "com.zaxxer.hikari.HikariDataSource"
-    driverClassName: com.mysql.cj.jdbc.Driver
-    jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-    username: root
-    password: P@ssw0rd
+# 数据库配置
+solon.dataSources.master!: #数据源（!结尾表示 typed=true）
+  class: "com.zaxxer.hikari.HikariDataSource"
+  driverClassName: com.mysql.cj.jdbc.Driver
+  jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  username: root
+  password: P@ssw0rd
 
 # redis缓存配置, 自动覆盖 app.yml的配置
 layjava.cache:
