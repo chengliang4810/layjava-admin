@@ -110,7 +110,6 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     @Override
     public Boolean insertByBo(${ClassName}Bo bo) {
         ${ClassName} add = MapstructUtils.convert(bo, ${ClassName}.class);
-        validEntityBeforeSave(add);
         boolean flag = baseMapper.insert(add, true) > 0;
         #set($pk=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
         if (flag) {
@@ -125,15 +124,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     @Override
     public Boolean updateByBo(${ClassName}Bo bo) {
         ${ClassName} update = MapstructUtils.convert(bo, ${ClassName}.class);
-        validEntityBeforeSave(update);
         return baseMapper.update(update) > 0;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(${ClassName} entity) {
-        //TODO 做一些数据校验,如唯一约束
     }
 
     /**
@@ -142,7 +133,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     @Override
     public Boolean deleteWithValidByIds(Collection<${pkColumn.javaType}> ids, Boolean isValid) {
         if (isValid) {
-            //TODO 做一些业务上的校验,判断是否需要校验
+            /// 做一些业务上的校验,判断是否需要校验
         }
         return baseMapper.deleteBatchByIds(ids) > 0;
     }
