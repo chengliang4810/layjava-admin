@@ -5,16 +5,13 @@ package ${packageName}.domain;
 #set($IsTenant=1)
 #end
 #end
-#if($IsTenant==1)
-import org.dromara.common.tenant.core.TenantEntity;
-#else
 import org.dromara.common.mybatis.core.domain.BaseEntity;
-#end
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 #foreach ($import in $importList)
 import ${import};
 #end
@@ -27,13 +24,10 @@ import java.io.Serial;
  * @author ${author}
  * @date ${datetime}
  */
-#if($IsTenant==1)
-#set($Entity="TenantEntity")
-#else
 #set($Entity="BaseEntity")
-#end
 @Data
 @Table("${tableName}")
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class ${ClassName} extends ${Entity} {
 
