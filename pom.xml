@@ -12,8 +12,8 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>2.9.0-RC</version>
-        <relativePath />
+        <version>2.9.0</version>
+        <relativePath/>
     </parent>
 
     <modules>
@@ -24,9 +24,10 @@
 
     <properties>
         <revision>1.0.0</revision>
+        <java.version>17</java.version>
+        <!-- 编码 -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>17</java.version>
 
         <!-- 通用 -->
         <lombok.version>1.18.34</lombok.version>
