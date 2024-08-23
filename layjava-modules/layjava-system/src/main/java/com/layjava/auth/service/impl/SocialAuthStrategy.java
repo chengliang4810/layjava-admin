@@ -2,9 +2,9 @@ package com.layjava.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.json.JSONUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.util.ObjUtil;
+import org.dromara.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -76,11 +76,11 @@ public class SocialAuthStrategy implements AuthStrategyService {
 
         List<SysSocialVo> list = sysSocialService.selectByAuthId(authUserData.getSource() + authUserData.getUuid());
         if (CollUtil.isEmpty(list)) {
-            throw new ServiceException("你还没有绑定第三方账号，绑定后才可以登录！");
+            throw new ServiceException("你还没有绑定第三方账号，绑定后才可以登录！" );
         }
         Optional<SysSocialVo> opt = list.stream().findAny();
         if (opt.isEmpty()) {
-            throw new ServiceException("对不起，你没有权限登录当前租户！");
+            throw new ServiceException("对不起，你没有权限登录当前租户！" );
         }
         SysSocialVo social = opt.get();
         // 查找用户
@@ -112,12 +112,12 @@ public class SocialAuthStrategy implements AuthStrategyService {
                 QueryWrapper.create().from(SYS_USER)
                         .select(SYS_USER.USER_NAME, SYS_USER.STATUS)
                         .and(SYS_USER.USER_ID.eq(userId)));
-        if (ObjectUtil.isNull(user)) {
-            log.info("登录用户：{} 不存在.", "");
-            throw new UserException("user.not.exists", "");
+        if (ObjUtil.isNull(user)) {
+            log.info("登录用户：{} 不存在.", "" );
+            throw new UserException("user.not.exists", "" );
         } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            log.info("登录用户：{} 已被停用.", "");
-            throw new UserException("user.blocked", "");
+            log.info("登录用户：{} 已被停用.", "" );
+            throw new UserException("user.blocked", "" );
         }
         return userMapper.selectUserByUserName(user.getUserName());
     }

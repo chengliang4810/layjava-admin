@@ -1,8 +1,5 @@
 package com.layjava.common.excel.utils;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.core.util.IdUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
@@ -10,11 +7,14 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.excel.convert.ExcelBigNumberConvert;
 import com.layjava.common.excel.core.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.data.id.IdUtil;
+import org.dromara.hutool.core.io.resource.ClassPathResource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,7 +83,7 @@ public class ExcelUtil {
             // ServletOutputStream os = response.getOutputStream();
             // exportExcel(list, sheetName, clazz, false, os, null);
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel异常");
+            throw new RuntimeException("导出Excel异常" );
         }
     }
 
@@ -101,7 +101,7 @@ public class ExcelUtil {
             // ServletOutputStream os = response.getOutputStream();
             // exportExcel(list, sheetName, clazz, false, os, options);
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel异常");
+            throw new RuntimeException("导出Excel异常" );
         }
     }
 
@@ -119,7 +119,7 @@ public class ExcelUtil {
             // ServletOutputStream os = response.getOutputStream();
             // exportExcel(list, sheetName, clazz, merge, os, null);
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel异常");
+            throw new RuntimeException("导出Excel异常" );
         }
     }
 
@@ -138,7 +138,7 @@ public class ExcelUtil {
             // ServletOutputStream os = response.getOutputStream();
             // exportExcel(list, sheetName, clazz, merge, os, options);
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel异常");
+            throw new RuntimeException("导出Excel异常" );
         }
     }
 
@@ -207,9 +207,9 @@ public class ExcelUtil {
         try {
             resetResponse(filename);
             // ServletOutputStream os = response.getOutputStream();
-            exportTemplate(data, templatePath, "");
+            exportTemplate(data, templatePath, "" );
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel异常");
+            throw new RuntimeException("导出Excel异常" );
         }
     }
 
@@ -232,7 +232,7 @@ public class ExcelUtil {
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet().build();
         if (CollUtil.isEmpty(data)) {
-            throw new IllegalArgumentException("数据为空");
+            throw new IllegalArgumentException("数据为空" );
         }
         // 单表多数据导出 模板格式为 {.属性}
         for (Object d : data) {
@@ -254,9 +254,9 @@ public class ExcelUtil {
         try {
             resetResponse(filename);
             // ServletOutputStream os = response.getOutputStream();
-            exportTemplateMultiList(data, templatePath, "");
+            exportTemplateMultiList(data, templatePath, "" );
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel异常");
+            throw new RuntimeException("导出Excel异常" );
         }
     }
 
@@ -273,9 +273,9 @@ public class ExcelUtil {
         try {
             resetResponse(filename);
             // ServletOutputStream os = response.getOutputStream();
-            exportTemplateMultiSheet(data, templatePath, "");
+            exportTemplateMultiSheet(data, templatePath, "" );
         } catch (IOException e) {
-            throw new RuntimeException("导出Excel异常");
+            throw new RuntimeException("导出Excel异常" );
         }
     }
 
@@ -298,7 +298,7 @@ public class ExcelUtil {
                 .build();
         WriteSheet writeSheet = EasyExcel.writerSheet().build();
         if (CollUtil.isEmpty(data)) {
-            throw new IllegalArgumentException("数据为空");
+            throw new IllegalArgumentException("数据为空" );
         }
         for (Map.Entry<String, Object> map : data.entrySet()) {
             // 设置列表后续还有数据
@@ -331,7 +331,7 @@ public class ExcelUtil {
                 .registerConverter(new ExcelBigNumberConvert())
                 .build();
         if (CollUtil.isEmpty(data)) {
-            throw new IllegalArgumentException("数据为空");
+            throw new IllegalArgumentException("数据为空" );
         }
         for (int i = 0; i < data.size(); i++) {
             WriteSheet writeSheet = EasyExcel.writerSheet(i).build();
@@ -368,10 +368,10 @@ public class ExcelUtil {
      */
     public static String convertByExp(String propertyValue, String converterExp, String separator) {
         StringBuilder propertyString = new StringBuilder();
-        String[] convertSource = converterExp.split(StringUtils.SEPARATOR);
+        String[] convertSource = converterExp.split(StringUtil.SEPARATOR);
         for (String item : convertSource) {
-            String[] itemArray = item.split("=");
-            if (StringUtils.containsAny(propertyValue, separator)) {
+            String[] itemArray = item.split("=" );
+            if (StringUtil.containsAny(propertyValue, separator)) {
                 for (String value : propertyValue.split(separator)) {
                     if (itemArray[0].equals(value)) {
                         propertyString.append(itemArray[1] + separator);
@@ -384,7 +384,7 @@ public class ExcelUtil {
                 }
             }
         }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
+        return StringUtil.stripEnd(propertyString.toString(), separator);
     }
 
     /**
@@ -397,10 +397,10 @@ public class ExcelUtil {
      */
     public static String reverseByExp(String propertyValue, String converterExp, String separator) {
         StringBuilder propertyString = new StringBuilder();
-        String[] convertSource = converterExp.split(StringUtils.SEPARATOR);
+        String[] convertSource = converterExp.split(StringUtil.SEPARATOR);
         for (String item : convertSource) {
-            String[] itemArray = item.split("=");
-            if (StringUtils.containsAny(propertyValue, separator)) {
+            String[] itemArray = item.split("=" );
+            if (StringUtil.containsAny(propertyValue, separator)) {
                 for (String value : propertyValue.split(separator)) {
                     if (itemArray[1].equals(value)) {
                         propertyString.append(itemArray[0] + separator);
@@ -413,7 +413,7 @@ public class ExcelUtil {
                 }
             }
         }
-        return StringUtils.stripEnd(propertyString.toString(), separator);
+        return StringUtil.stripEnd(propertyString.toString(), separator);
     }
 
     /**

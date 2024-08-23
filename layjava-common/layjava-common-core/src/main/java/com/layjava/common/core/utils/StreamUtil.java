@@ -1,7 +1,9 @@
 package com.layjava.common.core.utils;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.collection.set.SetUtil;
+import org.dromara.hutool.core.map.MapUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +19,7 @@ import java.util.stream.Collectors;
  * @author Lion Li
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StreamUtils {
+public class StreamUtil {
 
     /**
      * 将collection过滤
@@ -28,7 +30,7 @@ public class StreamUtils {
      */
     public static <E> List<E> filter(Collection<E> collection, Predicate<E> function) {
         if (CollUtil.isEmpty(collection)) {
-            return CollUtil.newArrayList();
+            return ListUtil.zero();
         }
         // 注意此处不要使用 .toList() 新语法 因为返回的是不可变List 会导致序列化问题
         return collection.stream().filter(function).collect(Collectors.toList());
@@ -42,7 +44,7 @@ public class StreamUtils {
      * @return 拼接后的list
      */
     public static <E> String join(Collection<E> collection, Function<E, String> function) {
-        return join(collection, function, StringUtils.SEPARATOR);
+        return join(collection, function, StringUtil.SEPARATOR);
     }
 
     /**
@@ -55,7 +57,7 @@ public class StreamUtils {
      */
     public static <E> String join(Collection<E> collection, Function<E, String> function, CharSequence delimiter) {
         if (CollUtil.isEmpty(collection)) {
-            return StringUtils.EMPTY;
+            return StringUtil.EMPTY;
         }
         return collection.stream().map(function).filter(Objects::nonNull).collect(Collectors.joining(delimiter));
     }
@@ -69,7 +71,7 @@ public class StreamUtils {
      */
     public static <E> List<E> sorted(Collection<E> collection, Comparator<E> comparing) {
         if (CollUtil.isEmpty(collection)) {
-            return CollUtil.newArrayList();
+            return ListUtil.zero();
         }
         // 注意此处不要使用 .toList() 新语法 因为返回的是不可变List 会导致序列化问题
         return collection.stream().filter(Objects::nonNull).sorted(comparing).collect(Collectors.toList());
@@ -184,7 +186,7 @@ public class StreamUtils {
      */
     public static <E, T> List<T> toList(Collection<E> collection, Function<E, T> function) {
         if (CollUtil.isEmpty(collection)) {
-            return CollUtil.newArrayList();
+            return ListUtil.zero();
         }
         return collection
                 .stream()
@@ -206,7 +208,7 @@ public class StreamUtils {
      */
     public static <E, T> Set<T> toSet(Collection<E> collection, Function<E, T> function) {
         if (CollUtil.isEmpty(collection) || function == null) {
-            return CollUtil.newHashSet();
+            return SetUtil.zero();
         }
         return collection
                 .stream()

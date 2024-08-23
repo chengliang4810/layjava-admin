@@ -2,7 +2,7 @@ package com.layjava.system.controller;
 
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.domain.R;
 import com.layjava.common.core.validate.group.QueryGroup;
 import com.layjava.common.mybatis.core.page.PageQuery;
@@ -30,7 +30,7 @@ import java.util.List;
  * @author Lion Li
  */
 @Controller
-@Mapping("/resource/oss")
+@Mapping("/resource/oss" )
 public class SysOssController extends BaseController {
 
     @Inject
@@ -40,8 +40,8 @@ public class SysOssController extends BaseController {
      * 查询OSS对象存储列表
      */
     @Get
-    @Mapping("/list")
-    @SaCheckPermission("system:oss:list")
+    @Mapping("/list" )
+    @SaCheckPermission("system:oss:list" )
     public PageResult<SysOssVo> list(@Validated(QueryGroup.class) SysOssBo bo, PageQuery pageQuery) {
         return ossService.queryPageList(bo, pageQuery);
     }
@@ -52,9 +52,9 @@ public class SysOssController extends BaseController {
      * @param ossIds OSS对象ID串
      */
     @Get
-    @Mapping("/listByIds/{ossIds}")
-    @SaCheckPermission("system:oss:list")
-    public R<List<SysOssVo>> listByIds(@NotEmpty(message = "主键不能为空") Long[] ossIds) {
+    @Mapping("/listByIds/{ossIds}" )
+    @SaCheckPermission("system:oss:list" )
+    public R<List<SysOssVo>> listByIds(@NotEmpty(message = "主键不能为空" ) Long[] ossIds) {
         List<SysOssVo> list = ossService.listByIds(Arrays.asList(ossIds));
         return R.ok(list);
     }
@@ -65,12 +65,12 @@ public class SysOssController extends BaseController {
      * @param file 文件
      */
     @Post
-    @Mapping(value = "/upload")
-    @SaCheckPermission("system:oss:upload")
+    @Mapping(value = "/upload" )
+    @SaCheckPermission("system:oss:upload" )
     @Log(title = "OSS对象存储", businessType = BusinessType.INSERT)
     public R<SysOssUploadVo> upload(UploadedFile file) {
-        if (ObjectUtil.isNull(file)) {
-            return R.fail("上传文件不能为空");
+        if (ObjUtil.isNull(file)) {
+            return R.fail("上传文件不能为空" );
         }
         SysOssVo oss = ossService.upload(file);
         SysOssUploadVo uploadVo = new SysOssUploadVo();
@@ -86,8 +86,8 @@ public class SysOssController extends BaseController {
      * @param ossId OSS对象ID
      */
     @Get
-    @Mapping("/download/{ossId}")
-    @SaCheckPermission("system:oss:download")
+    @Mapping("/download/{ossId}" )
+    @SaCheckPermission("system:oss:download" )
     public DownloadedFile download(Long ossId) throws IOException {
         return ossService.download(ossId);
     }
@@ -98,10 +98,10 @@ public class SysOssController extends BaseController {
      * @param ossIds OSS对象ID串
      */
     @Delete
-    @Mapping("/{ossIds}")
-    @SaCheckPermission("system:oss:remove")
+    @Mapping("/{ossIds}" )
+    @SaCheckPermission("system:oss:remove" )
     @Log(title = "OSS对象存储", businessType = BusinessType.DELETE)
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") Long[] ossIds) {
+    public R<Void> remove(@NotEmpty(message = "主键不能为空" ) Long[] ossIds) {
         return toAjax(ossService.deleteWithValidByIds(List.of(ossIds), true));
     }
 

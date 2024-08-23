@@ -1,6 +1,6 @@
 package com.layjava.system.domain.vo;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.Data;
 
 
@@ -54,7 +54,7 @@ public class MetaVo {
         this.title = title;
         this.icon = icon;
         this.noCache = noCache;
-        if (StringUtils.ishttp(link)) {
+        if (StringUtil.isHttp(link)) {
             this.link = link;
         }
     }

@@ -1,8 +1,8 @@
 package com.layjava.system.service.impl;
 
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.core.utils.ip.AddressUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StringUtil;
+import com.layjava.common.core.utils.ip.AddressUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.event.OperLogEvent;
@@ -44,16 +44,16 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     // @Async
     // @EventListener
     public void recordOper(OperLogEvent operLogEvent) {
-        SysOperLogBo operLog = MapstructUtils.convert(operLogEvent, SysOperLogBo.class);
+        SysOperLogBo operLog = MapstructUtil.convert(operLogEvent, SysOperLogBo.class);
         // 远程查询操作地点
-        operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+        operLog.setOperLocation(AddressUtil.getRealAddressByIP(operLog.getOperIp()));
         insertOperlog(operLog);
     }
 
     @Override
     public PageResult<SysOperLogVo> selectPageOperLogList(SysOperLogBo operLog, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(operLog);
-        if (StringUtils.isBlank(pageQuery.getOrderByColumn())) {
+        if (StringUtil.isBlank(pageQuery.getOrderByColumn())) {
             lqw.orderBy(SYS_OPER_LOG.OPER_ID, false);
         }
         Page<SysOperLogVo> page = baseMapper.paginateAs(pageQuery.build(), lqw, SysOperLogVo.class);
@@ -69,7 +69,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
                 .and(SYS_OPER_LOG.BUSINESS_TYPE.eq(operLog.getBusinessType(), operLog.getBusinessType() != null && operLog.getBusinessType() > 0))
                 .and(SYS_OPER_LOG.STATUS.eq(operLog.getStatus()))
                 .and(SYS_OPER_LOG.OPER_NAME.like(operLog.getOperName()))
-                .and(SYS_OPER_LOG.OPER_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null));
+                .and(SYS_OPER_LOG.OPER_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null));
         if (ArrayUtils.isNotEmpty(operLog.getBusinessTypes())) {
             queryWrapper.and(SYS_OPER_LOG.BUSINESS_TYPE.in(Arrays.asList(operLog.getBusinessTypes())));
         }
@@ -83,7 +83,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
      */
     @Override
     public void insertOperlog(SysOperLogBo bo) {
-        SysOperLog operLog = MapstructUtils.convert(bo, SysOperLog.class);
+        SysOperLog operLog = MapstructUtil.convert(bo, SysOperLog.class);
         operLog.setOperTime(new Date());
         baseMapper.insert(operLog, true);
     }

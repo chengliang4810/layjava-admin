@@ -1,13 +1,9 @@
 package com.layjava.common.log.aspect;
 
 import cn.dev33.satoken.router.SaHttpMethod;
-import cn.hutool.core.lang.Dict;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.layjava.common.core.domain.model.LoginUser;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessStatus;
@@ -15,6 +11,10 @@ import com.layjava.common.log.event.OperLogEvent;
 import com.layjava.common.satoken.utils.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
+import org.dromara.hutool.core.array.ArrayUtil;
+import org.dromara.hutool.core.map.Dict;
+import org.dromara.hutool.core.map.MapUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.core.handle.Action;
@@ -87,19 +87,19 @@ public class LogAspect implements RouterInterceptor {
             // 请求的地址
             String ip = joinPoint.realIp();
             operLog.setOperIp(ip);
-            operLog.setOperUrl(StringUtils.substring(joinPoint.url(), 0, 255));
+            operLog.setOperUrl(StringUtil.substring(joinPoint.url(), 0, 255));
             LoginUser loginUser = LoginHelper.getLoginUser();
             operLog.setOperName(loginUser.getUsername());
             operLog.setDeptName(loginUser.getDeptName());
 
             if (e != null) {
                 operLog.setStatus(BusinessStatus.FAIL.ordinal());
-                operLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 2000));
+                operLog.setErrorMsg(StringUtil.substring(e.getMessage(), 0, 2000));
             }
             // 设置方法名称
             String className = joinPoint.action().getClass().getName();
             String methodName = joinPoint.action().fullName();
-            operLog.setMethod(className + "." + methodName + "()");
+            operLog.setMethod(className + "." + methodName + "()" );
             // 设置请求方式
             operLog.setRequestMethod(joinPoint.method());
             // 处理设置注解上的参数
@@ -139,8 +139,8 @@ public class LogAspect implements RouterInterceptor {
             setRequestValue(joinPoint, operLog, log.excludeParamNames());
         }
         // 是否需要保存response，参数和值
-        if (log.isSaveResponseData() && ObjectUtil.isNotNull(jsonResult)) {
-            operLog.setJsonResult(StringUtils.substring(JsonUtils.toJsonString(jsonResult), 0, 2000));
+        if (log.isSaveResponseData() && ObjUtil.isNotNull(jsonResult)) {
+            operLog.setJsonResult(StringUtil.substring(JsonUtils.toJsonString(jsonResult), 0, 2000));
         }
     }
 
@@ -157,11 +157,11 @@ public class LogAspect implements RouterInterceptor {
         if (MapUtil.isEmpty(paramsMap)
                 && SaHttpMethod.PUT.name().equals(requestMethod) || SaHttpMethod.POST.name().equals(requestMethod)) {
             String params = joinPoint.body();
-            operLog.setOperParam(StringUtils.substring(params, 0, 2000));
+            operLog.setOperParam(StringUtil.substring(params, 0, 2000));
         } else {
             MapUtil.removeAny(paramsMap, EXCLUDE_PROPERTIES);
             MapUtil.removeAny(paramsMap, excludeParamNames);
-            operLog.setOperParam(StringUtils.substring(JsonUtils.toJsonString(paramsMap), 0, 2000));
+            operLog.setOperParam(StringUtil.substring(JsonUtils.toJsonString(paramsMap), 0, 2000));
         }
     }
 
@@ -169,12 +169,12 @@ public class LogAspect implements RouterInterceptor {
      * 参数拼装
      */
     private String argsArrayToString(Collection<Object> paramsArray, String[] excludeParamNames) {
-        StringJoiner params = new StringJoiner(" ");
+        StringJoiner params = new StringJoiner(" " );
         if (ArrayUtil.isEmpty(paramsArray)) {
             return params.toString();
         }
         for (Object o : paramsArray) {
-            if (ObjectUtil.isNotNull(o) && !isFilterObject(o)) {
+            if (ObjUtil.isNotNull(o) && !isFilterObject(o)) {
                 String str = JsonUtils.toJsonString(o);
                 Dict dict = JsonUtils.parseMap(str);
                 if (MapUtil.isNotEmpty(dict)) {
@@ -194,7 +194,7 @@ public class LogAspect implements RouterInterceptor {
      * @param o 对象信息。
      * @return 如果是需要过滤的对象，则返回true；否则返回false。
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings("rawtypes" )
     public boolean isFilterObject(final Object o) {
         Class<?> clazz = o.getClass();
         if (clazz.isArray()) {

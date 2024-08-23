@@ -1,11 +1,11 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.OssService;
-import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StreamUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysOss;
@@ -45,7 +45,7 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
     public PageResult<SysOssVo> queryPageList(SysOssBo bo, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(bo);
         Page<SysOssVo> result = baseMapper.paginateAs(pageQuery, lqw, SysOssVo.class);
-        List<SysOssVo> filterResult = StreamUtils.toList(result.getRecords(), this::matchingUrl);
+        List<SysOssVo> filterResult = StreamUtil.toList(result.getRecords(), this::matchingUrl);
         result.setRecords(filterResult);
         return PageResult.build(result);
     }
@@ -55,7 +55,7 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
         List<SysOssVo> list = new ArrayList<>();
         for (Long id : ossIds) {
             SysOssVo vo = this.getById(id);
-            if (ObjectUtil.isNotNull(vo)) {
+            if (ObjUtil.isNotNull(vo)) {
                 try {
                     list.add(this.matchingUrl(vo));
                 } catch (Exception ignored) {
@@ -70,9 +70,9 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
     @Override
     public String selectUrlByIds(String ossIds) {
         List<String> list = new ArrayList<>();
-        for (Long id : StringUtils.splitTo(ossIds, Convert::toLong)) {
+        for (Long id : StringUtil.splitTo(ossIds, Convert::toLong)) {
             SysOssVo vo = this.getById(id);
-            if (ObjectUtil.isNotNull(vo)) {
+            if (ObjUtil.isNotNull(vo)) {
                 try {
                     list.add(this.matchingUrl(vo).getUrl());
                 } catch (Exception ignored) {
@@ -81,7 +81,7 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
                 }
             }
         }
-        return String.join(StringUtils.SEPARATOR, list);
+        return String.join(StringUtil.SEPARATOR, list);
     }
 
     private QueryWrapper buildQueryWrapper(SysOssBo bo) {
@@ -91,7 +91,7 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
                 .and(SYS_OSS.ORIGINAL_NAME.like(bo.getOriginalName()))
                 .and(SYS_OSS.FILE_SUFFIX.eq(bo.getFileSuffix()))
                 .and(SYS_OSS.URL.eq(bo.getUrl()))
-                .and(SYS_OSS.CREATE_TIME.between(params.get("beginCreateTime"), params.get("endCreateTime"), params.get("beginCreateTime") != null && params.get("endCreateTime") != null))
+                .and(SYS_OSS.CREATE_TIME.between(params.get("beginCreateTime" ), params.get("endCreateTime" ), params.get("beginCreateTime" ) != null && params.get("endCreateTime" ) != null))
                 .and(SYS_OSS.CREATE_BY.eq(bo.getCreateBy()))
                 .and(SYS_OSS.SERVICE.eq(bo.getService()))
                 .orderBy(SYS_OSS.OSS_ID, true);
@@ -106,8 +106,8 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
     @Override
     public DownloadedFile download(Long ossId) throws IOException {
         SysOssVo sysOss = this.getById(ossId);
-        if (ObjectUtil.isNull(sysOss)) {
-            throw new ServiceException("文件数据不存在!");
+        if (ObjUtil.isNull(sysOss)) {
+            throw new ServiceException("文件数据不存在!" );
         }
 //        FileUtils.setAttachmentResponseHeader(response, sysOss.getOriginalName());
 //        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE + "; charset=UTF-8");

@@ -1,14 +1,14 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.array.ArrayUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.UserService;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StreamUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
@@ -83,18 +83,18 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
 
     private QueryWrapper buildQueryWrapper(SysUserBo user) {
         Map<String, Object> params = user.getParams();
-        QueryWrapper queryWrapper = QueryWrapper.create().from(SYS_USER.as("u"))
+        QueryWrapper queryWrapper = QueryWrapper.create().from(SYS_USER.as("u" ))
                 .where(SYS_USER.DEL_FLAG.eq(UserConstants.USER_NORMAL))
                 .and(SYS_USER.USER_ID.eq(user.getUserId()))
                 .and(SYS_USER.USER_NAME.like(user.getUserName()))
                 .and(SYS_USER.STATUS.eq(user.getStatus()))
                 .and(SYS_USER.PHONENUMBER.eq(user.getPhonenumber()))
-                .and(SYS_USER.CREATE_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null));
-        if (ObjectUtil.isNotNull(user.getDeptId())) {
+                .and(SYS_USER.CREATE_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null));
+        if (ObjUtil.isNotNull(user.getDeptId())) {
             List<SysDept> deptList = deptMapper.selectListByQuery(
                     QueryWrapper.create().select(SYS_DEPT.DEPT_ID).from(SYS_DEPT)
-                            .and(DataBaseHelper.findInSet(user.getDeptId(), "ancestors")));
-            List<Long> ids = StreamUtils.toList(deptList, SysDept::getDeptId);
+                            .and(DataBaseHelper.findInSet(user.getDeptId(), "ancestors" )));
+            List<Long> ids = StreamUtil.toList(deptList, SysDept::getDeptId);
             ids.add(user.getDeptId());
             queryWrapper.and(SYS_USER.DEPT_ID.in(ids));
         }
@@ -112,8 +112,8 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     public PageResult<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery) {
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select(distinct(SYS_USER.USER_ID, SYS_USER.DEPT_ID, SYS_USER.USER_NAME, SYS_USER.NICK_NAME, SYS_USER.EMAIL, SYS_USER.PHONENUMBER, SYS_USER.STATUS, SYS_USER.CREATE_TIME))
-                .from(SYS_USER).as("u")
-                .leftJoin(SYS_DEPT).as("d").on(SYS_USER.DEPT_ID.eq(SYS_DEPT.DEPT_ID))
+                .from(SYS_USER).as("u" )
+                .leftJoin(SYS_DEPT).as("d" ).on(SYS_USER.DEPT_ID.eq(SYS_DEPT.DEPT_ID))
                 .leftJoin(SYS_USER_ROLE).on(SYS_USER.USER_ID.eq(SYS_USER_ROLE.USER_ID))
                 .leftJoin(SYS_ROLE).on(SYS_ROLE.ROLE_ID.eq(SYS_USER_ROLE.ROLE_ID))
                 .where(SYS_USER.DEL_FLAG.eq(UserConstants.USER_NORMAL))
@@ -137,8 +137,8 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
         List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(user.getRoleId());
         QueryWrapper queryWrapper = QueryWrapper.create()
                 .select(distinct(SYS_USER.USER_ID, SYS_USER.DEPT_ID, SYS_USER.USER_NAME, SYS_USER.NICK_NAME, SYS_USER.EMAIL, SYS_USER.PHONENUMBER, SYS_USER.STATUS, SYS_USER.CREATE_TIME))
-                .from(SYS_USER).as("u")
-                .leftJoin(SYS_DEPT).as("d").on(SYS_USER.DEPT_ID.eq(SYS_DEPT.DEPT_ID))
+                .from(SYS_USER).as("u" )
+                .leftJoin(SYS_DEPT).as("d" ).on(SYS_USER.DEPT_ID.eq(SYS_DEPT.DEPT_ID))
                 .leftJoin(SYS_USER_ROLE).on(SYS_USER.USER_ID.eq(SYS_USER_ROLE.USER_ID))
                 .leftJoin(SYS_ROLE).on(SYS_ROLE.ROLE_ID.eq(SYS_USER_ROLE.ROLE_ID))
                 .where(SYS_USER.DEL_FLAG.eq(UserConstants.USER_NORMAL))
@@ -194,9 +194,9 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     public String selectUserRoleGroup(String userName) {
         List<SysRoleVo> list = roleMapper.selectRolesByUserName(userName);
         if (CollUtil.isEmpty(list)) {
-            return StringUtils.EMPTY;
+            return StringUtil.EMPTY;
         }
-        return StreamUtils.join(list, SysRoleVo::getRoleName);
+        return StreamUtil.join(list, SysRoleVo::getRoleName);
     }
 
     /**
@@ -209,9 +209,9 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     public String selectUserPostGroup(String userName) {
         List<SysPostVo> list = postMapper.selectPostsByUserName(userName);
         if (CollUtil.isEmpty(list)) {
-            return StringUtils.EMPTY;
+            return StringUtil.EMPTY;
         }
-        return StreamUtils.join(list, SysPostVo::getPostName);
+        return StreamUtil.join(list, SysPostVo::getPostName);
     }
 
     /**
@@ -255,8 +255,8 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
      */
     @Override
     public void checkUserAllowed(Long userId) {
-        if (ObjectUtil.isNotNull(userId) && LoginHelper.isSuperAdmin(userId)) {
-            throw new ServiceException("不允许操作超级管理员用户");
+        if (ObjUtil.isNotNull(userId) && LoginHelper.isSuperAdmin(userId)) {
+            throw new ServiceException("不允许操作超级管理员用户" );
         }
     }
 
@@ -267,14 +267,14 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
      */
     @Override
     public void checkUserDataScope(Long userId) {
-        if (ObjectUtil.isNull(userId)) {
+        if (ObjUtil.isNull(userId)) {
             return;
         }
         if (LoginHelper.isSuperAdmin()) {
             return;
         }
-        if (ObjectUtil.isNull(selectUserById(userId))) {
-            throw new ServiceException("没有权限访问用户数据！");
+        if (ObjUtil.isNull(selectUserById(userId))) {
+            throw new ServiceException("没有权限访问用户数据！" );
         }
     }
 
@@ -287,7 +287,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     @Override
     //@Transactional(rollbackFor = Exception.class)
     public int insertUser(SysUserBo user) {
-        SysUser sysUser = MapstructUtils.convert(user, SysUser.class);
+        SysUser sysUser = MapstructUtil.convert(user, SysUser.class);
         // 新增用户信息
         int rows = baseMapper.insert(sysUser, true);
         user.setUserId(sysUser.getUserId());
@@ -308,7 +308,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     public boolean registerUser(SysUserBo user) {
         user.setCreateBy(user.getUserId());
         user.setUpdateBy(user.getUserId());
-        SysUser sysUser = MapstructUtils.convert(user, SysUser.class);
+        SysUser sysUser = MapstructUtil.convert(user, SysUser.class);
         return baseMapper.insert(sysUser, true) > 0;
     }
 
@@ -325,14 +325,14 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
         insertUserRole(user, true);
         // 新增用户与岗位管理
         insertUserPost(user, true);
-        if (StringUtils.isBlank(user.getPassword())) {
+        if (StringUtil.isBlank(user.getPassword())) {
             user.setPassword(null);
         }
-        SysUser sysUser = MapstructUtils.convert(user, SysUser.class);
+        SysUser sysUser = MapstructUtil.convert(user, SysUser.class);
         // 防止错误更新后导致的数据误删除
         int flag = baseMapper.update(sysUser);
         if (flag < 1) {
-            throw new ServiceException("修改用户" + user.getUserName() + "信息失败");
+            throw new ServiceException("修改用户" + user.getUserName() + "信息失败" );
         }
         return flag;
     }
@@ -372,7 +372,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     @Override
     public int updateUserProfile(SysUserBo user) {
         SysUser sysUser = UpdateEntity.of(SysUser.class, user.getUserId());
-        if (StringUtils.isNotBlank(user.getNickName())) {
+        if (StringUtil.isNotBlank(user.getNickName())) {
             sysUser.setNickName(user.getNickName());
         }
         sysUser.setPhonenumber(user.getPhonenumber());
@@ -433,7 +433,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
                 userPostMapper.deleteByQuery(QueryWrapper.create().from(SysUserPost.class).where(SysUserPost::getUserId).eq(user.getUserId()));
             }
             // 新增用户与岗位管理
-            List<SysUserPost> list = StreamUtils.toList(List.of(posts), postId -> {
+            List<SysUserPost> list = StreamUtil.toList(List.of(posts), postId -> {
                 SysUserPost up = new SysUserPost();
                 up.setUserId(user.getUserId());
                 up.setPostId(postId);
@@ -455,22 +455,22 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
             // 判断是否具有此角色的操作权限
             List<SysRoleVo> roles = roleMapper.selectRoleList(QueryWrapper.create());
             if (CollUtil.isEmpty(roles)) {
-                throw new ServiceException("没有权限访问角色的数据");
+                throw new ServiceException("没有权限访问角色的数据" );
             }
-            List<Long> roleList = StreamUtils.toList(roles, SysRoleVo::getRoleId);
+            List<Long> roleList = StreamUtil.toList(roles, SysRoleVo::getRoleId);
             if (!LoginHelper.isSuperAdmin(userId)) {
                 roleList.remove(UserConstants.SUPER_ADMIN_ID);
             }
-            List<Long> canDoRoleList = StreamUtils.filter(List.of(roleIds), roleList::contains);
+            List<Long> canDoRoleList = StreamUtil.filter(List.of(roleIds), roleList::contains);
             if (CollUtil.isEmpty(canDoRoleList)) {
-                throw new ServiceException("没有权限访问角色的数据");
+                throw new ServiceException("没有权限访问角色的数据" );
             }
             if (clear) {
                 // 删除用户与角色关联
                 userRoleMapper.deleteByQuery(new QueryWrapper().from(SysUserRole.class).where(SysUserRole::getUserId).eq(userId));
             }
             // 新增用户与角色管理
-            List<SysUserRole> list = StreamUtils.toList(canDoRoleList, roleId -> {
+            List<SysUserRole> list = StreamUtil.toList(canDoRoleList, roleId -> {
                 SysUserRole ur = new SysUserRole();
                 ur.setUserId(userId);
                 ur.setRoleId(roleId);
@@ -496,7 +496,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
         // 防止更新失败导致的数据删除
         int flag = baseMapper.deleteById(userId);
         if (flag < 1) {
-            throw new ServiceException("删除用户失败!");
+            throw new ServiceException("删除用户失败!" );
         }
         return flag;
     }
@@ -524,7 +524,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
         // 防止更新失败导致的数据删除
         int flag = baseMapper.deleteBatchByIds(ids);
         if (flag < 1) {
-            throw new ServiceException("删除用户失败!");
+            throw new ServiceException("删除用户失败!" );
         }
         return flag;
     }
@@ -548,7 +548,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
     public String selectUserNameById(Long userId) {
         SysUser sysUser = baseMapper.selectOneByQuery(QueryWrapper.create().select(SysUser::getUserName).from(SysUser.class)
                 .where(SysUser::getUserId).eq(userId));
-        return ObjectUtil.isNull(sysUser) ? null : sysUser.getUserName();
+        return ObjUtil.isNull(sysUser) ? null : sysUser.getUserName();
     }
 
     @Override
@@ -557,6 +557,6 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
         SysUser sysUser = baseMapper.selectOneByQuery(QueryWrapper.create().from(SYS_USER)
                 .select(SYS_USER.NICK_NAME)
                 .where(SYS_USER.USER_ID.eq(userId)));
-        return ObjectUtil.isNull(sysUser) ? null : sysUser.getNickName();
+        return ObjUtil.isNull(sysUser) ? null : sysUser.getNickName();
     }
 }

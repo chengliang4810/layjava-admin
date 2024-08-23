@@ -1,7 +1,7 @@
 package com.layjava.system.service.impl;
 
 import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.utils.MapstructUtils;
+import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysPost;
@@ -168,7 +168,7 @@ public class SysPostServiceImpl implements ISysPostService {
      */
     @Override
     public int insertPost(SysPostBo bo) {
-        SysPost post = MapstructUtils.convert(bo, SysPost.class);
+        SysPost post = MapstructUtil.convert(bo, SysPost.class);
         return baseMapper.insert(post, true);
     }
 
@@ -180,7 +180,7 @@ public class SysPostServiceImpl implements ISysPostService {
      */
     @Override
     public int updatePost(SysPostBo bo) {
-        SysPost post = MapstructUtils.convert(bo, SysPost.class);
+        SysPost post = MapstructUtil.convert(bo, SysPost.class);
         return baseMapper.update(post);
     }
 }

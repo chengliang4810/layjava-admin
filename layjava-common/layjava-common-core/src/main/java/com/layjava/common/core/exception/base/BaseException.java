@@ -1,6 +1,6 @@
 package com.layjava.common.core.exception.base;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,7 +51,7 @@ public class BaseException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return StringUtils.format(message, args);
+        return StringUtil.format(message, args);
     }
 
 }

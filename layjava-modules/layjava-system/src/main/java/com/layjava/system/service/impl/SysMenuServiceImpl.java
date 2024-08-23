@@ -1,12 +1,10 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.tree.Tree;
 import com.layjava.common.core.constant.UserConstants;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.core.utils.TreeBuildUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StreamUtil;
+import com.layjava.common.core.utils.StringUtil;
+import com.layjava.common.core.utils.TreeBuildUtil;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.SysRole;
@@ -20,9 +18,15 @@ import com.layjava.system.service.ISysMenuService;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.tree.MapTree;
 import org.noear.solon.annotation.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.layjava.system.domain.table.SysMenuTableDef.SYS_MENU;
 import static com.layjava.system.domain.table.SysRoleMenuTableDef.SYS_ROLE_MENU;
@@ -92,7 +96,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
                     .orderBy(SYS_MENU.ORDER_NUM, true);
 
             List<SysMenu> list = baseMapper.selectListByQueryAs(queryWrapper, SysMenu.class);
-            menuList = MapstructUtils.convert(list, SysMenuVo.class);
+            menuList = MapstructUtil.convert(list, SysMenuVo.class);
         }
         return menuList;
     }
@@ -108,8 +112,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<String> perms = baseMapper.selectMenuPermsByUserId(userId);
         Set<String> permsSet = new HashSet<>();
         for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(StringUtils.splitList(perm.trim()));
+            if (StringUtil.isNotEmpty(perm)) {
+                permsSet.addAll(StringUtil.splitList(perm.trim()));
             }
         }
         return permsSet;
@@ -126,8 +130,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
         List<String> perms = baseMapper.selectMenuPermsByRoleId(roleId);
         Set<String> permsSet = new HashSet<>();
         for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(StringUtils.splitList(perm.trim()));
+            if (StringUtil.isNotEmpty(perm)) {
+                permsSet.addAll(StringUtil.splitList(perm.trim()));
             }
         }
         return permsSet;
@@ -182,8 +186,8 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public List<RouterVo> buildMenus(List<SysMenu> menus) {
-        if (CollUtil.isEmpty(menus)){
-            return Collections.emptyList();
+        if (CollUtil.isEmpty(menus)) {
+            return ListUtil.zero();
         }
 
         return menus.stream().map(menu -> {
@@ -194,9 +198,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
             router.setComponentPath(menu.getComponent());
             // 后端 M目录 C菜单  前端 dir page
-            router.setMenuType("M".equals(menu.getMenuType()) ? "dir" : "page");
+            router.setMenuType("M".equals(menu.getMenuType()) ? "dir" : "page" );
             router.setName(menu.getRouterName());
-            if (UserConstants.NO_FRAME.equals(menu.getIsFrame())){
+            if (UserConstants.NO_FRAME.equals(menu.getIsFrame())) {
                 router.setPath(menu.getPath());
             } else {
                 router.setHref(menu.getPath());
@@ -219,11 +223,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
      * @return 下拉树结构列表
      */
     @Override
-    public List<Tree<Long>> buildMenuTreeSelect(List<SysMenuVo> menus) {
+    public List<MapTree<Long>> buildMenuTreeSelect(List<SysMenuVo> menus) {
         if (CollUtil.isEmpty(menus)) {
-            return CollUtil.newArrayList();
+            return ListUtil.zero();
         }
-        return TreeBuildUtils.build(menus, (menu, tree) ->
+        return TreeBuildUtil.build(menus, (menu, tree) ->
                 tree.setId(menu.getMenuId())
                         .setParentId(menu.getParentId())
                         .setName(menu.getMenuName())
@@ -271,7 +275,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int insertMenu(SysMenuBo bo) {
-        SysMenu menu = MapstructUtils.convert(bo, SysMenu.class);
+        SysMenu menu = MapstructUtil.convert(bo, SysMenu.class);
         return baseMapper.insert(menu, true);
     }
 
@@ -283,7 +287,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int updateMenu(SysMenuBo bo) {
-        SysMenu menu = MapstructUtils.convert(bo, SysMenu.class);
+        SysMenu menu = MapstructUtil.convert(bo, SysMenu.class);
         return baseMapper.update(menu);
     }
 
@@ -335,7 +339,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     private void recursionFn(List<SysMenu> list, SysMenu t) {
         // 得到子节点列表
-        List<SysMenu> childList = StreamUtils.filter(list, n -> n.getParentId().equals(t.getMenuId()));
+        List<SysMenu> childList = StreamUtil.filter(list, n -> n.getParentId().equals(t.getMenuId()));
         t.setChildren(childList);
         for (SysMenu tChild : childList) {
             // 判断是否有子节点

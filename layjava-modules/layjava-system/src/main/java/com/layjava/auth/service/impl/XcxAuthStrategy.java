@@ -2,7 +2,7 @@ package com.layjava.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -79,7 +79,7 @@ public class XcxAuthStrategy implements AuthStrategyService {
         // 使用 openid 查询绑定用户 如未绑定用户 则根据业务自行处理 例如 创建默认用户
         // todo 自行实现 userService.selectUserByOpenid(openid);
         SysUserVo user = new SysUserVo();
-        if (ObjectUtil.isNull(user)) {
+        if (ObjUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", openid);
             // todo 用户不存在 业务逻辑自行实现
         } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {

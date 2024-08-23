@@ -1,8 +1,8 @@
 package com.layjava.common.mybatis.core.page;
 
-import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.collection.ListUtil;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -58,7 +58,7 @@ public class PageInfo<T> implements Serializable {
     }
 
     public static <T> PageInfo<T> build(long total) {
-        return new PageInfo<>(CollUtil.newArrayList(), total);
+        return new PageInfo<>(ListUtil.zero(), total);
     }
 
 }

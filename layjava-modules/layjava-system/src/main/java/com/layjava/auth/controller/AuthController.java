@@ -1,7 +1,6 @@
 package com.layjava.auth.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.hutool.core.util.ObjectUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.SysLoginService;
@@ -11,7 +10,7 @@ import com.layjava.common.core.domain.R;
 import com.layjava.common.core.domain.model.LoginBody;
 import com.layjava.common.core.domain.model.RegisterBody;
 import com.layjava.common.core.domain.model.SocialLoginBody;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.social.config.properties.SocialLoginConfigProperties;
 import com.layjava.common.social.config.properties.SocialProperties;
@@ -26,6 +25,7 @@ import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthRequest;
 import me.zhyd.oauth.utils.AuthStateUtils;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.validation.ValidUtils;
 
@@ -37,7 +37,7 @@ import org.noear.solon.validation.ValidUtils;
 @Slf4j
 @SaIgnore
 @Controller
-@Mapping("/auth")
+@Mapping("/auth" )
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -55,7 +55,7 @@ public class AuthController {
      * @return 结果
      */
     @Post
-    @Mapping("/login")
+    @Mapping("/login" )
     public R<LoginVo> login(@Body String body) {
         LoginBody loginBody = JsonUtils.parseObject(body, LoginBody.class);
         ValidUtils.validateEntity(loginBody);
@@ -64,11 +64,11 @@ public class AuthController {
         String grantType = loginBody.getGrantType();
         SysClient client = clientService.queryByClientId(clientId);
         // 查询不到 client 或 client 内不包含 grantType
-        if (ObjectUtil.isNull(client) || !StringUtils.contains(client.getGrantType(), grantType)) {
+        if (ObjUtil.isNull(client) || !StringUtil.contains(client.getGrantType(), grantType)) {
             log.info("客户端id: {} 认证类型：{} 异常!.", clientId, grantType);
-            return R.fail("认证权限类型错误");
+            return R.fail("认证权限类型错误" );
         } else if (!UserConstants.NORMAL.equals(client.getStatus())) {
-            return R.fail("认证权限类型已禁用");
+            return R.fail("认证权限类型已禁用" );
         }
         // 登录
         LoginVo loginVo = AuthStrategy.login(body, client, grantType);
@@ -87,11 +87,11 @@ public class AuthController {
      * @return 结果
      */
     @Get
-    @Mapping("/binding/{source}")
+    @Mapping("/binding/{source}" )
     public R<String> authBinding(String source) {
         SocialLoginConfigProperties obj = socialProperties.getType().get(source);
-        if (ObjectUtil.isNull(obj)) {
-            return R.fail(source + "平台账号暂不支持");
+        if (ObjUtil.isNull(obj)) {
+            return R.fail(source + "平台账号暂不支持" );
         }
         AuthRequest authRequest = SocialUtils.getAuthRequest(source, socialProperties);
         String authorizeUrl = authRequest.authorize(AuthStateUtils.createState());
@@ -105,7 +105,7 @@ public class AuthController {
      * @return 结果
      */
     @Post
-    @Mapping("/social/callback")
+    @Mapping("/social/callback" )
     public R<Void> socialCallback(SocialLoginBody loginBody) {
         // 获取第三方登录信息
         AuthResponse<AuthUser> response = SocialUtils.loginAuth(
@@ -126,30 +126,30 @@ public class AuthController {
      * @param socialId socialId
      */
     @Delete
-    @Mapping(value = "/unlock/{socialId}")
+    @Mapping(value = "/unlock/{socialId}" )
     public R<Void> unlockSocial(Long socialId) {
         Boolean rows = socialUserService.deleteWithValidById(socialId);
-        return rows ? R.ok() : R.fail("取消授权失败");
+        return rows ? R.ok() : R.fail("取消授权失败" );
     }
 
     /**
      * 退出登录
      */
     @Post
-    @Mapping("/logout")
+    @Mapping("/logout" )
     public R<Void> logout() {
         loginService.logout();
-        return R.ok("退出成功");
+        return R.ok("退出成功" );
     }
 
     /**
      * 用户注册
      */
     @Post
-    @Mapping("/register")
+    @Mapping("/register" )
     public R<Void> register(RegisterBody user) {
         if (!configService.selectRegisterEnabled()) {
-            return R.fail("当前系统没有开启注册功能！");
+            return R.fail("当前系统没有开启注册功能！" );
         }
         registerService.register(user);
         return R.ok();

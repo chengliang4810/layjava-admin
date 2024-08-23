@@ -2,17 +2,13 @@ package com.layjava.auth.service;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.layjava.common.core.constant.Constants;
 import com.layjava.common.core.constant.GlobalConstants;
 import com.layjava.common.core.domain.dto.RoleDTO;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.enums.LoginType;
 import com.layjava.common.core.exception.user.UserException;
-import com.layjava.common.core.utils.DateUtils;
+import com.layjava.common.core.utils.DateUtil;
 import com.layjava.common.log.event.LogininforEvent;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysUser;
@@ -25,6 +21,10 @@ import com.layjava.system.service.ISysSocialService;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthUser;
 import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.bean.BeanUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventBus;
@@ -92,10 +92,10 @@ public class SysLoginService {
     public void logout() {
         try {
             LoginUser loginUser = LoginHelper.getLoginUser();
-            if (ObjectUtil.isNull(loginUser)) {
+            if (ObjUtil.isNull(loginUser)) {
                 return;
             }
-            recordLogininfor(loginUser.getUsername(), Constants.LOGOUT, "退出成功");
+            recordLogininfor(loginUser.getUsername(), Constants.LOGOUT, "退出成功" );
         } catch (NotLoginException ignored) {
         } finally {
             try {
@@ -136,7 +136,7 @@ public class SysLoginService {
         loginUser.setUserType(user.getUserType());
         loginUser.setMenuPermission(permissionService.getMenuPermission(user.getUserId()));
         loginUser.setRolePermission(permissionService.getRolePermission(user.getUserId()));
-        loginUser.setDeptName(ObjectUtil.isNull(user.getDept()) ? "" : user.getDept().getDeptName());
+        loginUser.setDeptName(ObjUtil.isNull(user.getDept()) ? "" : user.getDept().getDeptName());
         List<RoleDTO> roles = BeanUtil.copyToList(user.getRoles(), RoleDTO.class);
         loginUser.setRoles(roles);
         return loginUser;
@@ -151,7 +151,7 @@ public class SysLoginService {
         SysUser sysUser = new SysUser();
         sysUser.setUserId(userId);
         sysUser.setLoginIp(ip);
-        sysUser.setLoginDate(DateUtils.getNowDate());
+        sysUser.setLoginDate(DateUtil.getNowDate());
         sysUser.setUpdateBy(userId);
         //todo
         // DataPermissionHelper.ignore(() -> userMapper.updateById(sysUser));
@@ -166,7 +166,7 @@ public class SysLoginService {
         String loginFail = Constants.LOGIN_FAIL;
 
         // 获取用户登录错误次数，默认为0 (可自定义限制策略 例如: key + username + ip)
-        int errorNumber = ObjectUtil.defaultIfNull(cacheService.get(errorKey, Integer.class), 0);
+        int errorNumber = ObjUtil.defaultIfNull(cacheService.get(errorKey, Integer.class), 0);
         // 锁定时间内登录 则踢出
         if (errorNumber >= maxRetryCount) {
             recordLogininfor(username, loginFail, StrUtil.format(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));

@@ -1,6 +1,5 @@
 package com.layjava.common.social.maxkey;
 
-import cn.hutool.core.lang.Dict;
 import com.layjava.common.json.utils.JsonUtils;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
@@ -9,6 +8,7 @@ import me.zhyd.oauth.model.AuthCallback;
 import me.zhyd.oauth.model.AuthToken;
 import me.zhyd.oauth.model.AuthUser;
 import me.zhyd.oauth.request.AuthDefaultRequest;
+import org.dromara.hutool.core.map.Dict;
 import org.noear.solon.Solon;
 
 /**
@@ -16,7 +16,7 @@ import org.noear.solon.Solon;
  */
 public class AuthMaxKeyRequest extends AuthDefaultRequest {
 
-    public static final String SERVER_URL = Solon.cfg().getProperty("justauth.type.maxkey.server-url");
+    public static final String SERVER_URL = Solon.cfg().getProperty("justauth.type.maxkey.server-url" );
 
     /**
      * 设定归属域
@@ -34,19 +34,19 @@ public class AuthMaxKeyRequest extends AuthDefaultRequest {
         String body = doPostAuthorizationCode(authCallback.getCode());
         Dict object = JsonUtils.parseMap(body);
         // oauth/token 验证异常
-        if (object.containsKey("error")) {
-            throw new AuthException(object.getStr("error_description"));
+        if (object.containsKey("error" )) {
+            throw new AuthException(object.getStr("error_description" ));
         }
         // user 验证异常
-        if (object.containsKey("message")) {
-            throw new AuthException(object.getStr("message"));
+        if (object.containsKey("message" )) {
+            throw new AuthException(object.getStr("message" ));
         }
         return AuthToken.builder()
-                .accessToken(object.getStr("access_token"))
-                .refreshToken(object.getStr("refresh_token"))
-                .idToken(object.getStr("id_token"))
-                .tokenType(object.getStr("token_type"))
-                .scope(object.getStr("scope"))
+                .accessToken(object.getStr("access_token" ))
+                .refreshToken(object.getStr("refresh_token" ))
+                .idToken(object.getStr("id_token" ))
+                .tokenType(object.getStr("token_type" ))
+                .scope(object.getStr("scope" ))
                 .build();
     }
 
@@ -55,23 +55,23 @@ public class AuthMaxKeyRequest extends AuthDefaultRequest {
         String body = doGetUserInfo(authToken);
         Dict object = JsonUtils.parseMap(body);
         // oauth/token 验证异常
-        if (object.containsKey("error")) {
-            throw new AuthException(object.getStr("error_description"));
+        if (object.containsKey("error" )) {
+            throw new AuthException(object.getStr("error_description" ));
         }
         // user 验证异常
-        if (object.containsKey("message")) {
-            throw new AuthException(object.getStr("message"));
+        if (object.containsKey("message" )) {
+            throw new AuthException(object.getStr("message" ));
         }
         return AuthUser.builder()
-                .uuid(object.getStr("userId"))
-                .username(object.getStr("username"))
-                .nickname(object.getStr("displayName"))
-                .avatar(object.getStr("avatar_url"))
-                .blog(object.getStr("web_url"))
-                .company(object.getStr("organization"))
-                .location(object.getStr("location"))
-                .email(object.getStr("email"))
-                .remark(object.getStr("bio"))
+                .uuid(object.getStr("userId" ))
+                .username(object.getStr("username" ))
+                .nickname(object.getStr("displayName" ))
+                .avatar(object.getStr("avatar_url" ))
+                .blog(object.getStr("web_url" ))
+                .company(object.getStr("organization" ))
+                .location(object.getStr("location" ))
+                .email(object.getStr("email" ))
+                .remark(object.getStr("bio" ))
                 .token(authToken)
                 .source(source.toString())
                 .build();

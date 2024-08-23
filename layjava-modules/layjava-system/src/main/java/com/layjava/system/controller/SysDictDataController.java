@@ -1,7 +1,7 @@
 package com.layjava.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.domain.R;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
@@ -23,7 +23,7 @@ import java.util.List;
  * @author Lion Li
  */
 @Controller
-@Mapping("/system/dict/data")
+@Mapping("/system/dict/data" )
 public class SysDictDataController extends BaseController {
 
     @Inject
@@ -35,8 +35,8 @@ public class SysDictDataController extends BaseController {
      * 查询字典数据列表
      */
     @Get
-    @Mapping("/list")
-    @SaCheckPermission("system:dict:list")
+    @Mapping("/list" )
+    @SaCheckPermission("system:dict:list" )
     public PageResult<SysDictDataVo> list(SysDictDataBo dictData, PageQuery pageQuery) {
         return dictDataService.selectPageDictDataList(dictData, pageQuery);
     }
@@ -45,9 +45,9 @@ public class SysDictDataController extends BaseController {
      * 导出字典数据列表
      */
     @Post
-    @Mapping("/export")
+    @Mapping("/export" )
     @Log(title = "字典数据", businessType = BusinessType.EXPORT)
-    @SaCheckPermission("system:dict:export")
+    @SaCheckPermission("system:dict:export" )
     public void export(SysDictDataBo dictData) {
         List<SysDictDataVo> list = dictDataService.selectDictDataList(dictData);
         // ExcelUtil.exportExcel(list, "字典数据", SysDictDataVo.class, response);
@@ -59,8 +59,8 @@ public class SysDictDataController extends BaseController {
      * @param dictCode 字典code
      */
     @Get
-    @Mapping(value = "/{dictCode}")
-    @SaCheckPermission("system:dict:query")
+    @Mapping(value = "/{dictCode}" )
+    @SaCheckPermission("system:dict:query" )
     public R<SysDictDataVo> getInfo(Long dictCode) {
         return R.ok(dictDataService.selectDictDataById(dictCode));
     }
@@ -71,10 +71,10 @@ public class SysDictDataController extends BaseController {
      * @param dictType 字典类型
      */
     @Get
-    @Mapping(value = "/type/{dictType}")
+    @Mapping(value = "/type/{dictType}" )
     public R<List<SysDictDataVo>> dictType(String dictType) {
         List<SysDictDataVo> data = dictTypeService.selectDictDataByType(dictType);
-        if (ObjectUtil.isNull(data)) {
+        if (ObjUtil.isNull(data)) {
             data = new ArrayList<>();
         }
         return R.ok(data);
@@ -85,7 +85,7 @@ public class SysDictDataController extends BaseController {
      */
     @Post
     @Mapping
-    @SaCheckPermission("system:dict:add")
+    @SaCheckPermission("system:dict:add" )
     @Log(title = "字典数据", businessType = BusinessType.INSERT)
     public R<Void> add(SysDictDataBo dict) {
         dictDataService.insertDictData(dict);
@@ -97,7 +97,7 @@ public class SysDictDataController extends BaseController {
      */
     @Put
     @Mapping
-    @SaCheckPermission("system:dict:edit")
+    @SaCheckPermission("system:dict:edit" )
     @Log(title = "字典数据", businessType = BusinessType.UPDATE)
     public R<Void> edit(SysDictDataBo dict) {
         dictDataService.updateDictData(dict);
@@ -110,8 +110,8 @@ public class SysDictDataController extends BaseController {
      * @param dictCodes 字典code串
      */
     @Delete
-    @Mapping("/{dictCodes}")
-    @SaCheckPermission("system:dict:remove")
+    @Mapping("/{dictCodes}" )
+    @SaCheckPermission("system:dict:remove" )
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
     public R<Void> remove(Long[] dictCodes) {
         dictDataService.deleteDictDataByIds(dictCodes);

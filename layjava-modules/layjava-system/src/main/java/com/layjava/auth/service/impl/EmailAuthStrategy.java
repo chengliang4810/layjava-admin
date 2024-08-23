@@ -2,8 +2,8 @@ package com.layjava.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.json.JSONUtil;
+import org.dromara.hutool.core.util.ObjUtil;
+import org.dromara.hutool.json.JSONUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -16,7 +16,7 @@ import com.layjava.common.core.enums.LoginType;
 import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
@@ -85,8 +85,8 @@ public class EmailAuthStrategy implements AuthStrategyService {
      */
     private boolean validateEmailCode(String email, String emailCode) {
         String code = cacheService.get(GlobalConstants.CAPTCHA_CODE_KEY + email, String.class);
-        if (StringUtils.isBlank(code)) {
-            loginService.recordLogininfor(email, Constants.LOGIN_FAIL, "验证码已失效");
+        if (StringUtil.isBlank(code)) {
+            loginService.recordLogininfor(email, Constants.LOGIN_FAIL, "验证码已失效" );
             throw new CaptchaExpireException();
         }
         return code.equals(emailCode);
@@ -96,7 +96,7 @@ public class EmailAuthStrategy implements AuthStrategyService {
         SysUser user = userMapper.selectOneByQuery(QueryWrapper.create().from(SYS_USER)
                 .select(SYS_USER.EMAIL, SYS_USER.STATUS)
                 .and(SYS_USER.EMAIL.eq(email)));
-        if (ObjectUtil.isNull(user)) {
+        if (ObjUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", email);
             throw new UserException("user.not.exists", email);
         } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {

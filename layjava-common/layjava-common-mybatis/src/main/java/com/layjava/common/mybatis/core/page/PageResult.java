@@ -1,11 +1,11 @@
 package com.layjava.common.mybatis.core.page;
 
-import cn.hutool.http.HttpStatus;
 import com.layjava.common.core.domain.R;
 import com.mybatisflex.core.paginate.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.http.meta.HttpStatus;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -38,7 +38,7 @@ public class PageResult<T> extends R<PageInfo<T>> implements Serializable {
     public static <T> PageResult<T> build(Page<T> page) {
         PageResult<T> rspData = new PageResult<>();
         rspData.setCode(HttpStatus.HTTP_OK);
-        rspData.setMsg("查询成功");
+        rspData.setMsg("查询成功" );
         rspData.setData(PageInfo.build(page.getRecords(), page.getTotalRow()));
         return rspData;
     }
@@ -46,7 +46,7 @@ public class PageResult<T> extends R<PageInfo<T>> implements Serializable {
     public static <T> PageResult<T> build(List<T> list) {
         PageResult<T> rspData = new PageResult<>();
         rspData.setCode(HttpStatus.HTTP_OK);
-        rspData.setMsg("查询成功");
+        rspData.setMsg("查询成功" );
         rspData.setData(PageInfo.build(list, list.size()));
         return rspData;
     }
@@ -54,7 +54,7 @@ public class PageResult<T> extends R<PageInfo<T>> implements Serializable {
     public static <T> PageResult<T> build() {
         PageResult<T> rspData = new PageResult<>();
         rspData.setCode(HttpStatus.HTTP_OK);
-        rspData.setMsg("查询成功");
+        rspData.setMsg("查询成功" );
         return rspData;
     }
 

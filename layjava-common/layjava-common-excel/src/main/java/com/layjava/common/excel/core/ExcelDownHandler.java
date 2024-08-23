@@ -1,10 +1,5 @@
 package com.layjava.common.excel.core;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.EnumUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.metadata.FieldCache;
 import com.alibaba.excel.metadata.FieldWrapper;
 import com.alibaba.excel.util.ClassUtils;
@@ -13,7 +8,7 @@ import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.DictService;
-import com.layjava.common.core.utils.StreamUtils;
+import com.layjava.common.core.utils.StreamUtil;
 import com.layjava.common.excel.annotation.ExcelDictFormat;
 import com.layjava.common.excel.annotation.ExcelEnumFormat;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +16,12 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.ss.util.WorkbookUtil;
 import org.apache.poi.xssf.usermodel.XSSFDataValidation;
+import org.dromara.hutool.core.array.ArrayUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.split.SplitUtil;
+import org.dromara.hutool.core.util.EnumUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.Solon;
 
 import java.lang.reflect.Field;
@@ -107,15 +108,15 @@ public class ExcelDownHandler implements SheetWriteHandler {
                     options = new ArrayList<>(values);
                 } else if (StrUtil.isNotBlank(converterExp)) {
                     // 如果指定了确切的值，则直接解析确切的值
-                    options = StrUtil.split(converterExp, format.separator(), true, true);
+                    options = SplitUtil.split(converterExp, format.separator(), true, true);
                 }
             } else if (field.isAnnotationPresent(ExcelEnumFormat.class)) {
                 // 否则如果指定了@ExcelEnumFormat，则使用枚举的逻辑
                 ExcelEnumFormat format = field.getDeclaredAnnotation(ExcelEnumFormat.class);
                 List<Object> values = EnumUtil.getFieldValues(format.enumClass(), format.textField());
-                options = StreamUtils.toList(values, String::valueOf);
+                options = StreamUtil.toList(values, String::valueOf);
             }
-            if (ObjectUtil.isNotEmpty(options)) {
+            if (ObjUtil.isNotEmpty(options)) {
                 // 仅当下拉可选项不为空时执行
                 if (options.size() > 20) {
                     // 这里限制如果可选项大于20，则使用额外表形式
@@ -152,10 +153,10 @@ public class ExcelDownHandler implements SheetWriteHandler {
      * @param value    下拉选可选值
      */
     private void dropDownWithSimple(DataValidationHelper helper, Sheet sheet, Integer celIndex, List<String> value) {
-        if (ObjectUtil.isEmpty(value)) {
+        if (ObjUtil.isEmpty(value)) {
             return;
         }
-        this.markOptionsToSheet(helper, sheet, celIndex, helper.createExplicitListConstraint(ArrayUtil.toArray(value, String.class)));
+        this.markOptionsToSheet(helper, sheet, celIndex, helper.createExplicitListConstraint(ArrayUtil.ofArray(value, String.class)));
     }
 
     /**
@@ -208,7 +209,7 @@ public class ExcelDownHandler implements SheetWriteHandler {
             List<String> secondOptions = secoundOptionsMap.get(thisFirstOptionsValue);
             if (CollUtil.isEmpty(secondOptions)) {
                 // 必须保证至少有一个关联选项，否则将导致Excel解析错误
-                secondOptions = Collections.singletonList("暂无_0");
+                secondOptions = Collections.singletonList("暂无_0" );
             }
 
             // 以该一级选项值创建子名称管理器
@@ -332,10 +333,10 @@ public class ExcelDownHandler implements SheetWriteHandler {
             dataValidation.setSuppressDropDownArrow(true);
             //错误提示
             dataValidation.setErrorStyle(DataValidation.ErrorStyle.STOP);
-            dataValidation.createErrorBox("提示", "此值与单元格定义数据不一致");
+            dataValidation.createErrorBox("提示", "此值与单元格定义数据不一致" );
             dataValidation.setShowErrorBox(true);
             //选定提示
-            dataValidation.createPromptBox("填写说明：", "填写内容只能为下拉中数据，其他数据将导致导入失败");
+            dataValidation.createPromptBox("填写说明：", "填写内容只能为下拉中数据，其他数据将导致导入失败" );
             dataValidation.setShowPromptBox(true);
             sheet.addValidationData(dataValidation);
         } else {
@@ -362,9 +363,9 @@ public class ExcelDownHandler implements SheetWriteHandler {
         // 26一循环的次数大于0，则视为栏名至少两位
         String columnPrefix = columnCircleCount == 0
                 ? StrUtil.EMPTY
-                : StrUtil.subWithLength(EXCEL_COLUMN_NAME, columnCircleCount - 1, 1);
+                : StrUtil.subByLength(EXCEL_COLUMN_NAME, columnCircleCount - 1, 1);
         // 从26一循环内取对应的栏位名
-        String columnNext = StrUtil.subWithLength(EXCEL_COLUMN_NAME, thisCircleColumnIndex, 1);
+        String columnNext = StrUtil.subByLength(EXCEL_COLUMN_NAME, thisCircleColumnIndex, 1);
         // 将二者拼接即为最终的栏位名
         return columnPrefix + columnNext;
     }

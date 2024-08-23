@@ -1,10 +1,10 @@
 package com.layjava.common.excel.core;
 
-import cn.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.CollUtil;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.Head;
 import com.alibaba.excel.write.merge.AbstractMergeStrategy;
-import com.layjava.common.core.utils.reflect.ReflectUtils;
+import com.layjava.common.core.utils.reflect.ReflectUtil;
 import com.layjava.common.excel.annotation.CellMerge;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.dromara.hutool.core.reflect.FieldUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class CellMergeStrategy extends AbstractMergeStrategy {
         if (CollUtil.isEmpty(list)) {
             return cellList;
         }
-        Field[] fields = ReflectUtils.getFields(list.get(0).getClass(), field -> !"serialVersionUID".equals(field.getName()));
+        Field[] fields = FieldUtil.getFields(list.get(0).getClass(), field -> !"serialVersionUID".equals(field.getName()));
 
         // 有注解的字段
         List<Field> mergeFields = new ArrayList<>();
@@ -81,7 +82,7 @@ public class CellMergeStrategy extends AbstractMergeStrategy {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < mergeFields.size(); j++) {
                 Field field = mergeFields.get(j);
-                Object val = ReflectUtils.invokeGetter(list.get(i), field.getName());
+                Object val = ReflectUtil.invokeGetter(list.get(i), field.getName());
 
                 int colNum = mergeFieldsIndex.get(j);
                 if (!map.containsKey(field)) {

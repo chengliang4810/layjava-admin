@@ -1,6 +1,6 @@
 package com.layjava.common.mybatis.enums;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,27 +16,27 @@ public enum DataBaseType {
     /**
      * MySQL
      */
-    MY_SQL("MySQL"),
+    MY_SQL("MySQL" ),
 
     /**
      * Oracle
      */
-    ORACLE("Oracle"),
+    ORACLE("Oracle" ),
 
     /**
      * PostgreSQL
      */
-    POSTGRE_SQL("PostgreSQL"),
+    POSTGRE_SQL("PostgreSQL" ),
 
     /**
      * SQL Server
      */
-    SQL_SERVER("Microsoft SQL Server");
+    SQL_SERVER("Microsoft SQL Server" );
 
     private final String type;
 
     public static DataBaseType find(String databaseProductName) {
-        if (StringUtils.isBlank(databaseProductName)) {
+        if (StringUtil.isBlank(databaseProductName)) {
             return null;
         }
         for (DataBaseType type : values()) {

@@ -2,9 +2,9 @@ package com.layjava.common.mybatis.helper;
 
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaStorage;
-import cn.hutool.core.util.ObjectUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.util.ObjUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @version 3.5.0
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@SuppressWarnings("unchecked cast")
+@SuppressWarnings("unchecked cast" )
 public class DataPermissionHelper {
 
     private static final String DATA_PERMISSION_KEY = "data:permission";
@@ -35,14 +35,14 @@ public class DataPermissionHelper {
     public static Map<String, Object> getContext() {
         SaStorage saStorage = SaHolder.getStorage();
         Object attribute = saStorage.get(DATA_PERMISSION_KEY);
-        if (ObjectUtil.isNull(attribute)) {
+        if (ObjUtil.isNull(attribute)) {
             saStorage.set(DATA_PERMISSION_KEY, new HashMap<>());
             attribute = saStorage.get(DATA_PERMISSION_KEY);
         }
         if (attribute instanceof Map map) {
             return map;
         }
-        throw new NullPointerException("data permission context type exception");
+        throw new NullPointerException("data permission context type exception" );
     }
 
 

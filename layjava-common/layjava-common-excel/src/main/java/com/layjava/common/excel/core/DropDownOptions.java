@@ -1,10 +1,11 @@
 package com.layjava.common.excel.core;
 
-import cn.hutool.core.util.StrUtil;
 import com.layjava.common.core.exception.ServiceException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.text.StrUtil;
+import org.dromara.hutool.core.text.split.SplitUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuppressWarnings("unused")
+@SuppressWarnings("unused" )
 public class DropDownOptions {
     /**
      * 一级下拉所在列index，从0开始算
@@ -67,7 +68,7 @@ public class DropDownOptions {
         for (int i = 0; i < vars.length; i++) {
             String var = StrUtil.trimToEmpty(String.valueOf(vars[i]));
             if (!var.matches(regex)) {
-                throw new ServiceException("选项数据不符合规则，仅允许使用中英文字符以及数字");
+                throw new ServiceException("选项数据不符合规则，仅允许使用中英文字符以及数字" );
             }
             stringBuffer.append(var);
             if (i < vars.length - 1) {
@@ -75,8 +76,8 @@ public class DropDownOptions {
                 stringBuffer.append(DELIMITER);
             }
         }
-        if (stringBuffer.toString().matches("^\\d_*$")) {
-            throw new ServiceException("禁止以数字开头");
+        if (stringBuffer.toString().matches("^\\d_*$" )) {
+            throw new ServiceException("禁止以数字开头" );
         }
         return stringBuffer.toString();
     }
@@ -88,7 +89,7 @@ public class DropDownOptions {
      * @return 原始的参数
      */
     public static List<String> analyzeOptionValue(String option) {
-        return StrUtil.split(option, DELIMITER, true, true);
+        return SplitUtil.split(option, DELIMITER, true, true);
     }
 
     /**

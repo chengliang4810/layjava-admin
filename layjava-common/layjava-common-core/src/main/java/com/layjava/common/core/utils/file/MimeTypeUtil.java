@@ -5,7 +5,7 @@ package com.layjava.common.core.utils.file;
  *
  * @author ruoyi
  */
-public class MimeTypeUtils {
+public class MimeTypeUtil {
     public static final String IMAGE_PNG = "image/png";
 
     public static final String IMAGE_JPG = "image/jpg";

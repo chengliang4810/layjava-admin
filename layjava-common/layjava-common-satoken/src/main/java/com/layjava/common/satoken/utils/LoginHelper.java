@@ -5,12 +5,12 @@ import cn.dev33.satoken.context.model.SaStorage;
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.enums.UserType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.util.ObjUtil;
 
 import java.util.function.Supplier;
 
@@ -48,7 +48,7 @@ public class LoginHelper {
         storage.set(LOGIN_USER_KEY, loginUser);
         storage.set(USER_KEY, loginUser.getUserId());
         storage.set(DEPT_KEY, loginUser.getDeptId());
-        model = ObjectUtil.defaultIfNull(model, new SaLoginModel());
+        model = ObjUtil.defaultIfNull(model, new SaLoginModel());
         StpUtil.login(loginUser.getLoginId());
         SaSession tokenSession = StpUtil.getTokenSession();
         tokenSession.updateTimeout(model.getTimeout());
@@ -61,7 +61,7 @@ public class LoginHelper {
     public static LoginUser getLoginUser() {
         return (LoginUser) getStorageIfAbsentSet(LOGIN_USER_KEY, () -> {
             SaSession session = StpUtil.getTokenSession();
-            if (ObjectUtil.isNull(session)) {
+            if (ObjUtil.isNull(session)) {
                 return null;
             }
             return session.get(LOGIN_USER_KEY);
@@ -73,7 +73,7 @@ public class LoginHelper {
      */
     public static LoginUser getLoginUser(String token) {
         SaSession session = StpUtil.getTokenSessionByToken(token);
-        if (ObjectUtil.isNull(session)) {
+        if (ObjUtil.isNull(session)) {
             return null;
         }
         return (LoginUser) session.get(LOGIN_USER_KEY);
@@ -84,7 +84,7 @@ public class LoginHelper {
      */
     public static Long getUserId() {
         LoginUser loginUser = getLoginUser();
-        if (ObjectUtil.isNull(loginUser)) {
+        if (ObjUtil.isNull(loginUser)) {
             return null;
         }
         return loginUser.getUserId();
@@ -95,7 +95,7 @@ public class LoginHelper {
      */
     public static Long getDeptId() {
         LoginUser loginUser = getLoginUser();
-        if (ObjectUtil.isNull(loginUser)) {
+        if (ObjUtil.isNull(loginUser)) {
             return null;
         }
         return loginUser.getDeptId();
@@ -137,7 +137,7 @@ public class LoginHelper {
     public static Object getStorageIfAbsentSet(String key, Supplier<Object> handle) {
         try {
             Object obj = SaHolder.getStorage().get(key);
-            if (ObjectUtil.isNull(obj)) {
+            if (ObjUtil.isNull(obj)) {
                 obj = handle.get();
                 SaHolder.getStorage().set(key, obj);
             }

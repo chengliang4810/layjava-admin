@@ -1,7 +1,7 @@
 package com.layjava.common.social.utils;
 
 import com.layjava.common.core.constant.GlobalConstants;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import me.zhyd.oauth.cache.AuthStateCache;
 import org.noear.solon.annotation.Inject;
@@ -60,6 +60,6 @@ public class AuthRedisStateCache implements AuthStateCache {
     @Override
     public boolean containsKey(String key) {
         String string = cacheService.get(GlobalConstants.SOCIAL_AUTH_CODE_KEY + key, String.class);
-        return StringUtils.isNotBlank(string);
+        return StringUtil.isNotBlank(string);
     }
 }

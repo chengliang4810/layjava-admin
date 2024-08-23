@@ -1,7 +1,6 @@
 package com.layjava.common.core.utils.reflect;
 
-import cn.hutool.core.util.ReflectUtil;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +15,10 @@ import java.lang.reflect.Type;
  *
  * @author Lion Li
  */
-@SuppressWarnings("rawtypes")
+@SuppressWarnings("rawtypes" )
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ReflectUtils extends ReflectUtil {
+public class ReflectUtil extends org.dromara.hutool.core.reflect.method.MethodUtil {
 
     private static final String SETTER_PREFIX = "set";
 
@@ -29,11 +28,11 @@ public class ReflectUtils extends ReflectUtil {
      * 调用Getter方法.
      * 支持多级，如：对象名.对象名.方法
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked" )
     public static <E> E invokeGetter(Object obj, String propertyName) {
         Object object = obj;
-        for (String name : StringUtils.split(propertyName, ".")) {
-            String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(name);
+        for (String name : StringUtil.split(propertyName, "." )) {
+            String getterMethodName = GETTER_PREFIX + StringUtil.capitalize(name);
             object = invoke(object, getterMethodName);
         }
         return (E) object;
@@ -45,13 +44,13 @@ public class ReflectUtils extends ReflectUtil {
      */
     public static <E> void invokeSetter(Object obj, String propertyName, E value) {
         Object object = obj;
-        String[] names = StringUtils.split(propertyName, ".");
+        String[] names = StringUtil.split(propertyName, "." );
         for (int i = 0; i < names.length; i++) {
             if (i < names.length - 1) {
-                String getterMethodName = GETTER_PREFIX + StringUtils.capitalize(names[i]);
+                String getterMethodName = GETTER_PREFIX + StringUtil.capitalize(names[i]);
                 object = invoke(object, getterMethodName);
             } else {
-                String setterMethodName = SETTER_PREFIX + StringUtils.capitalize(names[i]);
+                String setterMethodName = SETTER_PREFIX + StringUtil.capitalize(names[i]);
                 Method method = getMethodByName(object.getClass(), setterMethodName);
                 invoke(object, method, value);
             }

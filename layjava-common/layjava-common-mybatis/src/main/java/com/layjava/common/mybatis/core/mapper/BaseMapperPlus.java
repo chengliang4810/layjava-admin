@@ -1,6 +1,6 @@
 package com.layjava.common.mybatis.core.mapper;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.annotation.DataColumn;
 import com.layjava.common.mybatis.annotation.DataPermission;
 import com.layjava.common.mybatis.core.page.PageQuery;
@@ -41,22 +41,22 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
 
 
     default int updateByMap(T entity, Map<String, Object> whereConditions, DataColumn... columns) {
-        FlexAssert.notEmpty(whereConditions, "whereConditions");
+        FlexAssert.notEmpty(whereConditions, "whereConditions" );
         return this.updateByQuery(entity, QueryWrapper.create().where(whereConditions), columns);
     }
 
     default int updateByMap(T entity, boolean ignoreNulls, Map<String, Object> whereConditions, DataColumn... columns) {
-        FlexAssert.notEmpty(whereConditions, "whereConditions");
+        FlexAssert.notEmpty(whereConditions, "whereConditions" );
         return this.updateByQuery(entity, ignoreNulls, QueryWrapper.create().where(whereConditions), columns);
     }
 
     default int updateByCondition(T entity, QueryCondition whereConditions, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         return this.updateByQuery(entity, QueryWrapper.create().where(whereConditions), columns);
     }
 
     default int updateByCondition(T entity, boolean ignoreNulls, QueryCondition whereConditions, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         return this.updateByQuery(entity, ignoreNulls, QueryWrapper.create().where(whereConditions), columns);
     }
 
@@ -86,12 +86,12 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
     }
 
     default T selectOneWithRelationsByMap(Map<String, Object> whereConditions, DataColumn... columns) {
-        FlexAssert.notEmpty(whereConditions, "whereConditions");
+        FlexAssert.notEmpty(whereConditions, "whereConditions" );
         return this.selectOneWithRelationsByQuery(QueryWrapper.create().where(whereConditions).limit(1L), columns);
     }
 
     default T selectOneWithRelationsByCondition(QueryCondition whereConditions, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         return this.selectOneWithRelationsByQuery(QueryWrapper.create().where(whereConditions).limit(1L), columns);
     }
 
@@ -110,22 +110,22 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
 
 
     default List<T> selectListByMap(Map<String, Object> whereConditions, DataColumn... columns) {
-        FlexAssert.notEmpty(whereConditions, "whereConditions");
+        FlexAssert.notEmpty(whereConditions, "whereConditions" );
         return this.selectListByQuery(QueryWrapper.create().where(whereConditions), columns);
     }
 
     default List<T> selectListByMap(Map<String, Object> whereConditions, Long count, DataColumn... columns) {
-        FlexAssert.notEmpty(whereConditions, "whereConditions");
+        FlexAssert.notEmpty(whereConditions, "whereConditions" );
         return this.selectListByQuery(QueryWrapper.create().where(whereConditions).limit(count), columns);
     }
 
     default List<T> selectListByCondition(QueryCondition whereConditions, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         return this.selectListByQuery(QueryWrapper.create().where(whereConditions), columns);
     }
 
     default List<T> selectListByCondition(QueryCondition whereConditions, Long count, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         return this.selectListByQuery(QueryWrapper.create().where(whereConditions).limit(count), columns);
     }
 
@@ -226,7 +226,7 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
     }
 
     default long selectCountByCondition(QueryCondition whereConditions, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         QueryWrapper queryWrapper = QueryWrapper.create().where(whereConditions);
         DataPermission dataPermission = DataPermission.of(columns);
         dataPermission.handler(queryWrapper);
@@ -268,13 +268,13 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
     }
 
     default Page<T> paginate(Number pageNumber, Number pageSize, Number totalRow, QueryCondition whereConditions, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         Page<T> page = new Page<>(pageNumber, pageSize, totalRow);
         return this.paginate(page, (new QueryWrapper()).where(whereConditions), columns);
     }
 
     default Page<T> paginateWithRelations(Number pageNumber, Number pageSize, Number totalRow, QueryCondition whereConditions, DataColumn... columns) {
-        FlexAssert.notNull(whereConditions, "whereConditions");
+        FlexAssert.notNull(whereConditions, "whereConditions" );
         Page<T> page = new Page<>(pageNumber, pageSize, totalRow);
         return this.paginateWithRelations(page, (new QueryWrapper()).where(whereConditions), columns);
     }
@@ -393,7 +393,7 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
     default boolean update(UpdateChain<T> updateChain, DataColumn... columns) {
         DataPermission dataPermission = DataPermission.of(columns);
         String sql = dataPermission.toSQL(false);
-        if (StringUtils.isNotBlank(sql)) {
+        if (StringUtil.isNotBlank(sql)) {
             updateChain.and(sql);
         }
         return updateChain.update();
@@ -402,7 +402,7 @@ public interface BaseMapperPlus<T> extends BaseMapper<T> {
     default int update(T entity, DataColumn... columns) {
         DataPermission dataPermission = DataPermission.of(columns);
         String sql = dataPermission.toSQL(false);
-        if (StringUtils.isBlank(sql)) {
+        if (StringUtil.isBlank(sql)) {
             return this.update(entity);
         }
         QueryWrapper queryWrapper = QueryWrapper.create().where(sql);

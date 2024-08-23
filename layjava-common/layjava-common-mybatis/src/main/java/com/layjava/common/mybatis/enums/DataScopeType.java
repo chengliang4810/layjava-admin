@@ -1,6 +1,6 @@
 package com.layjava.common.mybatis.enums;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.helper.DataPermissionHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,27 +25,27 @@ public enum DataScopeType {
     /**
      * 全部数据权限
      */
-    ALL("1", "", ""),
+    ALL("1", "", "" ),
 
     /**
      * 自定数据权限
      */
-    CUSTOM("2", " #{#deptName} IN ( #{@sdss.getRoleCustom( #user.roleId )} ) ", " 1 = 0 "),
+    CUSTOM("2", " #{#deptName} IN ( #{@sdss.getRoleCustom( #user.roleId )} ) ", " 1 = 0 " ),
 
     /**
      * 部门数据权限
      */
-    DEPT("3", " #{#deptName} = #{#user.deptId} ", " 1 = 0 "),
+    DEPT("3", " #{#deptName} = #{#user.deptId} ", " 1 = 0 " ),
 
     /**
      * 部门及以下数据权限
      */
-    DEPT_AND_CHILD("4", " #{#deptName} IN ( #{@sdss.getDeptAndChild( #user.deptId )} )", " 1 = 0 "),
+    DEPT_AND_CHILD("4", " #{#deptName} IN ( #{@sdss.getDeptAndChild( #user.deptId )} )", " 1 = 0 " ),
 
     /**
      * 仅本人数据权限
      */
-    SELF("5", " #{#userName} = #{#user.userId} ", " 1 = 0 ");
+    SELF("5", " #{#userName} = #{#user.userId} ", " 1 = 0 " );
 
     private final String code;
 
@@ -60,7 +60,7 @@ public enum DataScopeType {
     private final String elseSql;
 
     public static DataScopeType findCode(String code) {
-        if (StringUtils.isBlank(code)) {
+        if (StringUtil.isBlank(code)) {
             return null;
         }
         for (DataScopeType type : values()) {

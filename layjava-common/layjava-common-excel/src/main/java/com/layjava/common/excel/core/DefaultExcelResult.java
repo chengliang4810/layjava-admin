@@ -1,6 +1,6 @@
 package com.layjava.common.excel.core;
 
-import cn.hutool.core.util.StrUtil;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class DefaultExcelResult<T> implements ExcelResult<T> {
             return "读取失败，未解析到数据";
         } else {
             if (errorCount == 0) {
-                return StrUtil.format("恭喜您，全部读取成功！共{}条", successCount);
+                return StringUtil.format("恭喜您，全部读取成功！共{}条", successCount);
             } else {
                 return "";
             }

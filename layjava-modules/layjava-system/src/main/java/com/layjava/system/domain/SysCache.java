@@ -1,6 +1,6 @@
 package com.layjava.system.domain;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -40,8 +40,8 @@ public class SysCache {
     }
 
     public SysCache(String cacheName, String cacheKey, String cacheValue) {
-        this.cacheName = StringUtils.replace(cacheName, ":", "");
-        this.cacheKey = StringUtils.replace(cacheKey, cacheName, "");
+        this.cacheName = StringUtil.replace(cacheName, ":", "" );
+        this.cacheKey = StringUtil.replace(cacheKey, cacheName, "" );
         this.cacheValue = cacheValue;
     }
 

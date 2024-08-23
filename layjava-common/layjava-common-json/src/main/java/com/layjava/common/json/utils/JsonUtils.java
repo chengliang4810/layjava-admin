@@ -1,10 +1,10 @@
 package com.layjava.common.json.utils;
 
-import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.ObjectUtil;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.map.Dict;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.snack.ONode;
 
 /**
@@ -23,7 +23,7 @@ public class JsonUtils {
      * @return JsonString
      */
     public static String toJsonString(Object object) {
-        if (ObjectUtil.isNull(object)) {
+        if (ObjUtil.isNull(object)) {
             return null;
         }
         return ONode.stringify(object);
@@ -37,7 +37,7 @@ public class JsonUtils {
      * @return 实体类型
      */
     public static <T> T parseObject(String jsonString, Class<T> clazz) {
-        if (StringUtils.isEmpty(jsonString)) {
+        if (StringUtil.isEmpty(jsonString)) {
             return null;
         }
         return ONode.deserialize(jsonString, clazz);
@@ -50,8 +50,8 @@ public class JsonUtils {
      * @return map 对象
      */
     public static Dict parseMap(String jsonString) {
-        if (StringUtils.isBlank(jsonString)) {
-            return null;
+        if (StringUtil.isBlank(jsonString)) {
+            return Dict.of();
         }
         return ONode.deserialize(jsonString, Dict.class);
     }

@@ -2,16 +2,16 @@ package com.layjava.system.service.impl;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.bean.BeanUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.TenantConstants;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StreamUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.satoken.utils.LoginHelper;
@@ -82,7 +82,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
                 .and(SYS_ROLE.ROLE_NAME.like(bo.getRoleName()))
                 .and(SYS_ROLE.STATUS.eq(bo.getStatus()))
                 .and(SYS_ROLE.ROLE_KEY.like(bo.getRoleKey()))
-                .and(SYS_ROLE.CREATE_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null))
+                .and(SYS_ROLE.CREATE_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null))
                 .orderBy(SYS_ROLE.ROLE_SORT, true)
                 .orderBy(SYS_ROLE.CREATE_TIME, true);
     }
@@ -119,8 +119,8 @@ public class SysRoleServiceImpl implements ISysRoleService {
         List<SysRoleVo> perms = baseMapper.selectRolePermissionByUserId(userId);
         Set<String> permsSet = new HashSet<>();
         for (SysRoleVo perm : perms) {
-            if (ObjectUtil.isNotNull(perm)) {
-                permsSet.addAll(StringUtils.splitList(perm.getRoleKey().trim()));
+            if (ObjUtil.isNotNull(perm)) {
+                permsSet.addAll(StringUtil.splitList(perm.getRoleKey().trim()));
             }
         }
         return permsSet;
@@ -193,24 +193,24 @@ public class SysRoleServiceImpl implements ISysRoleService {
      */
     @Override
     public void checkRoleAllowed(SysRoleBo role) {
-        if (ObjectUtil.isNotNull(role.getRoleId()) && LoginHelper.isSuperAdmin(role.getRoleId())) {
-            throw new ServiceException("不允许操作超级管理员角色");
+        if (ObjUtil.isNotNull(role.getRoleId()) && LoginHelper.isSuperAdmin(role.getRoleId())) {
+            throw new ServiceException("不允许操作超级管理员角色" );
         }
         String[] keys = new String[]{TenantConstants.SUPER_ADMIN_ROLE_KEY, TenantConstants.TENANT_ADMIN_ROLE_KEY};
         // 新增不允许使用 管理员标识符
-        if (ObjectUtil.isNull(role.getRoleId())
-                && StringUtils.equalsAny(role.getRoleKey(), keys)) {
-            throw new ServiceException("不允许使用系统内置管理员角色标识符!");
+        if (ObjUtil.isNull(role.getRoleId())
+                && StringUtil.equalsAny(role.getRoleKey(), keys)) {
+            throw new ServiceException("不允许使用系统内置管理员角色标识符!" );
         }
         // 修改不允许修改 管理员标识符
-        if (ObjectUtil.isNotNull(role.getRoleId())) {
+        if (ObjUtil.isNotNull(role.getRoleId())) {
             SysRole sysRole = baseMapper.selectOneById(role.getRoleId());
             // 如果标识符不相等 判断为修改了管理员标识符
-            if (!StringUtils.equals(sysRole.getRoleKey(), role.getRoleKey())) {
-                if (StringUtils.equalsAny(sysRole.getRoleKey(), keys)) {
-                    throw new ServiceException("不允许修改系统内置管理员角色标识符!");
-                } else if (StringUtils.equalsAny(role.getRoleKey(), keys)) {
-                    throw new ServiceException("不允许使用系统内置管理员角色标识符!");
+            if (!StringUtil.equals(sysRole.getRoleKey(), role.getRoleKey())) {
+                if (StringUtil.equalsAny(sysRole.getRoleKey(), keys)) {
+                    throw new ServiceException("不允许修改系统内置管理员角色标识符!" );
+                } else if (StringUtil.equalsAny(role.getRoleKey(), keys)) {
+                    throw new ServiceException("不允许使用系统内置管理员角色标识符!" );
                 }
             }
         }
@@ -223,7 +223,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
      */
     @Override
     public void checkRoleDataScope(Long roleId) {
-        if (ObjectUtil.isNull(roleId)) {
+        if (ObjUtil.isNull(roleId)) {
             return;
         }
         if (LoginHelper.isSuperAdmin()) {
@@ -231,7 +231,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         }
         List<SysRoleVo> roles = this.selectRoleList(new SysRoleBo(roleId));
         if (CollUtil.isEmpty(roles)) {
-            throw new ServiceException("没有权限访问角色数据！");
+            throw new ServiceException("没有权限访问角色数据！" );
         }
 
     }
@@ -258,7 +258,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     //@Transactional(rollbackFor = Exception.class)
     public int insertRole(SysRoleBo bo) {
-        SysRole role = MapstructUtils.convert(bo, SysRole.class);
+        SysRole role = MapstructUtil.convert(bo, SysRole.class);
         // 新增角色信息
         baseMapper.insert(role, true);
         bo.setRoleId(role.getRoleId());
@@ -274,7 +274,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     //@Transactional(rollbackFor = Exception.class)
     public int updateRole(SysRoleBo bo) {
-        SysRole role = MapstructUtils.convert(bo, SysRole.class);
+        SysRole role = MapstructUtil.convert(bo, SysRole.class);
         // 修改角色信息
         baseMapper.update(role);
         // 删除角色与菜单关联
@@ -294,7 +294,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     public boolean updateRoleStatus(Long roleId, String status) {
         if (UserConstants.ROLE_DISABLE.equals(status) && this.countUserRoleByRoleId(roleId) > 0) {
-            throw new ServiceException("角色已分配，不能禁用!");
+            throw new ServiceException("角色已分配，不能禁用!" );
         }
         return UpdateChain.of(SysRole.class)
                 .set(SysRole::getStatus, status)
@@ -311,7 +311,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     @Override
     //@Transactional(rollbackFor = Exception.class)
     public int authDataScope(SysRoleBo bo) {
-        SysRole role = MapstructUtils.convert(bo, SysRole.class);
+        SysRole role = MapstructUtil.convert(bo, SysRole.class);
         // 修改角色信息
         baseMapper.update(role);
         // 删除角色与部门关联
@@ -462,7 +462,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
     public int insertAuthUsers(Long roleId, Long[] userIds) {
         // 新增用户与角色管理
         int rows = 1;
-        List<SysUserRole> list = StreamUtils.toList(List.of(userIds), userId -> {
+        List<SysUserRole> list = StreamUtil.toList(List.of(userIds), userId -> {
             SysUserRole ur = new SysUserRole();
             ur.setUserId(userId);
             ur.setRoleId(roleId);
@@ -490,7 +490,7 @@ public class SysRoleServiceImpl implements ISysRoleService {
         }
         // 角色关联的在线用户量过大会导致redis阻塞卡顿 谨慎操作
         keys.parallelStream().forEach(key -> {
-            String token = StringUtils.substringAfterLast(key, ":");
+            String token = StringUtil.substringAfterLast(key, ":" );
             // 如果已经过期则跳过
             if (StpUtil.stpLogic.getTokenActiveTimeoutByToken(token) < -1) {
                 return;

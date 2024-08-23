@@ -1,14 +1,14 @@
 package com.layjava.common.mybatis.core.page;
 
-import cn.hutool.core.util.ObjectUtil;
 import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.core.utils.sql.SqlUtil;
 import com.mybatisflex.core.constant.SqlConsts;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.query.QueryOrderBy;
 import lombok.Data;
+import org.dromara.hutool.core.util.ObjUtil;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -56,8 +56,8 @@ public class PageQuery implements Serializable {
     public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
 
     public <T> Page<T> build() {
-        Integer pageNum = ObjectUtil.defaultIfNull(getPageNum(), DEFAULT_PAGE_NUM);
-        Integer pageSize = ObjectUtil.defaultIfNull(getPageSize(), DEFAULT_PAGE_SIZE);
+        Integer pageNum = ObjUtil.defaultIfNull(getPageNum(), DEFAULT_PAGE_NUM);
+        Integer pageSize = ObjUtil.defaultIfNull(getPageSize(), DEFAULT_PAGE_SIZE);
         if (pageNum <= 0) {
             pageNum = DEFAULT_PAGE_NUM;
         }
@@ -74,20 +74,20 @@ public class PageQuery implements Serializable {
      * {isAsc:"asc,desc",orderByColumn:"id,createTime"} order by id asc,create_time desc
      */
     public QueryOrderBy[] buildOrderBy() {
-        if (StringUtils.isBlank(orderByColumn) || StringUtils.isBlank(isAsc)) {
+        if (StringUtil.isBlank(orderByColumn) || StringUtil.isBlank(isAsc)) {
             return new QueryOrderBy[]{};
         }
 
         String orderBy = SqlUtil.escapeOrderBySql(orderByColumn);
-        orderBy = StringUtils.toUnderScoreCase(orderBy);
+        orderBy = StringUtil.toUnderScoreCase(orderBy);
 
         // 兼容前端排序类型
-        isAsc = StringUtils.replaceEach(isAsc, new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
+        isAsc = StringUtil.replaceEach(isAsc, new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
 
-        String[] orderByArr = orderBy.split(StringUtils.SEPARATOR);
-        String[] isAscArr = isAsc.split(StringUtils.SEPARATOR);
+        String[] orderByArr = orderBy.split(StringUtil.SEPARATOR);
+        String[] isAscArr = isAsc.split(StringUtil.SEPARATOR);
         if (isAscArr.length != 1 && isAscArr.length != orderByArr.length) {
-            throw new ServiceException("排序参数有误");
+            throw new ServiceException("排序参数有误" );
         }
         QueryOrderBy[] orderBys = new QueryOrderBy[orderByArr.length];
         // 每个字段各自排序
@@ -99,7 +99,7 @@ public class PageQuery implements Serializable {
             } else if ("desc".equals(isAscStr)) {
                 orderBys[i] = new QueryOrderBy(new QueryColumn(orderByStr), SqlConsts.DESC);
             } else {
-                throw new ServiceException("排序参数有误");
+                throw new ServiceException("排序参数有误" );
             }
         }
         return orderBys;

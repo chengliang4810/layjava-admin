@@ -1,11 +1,12 @@
 package com.layjava.common.core.utils;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.map.MapUtil;
 import io.github.linpeilie.Converter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.Solon;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @author Michelle.Chung
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class MapstructUtils {
+public class MapstructUtil {
 
     private static Converter CONVERTER;
 
@@ -34,10 +35,10 @@ public class MapstructUtils {
      * @return desc
      */
     public static <T, V> V convert(T source, Class<V> desc) {
-        if (ObjectUtil.isNull(source)) {
+        if (ObjUtil.isNull(source)) {
             return null;
         }
-        if (ObjectUtil.isNull(desc)) {
+        if (ObjUtil.isNull(desc)) {
             return null;
         }
         return CONVERTER.convert(source, desc);
@@ -51,10 +52,10 @@ public class MapstructUtils {
      * @return desc
      */
     public static <T, V> V convert(T source, V desc) {
-        if (ObjectUtil.isNull(source)) {
+        if (ObjUtil.isNull(source)) {
             return null;
         }
-        if (ObjectUtil.isNull(desc)) {
+        if (ObjUtil.isNull(desc)) {
             return null;
         }
         return CONVERTER.convert(source, desc);
@@ -68,11 +69,11 @@ public class MapstructUtils {
      * @return desc
      */
     public static <T, V> List<V> convert(List<T> sourceList, Class<V> desc) {
-        if (ObjectUtil.isNull(sourceList)) {
-            return null;
+        if (ObjUtil.isNull(sourceList)) {
+            return ListUtil.zero();
         }
         if (CollUtil.isEmpty(sourceList)) {
-            return CollUtil.newArrayList();
+            return ListUtil.zero();
         }
         return CONVERTER.convert(sourceList, desc);
     }
@@ -88,7 +89,7 @@ public class MapstructUtils {
         if (MapUtil.isEmpty(map)) {
             return null;
         }
-        if (ObjectUtil.isNull(beanClass)) {
+        if (ObjUtil.isNull(beanClass)) {
             return null;
         }
         return CONVERTER.convert(map, beanClass);

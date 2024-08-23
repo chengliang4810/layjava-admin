@@ -1,15 +1,16 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.lang.tree.Tree;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.tree.MapTree;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.DeptService;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.core.utils.TreeBuildUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StringUtil;
+import com.layjava.common.core.utils.TreeBuildUtil;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysDept;
@@ -67,7 +68,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      * @return 部门树信息集合
      */
     @Override
-    public List<Tree<Long>> selectDeptTreeList(SysDeptBo bo) {
+    public List<MapTree<Long>> selectDeptTreeList(SysDeptBo bo) {
         // 只查询未禁用部门
         bo.setStatus(UserConstants.DEPT_NORMAL);
         List<SysDeptVo> depts = baseMapper.selectDeptList(buildQueryWrapper(bo));
@@ -94,11 +95,11 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      * @return 下拉树结构列表
      */
     @Override
-    public List<Tree<Long>> buildDeptTreeSelect(List<SysDeptVo> depts) {
+    public List<MapTree<Long>> buildDeptTreeSelect(List<SysDeptVo> depts) {
         if (CollUtil.isEmpty(depts)) {
-            return CollUtil.newArrayList();
+            return ListUtil.zero();
         }
-        return TreeBuildUtils.build(depts, (dept, tree) ->
+        return TreeBuildUtil.build(depts, (dept, tree) ->
                 tree.setId(dept.getDeptId())
                         .setParentId(dept.getParentId())
                         .setName(dept.getDeptName())
@@ -127,7 +128,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
     @Override
     public SysDeptVo selectDeptById(Long deptId) {
         SysDeptVo dept = baseMapper.selectOneWithRelationsByIdAs(deptId, SysDeptVo.class);
-        if (ObjectUtil.isNull(dept)) {
+        if (ObjUtil.isNull(dept)) {
             return null;
         }
         SysDeptVo parentDept = baseMapper.selectOneByQueryAs(QueryWrapper.create()
@@ -135,7 +136,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
                         .select(SYS_DEPT.DEPT_NAME)
                         .where(SYS_DEPT.DEPT_ID.eq(dept.getParentId())),
                 SysDeptVo.class);
-        dept.setParentName(ObjectUtil.isNotNull(parentDept) ? parentDept.getDeptName() : null);
+        dept.setParentName(ObjUtil.isNotNull(parentDept) ? parentDept.getDeptName() : null);
         return dept;
     }
 
@@ -148,13 +149,13 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
     @Override
     public String selectDeptNameByIds(String deptIds) {
         List<String> list = new ArrayList<>();
-        for (Long id : StringUtils.splitTo(deptIds, Convert::toLong)) {
+        for (Long id : StringUtil.splitTo(deptIds, Convert::toLong)) {
             SysDeptVo vo = this.selectDeptById(id);
-            if (ObjectUtil.isNotNull(vo)) {
+            if (ObjUtil.isNotNull(vo)) {
                 list.add(vo.getDeptName());
             }
         }
-        return String.join(StringUtils.SEPARATOR, list);
+        return String.join(StringUtil.SEPARATOR, list);
     }
 
     /**
@@ -168,7 +169,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
         return baseMapper.selectCountByQuery(QueryWrapper.create()
                 .from(SYS_DEPT)
                 .where(SYS_DEPT.STATUS.eq(UserConstants.DEPT_NORMAL)
-                        .and(DataBaseHelper.findInSet(deptId, "ancestors"))));
+                        .and(DataBaseHelper.findInSet(deptId, "ancestors" ))));
     }
 
     /**
@@ -215,7 +216,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      */
     @Override
     public void checkDeptDataScope(Long deptId) {
-        if (ObjectUtil.isNull(deptId)) {
+        if (ObjUtil.isNull(deptId)) {
             return;
         }
         if (LoginHelper.isSuperAdmin()) {
@@ -223,8 +224,8 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
         }
         SysDeptVo dept = baseMapper.selectDeptById(deptId);
 
-        if (ObjectUtil.isNull(dept)) {
-            throw new ServiceException("没有权限访问部门数据！");
+        if (ObjUtil.isNull(dept)) {
+            throw new ServiceException("没有权限访问部门数据！" );
         }
     }
 
@@ -239,10 +240,10 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
         SysDept info = baseMapper.selectOneById(bo.getParentId());
         // 如果父节点不为正常状态,则不允许新增子节点
         if (!UserConstants.DEPT_NORMAL.equals(info.getStatus())) {
-            throw new ServiceException("部门停用，不允许新增");
+            throw new ServiceException("部门停用，不允许新增" );
         }
-        SysDept dept = MapstructUtils.convert(bo, SysDept.class);
-        dept.setAncestors(info.getAncestors() + StringUtils.SEPARATOR + dept.getParentId());
+        SysDept dept = MapstructUtil.convert(bo, SysDept.class);
+        dept.setAncestors(info.getAncestors() + StringUtil.SEPARATOR + dept.getParentId());
         return baseMapper.insert(dept, true);
     }
 
@@ -255,22 +256,22 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
     // @CacheEvict(cacheNames = CacheNames.SYS_DEPT, key = "#bo.deptId")
     @Override
     public int updateDept(SysDeptBo bo) {
-        SysDept dept = MapstructUtils.convert(bo, SysDept.class);
+        SysDept dept = MapstructUtil.convert(bo, SysDept.class);
         SysDept oldDept = baseMapper.selectOneById(dept.getDeptId());
         if (!oldDept.getParentId().equals(dept.getParentId())) {
             // 如果是新父部门 则校验是否具有新父部门权限 避免越权
             this.checkDeptDataScope(dept.getParentId());
             SysDept newParentDept = baseMapper.selectOneById(dept.getParentId());
-            if (ObjectUtil.isNotNull(newParentDept) && ObjectUtil.isNotNull(oldDept)) {
-                String newAncestors = newParentDept.getAncestors() + StringUtils.SEPARATOR + newParentDept.getDeptId();
+            if (ObjUtil.isNotNull(newParentDept) && ObjUtil.isNotNull(oldDept)) {
+                String newAncestors = newParentDept.getAncestors() + StringUtil.SEPARATOR + newParentDept.getDeptId();
                 String oldAncestors = oldDept.getAncestors();
                 dept.setAncestors(newAncestors);
                 updateDeptChildren(dept.getDeptId(), newAncestors, oldAncestors);
             }
         }
         int result = baseMapper.update(dept);
-        if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()) && StringUtils.isNotEmpty(dept.getAncestors())
-                && !StringUtils.equals(UserConstants.DEPT_NORMAL, dept.getAncestors())) {
+        if (UserConstants.DEPT_NORMAL.equals(dept.getStatus()) && StringUtil.isNotEmpty(dept.getAncestors())
+                && !StringUtil.equals(UserConstants.DEPT_NORMAL, dept.getAncestors())) {
             // 如果该部门是启用状态，则启用该部门的所有上级部门
             updateParentDeptStatusNormal(dept);
         }
@@ -299,7 +300,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      */
     private void updateDeptChildren(Long deptId, String newAncestors, String oldAncestors) {
         List<SysDept> children = baseMapper.selectListByQuery(QueryWrapper.create().from(SYS_DEPT)
-                .where(DataBaseHelper.findInSet(deptId, "ancestors")));
+                .where(DataBaseHelper.findInSet(deptId, "ancestors" )));
         List<SysDept> list = new ArrayList<>();
         for (SysDept child : children) {
             SysDept dept = new SysDept();

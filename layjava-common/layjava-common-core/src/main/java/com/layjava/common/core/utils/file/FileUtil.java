@@ -1,9 +1,9 @@
 package com.layjava.common.core.utils.file;
 
-import cn.hutool.core.io.FileUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
  * @author Lion Li
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class FileUtils extends FileUtil {
+public class FileUtil extends org.dromara.hutool.core.io.file.FileUtil {
 
     /**
      * 百分号编码工具方法
@@ -23,6 +23,17 @@ public class FileUtils extends FileUtil {
      */
     public static String percentEncode(String s) {
         String encode = URLEncoder.encode(s, StandardCharsets.UTF_8);
-        return encode.replaceAll("\\+", "%20");
+        return encode.replaceAll("\\+", "%20" );
+    }
+
+    /**
+     * 文件不存在
+     * file 为 null 或 file 不存在则返回 true
+     *
+     * @param file 文件对象
+     * @return true 文件存在，false 文件不存在
+     */
+    public static boolean notExists(File file) {
+        return !exists(file);
     }
 }

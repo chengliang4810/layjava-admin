@@ -1,10 +1,10 @@
 package com.layjava.system.service;
 
-import cn.hutool.core.lang.tree.Tree;
 import com.layjava.system.domain.SysMenu;
 import com.layjava.system.domain.bo.SysMenuBo;
 import com.layjava.system.domain.vo.RouterVo;
 import com.layjava.system.domain.vo.SysMenuVo;
+import org.dromara.hutool.core.tree.MapTree;
 
 import java.util.List;
 import java.util.Set;
@@ -87,7 +87,7 @@ public interface ISysMenuService {
      * @param menus 菜单列表
      * @return 下拉树结构列表
      */
-    List<Tree<Long>> buildMenuTreeSelect(List<SysMenuVo> menus);
+    List<MapTree<Long>> buildMenuTreeSelect(List<SysMenuVo> menus);
 
     /**
      * 根据菜单ID查询信息

@@ -1,6 +1,6 @@
 package com.layjava.common.core.utils.sql;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -27,8 +27,8 @@ public class SqlUtil {
      * 检查字符，防止注入绕过
      */
     public static String escapeOrderBySql(String value) {
-        if (StringUtils.isNotEmpty(value) && !isValidOrderBySql(value)) {
-            throw new IllegalArgumentException("参数不符合规范，不能进行查询");
+        if (StringUtil.isNotEmpty(value) && !isValidOrderBySql(value)) {
+            throw new IllegalArgumentException("参数不符合规范，不能进行查询" );
         }
         return value;
     }
@@ -44,13 +44,13 @@ public class SqlUtil {
      * SQL关键字检查
      */
     public static void filterKeyword(String value) {
-        if (StringUtils.isEmpty(value)) {
+        if (StringUtil.isEmpty(value)) {
             return;
         }
-        String[] sqlKeywords = StringUtils.split(SQL_REGEX, "\\|");
+        String[] sqlKeywords = StringUtil.split(SQL_REGEX, "\\|" );
         for (String sqlKeyword : sqlKeywords) {
-            if (StringUtils.indexOfIgnoreCase(value, sqlKeyword) > -1) {
-                throw new IllegalArgumentException("参数存在SQL注入风险");
+            if (StringUtil.indexOfIgnoreCase(value, sqlKeyword) > -1) {
+                throw new IllegalArgumentException("参数存在SQL注入风险" );
             }
         }
     }

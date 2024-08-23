@@ -31,6 +31,7 @@
 
         <!-- 通用 -->
         <lombok.version>1.18.34</lombok.version>
+        <hutool.version>6.0.0-M15</hutool.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
 
@@ -87,7 +88,7 @@
 
             <!-- hutool 的依赖配置-->
             <dependency>
-                <groupId>cn.hutool</groupId>
+                <groupId>org.dromara.hutool</groupId>
                 <artifactId>hutool-bom</artifactId>
                 <version>${hutool.version}</version>
                 <type>pom</type>

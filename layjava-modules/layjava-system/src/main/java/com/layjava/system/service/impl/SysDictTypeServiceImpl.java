@@ -1,14 +1,14 @@
 package com.layjava.system.service.impl;
 
 import cn.dev33.satoken.context.SaHolder;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.CacheConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.DictService;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StreamUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysDictData;
@@ -71,7 +71,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService 
         return QueryWrapper.create().from(SYS_DICT_TYPE)
                 .where(SYS_DICT_TYPE.DICT_NAME.like(bo.getDictName()))
                 .and(SYS_DICT_TYPE.DICT_TYPE.like(bo.getDictType()))
-                .and(SYS_DICT_TYPE.CREATE_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null))
+                .and(SYS_DICT_TYPE.CREATE_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null))
                 .orderBy(SYS_DICT_TYPE.DICT_ID, true);
     }
 
@@ -157,13 +157,13 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService 
     // @CachePut(cacheNames = CacheNames.SYS_DICT, key = "#bo.dictType")
     @Override
     public List<SysDictDataVo> insertDictType(SysDictTypeBo bo) {
-        SysDictType dict = MapstructUtils.convert(bo, SysDictType.class);
+        SysDictType dict = MapstructUtil.convert(bo, SysDictType.class);
         int row = baseMapper.insert(dict, true);
         if (row > 0) {
             // 新增 type 下无 data 数据 返回空防止缓存穿透
             return new ArrayList<>();
         }
-        throw new ServiceException("操作失败");
+        throw new ServiceException("操作失败" );
     }
 
     /**
@@ -176,7 +176,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService 
     @Override
     //@Transactional(rollbackFor = Exception.class)
     public List<SysDictDataVo> updateDictType(SysDictTypeBo bo) {
-        SysDictType dict = MapstructUtils.convert(bo, SysDictType.class);
+        SysDictType dict = MapstructUtil.convert(bo, SysDictType.class);
         SysDictType oldDict = baseMapper.selectOneById(dict.getDictId());
         UpdateChain.of(SysDictData.class)
                 .set(SysDictData::getDictType, dict.getDictType())
@@ -187,7 +187,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService 
             // CacheUtils.evict(CacheNames.SYS_DICT, oldDict.getDictType());
             return dictDataMapper.selectDictDataByType(dict.getDictType());
         }
-        throw new ServiceException("操作失败");
+        throw new ServiceException("操作失败" );
     }
 
     /**
@@ -212,23 +212,23 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService 
      * @param separator 分隔符
      * @return 字典标签
      */
-    @SuppressWarnings("unchecked cast")
+    @SuppressWarnings("unchecked cast" )
     @Override
     public String getDictLabel(String dictType, String dictValue, String separator) {
         // 优先从本地缓存获取
         List<SysDictDataVo> datas = (List<SysDictDataVo>) SaHolder.getStorage().get(CacheConstants.SYS_DICT_KEY + dictType);
-        if (ObjectUtil.isNull(datas)) {
+        if (ObjUtil.isNull(datas)) {
             datas = this.selectDictDataByType(dictType);
             SaHolder.getStorage().set(CacheConstants.SYS_DICT_KEY + dictType, datas);
         }
 
-        Map<String, String> map = StreamUtils.toMap(datas, SysDictDataVo::getDictValue, SysDictDataVo::getDictLabel);
-        if (StringUtils.containsAny(dictValue, separator)) {
+        Map<String, String> map = StreamUtil.toMap(datas, SysDictDataVo::getDictValue, SysDictDataVo::getDictLabel);
+        if (StringUtil.containsAny(dictValue, separator)) {
             return Arrays.stream(dictValue.split(separator))
-                    .map(v -> map.getOrDefault(v, StringUtils.EMPTY))
+                    .map(v -> map.getOrDefault(v, StringUtil.EMPTY))
                     .collect(Collectors.joining(separator));
         } else {
-            return map.getOrDefault(dictValue, StringUtils.EMPTY);
+            return map.getOrDefault(dictValue, StringUtil.EMPTY);
         }
     }
 
@@ -240,30 +240,30 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService 
      * @param separator 分隔符
      * @return 字典值
      */
-    @SuppressWarnings("unchecked cast")
+    @SuppressWarnings("unchecked cast" )
     @Override
     public String getDictValue(String dictType, String dictLabel, String separator) {
         // 优先从本地缓存获取
         List<SysDictDataVo> datas = (List<SysDictDataVo>) SaHolder.getStorage().get(CacheConstants.SYS_DICT_KEY + dictType);
-        if (ObjectUtil.isNull(datas)) {
+        if (ObjUtil.isNull(datas)) {
             datas = this.selectDictDataByType(dictType);
             SaHolder.getStorage().set(CacheConstants.SYS_DICT_KEY + dictType, datas);
         }
 
-        Map<String, String> map = StreamUtils.toMap(datas, SysDictDataVo::getDictLabel, SysDictDataVo::getDictValue);
-        if (StringUtils.containsAny(dictLabel, separator)) {
+        Map<String, String> map = StreamUtil.toMap(datas, SysDictDataVo::getDictLabel, SysDictDataVo::getDictValue);
+        if (StringUtil.containsAny(dictLabel, separator)) {
             return Arrays.stream(dictLabel.split(separator))
-                    .map(l -> map.getOrDefault(l, StringUtils.EMPTY))
+                    .map(l -> map.getOrDefault(l, StringUtil.EMPTY))
                     .collect(Collectors.joining(separator));
         } else {
-            return map.getOrDefault(dictLabel, StringUtils.EMPTY);
+            return map.getOrDefault(dictLabel, StringUtil.EMPTY);
         }
     }
 
     @Override
     public Map<String, String> getAllDictByDictType(String dictType) {
         List<SysDictDataVo> list = selectDictDataByType(dictType);
-        return StreamUtils.toMap(list, SysDictDataVo::getDictValue, SysDictDataVo::getDictLabel);
+        return StreamUtil.toMap(list, SysDictDataVo::getDictValue, SysDictDataVo::getDictLabel);
     }
 
 }

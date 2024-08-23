@@ -1,6 +1,6 @@
 package com.layjava.common.core.utils;
 
-import cn.hutool.core.net.NetUtil;
+import org.dromara.hutool.core.net.NetUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.management.ManagementFactory;
@@ -23,11 +23,11 @@ public class IdUtil {
     private final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
 
     public static Long getId() {
-        return cn.hutool.core.util.IdUtil.getSnowflake(workerId, datacenterId).nextId();
+        return org.dromara.hutool.core.data.id.IdUtil.getSnowflake(workerId, datacenterId).next();
     }
 
     private IdUtil() {
-        this.inetAddress = NetUtil.getLocalhost();
+        this.inetAddress = NetUtil.getLocalhostV4();
         this.datacenterId = getDatacenterId(maxDatacenterId);
         this.workerId = getMaxWorkerId(datacenterId, maxWorkerId);
     }
@@ -39,11 +39,11 @@ public class IdUtil {
         StringBuilder mpid = new StringBuilder();
         mpid.append(datacenterId);
         String name = ManagementFactory.getRuntimeMXBean().getName();
-        if (StringUtils.isNotBlank(name)) {
+        if (StringUtil.isNotBlank(name)) {
             /*
              * GET jvmPid
              */
-            mpid.append(name.split("@")[0]);
+            mpid.append(name.split("@" )[0]);
         }
         /*
          * MAC + PID 的 hashcode 获取16个低位

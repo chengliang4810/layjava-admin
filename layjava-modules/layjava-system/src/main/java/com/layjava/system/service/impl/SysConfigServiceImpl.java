@@ -1,12 +1,12 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.ConfigService;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysConfig;
@@ -52,7 +52,7 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
      * @return 参数配置信息
      */
     @Override
-    @UseDataSource("master")
+    @UseDataSource("master" )
     public SysConfigVo selectConfigById(Long configId) {
         return baseMapper.selectOneWithRelationsByIdAs(configId, SysConfigVo.class);
     }
@@ -68,10 +68,10 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
     public String selectConfigByKey(String configKey) {
         SysConfig retConfig = baseMapper.selectOneByQuery(QueryWrapper.create().from(SYS_CONFIG)
                 .where(SYS_CONFIG.CONFIG_KEY.eq(configKey)));
-        if (ObjectUtil.isNotNull(retConfig)) {
+        if (ObjUtil.isNotNull(retConfig)) {
             return retConfig.getConfigValue();
         }
-        return StringUtils.EMPTY;
+        return StringUtil.EMPTY;
     }
 
     /**
@@ -82,11 +82,11 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
     @Override
     public boolean selectRegisterEnabled() {
         SysConfig retConfig = baseMapper.selectOneByQuery(QueryWrapper.create().from(SYS_CONFIG)
-                .where(SYS_CONFIG.CONFIG_KEY.eq("sys.account.registerUser")));
-        if (ObjectUtil.isNull(retConfig)) {
+                .where(SYS_CONFIG.CONFIG_KEY.eq("sys.account.registerUser" )));
+        if (ObjUtil.isNull(retConfig)) {
             return false;
         }
-        return Convert.toBool(retConfig.getConfigValue());
+        return Convert.toBoolean(retConfig.getConfigValue());
     }
 
     /**
@@ -107,7 +107,7 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
                 .where(SYS_CONFIG.CONFIG_NAME.like(bo.getConfigName()))
                 .and(SYS_CONFIG.CONFIG_TYPE.eq(bo.getConfigType()))
                 .where(SYS_CONFIG.CONFIG_KEY.like(bo.getConfigKey()))
-                .and(SYS_CONFIG.CREATE_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null))
+                .and(SYS_CONFIG.CREATE_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null))
                 .orderBy(SYS_CONFIG.CONFIG_ID, true);
     }
 
@@ -120,12 +120,12 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
     // @CachePut(cacheNames = CacheNames.SYS_CONFIG, key = "#bo.configKey")
     @Override
     public String insertConfig(SysConfigBo bo) {
-        SysConfig config = MapstructUtils.convert(bo, SysConfig.class);
+        SysConfig config = MapstructUtil.convert(bo, SysConfig.class);
         int row = baseMapper.insert(config, true);
         if (row > 0) {
             return config.getConfigValue();
         }
-        throw new ServiceException("操作失败");
+        throw new ServiceException("操作失败" );
     }
 
     /**
@@ -138,10 +138,10 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
     @Override
     public String updateConfig(SysConfigBo bo) {
         int row = 0;
-        SysConfig config = MapstructUtils.convert(bo, SysConfig.class);
+        SysConfig config = MapstructUtil.convert(bo, SysConfig.class);
         if (config.getConfigId() != null) {
             SysConfig temp = baseMapper.selectOneById(config.getConfigId());
-            if (!StringUtils.equals(temp.getConfigKey(), config.getConfigKey())) {
+            if (!StringUtil.equals(temp.getConfigKey(), config.getConfigKey())) {
                 // CacheUtils.evict(CacheNames.SYS_CONFIG, temp.getConfigKey());
             }
             row = baseMapper.update(config);
@@ -151,7 +151,7 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
         if (row > 0) {
             return config.getConfigValue();
         }
-        throw new ServiceException("操作失败");
+        throw new ServiceException("操作失败" );
     }
 
     /**
@@ -163,7 +163,7 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
     public void deleteConfigByIds(Long[] configIds) {
         for (Long configId : configIds) {
             SysConfig config = baseMapper.selectOneById(configId);
-            if (StringUtils.equals(UserConstants.YES, config.getConfigType())) {
+            if (StringUtil.equals(UserConstants.YES, config.getConfigType())) {
                 throw new ServiceException(String.format("内置参数【%1$s】不能删除 ", config.getConfigKey()));
             }
             // CacheUtils.evict(CacheNames.SYS_CONFIG, config.getConfigKey());
@@ -187,9 +187,9 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
      */
     @Override
     public boolean checkConfigKeyUnique(SysConfigBo config) {
-        long configId = ObjectUtil.isNull(config.getConfigId()) ? -1L : config.getConfigId();
+        long configId = ObjUtil.isNull(config.getConfigId()) ? -1L : config.getConfigId();
         SysConfig info = baseMapper.selectOneByQuery(QueryWrapper.create().from(SYS_CONFIG).where(SYS_CONFIG.CONFIG_KEY.eq(config.getConfigKey())));
-        return !ObjectUtil.isNotNull(info) || info.getConfigId() == configId;
+        return !ObjUtil.isNotNull(info) || info.getConfigId() == configId;
     }
 
     /**

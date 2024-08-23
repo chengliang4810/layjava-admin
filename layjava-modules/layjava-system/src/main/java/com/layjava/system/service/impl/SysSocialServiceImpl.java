@@ -1,6 +1,6 @@
 package com.layjava.system.service.impl;
 
-import com.layjava.common.core.utils.MapstructUtils;
+import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.system.domain.SysSocial;
 import com.layjava.system.domain.bo.SysSocialBo;
 import com.layjava.system.domain.vo.SysSocialVo;
@@ -55,7 +55,7 @@ public class SysSocialServiceImpl implements ISysSocialService {
      */
     @Override
     public Boolean insertByBo(SysSocialBo bo) {
-        SysSocial add = MapstructUtils.convert(bo, SysSocial.class);
+        SysSocial add = MapstructUtil.convert(bo, SysSocial.class);
         validEntityBeforeSave(add);
         boolean flag = baseMapper.insert(add, true) > 0;
         if (flag) {
@@ -73,7 +73,7 @@ public class SysSocialServiceImpl implements ISysSocialService {
      */
     @Override
     public Boolean updateByBo(SysSocialBo bo) {
-        SysSocial update = MapstructUtils.convert(bo, SysSocial.class);
+        SysSocial update = MapstructUtil.convert(bo, SysSocial.class);
         validEntityBeforeSave(update);
         return baseMapper.update(update) > 0;
     }

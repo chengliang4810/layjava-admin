@@ -3,7 +3,7 @@ package com.layjava.auth.service.impl;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -18,7 +18,7 @@ import com.layjava.common.core.exception.user.CaptchaException;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
 import com.layjava.common.core.service.ConfigService;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
@@ -61,7 +61,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         String code = loginBody.getCode();
         String uuid = loginBody.getUuid();
 
-        String captchaEnabled = configService.getConfigValue("system_captcha_enable");
+        String captchaEnabled = configService.getConfigValue("system_captcha_enable" );
         // TODO 验证码开关
         if ("on".equals(captchaEnabled)) {
             validateCaptcha(username, code, uuid);
@@ -98,15 +98,15 @@ public class PasswordAuthStrategy implements AuthStrategyService {
      * @param uuid     唯一标识
      */
     private void validateCaptcha(String username, String code, String uuid) {
-        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
+        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtil.defaultString(uuid, "" );
         String captcha = cacheService.get(verifyKey, String.class);
         cacheService.remove(verifyKey);
         if (captcha == null) {
-            loginService.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码过期");
+            loginService.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码过期" );
             throw new CaptchaExpireException();
         }
         if (!code.equalsIgnoreCase(captcha)) {
-            loginService.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码错误");
+            loginService.recordLogininfor(username, Constants.LOGIN_FAIL, "验证码错误" );
             throw new CaptchaException();
         }
     }
@@ -117,7 +117,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
                         .select(SYS_USER.USER_NAME, SYS_USER.STATUS)
                         .from(SYS_USER)
                         .and(SYS_USER.USER_NAME.eq(username)));
-        if (ObjectUtil.isNull(user)) {
+        if (ObjUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", username);
             throw new UserException("user.not.exists", username);
         } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {

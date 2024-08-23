@@ -1,8 +1,8 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
-import com.layjava.common.core.utils.StreamUtils;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.convert.Convert;
+import com.layjava.common.core.utils.StreamUtil;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.system.domain.SysDept;
 import com.layjava.system.domain.SysRoleDept;
@@ -27,7 +27,7 @@ import static com.layjava.system.domain.table.SysRoleDeptTableDef.SYS_ROLE_DEPT;
  * @author Lion Li
  */
 
-@Component("sdss")
+@Component("sdss" )
 public class SysDataScopeServiceImpl implements ISysDataScopeService {
 
     @Db
@@ -41,7 +41,7 @@ public class SysDataScopeServiceImpl implements ISysDataScopeService {
                 QueryWrapper.create().from(SYS_ROLE_DEPT).select(SYS_ROLE_DEPT.DEPT_ID)
                         .where(SYS_ROLE_DEPT.ROLE_ID.eq(roleId)));
         if (CollUtil.isNotEmpty(list)) {
-            return StreamUtils.join(list, rd -> Convert.toStr(rd.getDeptId()));
+            return StreamUtil.join(list, rd -> Convert.toStr(rd.getDeptId()));
         }
         return null;
     }
@@ -50,11 +50,11 @@ public class SysDataScopeServiceImpl implements ISysDataScopeService {
     public String getDeptAndChild(Long deptId) {
 
 
-        List<SysDept> deptList = deptMapper.selectListByQuery(QueryWrapper.create().from(SYS_DEPT).select(SYS_DEPT.DEPT_ID).where(DataBaseHelper.findInSet(deptId, "ancestors")));
-        List<Long> ids = StreamUtils.toList(deptList, SysDept::getDeptId);
+        List<SysDept> deptList = deptMapper.selectListByQuery(QueryWrapper.create().from(SYS_DEPT).select(SYS_DEPT.DEPT_ID).where(DataBaseHelper.findInSet(deptId, "ancestors" )));
+        List<Long> ids = StreamUtil.toList(deptList, SysDept::getDeptId);
         ids.add(deptId);
         if (CollUtil.isNotEmpty(ids)) {
-            return StreamUtils.join(ids, Convert::toStr);
+            return StreamUtil.join(ids, Convert::toStr);
         }
         return null;
     }

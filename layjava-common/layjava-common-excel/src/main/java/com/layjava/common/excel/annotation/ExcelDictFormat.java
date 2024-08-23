@@ -1,7 +1,7 @@
 package com.layjava.common.excel.annotation;
 
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 
 import java.lang.annotation.*;
 
@@ -28,6 +28,6 @@ public @interface ExcelDictFormat {
     /**
      * 分隔符，读取字符串组内容
      */
-    String separator() default StringUtils.SEPARATOR;
+    String separator() default StringUtil.SEPARATOR;
 
 }

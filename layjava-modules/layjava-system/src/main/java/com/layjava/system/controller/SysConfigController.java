@@ -2,10 +2,10 @@ package com.layjava.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.layjava.common.core.domain.R;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysConfigBo;
 import com.layjava.system.domain.vo.SysConfigVo;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Lion Li
  */
 @Controller
-@Mapping("/system/config")
+@Mapping("/system/config" )
 public class SysConfigController extends BaseController {
 
     @Inject
@@ -29,9 +29,9 @@ public class SysConfigController extends BaseController {
     /**
      * 获取参数配置列表
      */
-    @SaCheckPermission("system:config:list")
+    @SaCheckPermission("system:config:list" )
     @Get
-    @Mapping("/list")
+    @Mapping("/list" )
     public PageResult<SysConfigVo> list(SysConfigBo config, PageQuery pageQuery) {
         return configService.selectPageConfigList(config, pageQuery);
     }
@@ -40,9 +40,9 @@ public class SysConfigController extends BaseController {
      * 导出参数配置列表
      */
     @Log(title = "参数管理", businessType = BusinessType.EXPORT)
-    @SaCheckPermission("system:config:export")
+    @SaCheckPermission("system:config:export" )
     @Post
-    @Mapping("/export")
+    @Mapping("/export" )
     public void export(SysConfigBo config) {
         List<SysConfigVo> list = configService.selectConfigList(config);
         // ExcelUtil.exportExcel(list, "参数数据", SysConfigVo.class, response);
@@ -53,9 +53,9 @@ public class SysConfigController extends BaseController {
      *
      * @param configId 参数ID
      */
-    @SaCheckPermission("system:config:query")
+    @SaCheckPermission("system:config:query" )
     @Get
-    @Mapping(value = "/{configId}")
+    @Mapping(value = "/{configId}" )
     public R<SysConfigVo> getInfo(Long configId) {
         return R.ok(configService.selectConfigById(configId));
     }
@@ -66,7 +66,7 @@ public class SysConfigController extends BaseController {
      * @param configKey 参数Key
      */
     @Get
-    @Mapping(value = "/configKey/{configKey}")
+    @Mapping(value = "/configKey/{configKey}" )
     public R<String> getConfigKey(String configKey) {
         return R.ok("操作成功", configService.selectConfigByKey(configKey));
     }
@@ -74,13 +74,13 @@ public class SysConfigController extends BaseController {
     /**
      * 新增参数配置
      */
-    @SaCheckPermission("system:config:add")
+    @SaCheckPermission("system:config:add" )
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @Post
     @Mapping
     public R<Void> add(SysConfigBo config) {
         if (!configService.checkConfigKeyUnique(config)) {
-            return R.fail("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
+            return R.fail("新增参数'" + config.getConfigName() + "'失败，参数键名已存在" );
         }
         configService.insertConfig(config);
         return R.ok();
@@ -89,13 +89,13 @@ public class SysConfigController extends BaseController {
     /**
      * 修改参数配置
      */
-    @SaCheckPermission("system:config:edit")
+    @SaCheckPermission("system:config:edit" )
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     @Put
     @Mapping
     public R<Void> edit(SysConfigBo config) {
         if (!configService.checkConfigKeyUnique(config)) {
-            return R.fail("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
+            return R.fail("修改参数'" + config.getConfigName() + "'失败，参数键名已存在" );
         }
         configService.updateConfig(config);
         return R.ok();
@@ -104,10 +104,10 @@ public class SysConfigController extends BaseController {
     /**
      * 根据参数键名修改参数配置
      */
-    @SaCheckPermission("system:config:edit")
+    @SaCheckPermission("system:config:edit" )
     @Log(title = "参数管理", businessType = BusinessType.UPDATE)
     @Put
-    @Mapping("/updateByKey")
+    @Mapping("/updateByKey" )
     public R<Void> updateByKey(SysConfigBo config) {
         configService.updateConfig(config);
         return R.ok();
@@ -118,10 +118,10 @@ public class SysConfigController extends BaseController {
      *
      * @param configIds 参数ID串
      */
-    @SaCheckPermission("system:config:remove")
+    @SaCheckPermission("system:config:remove" )
     @Log(title = "参数管理", businessType = BusinessType.DELETE)
     @Delete
-    @Mapping("/{configIds}")
+    @Mapping("/{configIds}" )
     public R<Void> remove(Long[] configIds) {
         configService.deleteConfigByIds(configIds);
         return R.ok();
@@ -130,10 +130,10 @@ public class SysConfigController extends BaseController {
     /**
      * 刷新参数缓存
      */
-    @SaCheckPermission("system:config:remove")
+    @SaCheckPermission("system:config:remove" )
     @Log(title = "参数管理", businessType = BusinessType.CLEAN)
     @Delete
-    @Mapping("/refreshCache")
+    @Mapping("/refreshCache" )
     public R<Void> refreshCache() {
         configService.resetConfigCache();
         return R.ok();

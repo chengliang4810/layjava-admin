@@ -1,7 +1,7 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.crypto.SecureUtil;
-import com.layjava.common.core.utils.MapstructUtils;
+import org.dromara.hutool.crypto.SecureUtil;
+import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysClient;
@@ -40,7 +40,7 @@ public class SysClientServiceImpl implements ISysClientService {
     @Override
     public SysClientVo queryById(Long id) {
         SysClientVo vo = baseMapper.selectOneWithRelationsByIdAs(id, SysClientVo.class);
-        vo.setGrantTypeList(List.of(vo.getGrantType().split(",")));
+        vo.setGrantTypeList(List.of(vo.getGrantType().split("," )));
         return vo;
     }
 
@@ -60,7 +60,7 @@ public class SysClientServiceImpl implements ISysClientService {
     public PageResult<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery) {
         QueryWrapper lqw = buildQueryWrapper(bo);
         Page<SysClientVo> result = baseMapper.paginateAs(pageQuery, lqw, SysClientVo.class);
-        result.getRecords().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split(","))));
+        result.getRecords().forEach(r -> r.setGrantTypeList(List.of(r.getGrantType().split("," ))));
         return PageResult.build(result);
     }
 
@@ -88,7 +88,7 @@ public class SysClientServiceImpl implements ISysClientService {
      */
     @Override
     public Boolean insertByBo(SysClientBo bo) {
-        SysClient add = MapstructUtils.convert(bo, SysClient.class);
+        SysClient add = MapstructUtil.convert(bo, SysClient.class);
         validEntityBeforeSave(add);
         add.setGrantType(String.join(",", bo.getGrantTypeList()));
         // 生成clientid
@@ -107,7 +107,7 @@ public class SysClientServiceImpl implements ISysClientService {
      */
     @Override
     public Boolean updateByBo(SysClientBo bo) {
-        SysClient update = MapstructUtils.convert(bo, SysClient.class);
+        SysClient update = MapstructUtil.convert(bo, SysClient.class);
         validEntityBeforeSave(update);
         update.setGrantType(String.join(",", bo.getGrantTypeList()));
         return baseMapper.update(update) > 0;

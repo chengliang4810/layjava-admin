@@ -1,7 +1,7 @@
 package com.layjava.system.domain.vo;
 
-import cn.hutool.core.lang.tree.Tree;
 import lombok.Data;
+import org.dromara.hutool.core.tree.MapTree;
 
 import java.util.List;
 
@@ -21,6 +21,6 @@ public class MenuTreeSelectVo {
     /**
      * 菜单下拉树结构列表
      */
-    private List<Tree<Long>> menus;
+    private List<MapTree<Long>> menus;
 
 }

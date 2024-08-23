@@ -2,7 +2,7 @@ package com.layjava.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -15,7 +15,7 @@ import com.layjava.common.core.enums.LoginType;
 import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
@@ -85,8 +85,8 @@ public class SmsAuthStrategy implements AuthStrategyService {
      */
     private boolean validateSmsCode(String phonenumber, String smsCode) {
         String code = cacheService.get(GlobalConstants.CAPTCHA_CODE_KEY + phonenumber, String.class);
-        if (StringUtils.isBlank(code)) {
-            loginService.recordLogininfor(phonenumber, Constants.LOGIN_FAIL, "验证码过期");
+        if (StringUtil.isBlank(code)) {
+            loginService.recordLogininfor(phonenumber, Constants.LOGIN_FAIL, "验证码过期" );
             throw new CaptchaExpireException();
         }
         return code.equals(smsCode);
@@ -97,7 +97,7 @@ public class SmsAuthStrategy implements AuthStrategyService {
                 QueryWrapper.create().from(SYS_USER)
                         .select(SYS_USER.PHONENUMBER, SYS_USER.STATUS)
                         .and(SYS_USER.PHONENUMBER.eq(phonenumber)));
-        if (ObjectUtil.isNull(user)) {
+        if (ObjUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", phonenumber);
             throw new UserException("user.not.exists", phonenumber);
         } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {

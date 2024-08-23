@@ -16,7 +16,7 @@ import java.util.Date;
  * @author ruoyi
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
+public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
 
     public static final String YYYY = "yyyy";
 
@@ -84,7 +84,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String datePath() {
         Date now = new Date();
-        return DateFormatUtils.format(now, "yyyy/MM/dd");
+        return DateFormatUtils.format(now, "yyyy/MM/dd" );
     }
 
     /**
@@ -92,7 +92,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String dateTime() {
         Date now = new Date();
-        return DateFormatUtils.format(now, "yyyyMMdd");
+        return DateFormatUtils.format(now, "yyyyMMdd" );
     }
 
     /**

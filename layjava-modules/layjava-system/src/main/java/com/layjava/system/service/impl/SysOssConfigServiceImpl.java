@@ -1,10 +1,8 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysOssConfig;
@@ -17,8 +15,10 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
 
     @Override
     public Boolean insertByBo(SysOssConfigBo bo) {
-        SysOssConfig config = MapstructUtils.convert(bo, SysOssConfig.class);
+        SysOssConfig config = MapstructUtil.convert(bo, SysOssConfig.class);
         validEntityBeforeSave(config);
         boolean flag = baseMapper.insert(config, true) > 0;
         if (flag) {
@@ -91,7 +91,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
 
     @Override
     public Boolean updateByBo(SysOssConfigBo bo) {
-        SysOssConfig config = MapstructUtils.convert(bo, SysOssConfig.class);
+        SysOssConfig config = MapstructUtil.convert(bo, SysOssConfig.class);
         validEntityBeforeSave(config);
         boolean update = baseMapper.update(config, false) != 0;
 
@@ -107,9 +107,9 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
      * 保存前的数据校验
      */
     private void validEntityBeforeSave(SysOssConfig entity) {
-        if (StringUtils.isNotEmpty(entity.getConfigKey())
+        if (StringUtil.isNotEmpty(entity.getConfigKey())
                 && !checkConfigKeyUnique(entity)) {
-            throw new ServiceException("操作配置'" + entity.getConfigKey() + "'失败, 配置key已存在!");
+            throw new ServiceException("操作配置'" + entity.getConfigKey() + "'失败, 配置key已存在!" );
         }
     }
 
@@ -120,7 +120,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
 //                throw new ServiceException("系统内置, 不可删除!");
 //            }
         }
-        List<SysOssConfig> list = CollUtil.newArrayList();
+        List<SysOssConfig> list = new ArrayList<>(ids.size());
         for (Long configId : ids) {
             SysOssConfig config = baseMapper.selectOneById(configId);
             list.add(config);
@@ -138,11 +138,11 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
      * 判断configKey是否唯一
      */
     private boolean checkConfigKeyUnique(SysOssConfig sysOssConfig) {
-        long ossConfigId = ObjectUtil.isNull(sysOssConfig.getOssConfigId()) ? -1L : sysOssConfig.getOssConfigId();
+        long ossConfigId = ObjUtil.isNull(sysOssConfig.getOssConfigId()) ? -1L : sysOssConfig.getOssConfigId();
         SysOssConfig info = baseMapper.selectOneByQuery(
                 QueryWrapper.create().select(SYS_OSS_CONFIG.OSS_CONFIG_ID, SYS_OSS_CONFIG.CONFIG_KEY).from(SYS_OSS_CONFIG)
                         .where(SYS_OSS_CONFIG.CONFIG_KEY.eq(sysOssConfig.getConfigKey())));
-        if (ObjectUtil.isNotNull(info) && info.getOssConfigId() != ossConfigId) {
+        if (ObjUtil.isNotNull(info) && info.getOssConfigId() != ossConfigId) {
             return false;
         }
         return true;
@@ -154,9 +154,9 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
     @Override
     //@Transactional(rollbackFor = Exception.class)
     public int updateOssConfigStatus(SysOssConfigBo bo) {
-        SysOssConfig sysOssConfig = MapstructUtils.convert(bo, SysOssConfig.class);
-        boolean updateOldStatus = UpdateChain.of(SysOssConfig.class).set(SysOssConfig::getStatus, "1")
-                .where(SysOssConfig::getStatus).eq("0")
+        SysOssConfig sysOssConfig = MapstructUtil.convert(bo, SysOssConfig.class);
+        boolean updateOldStatus = UpdateChain.of(SysOssConfig.class).set(SysOssConfig::getStatus, "1" )
+                .where(SysOssConfig::getStatus).eq("0" )
                 .update();
         int row = baseMapper.update(sysOssConfig);
         if (updateOldStatus || row > 0) {

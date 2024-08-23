@@ -1,8 +1,8 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StringUtils;
+import org.dromara.hutool.core.util.ObjUtil;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysNotice;
@@ -70,9 +70,9 @@ public class SysNoticeServiceImpl implements ISysNoticeService {
         QueryWrapper queryWrapper = QueryWrapper.create().from(SYS_NOTICE)
                 .where(SYS_NOTICE.NOTICE_TITLE.like(bo.getNoticeTitle()))
                 .and(SYS_NOTICE.NOTICE_TYPE.eq(bo.getNoticeType()));
-        if (StringUtils.isNotBlank(bo.getCreateByName())) {
+        if (StringUtil.isNotBlank(bo.getCreateByName())) {
             SysUserVo sysUser = userMapper.selectUserByUserName(bo.getCreateByName());
-            queryWrapper.and(SYS_NOTICE.CREATE_BY.eq(ObjectUtil.isNotNull(sysUser) ? sysUser.getUserId() : null));
+            queryWrapper.and(SYS_NOTICE.CREATE_BY.eq(ObjUtil.isNotNull(sysUser) ? sysUser.getUserId() : null));
         }
         queryWrapper.orderBy(SYS_NOTICE.NOTICE_ID, true);
         return queryWrapper;
@@ -86,7 +86,7 @@ public class SysNoticeServiceImpl implements ISysNoticeService {
      */
     @Override
     public int insertNotice(SysNoticeBo bo) {
-        SysNotice notice = MapstructUtils.convert(bo, SysNotice.class);
+        SysNotice notice = MapstructUtil.convert(bo, SysNotice.class);
         return baseMapper.insert(notice, true);
     }
 
@@ -98,7 +98,7 @@ public class SysNoticeServiceImpl implements ISysNoticeService {
      */
     @Override
     public int updateNotice(SysNoticeBo bo) {
-        SysNotice notice = MapstructUtils.convert(bo, SysNotice.class);
+        SysNotice notice = MapstructUtil.convert(bo, SysNotice.class);
         return baseMapper.update(notice);
     }
 

@@ -1,11 +1,10 @@
 package com.layjava.common.core.utils.ip;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.resource.ClassPathResource;
-import cn.hutool.core.util.ObjectUtil;
+import com.layjava.common.core.utils.file.FileUtil;
+import org.dromara.hutool.core.io.resource.ClassPathResource;
 import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.utils.file.FileUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.lionsoul.ip2region.xdb.Searcher;
 
 import java.io.File;
@@ -23,13 +22,13 @@ public class RegionUtils {
 
     static {
         String fileName = "/ip2region.xdb";
-        File existFile = FileUtils.file(FileUtil.getTmpDir() + FileUtil.FILE_SEPARATOR + fileName);
-        if (!FileUtils.exist(existFile)) {
+        File existFile = FileUtil.file(FileUtil.getTmpDir() + FileUtil.FILE_SEPARATOR + fileName);
+        if (FileUtil.notExists(existFile)) {
             ClassPathResource fileStream = new ClassPathResource(fileName);
-            if (ObjectUtil.isEmpty(fileStream.getStream())) {
-                throw new ServiceException("RegionUtils初始化失败，原因：IP地址库数据不存在！");
+            if (ObjUtil.isEmpty(fileStream.getStream())) {
+                throw new ServiceException("RegionUtils初始化失败，原因：IP地址库数据不存在！" );
             }
-            FileUtils.writeFromStream(fileStream.getStream(), existFile);
+            FileUtil.writeFromStream(fileStream.getStream(), existFile);
         }
 
         String dbPath = existFile.getPath();
@@ -57,7 +56,7 @@ public class RegionUtils {
             ip = ip.trim();
             // 3、执行查询
             String region = SEARCHER.search(ip);
-            return region.replace("0|", "").replace("|0", "");
+            return region.replace("0|", "" ).replace("|0", "" );
         } catch (Exception e) {
             log.error("IP地址离线获取城市异常 {}", ip);
             return "未知";

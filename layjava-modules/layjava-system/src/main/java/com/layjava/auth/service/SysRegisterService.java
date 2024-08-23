@@ -8,7 +8,7 @@ import com.layjava.common.core.enums.UserType;
 import com.layjava.common.core.exception.user.CaptchaException;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.log.event.LogininforEvent;
 import com.layjava.common.web.config.properties.CaptchaProperties;
 import com.layjava.system.domain.bo.SysUserBo;
@@ -71,9 +71,9 @@ public class SysRegisterService {
         }
         boolean regFlag = userService.registerUser(sysUser);
         if (!regFlag) {
-            throw new UserException("user.register.error");
+            throw new UserException("user.register.error" );
         }
-        recordLogininfor(username, Constants.REGISTER, "注册成功");
+        recordLogininfor(username, Constants.REGISTER, "注册成功" );
     }
 
     /**
@@ -84,15 +84,15 @@ public class SysRegisterService {
      * @param uuid     唯一标识
      */
     public void validateCaptcha(String username, String code, String uuid) {
-        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
+        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtil.defaultString(uuid, "" );
         String captcha = cacheService.get(verifyKey, String.class);
         cacheService.remove(verifyKey);
         if (captcha == null) {
-            recordLogininfor(username, Constants.REGISTER, "验证码已失效");
+            recordLogininfor(username, Constants.REGISTER, "验证码已失效" );
             throw new CaptchaExpireException();
         }
         if (!code.equalsIgnoreCase(captcha)) {
-            recordLogininfor(username, Constants.REGISTER, "验证码错误");
+            recordLogininfor(username, Constants.REGISTER, "验证码错误" );
             throw new CaptchaException();
         }
     }

@@ -1,11 +1,11 @@
 package com.layjava.system.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.http.useragent.UserAgent;
+import org.dromara.hutool.core.util.ObjUtil;
+import org.dromara.hutool.http.useragent.UserAgent;
 import com.layjava.common.core.constant.Constants;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.core.utils.ip.AddressUtils;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StringUtil;
+import com.layjava.common.core.utils.ip.AddressUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.log.event.LogininforEvent;
@@ -59,11 +59,11 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
         // 客户端信息
         String clientid = null;
         SysClient client = null;
-        if (StringUtils.isNotBlank(clientid)) {
+        if (StringUtil.isNotBlank(clientid)) {
             client = clientService.queryByClientId(clientid);
         }
 
-        String address = AddressUtils.getRealAddressByIP(ip);
+        String address = AddressUtil.getRealAddressByIP(ip);
         StringBuilder s = new StringBuilder();
         s.append(getBlock(ip));
         s.append(address);
@@ -80,7 +80,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
         SysLogininforBo logininfor = new SysLogininforBo();
         logininfor.setTenantId(logininforEvent.getTenantId());
         logininfor.setUserName(logininforEvent.getUsername());
-        if (ObjectUtil.isNotNull(client)) {
+        if (ObjUtil.isNotNull(client)) {
             logininfor.setClientKey(client.getClientKey());
             logininfor.setDeviceType(client.getDeviceType());
         }
@@ -90,7 +90,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
         logininfor.setOs(os);
         logininfor.setMsg(logininforEvent.getMessage());
         // 日志状态
-        if (StringUtils.equalsAny(logininforEvent.getStatus(), Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
+        if (StringUtil.equalsAny(logininforEvent.getStatus(), Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER)) {
             logininfor.setStatus(Constants.SUCCESS);
         } else if (Constants.LOGIN_FAIL.equals(logininforEvent.getStatus())) {
             logininfor.setStatus(Constants.FAIL);
@@ -113,8 +113,8 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
                 .where(SYS_LOGININFOR.IPADDR.like(logininfor.getIpaddr()))
                 .and(SYS_LOGININFOR.STATUS.eq(logininfor.getStatus()))
                 .and(SYS_LOGININFOR.USER_NAME.like(logininfor.getUserName()))
-                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null));
-        if (StringUtils.isBlank(pageQuery.getOrderByColumn())) {
+                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null));
+        if (StringUtil.isBlank(pageQuery.getOrderByColumn())) {
             lqw.orderBy(SYS_LOGININFOR.INFO_ID, false);
         } else {
             lqw.orderBy(pageQuery.buildOrderBy());
@@ -130,7 +130,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
      */
     @Override
     public void insertLogininfor(SysLogininforBo bo) {
-        SysLogininfor logininfor = MapstructUtils.convert(bo, SysLogininfor.class);
+        SysLogininfor logininfor = MapstructUtil.convert(bo, SysLogininfor.class);
         logininfor.setLoginTime(new Date());
         baseMapper.insert(logininfor, true);
     }
@@ -148,7 +148,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
                 .where(SYS_LOGININFOR.IPADDR.like(logininfor.getIpaddr()))
                 .and(SYS_LOGININFOR.STATUS.eq(logininfor.getStatus()))
                 .and(SYS_LOGININFOR.USER_NAME.like(logininfor.getUserName()))
-                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null))
+                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null))
                 .orderBy(SYS_LOGININFOR.INFO_ID, false), SysLogininforVo.class);
     }
 

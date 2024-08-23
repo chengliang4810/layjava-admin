@@ -1,6 +1,6 @@
 package com.layjava.common.mybatis.helper;
 
-import cn.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.Convert;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.mybatis.enums.DataBaseType;
 import com.mybatisflex.core.FlexGlobalConfig;

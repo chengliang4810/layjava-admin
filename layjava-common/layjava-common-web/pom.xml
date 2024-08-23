@@ -49,12 +49,7 @@
         </dependency>
 
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-captcha</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.hutool</groupId>
+            <groupId>org.dromara.hutool</groupId>
             <artifactId>hutool-crypto</artifactId>
         </dependency>
 

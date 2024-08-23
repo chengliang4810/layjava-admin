@@ -1,8 +1,7 @@
 package com.layjava.common.excel.convert;
 
-import cn.hutool.core.annotation.AnnotationUtil;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ObjectUtil;
+import org.dromara.hutool.core.annotation.AnnotationUtil;
+import org.dromara.hutool.core.convert.Convert;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.GlobalConfiguration;
@@ -10,10 +9,11 @@ import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.layjava.common.core.service.DictService;
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.excel.annotation.ExcelDictFormat;
 import com.layjava.common.excel.utils.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.Solon;
 
 import java.lang.reflect.Field;
@@ -42,7 +42,7 @@ public class ExcelDictConvert implements Converter<Object> {
         String type = anno.dictType();
         String label = cellData.getStringValue();
         String value;
-        if (StringUtils.isBlank(type)) {
+        if (StringUtil.isBlank(type)) {
             value = ExcelUtil.reverseByExp(label, anno.readConverterExp(), anno.separator());
         } else {
             value = Solon.context().getBean(DictService.class).getDictValue(type, label, anno.separator());
@@ -52,14 +52,14 @@ public class ExcelDictConvert implements Converter<Object> {
 
     @Override
     public WriteCellData<String> convertToExcelData(Object object, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
-        if (ObjectUtil.isNull(object)) {
-            return new WriteCellData<>("");
+        if (ObjUtil.isNull(object)) {
+            return new WriteCellData<>("" );
         }
         ExcelDictFormat anno = getAnnotation(contentProperty.getField());
         String type = anno.dictType();
         String value = Convert.toStr(object);
         String label;
-        if (StringUtils.isBlank(type)) {
+        if (StringUtil.isBlank(type)) {
             label = ExcelUtil.convertByExp(value, anno.readConverterExp(), anno.separator());
         } else {
             label = Solon.context().getBean(DictService.class).getDictLabel(type, value, anno.separator());

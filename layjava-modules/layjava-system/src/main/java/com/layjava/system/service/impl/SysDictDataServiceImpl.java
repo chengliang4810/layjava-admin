@@ -1,7 +1,7 @@
 package com.layjava.system.service.impl;
 
 import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.utils.MapstructUtils;
+import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysDictData;
@@ -109,12 +109,12 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
     // @CachePut(cacheNames = CacheNames.SYS_DICT, key = "#bo.dictType")
     @Override
     public List<SysDictDataVo> insertDictData(SysDictDataBo bo) {
-        SysDictData data = MapstructUtils.convert(bo, SysDictData.class);
+        SysDictData data = MapstructUtil.convert(bo, SysDictData.class);
         int row = baseMapper.insert(data, true);
         if (row > 0) {
             return baseMapper.selectDictDataByType(data.getDictType());
         }
-        throw new ServiceException("操作失败");
+        throw new ServiceException("操作失败" );
     }
 
     /**
@@ -126,12 +126,12 @@ public class SysDictDataServiceImpl implements ISysDictDataService {
     // @CachePut(cacheNames = CacheNames.SYS_DICT, key = "#bo.dictType")
     @Override
     public List<SysDictDataVo> updateDictData(SysDictDataBo bo) {
-        SysDictData data = MapstructUtils.convert(bo, SysDictData.class);
+        SysDictData data = MapstructUtil.convert(bo, SysDictData.class);
         int row = baseMapper.update(data);
         if (row > 0) {
             return baseMapper.selectDictDataByType(data.getDictType());
         }
-        throw new ServiceException("操作失败");
+        throw new ServiceException("操作失败" );
     }
 
 }

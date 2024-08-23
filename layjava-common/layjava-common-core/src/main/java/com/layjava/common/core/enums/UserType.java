@@ -1,6 +1,6 @@
 package com.layjava.common.core.enums;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,18 +17,18 @@ public enum UserType {
     /**
      * pc端
      */
-    PC_USER("pc_user"),
+    PC_USER("pc_user" ),
 
     /**
      * app端
      */
-    APP_USER("app_user");
+    APP_USER("app_user" );
 
     private final String userType;
 
     public static UserType getUserType(String str) {
         for (UserType value : values()) {
-            if (StringUtils.contains(str, value.getUserType())) {
+            if (StringUtil.contains(str, value.getUserType())) {
                 return value;
             }
         }

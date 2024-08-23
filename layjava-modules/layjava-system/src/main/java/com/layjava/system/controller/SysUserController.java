@@ -2,19 +2,16 @@ package com.layjava.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.BCrypt;
-import cn.hutool.core.lang.tree.Tree;
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.R;
 import com.layjava.common.core.domain.model.LoginUser;
-import com.layjava.common.core.utils.MapstructUtils;
-import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
+import com.layjava.common.core.utils.MapstructUtil;
+import com.layjava.common.core.utils.StreamUtil;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysDeptBo;
@@ -26,6 +23,9 @@ import com.layjava.system.service.ISysDeptService;
 import com.layjava.system.service.ISysPostService;
 import com.layjava.system.service.ISysRoleService;
 import com.layjava.system.service.ISysUserService;
+import org.dromara.hutool.core.array.ArrayUtil;
+import org.dromara.hutool.core.tree.MapTree;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.UploadedFile;
 import org.noear.solon.validation.annotation.NotNull;
@@ -38,7 +38,7 @@ import java.util.List;
  * @author Lion Li
  */
 @Controller
-@Mapping("/system/user")
+@Mapping("/system/user" )
 public class SysUserController extends BaseController {
 
     @Inject
@@ -54,8 +54,8 @@ public class SysUserController extends BaseController {
      * 获取用户列表
      */
     @Get
-    @Mapping("/list")
-    @SaCheckPermission("system:user:list")
+    @Mapping("/list" )
+    @SaCheckPermission("system:user:list" )
     public PageResult<SysUserVo> list(SysUserBo user, PageQuery pageQuery) {
         return userService.selectPageUserList(user, pageQuery);
     }
@@ -64,12 +64,12 @@ public class SysUserController extends BaseController {
      * 导出用户列表
      */
     @Post
-    @Mapping("/export")
-    @SaCheckPermission("system:user:export")
+    @Mapping("/export" )
+    @SaCheckPermission("system:user:export" )
     @Log(title = "用户管理", businessType = BusinessType.EXPORT)
     public void export(SysUserBo user) {
         List<SysUserVo> list = userService.selectUserList(user);
-        List<SysUserExportVo> listVo = MapstructUtils.convert(list, SysUserExportVo.class);
+        List<SysUserExportVo> listVo = MapstructUtil.convert(list, SysUserExportVo.class);
         // ExcelUtil.exportExcel(listVo, "用户数据", SysUserExportVo.class, response);
     }
 
@@ -80,8 +80,8 @@ public class SysUserController extends BaseController {
      * @param updateSupport 是否更新已存在数据
      */
     @Post
-    @Mapping(value = "/importData")
-    @SaCheckPermission("system:user:import")
+    @Mapping(value = "/importData" )
+    @SaCheckPermission("system:user:import" )
     @Log(title = "用户管理", businessType = BusinessType.IMPORT)
     public R<Void> importData(UploadedFile file, boolean updateSupport) throws Exception {
         // ExcelResult<SysUserImportVo> result = ExcelUtil.importExcel(file.getInputStream(), SysUserImportVo.class, new SysUserImportListener(updateSupport));
@@ -93,7 +93,7 @@ public class SysUserController extends BaseController {
      * 获取导入模板
      */
     @Post
-    @Mapping("/importTemplate")
+    @Mapping("/importTemplate" )
     public void importTemplate() {
         // ExcelUtil.exportExcel(new ArrayList<>(), "用户数据", SysUserImportVo.class, response);
     }
@@ -104,13 +104,13 @@ public class SysUserController extends BaseController {
      * @return 用户信息
      */
     @Get
-    @Mapping("/info")
+    @Mapping("/info" )
     public R<UserInfoVo> getInfo() {
         UserInfoVo userInfoVo = new UserInfoVo();
         LoginUser loginUser = LoginHelper.getLoginUser();
         SysUserVo user = userService.selectUserById(loginUser.getUserId());
-        if (ObjectUtil.isNull(user)) {
-            return R.fail("没有权限访问用户数据!");
+        if (ObjUtil.isNull(user)) {
+            return R.fail("没有权限访问用户数据!" );
         }
         userInfoVo.setUser(user);
         userInfoVo.setPermissions(loginUser.getMenuPermission());
@@ -124,8 +124,8 @@ public class SysUserController extends BaseController {
      * @param userId 用户ID
      */
     @Get
-    @Mapping(value = "/{userId}")
-    @SaCheckPermission("system:user:query")
+    @Mapping(value = "/{userId}" )
+    @SaCheckPermission("system:user:query" )
     public R<SysUserInfoVo> getInfo(Long userId) {
         userService.checkUserDataScope(userId);
         SysUserInfoVo userInfoVo = new SysUserInfoVo();
@@ -134,11 +134,11 @@ public class SysUserController extends BaseController {
         SysPostBo postBo = new SysPostBo();
         postBo.setStatus(UserConstants.POST_NORMAL);
         List<SysRoleVo> roles = roleService.selectRoleList(roleBo);
-        userInfoVo.setRoles(LoginHelper.isSuperAdmin(userId) ? roles : StreamUtils.filter(roles, r -> !r.isSuperAdmin()));
+        userInfoVo.setRoles(LoginHelper.isSuperAdmin(userId) ? roles : StreamUtil.filter(roles, r -> !r.isSuperAdmin()));
         userInfoVo.setPosts(postService.selectPostList(postBo));
         SysUserVo sysUser = userService.selectUserById(userId);
         userInfoVo.setUser(sysUser);
-        userInfoVo.setRoleIds(StreamUtils.toList(sysUser.getRoles(), SysRoleVo::getRoleId));
+        userInfoVo.setRoleIds(StreamUtil.toList(sysUser.getRoles(), SysRoleVo::getRoleId));
         userInfoVo.setPostIds(postService.selectPostListByUserId(userId));
         return R.ok(userInfoVo);
     }
@@ -148,16 +148,16 @@ public class SysUserController extends BaseController {
      */
     @Post
     @Mapping
-    @SaCheckPermission("system:user:add")
+    @SaCheckPermission("system:user:add" )
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     public R<Void> add(SysUserBo user) {
         deptService.checkDeptDataScope(user.getDeptId());
         if (!userService.checkUserNameUnique(user)) {
-            return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
-        } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
-            return R.fail("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
-        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
-            return R.fail("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+            return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在" );
+        } else if (StringUtil.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，手机号码已存在" );
+        } else if (StringUtil.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
+            return R.fail("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在" );
         }
         user.setPassword(BCrypt.hashpw(user.getPassword()));
         return toAjax(userService.insertUser(user));
@@ -168,18 +168,18 @@ public class SysUserController extends BaseController {
      */
     @Put
     @Mapping
-    @SaCheckPermission("system:user:edit")
+    @SaCheckPermission("system:user:edit" )
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public R<Void> edit(SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
         deptService.checkDeptDataScope(user.getDeptId());
         if (!userService.checkUserNameUnique(user)) {
-            return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
-        } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
-            return R.fail("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
-        } else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
-            return R.fail("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+            return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在" );
+        } else if (StringUtil.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，手机号码已存在" );
+        } else if (StringUtil.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
+            return R.fail("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在" );
         }
         return toAjax(userService.updateUser(user));
     }
@@ -190,12 +190,12 @@ public class SysUserController extends BaseController {
      * @param userIds 角色ID串
      */
     @Delete
-    @Mapping("/{userIds}")
-    @SaCheckPermission("system:user:remove")
+    @Mapping("/{userIds}" )
+    @SaCheckPermission("system:user:remove" )
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     public R<Void> remove(Long[] userIds) {
         if (ArrayUtil.contains(userIds, LoginHelper.getUserId())) {
-            return R.fail("当前用户不能删除");
+            return R.fail("当前用户不能删除" );
         }
         return toAjax(userService.deleteUserByIds(userIds));
     }
@@ -205,8 +205,8 @@ public class SysUserController extends BaseController {
      */
     // @ApiEncrypt
     @Put
-    @Mapping("/resetPwd")
-    @SaCheckPermission("system:user:resetPwd")
+    @Mapping("/resetPwd" )
+    @SaCheckPermission("system:user:resetPwd" )
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public R<Void> resetPwd(SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
@@ -219,8 +219,8 @@ public class SysUserController extends BaseController {
      * 状态修改
      */
     @Put
-    @Mapping("/changeStatus")
-    @SaCheckPermission("system:user:edit")
+    @Mapping("/changeStatus" )
+    @SaCheckPermission("system:user:edit" )
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public R<Void> changeStatus(SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
@@ -234,14 +234,14 @@ public class SysUserController extends BaseController {
      * @param userId 用户ID
      */
     @Get
-    @Mapping("/authRole/{userId}")
-    @SaCheckPermission("system:user:query")
+    @Mapping("/authRole/{userId}" )
+    @SaCheckPermission("system:user:query" )
     public R<SysUserInfoVo> authRole(Long userId) {
         SysUserVo user = userService.selectUserById(userId);
         List<SysRoleVo> roles = roleService.selectRolesByUserId(userId);
         SysUserInfoVo userInfoVo = new SysUserInfoVo();
         userInfoVo.setUser(user);
-        userInfoVo.setRoles(LoginHelper.isSuperAdmin(userId) ? roles : StreamUtils.filter(roles, r -> !r.isSuperAdmin()));
+        userInfoVo.setRoles(LoginHelper.isSuperAdmin(userId) ? roles : StreamUtil.filter(roles, r -> !r.isSuperAdmin()));
         return R.ok(userInfoVo);
     }
 
@@ -252,8 +252,8 @@ public class SysUserController extends BaseController {
      * @param roleIds 角色ID串
      */
     @Put
-    @Mapping("/authRole")
-    @SaCheckPermission("system:user:edit")
+    @Mapping("/authRole" )
+    @SaCheckPermission("system:user:edit" )
     @Log(title = "用户管理", businessType = BusinessType.GRANT)
     public R<Void> insertAuthRole(Long userId, Long[] roleIds) {
         userService.checkUserDataScope(userId);
@@ -265,9 +265,9 @@ public class SysUserController extends BaseController {
      * 获取部门树列表
      */
     @Get
-    @Mapping("/deptTree")
-    @SaCheckPermission("system:user:list")
-    public R<List<Tree<Long>>> deptTree(SysDeptBo dept) {
+    @Mapping("/deptTree" )
+    @SaCheckPermission("system:user:list" )
+    public R<List<MapTree<Long>>> deptTree(SysDeptBo dept) {
         return R.ok(deptService.selectDeptTreeList(dept));
     }
 
@@ -275,8 +275,8 @@ public class SysUserController extends BaseController {
      * 获取部门下的所有用户信息
      */
     @Get
-    @Mapping("/list/dept/{deptId}")
-    @SaCheckPermission("system:user:list")
+    @Mapping("/list/dept/{deptId}" )
+    @SaCheckPermission("system:user:list" )
     public R<List<SysUserVo>> listByDept(@NotNull Long deptId) {
         return R.ok(userService.selectUserListByDept(deptId));
     }
