@@ -1,15 +1,14 @@
 package ${packageName}.service.impl;
 
-import org.dromara.common.core.utils.MapstructUtils;
-import org.dromara.common.core.utils.StringUtils;
-#if($table.crud || $table.sub)
-import org.dromara.common.mybatis.core.page.TableDataInfo;
-import org.dromara.common.mybatis.core.page.PageQuery;
-import com.mybatisflex.core.paginate.Page;
+import com.layjava.common.core.utils.MapstructUtil;
+    #if($table.crud || $table.sub)
+import com.layjava.common.mybatis.core.page.PageQuery;
+    import com.mybatisflex.core.paginate.Page;
 #end
 import com.mybatisflex.core.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.noear.solon.annotation.Component;
 import ${packageName}.domain.bo.${ClassName}Bo;
 import ${packageName}.domain.vo.${ClassName}Vo;
 import ${packageName}.domain.${ClassName};
@@ -30,7 +29,8 @@ import static ${packageName}.domain.table.${ClassName}TableDef.$TABLE_NAME;
  * @author ${author}
  * @date ${datetime}
  */
-@Service
+@Slf4j
+@Component
 @RequiredArgsConstructor
 public class ${ClassName}ServiceImpl implements I${ClassName}Service {
 
@@ -109,7 +109,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
      */
     @Override
     public Boolean insertByBo(${ClassName}Bo bo) {
-        ${ClassName} add = MapstructUtils.convert(bo, ${ClassName}.class);
+        ${ClassName} add = MapstructUtil.convert(bo, ${ClassName}.class);
         boolean flag = baseMapper.insert(add, true) > 0;
         #set($pk=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
         if (flag) {
@@ -123,7 +123,7 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
      */
     @Override
     public Boolean updateByBo(${ClassName}Bo bo) {
-        ${ClassName} update = MapstructUtils.convert(bo, ${ClassName}.class);
+        ${ClassName} update = MapstructUtil.convert(bo, ${ClassName}.class);
         return baseMapper.update(update) > 0;
     }
 

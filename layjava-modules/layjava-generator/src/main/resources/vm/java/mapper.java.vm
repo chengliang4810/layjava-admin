@@ -2,7 +2,7 @@ package ${packageName}.mapper;
 
 import ${packageName}.domain.${ClassName};
 import ${packageName}.domain.vo.${ClassName}Vo;
-import org.dromara.common.mybatis.core.mapper.BaseMapperPlus;
+import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
 
 /**
  * ${functionName}Mapper接口

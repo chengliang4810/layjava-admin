@@ -4,8 +4,8 @@ import ${packageName}.domain.${ClassName};
 import ${packageName}.domain.vo.${ClassName}Vo;
 import ${packageName}.domain.bo.${ClassName}Bo;
 #if($table.crud || $table.sub)
-import org.dromara.common.mybatis.core.page.TableDataInfo;
-import org.dromara.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageQuery;
+import com.layjava.common.mybatis.core.page.PageResult;
 #end
 
 import java.util.Collection;
@@ -28,7 +28,7 @@ public interface I${ClassName}Service {
     /**
      * 查询${functionName}列表
      */
-    TableDataInfo<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageQuery pageQuery);
+    PageResult<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageQuery pageQuery);
 #end
 
     /**

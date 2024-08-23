@@ -1,14 +1,10 @@
 package com.layjava.generator.service;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.lang.Dict;
-import cn.hutool.core.util.ObjectUtil;
 import com.layjava.common.core.constant.Constants;
 import com.layjava.common.core.exception.ServiceException;
-import com.layjava.common.core.utils.StreamUtils;
-import com.layjava.common.core.utils.StringUtils;
-import com.layjava.common.core.utils.file.FileUtils;
+import com.layjava.common.core.utils.StreamUtil;
+import com.layjava.common.core.utils.StringUtil;
+import com.layjava.common.core.utils.file.FileUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
@@ -33,6 +29,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.io.IoUtil;
+import org.dromara.hutool.core.map.Dict;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.data.annotation.Tran;
 
@@ -98,9 +98,9 @@ public class GenTableServiceImpl implements IGenTableService {
         Map<String, Object> params = genTable.getParams();
         return QueryWrapper.create().from(GEN_TABLE)
                 .where(GEN_TABLE.DATA_NAME.eq(genTable.getDataName()))
-                .and(QueryMethods.lower(GEN_TABLE.TABLE_NAME).like(StringUtils.lowerCase(genTable.getTableName())))
-                .and(QueryMethods.lower(GEN_TABLE.TABLE_COMMENT).like(StringUtils.lowerCase(genTable.getTableComment())))
-                .and(GEN_TABLE.CREATE_TIME.between(params.get("beginTime"), params.get("endTime"), params.get("beginTime") != null && params.get("endTime") != null));
+                .and(QueryMethods.lower(GEN_TABLE.TABLE_NAME).like(StringUtil.lowerCase(genTable.getTableName())))
+                .and(QueryMethods.lower(GEN_TABLE.TABLE_COMMENT).like(StringUtil.lowerCase(genTable.getTableComment())))
+                .and(GEN_TABLE.CREATE_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null));
     }
 
     @Override
@@ -118,42 +118,42 @@ public class GenTableServiceImpl implements IGenTableService {
 
 
     private Page<GenTable> selectPageDbTableList(Page<GenTable> page, GenTable genTable) {
-        List<String> genTableNames = (List<String>) genTable.getParams().get("genTableNames");
-        String tableName = StringUtils.lowerCase(genTable.getTableName());
-        String tableComment = StringUtils.lowerCase(genTable.getTableComment());
+        List<String> genTableNames = (List<String>) genTable.getParams().get("genTableNames" );
+        String tableName = StringUtil.lowerCase(genTable.getTableName());
+        String tableComment = StringUtil.lowerCase(genTable.getTableComment());
 
         if (DataBaseHelper.isMySql()) {
             QueryWrapper queryWrapper = QueryWrapper.create()
-                    .select("table_name", "table_comment", "create_time", "update_time")
-                    .from("information_schema.tables")
-                    .where("table_schema = (select database())")
-                    .and("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'")
-                    .and(QueryMethods.column("table_name").notIn(genTableNames, If::isNotEmpty))
-                    .and(QueryMethods.column("lower(table_name)").like(tableName))
-                    .and(QueryMethods.column("lower(table_comment)").like(tableComment))
+                    .select("table_name", "table_comment", "create_time", "update_time" )
+                    .from("information_schema.tables" )
+                    .where("table_schema = (select database())" )
+                    .and("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'" )
+                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("lower(table_name)" ).like(tableName))
+                    .and(QueryMethods.column("lower(table_comment)" ).like(tableComment))
                     .orderBy("create_time", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         if (DataBaseHelper.isOracle()) {
             QueryWrapper queryWrapper = QueryWrapper.create()
-                    .select(new QueryColumn("lower(dt.table_name)").as("table_name"),
-                            new QueryColumn("dtc.comments").as("table_comment"),
-                            new QueryColumn("uo.created").as("create_time"),
-                            new QueryColumn("uo.last_ddl_time").as("update_time")
+                    .select(new QueryColumn("lower(dt.table_name)" ).as("table_name" ),
+                            new QueryColumn("dtc.comments" ).as("table_comment" ),
+                            new QueryColumn("uo.created" ).as("create_time" ),
+                            new QueryColumn("uo.last_ddl_time" ).as("update_time" )
                     )
-                    .from(new QueryTable("user_tables").as("dt"), new QueryTable("user_tab_comments").as("dtc"), new QueryTable("user_objects").as("uo"))
-                    .where("dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type = 'TABLE'")
-                    .and("dt.table_name NOT LIKE 'pj_%' AND dt.table_name NOT LIKE 'GEN_%'")
-                    .and(QueryMethods.column("lower(dt.table_name)").notIn(genTableNames, If::isNotEmpty))
-                    .and(QueryMethods.column("lower(dt.table_name)").like(tableName))
-                    .and(QueryMethods.column("lower(dtc.comments)").like(tableComment))
+                    .from(new QueryTable("user_tables" ).as("dt" ), new QueryTable("user_tab_comments" ).as("dtc" ), new QueryTable("user_objects" ).as("uo" ))
+                    .where("dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type = 'TABLE'" )
+                    .and("dt.table_name NOT LIKE 'pj_%' AND dt.table_name NOT LIKE 'GEN_%'" )
+                    .and(QueryMethods.column("lower(dt.table_name)" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("lower(dt.table_name)" ).like(tableName))
+                    .and(QueryMethods.column("lower(dtc.comments)" ).like(tableComment))
                     .orderBy("create_time", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         if (DataBaseHelper.isPostgerSql()) {
 
             QueryWrapper queryWrapper = QueryWrapper.create()
-                    .with("list_table").asRaw("""
+                    .with("list_table" ).asRaw("""
                             SELECT c.relname AS table_name,
                                                     obj_description(c.oid) AS table_comment,
                                                     CURRENT_TIMESTAMP AS create_time,
@@ -165,37 +165,37 @@ public class GenTableServiceImpl implements IGenTableService {
                                                 AND n.nspname = 'public'::name
                                                 AND n.nspname <![CDATA[ <> ]]> ''::name
                             """)
-                    .select(new QueryColumn("c.relname").as("table_name"),
-                            new QueryColumn("obj_description(c.oid)").as("table_comment"),
-                            new QueryColumn("CURRENT_TIMESTAMP").as("create_time"),
-                            new QueryColumn("CURRENT_TIMESTAMP").as("update_time")
+                    .select(new QueryColumn("c.relname" ).as("table_name" ),
+                            new QueryColumn("obj_description(c.oid)" ).as("table_comment" ),
+                            new QueryColumn("CURRENT_TIMESTAMP" ).as("create_time" ),
+                            new QueryColumn("CURRENT_TIMESTAMP" ).as("update_time" )
                     )
-                    .from("list_table")
-                    .where("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'")
-                    .and(QueryMethods.column("table_name").notIn(genTableNames, If::isNotEmpty))
-                    .and(QueryMethods.lower("table_name").like(tableName))
-                    .and(QueryMethods.lower("table_comment").like(tableComment))
+                    .from("list_table" )
+                    .where("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'" )
+                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.lower("table_name" ).like(tableName))
+                    .and(QueryMethods.lower("table_comment" ).like(tableComment))
                     .orderBy("create_time", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         if (DataBaseHelper.isSqlServer()) {
             QueryWrapper queryWrapper = QueryWrapper.create()
-                    .select(new QueryColumn("cast(D.NAME as nvarchar)").as("table_name"),
-                            new QueryColumn("cast(F.VALUE as nvarchar)").as("table_comment"),
-                            new QueryColumn("crdate").as("create_time"),
-                            new QueryColumn("refdate").as("update_time")
+                    .select(new QueryColumn("cast(D.NAME as nvarchar)" ).as("table_name" ),
+                            new QueryColumn("cast(F.VALUE as nvarchar)" ).as("table_comment" ),
+                            new QueryColumn("crdate" ).as("create_time" ),
+                            new QueryColumn("refdate" ).as("update_time" )
                     )
-                    .from(new QueryTable("SYSOBJECTS").as("D"))
-                    .innerJoin("SYS.EXTENDED_PROPERTIES F")
-                    .on("D.ID = F.MAJOR_ID")
-                    .where("F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES' AND D.NAME NOT LIKE 'pj_%' AND D.NAME NOT LIKE 'gen_%'")
-                    .and(QueryMethods.column("D.NAME").notIn(genTableNames, If::isNotEmpty))
-                    .and(QueryMethods.lower("D.NAME").like(tableName))
-                    .and(QueryMethods.lower("CAST(F.VALUE AS nvarchar)").like(tableComment))
+                    .from(new QueryTable("SYSOBJECTS" ).as("D" ))
+                    .innerJoin("SYS.EXTENDED_PROPERTIES F" )
+                    .on("D.ID = F.MAJOR_ID" )
+                    .where("F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES' AND D.NAME NOT LIKE 'pj_%' AND D.NAME NOT LIKE 'gen_%'" )
+                    .and(QueryMethods.column("D.NAME" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.lower("D.NAME" ).like(tableName))
+                    .and(QueryMethods.lower("CAST(F.VALUE AS nvarchar)" ).like(tableComment))
                     .orderBy("crdate", false);
             return baseMapper.paginate(page, queryWrapper);
         }
-        throw new ServiceException("不支持的数据库类型");
+        throw new ServiceException("不支持的数据库类型" );
     }
 
     /**
@@ -342,7 +342,6 @@ public class GenTableServiceImpl implements IGenTableService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         generatorCode(tableId, zip);
-        IoUtil.close(zip);
         return outputStream.toByteArray();
     }
 
@@ -365,14 +364,14 @@ public class GenTableServiceImpl implements IGenTableService {
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         for (String template : templates) {
-            if (!StringUtils.containsAny(template, "sql.vm", "api.ts.vm", "types.ts.vm", "index.vue.vm", "index-tree.vue.vm")) {
+            if (!StringUtil.containsAny(template, "sql.vm", "api.ts.vm", "types.ts.vm", "index.vue.vm", "index-tree.vue.vm" )) {
                 // 渲染模板
                 StringWriter sw = new StringWriter();
                 Template tpl = Velocity.getTemplate(template, Constants.UTF8);
                 tpl.merge(context, sw);
                 try {
                     String path = getGenPath(table, template);
-                    FileUtils.writeUtf8String(sw.toString(), path);
+                    FileUtil.writeUtf8String(sw.toString(), path);
                 } catch (Exception e) {
                     throw new ServiceException("渲染模板失败，表名：" + table.getTableName());
                 }
@@ -390,7 +389,7 @@ public class GenTableServiceImpl implements IGenTableService {
     public void synchDb(Long tableId) {
         GenTable table = baseMapper.selectOneWithRelationsById(tableId);
         List<GenTableColumn> tableColumns = table.getColumns();
-        Map<String, GenTableColumn> tableColumnMap = StreamUtils.toIdentityMap(tableColumns, GenTableColumn::getColumnName);
+        Map<String, GenTableColumn> tableColumnMap = StreamUtil.toIdentityMap(tableColumns, GenTableColumn::getColumnName);
         List<GenTableColumn> dbTableColumns = null;
         try {
             DataSourceKey.use(table.getDataName());
@@ -399,9 +398,9 @@ public class GenTableServiceImpl implements IGenTableService {
             DataSourceKey.clear();
         }
         if (CollUtil.isEmpty(dbTableColumns)) {
-            throw new ServiceException("同步数据失败，原表结构不存在");
+            throw new ServiceException("同步数据失败，原表结构不存在" );
         }
-        List<String> dbTableColumnNames = StreamUtils.toList(dbTableColumns, GenTableColumn::getColumnName);
+        List<String> dbTableColumnNames = StreamUtil.toList(dbTableColumns, GenTableColumn::getColumnName);
 
         List<GenTableColumn> saveColumns = new ArrayList<>();
         dbTableColumns.forEach(column -> {
@@ -414,7 +413,7 @@ public class GenTableServiceImpl implements IGenTableService {
                     column.setDictType(prevColumn.getDictType());
                     column.setQueryType(prevColumn.getQueryType());
                 }
-                if (StringUtils.isNotEmpty(prevColumn.getIsRequired()) && !column.isPk()
+                if (StringUtil.isNotEmpty(prevColumn.getIsRequired()) && !column.isPk()
                         && (column.isInsert() || column.isEdit())
                         && ((column.isUsableColumn()) || (!column.isSuperColumn()))) {
                     // 如果是(新增/修改&非主键/非忽略及父属性)，继续保留必填/显示类型选项
@@ -427,9 +426,9 @@ public class GenTableServiceImpl implements IGenTableService {
         if (CollUtil.isNotEmpty(saveColumns)) {
             Db.executeBatch(saveColumns, 1000, GenTableColumnMapper.class, BaseMapper::insertOrUpdate);
         }
-        List<GenTableColumn> delColumns = StreamUtils.filter(tableColumns, column -> !dbTableColumnNames.contains(column.getColumnName()));
+        List<GenTableColumn> delColumns = StreamUtil.filter(tableColumns, column -> !dbTableColumnNames.contains(column.getColumnName()));
         if (CollUtil.isNotEmpty(delColumns)) {
-            List<Long> ids = StreamUtils.toList(delColumns, GenTableColumn::getColumnId);
+            List<Long> ids = StreamUtil.toList(delColumns, GenTableColumn::getColumnId);
             if (CollUtil.isNotEmpty(ids)) {
                 genTableColumnMapper.deleteBatchByIds(ids);
             }
@@ -449,7 +448,6 @@ public class GenTableServiceImpl implements IGenTableService {
         for (String tableId : tableIds) {
             generatorCode(Long.parseLong(tableId), zip);
         }
-        IoUtil.close(zip);
         return outputStream.toByteArray();
     }
 
@@ -482,7 +480,6 @@ public class GenTableServiceImpl implements IGenTableService {
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
                 IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
-                IoUtil.close(sw);
                 zip.flush();
                 zip.closeEntry();
             } catch (IOException e) {
@@ -501,12 +498,12 @@ public class GenTableServiceImpl implements IGenTableService {
         if (GenConstants.TPL_TREE.equals(genTable.getTplCategory())) {
             String options = JsonUtils.toJsonString(genTable.getParams());
             Dict paramsObj = JsonUtils.parseMap(options);
-            if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_CODE))) {
-                throw new ServiceException("树编码字段不能为空");
-            } else if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_PARENT_CODE))) {
-                throw new ServiceException("树父编码字段不能为空");
-            } else if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_NAME))) {
-                throw new ServiceException("树名称字段不能为空");
+            if (StringUtil.isEmpty(paramsObj.getStr(GenConstants.TREE_CODE))) {
+                throw new ServiceException("树编码字段不能为空" );
+            } else if (StringUtil.isEmpty(paramsObj.getStr(GenConstants.TREE_PARENT_CODE))) {
+                throw new ServiceException("树父编码字段不能为空" );
+            } else if (StringUtil.isEmpty(paramsObj.getStr(GenConstants.TREE_NAME))) {
+                throw new ServiceException("树名称字段不能为空" );
             }
         }
     }
@@ -523,7 +520,7 @@ public class GenTableServiceImpl implements IGenTableService {
                 break;
             }
         }
-        if (ObjectUtil.isNull(table.getPkColumn())) {
+        if (ObjUtil.isNull(table.getPkColumn())) {
             table.setPkColumn(table.getColumns().get(0));
         }
 
@@ -536,7 +533,7 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     public void setTableFromOptions(GenTable genTable) {
         Dict paramsObj = JsonUtils.parseMap(genTable.getOptions());
-        if (ObjectUtil.isNotNull(paramsObj)) {
+        if (ObjUtil.isNotNull(paramsObj)) {
             String treeCode = paramsObj.getStr(GenConstants.TREE_CODE);
             String treeParentCode = paramsObj.getStr(GenConstants.TREE_PARENT_CODE);
             String treeName = paramsObj.getStr(GenConstants.TREE_NAME);
@@ -560,8 +557,8 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     public static String getGenPath(GenTable table, String template) {
         String genPath = table.getGenPath();
-        if (StringUtils.equals(genPath, "/")) {
-            return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+        if (StringUtil.equals(genPath, "/" )) {
+            return System.getProperty("user.dir" ) + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
         }
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
     }

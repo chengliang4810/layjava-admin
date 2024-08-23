@@ -1,6 +1,6 @@
 package com.layjava.generator.domain;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
@@ -15,7 +15,7 @@ import org.noear.solon.validation.annotation.NotBlank;
  */
 
 @Data
-@Table("gen_table_column")
+@Table("gen_table_column" )
 @EqualsAndHashCode(callSuper = true)
 public class GenTableColumn extends BaseEntity {
 
@@ -53,7 +53,7 @@ public class GenTableColumn extends BaseEntity {
     /**
      * JAVA字段名
      */
-    @NotBlank(message = "Java属性不能为空")
+    @NotBlank(message = "Java属性不能为空" )
     private String javaField;
 
     /**
@@ -112,7 +112,7 @@ public class GenTableColumn extends BaseEntity {
     private Integer sort;
 
     public String getCapJavaField() {
-        return StringUtils.capitalize(javaField);
+        return StringUtil.capitalize(javaField);
     }
 
     public boolean isPk() {
@@ -120,7 +120,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public boolean isPk(String isPk) {
-        return isPk != null && StringUtils.equals("1", isPk);
+        return isPk != null && StringUtil.equals("1", isPk);
     }
 
     public boolean isIncrement() {
@@ -128,7 +128,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public boolean isIncrement(String isIncrement) {
-        return isIncrement != null && StringUtils.equals("1", isIncrement);
+        return isIncrement != null && StringUtil.equals("1", isIncrement);
     }
 
     public boolean isRequired() {
@@ -136,7 +136,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public boolean isRequired(String isRequired) {
-        return isRequired != null && StringUtils.equals("1", isRequired);
+        return isRequired != null && StringUtil.equals("1", isRequired);
     }
 
     public boolean isInsert() {
@@ -144,7 +144,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public boolean isInsert(String isInsert) {
-        return isInsert != null && StringUtils.equals("1", isInsert);
+        return isInsert != null && StringUtil.equals("1", isInsert);
     }
 
     public boolean isEdit() {
@@ -152,7 +152,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public boolean isEdit(String isEdit) {
-        return isEdit != null && StringUtils.equals("1", isEdit);
+        return isEdit != null && StringUtil.equals("1", isEdit);
     }
 
     public boolean isList() {
@@ -160,7 +160,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public boolean isList(String isList) {
-        return isList != null && StringUtils.equals("1", isList);
+        return isList != null && StringUtil.equals("1", isList);
     }
 
     public boolean isQuery() {
@@ -168,7 +168,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public boolean isQuery(String isQuery) {
-        return isQuery != null && StringUtils.equals("1", isQuery);
+        return isQuery != null && StringUtil.equals("1", isQuery);
     }
 
     public boolean isSuperColumn() {
@@ -176,11 +176,11 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public static boolean isSuperColumn(String javaField) {
-        return StringUtils.equalsAnyIgnoreCase(javaField,
-            // BaseEntity
-            "createBy", "createTime", "updateBy", "updateTime",
-            // TreeEntity
-            "parentName", "parentId");
+        return StringUtil.equalsAnyIgnoreCase(javaField,
+                // BaseEntity
+                "createBy", "createTime", "updateBy", "updateTime",
+                // TreeEntity
+                "parentName", "parentId" );
     }
 
     public boolean isUsableColumn() {
@@ -189,18 +189,18 @@ public class GenTableColumn extends BaseEntity {
 
     public static boolean isUsableColumn(String javaField) {
         // isSuperColumn()中的名单用于避免生成多余Domain属性，若某些属性在生成页面时需要用到不能忽略，则放在此处白名单
-        return StringUtils.equalsAnyIgnoreCase(javaField, "parentId", "orderNum", "remark");
+        return StringUtil.equalsAnyIgnoreCase(javaField, "parentId", "orderNum", "remark" );
     }
 
     public String readConverterExp() {
-        String remarks = StringUtils.substringBetween(this.columnComment, "（", "）");
+        String remarks = StringUtil.substringBetween(this.columnComment, "（", "）" );
         StringBuffer sb = new StringBuffer();
-        if (StringUtils.isNotEmpty(remarks)) {
-            for (String value : remarks.split(" ")) {
-                if (StringUtils.isNotEmpty(value)) {
+        if (StringUtil.isNotEmpty(remarks)) {
+            for (String value : remarks.split(" " )) {
+                if (StringUtil.isNotEmpty(value)) {
                     Object startStr = value.subSequence(0, 1);
                     String endStr = value.substring(1);
-                    sb.append(StringUtils.EMPTY).append(startStr).append("=").append(endStr).append(StringUtils.SEPARATOR);
+                    sb.append(StringUtil.EMPTY).append(startStr).append("=" ).append(endStr).append(StringUtil.SEPARATOR);
                 }
             }
             return sb.deleteCharAt(sb.length() - 1).toString();

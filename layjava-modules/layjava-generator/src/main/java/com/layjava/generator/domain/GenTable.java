@@ -1,6 +1,6 @@
 package com.layjava.generator.domain;
 
-import com.layjava.common.core.utils.StringUtils;
+import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.generator.constant.GenConstants;
 import com.mybatisflex.annotation.Column;
@@ -176,7 +176,7 @@ public class GenTable extends BaseEntity {
     }
 
     public static boolean isTree(String tplCategory) {
-        return tplCategory != null && StringUtils.equals(GenConstants.TPL_TREE, tplCategory);
+        return tplCategory != null && StringUtil.equals(GenConstants.TPL_TREE, tplCategory);
     }
 
     public boolean isCrud() {
@@ -184,7 +184,7 @@ public class GenTable extends BaseEntity {
     }
 
     public static boolean isCrud(String tplCategory) {
-        return tplCategory != null && StringUtils.equals(GenConstants.TPL_CRUD, tplCategory);
+        return tplCategory != null && StringUtil.equals(GenConstants.TPL_CRUD, tplCategory);
     }
 
     public boolean isSuperColumn(String javaField) {
@@ -192,6 +192,6 @@ public class GenTable extends BaseEntity {
     }
 
     public static boolean isSuperColumn(String tplCategory, String javaField) {
-        return StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
+        return StringUtil.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
     }
 }

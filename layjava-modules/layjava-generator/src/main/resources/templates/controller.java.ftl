@@ -1,7 +1,7 @@
 package ${package.Controller};
 
-import cn.hutool.core.lang.Assert;
-import cn.hutool.core.convert.Convert;
+import org.dromara.hutool.core.lang.Assert;
+import org.dromara.hutool.core.convert.Convert;
 import cn.zhxu.bs.BeanSearcher;
 import cn.zhxu.bs.SearchResult;
 import com.layjava.common.core.validate.group.AddGroup;

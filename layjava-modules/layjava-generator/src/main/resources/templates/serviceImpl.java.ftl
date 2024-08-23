@@ -1,6 +1,6 @@
 package ${package.ServiceImpl};
 
-import cn.hutool.core.util.StrUtil;
+import org.dromara.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;

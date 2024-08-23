@@ -1,9 +1,9 @@
 package com.layjava.generator.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.Convert;
 import com.layjava.common.core.domain.R;
-import com.layjava.common.core.utils.DateUtils;
+import com.layjava.common.core.utils.DateUtil;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
 import com.layjava.common.mybatis.core.page.PageQuery;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Lion Li
  */
 @Controller
-@Mapping("/tool/gen")
+@Mapping("/tool/gen" )
 @RequiredArgsConstructor
 public class GenController extends BaseController {
 
@@ -39,8 +39,8 @@ public class GenController extends BaseController {
      * 查询代码生成列表
      */
     @Get
-    @Mapping("/list")
-    @SaCheckPermission("tool:gen:list")
+    @Mapping("/list" )
+    @SaCheckPermission("tool:gen:list" )
     public PageResult<GenTable> genList(GenTable genTable, PageQuery pageQuery) {
         return genTableService.selectPageGenTableList(genTable, pageQuery);
     }
@@ -51,8 +51,8 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/{tableId}")
-    @SaCheckPermission("tool:gen:query")
+    @Mapping("/{tableId}" )
+    @SaCheckPermission("tool:gen:query" )
     public R<Map<String, Object>> getInfo(Long tableId) {
         GenTable table = genTableService.selectGenTableById(tableId);
         List<GenTable> tables = genTableService.selectGenTableAll();
@@ -68,8 +68,8 @@ public class GenController extends BaseController {
      * 查询数据库列表
      */
     @Get
-    @Mapping("/db/list")
-    @SaCheckPermission("tool:gen:list")
+    @Mapping("/db/list" )
+    @SaCheckPermission("tool:gen:list" )
     public PageResult<GenTable> dataList(GenTable genTable, PageQuery pageQuery) {
         return genTableService.selectPageDbTableList(genTable, pageQuery);
     }
@@ -80,8 +80,8 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/column/{tableId}")
-    @SaCheckPermission("tool:gen:list")
+    @Mapping("/column/{tableId}" )
+    @SaCheckPermission("tool:gen:list" )
     public PageResult<GenTableColumn> columnList(Long tableId) {
         List<GenTableColumn> list = genTableService.selectGenTableColumnListByTableId(tableId);
         return PageResult.build(list);
@@ -93,8 +93,8 @@ public class GenController extends BaseController {
      * @param tables 表名串
      */
     @Post
-    @Mapping("/import/table")
-    @SaCheckPermission("tool:gen:import")
+    @Mapping("/import/table" )
+    @SaCheckPermission("tool:gen:import" )
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public R<Void> importTableSave(String tables, String dataName) {
         String[] tableNames = Convert.toStrArray(tables);
@@ -109,7 +109,7 @@ public class GenController extends BaseController {
      */
     @Put
     @Mapping
-    @SaCheckPermission("tool:gen:edit")
+    @SaCheckPermission("tool:gen:edit" )
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     public R<Void> editSave(@Validated GenTable genTable) {
         genTableService.validateEdit(genTable);
@@ -123,8 +123,8 @@ public class GenController extends BaseController {
      * @param tableIds 表ID串
      */
     @Delete
-    @Mapping("/{tableIds}")
-    @SaCheckPermission("tool:gen:remove")
+    @Mapping("/{tableIds}" )
+    @SaCheckPermission("tool:gen:remove" )
     @Log(title = "代码生成", businessType = BusinessType.DELETE)
     public R<Void> remove(Long[] tableIds) {
         genTableService.deleteGenTableByIds(tableIds);
@@ -137,8 +137,8 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/preview/{tableId}")
-    @SaCheckPermission("tool:gen:preview")
+    @Mapping("/preview/{tableId}" )
+    @SaCheckPermission("tool:gen:preview" )
     public R<Map<String, String>> preview(Long tableId) throws IOException {
         Map<String, String> dataMap = genTableService.previewCode(tableId);
         return R.ok(dataMap);
@@ -150,8 +150,8 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/download/{tableId}")
-    @SaCheckPermission("tool:gen:code")
+    @Mapping("/download/{tableId}" )
+    @SaCheckPermission("tool:gen:code" )
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     public void download(Long tableId) throws IOException {
         byte[] data = genTableService.downloadCode(tableId);
@@ -164,8 +164,8 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/gen/code/{tableId}")
-    @SaCheckPermission("tool:gen:code")
+    @Mapping("/gen/code/{tableId}" )
+    @SaCheckPermission("tool:gen:code" )
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     public R<Void> genCode(Long tableId) {
         genTableService.generatorCode(tableId);
@@ -178,8 +178,8 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/sync/db/{tableId}")
-    @SaCheckPermission("tool:gen:edit")
+    @Mapping("/sync/db/{tableId}" )
+    @SaCheckPermission("tool:gen:edit" )
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     public R<Void> syncDb(Long tableId) {
         genTableService.synchDb(tableId);
@@ -192,8 +192,8 @@ public class GenController extends BaseController {
      * @param tableIdStr 表ID串
      */
     @Get
-    @Mapping("/batchGenCode")
-    @SaCheckPermission("tool:gen:code")
+    @Mapping("/batchGenCode" )
+    @SaCheckPermission("tool:gen:code" )
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     public DownloadedFile batchGenCode(String tableIdStr) throws IOException {
         String[] tableIds = Convert.toStrArray(tableIdStr);
@@ -205,15 +205,15 @@ public class GenController extends BaseController {
      * 生成zip文件
      */
     private DownloadedFile genCode(byte[] data) throws IOException {
-        return new DownloadedFile("application/octet-stream", data, DateUtils.dateTimeNow() + ".zip");
+        return new DownloadedFile("application/octet-stream", data, DateUtil.dateTimeNow() + ".zip" );
     }
 
     /**
      * 查询数据源名称列表
      */
     @Get
-    @Mapping(value = "/datasource/name")
-    @SaCheckPermission("tool:gen:list")
+    @Mapping(value = "/datasource/name" )
+    @SaCheckPermission("tool:gen:list" )
     public R<Object> getCurrentDataSourceNameList() {
         return R.ok(DataBaseHelper.getDataSourceNameList());
     }
