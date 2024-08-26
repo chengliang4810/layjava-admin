@@ -15,8 +15,9 @@ import java.util.stream.Collectors;
 
 /**
  * 字符串工具类
- *
- * @author Lion Li
+ * 来源于hutool
+ * @author chengliang
+ * @date 2024/08/26
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class StringUtil extends org.apache.commons.lang3.StringUtils {
