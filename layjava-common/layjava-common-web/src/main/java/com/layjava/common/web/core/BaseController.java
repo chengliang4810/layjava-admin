@@ -4,10 +4,13 @@ import com.layjava.common.core.domain.R;
 import com.layjava.common.core.exception.ServiceException;
 import org.dromara.hutool.core.text.StrUtil;
 import org.noear.solon.core.handle.Context;
+import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.validation.annotation.NotBlacklist;
 import org.noear.solon.validation.annotation.Valid;
+
+import java.io.File;
 
 /**
  * Base控制器
@@ -60,10 +63,18 @@ public class BaseController implements Render {
         if (obj instanceof String) {
             //普通字符串，封装result 返回
             ctx.render(R.ok(obj));
-        } else if (obj instanceof ModelAndView) {
-            //视图模型，直接渲染
+        }
+        // 模型视图
+        else if (obj instanceof ModelAndView) {
             ctx.render(obj);
-        } else {
+        }
+        // 文件下载
+        else if (obj instanceof DownloadedFile || obj instanceof File) {
+            //文件下载
+            ctx.render(obj);
+        }
+        // 其他
+        else {
             //此处是重点，把一些特别的类型进行标准化转换
             if (obj instanceof Throwable err) {
                 err.printStackTrace();

@@ -137,39 +137,11 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/preview/{tableId}" )
+    @Mapping("/code/preview/{tableId}" )
     @SaCheckPermission("tool:gen:preview" )
     public R<Map<String, String>> preview(Long tableId) throws IOException {
         Map<String, String> dataMap = genTableService.previewCode(tableId);
         return R.ok(dataMap);
-    }
-
-    /**
-     * 生成代码（下载方式）
-     *
-     * @param tableId 表ID
-     */
-    @Get
-    @Mapping("/download/{tableId}" )
-    @SaCheckPermission("tool:gen:code" )
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
-    public void download(Long tableId) throws IOException {
-        byte[] data = genTableService.downloadCode(tableId);
-        genCode(data);
-    }
-
-    /**
-     * 生成代码（自定义路径）
-     *
-     * @param tableId 表ID
-     */
-    @Get
-    @Mapping("/gen/code/{tableId}" )
-    @SaCheckPermission("tool:gen:code" )
-    @Log(title = "代码生成", businessType = BusinessType.GENCODE)
-    public R<Void> genCode(Long tableId) {
-        genTableService.generatorCode(tableId);
-        return R.ok();
     }
 
     /**
@@ -192,7 +164,7 @@ public class GenController extends BaseController {
      * @param tableIdStr 表ID串
      */
     @Get
-    @Mapping("/batchGenCode" )
+    @Mapping("/code/{tableIdStr}" )
     @SaCheckPermission("tool:gen:code" )
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     public DownloadedFile batchGenCode(String tableIdStr) throws IOException {
@@ -205,7 +177,7 @@ public class GenController extends BaseController {
      * 生成zip文件
      */
     private DownloadedFile genCode(byte[] data) throws IOException {
-        return new DownloadedFile("application/octet-stream", data, DateUtil.dateTimeNow() + ".zip" );
+        return new DownloadedFile("application/octet-stream", data, "code-" + DateUtil.dateTimeNow() + ".zip" );
     }
 
     /**

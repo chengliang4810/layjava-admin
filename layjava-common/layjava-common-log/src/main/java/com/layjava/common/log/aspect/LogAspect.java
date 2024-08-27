@@ -17,10 +17,7 @@ import org.dromara.hutool.core.map.MapUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.core.event.EventBus;
-import org.noear.solon.core.handle.Action;
-import org.noear.solon.core.handle.Context;
-import org.noear.solon.core.handle.Handler;
-import org.noear.solon.core.handle.UploadedFile;
+import org.noear.solon.core.handle.*;
 import org.noear.solon.core.route.RouterInterceptor;
 import org.noear.solon.core.route.RouterInterceptorChain;
 
@@ -139,7 +136,7 @@ public class LogAspect implements RouterInterceptor {
             setRequestValue(joinPoint, operLog, log.excludeParamNames());
         }
         // 是否需要保存response，参数和值
-        if (log.isSaveResponseData() && ObjUtil.isNotNull(jsonResult)) {
+        if (!(jsonResult instanceof DownloadedFile) && log.isSaveResponseData() && ObjUtil.isNotNull(jsonResult)) {
             operLog.setJsonResult(StringUtil.substring(JsonUtils.toJsonString(jsonResult), 0, 2000));
         }
     }
