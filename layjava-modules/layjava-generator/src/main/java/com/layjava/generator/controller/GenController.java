@@ -46,7 +46,7 @@ public class GenController extends BaseController {
     }
 
     /**
-     * 修改代码生成业务
+     * 查询代码生成业务详情
      *
      * @param tableId 表ID
      */
@@ -57,11 +57,11 @@ public class GenController extends BaseController {
         GenTable table = genTableService.selectGenTableById(tableId);
         List<GenTable> tables = genTableService.selectGenTableAll();
         List<GenTableColumn> list = genTableService.selectGenTableColumnListByTableId(tableId);
-        Map<String, Object> map = new HashMap<>(3);
-        map.put("info", table);
-        map.put("rows", list);
-        map.put("tables", tables);
-        return R.ok(map);
+        Map<String, Object> result = new HashMap<>(3);
+        result.put("info", table);
+        result.put("rows", list);
+        result.put("tables", tables);
+        return R.ok(result);
     }
 
     /**

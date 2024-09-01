@@ -21,8 +21,8 @@ import java.util.List;
  * @author Lion Li
  */
 @Data
-@Accessors(chain = true)
 @Table("gen_table" )
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class GenTable extends BaseEntity {
 
