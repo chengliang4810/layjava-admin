@@ -17,10 +17,9 @@ solon.serialization.json:
   dateAsTicks: false #将date转为毫秒数（和 dateAsFormat 二选一）
   longAsString: true #将long型转为字符串输出 （默认为false）
   boolAsInt: false   #将bool型转为字符串输出 （默认为false）
-  nullStringAsEmpty: false
+  nullStringAsEmpty: true
   nullBoolAsFalse: false
   nullNumberAsZero: false
-  nullArrayAsEmpty: false
-  nullAsWriteable: false #输出所有null值
+  nullArrayAsEmpty: true
+  nullAsWriteable: true #输出所有null值
   enumAsName: true #枚举使用名字（v2.2.1 后支持）
-
