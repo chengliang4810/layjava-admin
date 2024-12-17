@@ -25,4 +25,13 @@ public class Application {
         return "欢迎使用LayJava-Admin";
     }
 
+    /**
+     * 获取应用版本号
+     * @return 版本号
+     */
+    @Mapping("/version")
+    public String version(){
+        return Solon.cfg().get("solon.app.version");
+    }
+
 }
