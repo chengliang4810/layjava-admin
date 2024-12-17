@@ -2,21 +2,27 @@
 # server配置
 server.port: 8989
 
-# 应用环境配置
-solon.env: @profiles.active@
-#应用名称
-solon.app.name: layjava-admin
-#应用标题
-solon.app.title: "LayJavaAdmin"
-#应用组
-solon.app.group: "layjava"
+solon:
+  # 应用环境配置
+  env: @profiles.active@
+  # 应用配置
+  app:
+    #应用名称
+    name: layjava-admin
+    #应用标题
+    title: "LayJavaAdmin"
+    #应用组
+    group: "layjava"
+    # 版本
+    version: @revision@
 
-# 添加外部扩展配置
+# 线上环境支持外部配置
 ---
 solon.env.on: prod
-solon.config.add: "./app.yml"
-
+solon.config.add: "./app.yml,./app-prod.yml"
 ---
+
+# 批量加载内部配置
 solon.config.load:
   - "config/*.yml"
 
@@ -30,6 +36,7 @@ security:
   # 排除路径
   excludes:
     - /
+    - version
     # 登录
     - /auth/login
 
