@@ -148,8 +148,7 @@ public class LogAspect implements RouterInterceptor {
      * @throws Exception 异常
      */
     private void setRequestValue(Context joinPoint, OperLogEvent operLog, String[] excludeParamNames) throws Exception {
-        Map<String, List<String>> paramsMap = joinPoint.paramsMap();
-
+        Map<String, List<String>> paramsMap = joinPoint.paramMap().toValuesMap();
         String requestMethod = operLog.getRequestMethod();
         if (MapUtil.isEmpty(paramsMap)
                 && SaHttpMethod.PUT.name().equals(requestMethod) || SaHttpMethod.POST.name().equals(requestMethod)) {
@@ -166,7 +165,7 @@ public class LogAspect implements RouterInterceptor {
      * 参数拼装
      */
     private String argsArrayToString(Collection<Object> paramsArray, String[] excludeParamNames) {
-        StringJoiner params = new StringJoiner(" " );
+        StringJoiner params = new StringJoiner(" ");
         if (ArrayUtil.isEmpty(paramsArray)) {
             return params.toString();
         }
