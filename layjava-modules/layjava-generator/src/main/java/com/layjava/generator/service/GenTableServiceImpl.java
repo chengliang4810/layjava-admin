@@ -129,7 +129,7 @@ public class GenTableServiceImpl implements IGenTableService {
                     .from("information_schema.tables" )
                     .where("table_schema = (select database())" )
                     .and("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'" )
-                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::notEmpty))
                     .and(QueryMethods.column("lower(table_name)" ).like(tableName))
                     .and(QueryMethods.column("lower(table_comment)" ).like(tableComment))
                     .orderBy("create_time", false);
@@ -145,7 +145,7 @@ public class GenTableServiceImpl implements IGenTableService {
                     .from(new QueryTable("user_tables" ).as("dt" ), new QueryTable("user_tab_comments" ).as("dtc" ), new QueryTable("user_objects" ).as("uo" ))
                     .where("dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type = 'TABLE'" )
                     .and("dt.table_name NOT LIKE 'pj_%' AND dt.table_name NOT LIKE 'GEN_%'" )
-                    .and(QueryMethods.column("lower(dt.table_name)" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("lower(dt.table_name)" ).notIn(genTableNames, If::notEmpty))
                     .and(QueryMethods.column("lower(dt.table_name)" ).like(tableName))
                     .and(QueryMethods.column("lower(dtc.comments)" ).like(tableComment))
                     .orderBy("create_time", false);
@@ -173,7 +173,7 @@ public class GenTableServiceImpl implements IGenTableService {
                     )
                     .from("list_table" )
                     .where("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'" )
-                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::notEmpty))
                     .and(QueryMethods.lower("table_name" ).like(tableName))
                     .and(QueryMethods.lower("table_comment" ).like(tableComment))
                     .orderBy("create_time", false);
@@ -190,7 +190,7 @@ public class GenTableServiceImpl implements IGenTableService {
                     .innerJoin("SYS.EXTENDED_PROPERTIES F" )
                     .on("D.ID = F.MAJOR_ID" )
                     .where("F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES' AND D.NAME NOT LIKE 'pj_%' AND D.NAME NOT LIKE 'gen_%'" )
-                    .and(QueryMethods.column("D.NAME" ).notIn(genTableNames, If::isNotEmpty))
+                    .and(QueryMethods.column("D.NAME" ).notIn(genTableNames, If::notEmpty))
                     .and(QueryMethods.lower("D.NAME" ).like(tableName))
                     .and(QueryMethods.lower("CAST(F.VALUE AS nvarchar)" ).like(tableComment))
                     .orderBy("crdate", false);

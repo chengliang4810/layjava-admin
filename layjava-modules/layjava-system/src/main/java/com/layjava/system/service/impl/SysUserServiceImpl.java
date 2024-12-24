@@ -143,7 +143,7 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
                 .leftJoin(SYS_ROLE).on(SYS_ROLE.ROLE_ID.eq(SYS_USER_ROLE.ROLE_ID))
                 .where(SYS_USER.DEL_FLAG.eq(UserConstants.USER_NORMAL))
                 .and(SYS_ROLE.ROLE_ID.eq(user.getRoleId()).or(SYS_ROLE.ROLE_ID.isNull()))
-                .and(SYS_USER.USER_ID.notIn(userIds, If::isNotEmpty))
+                .and(SYS_USER.USER_ID.notIn(userIds, If::notEmpty))
                 .and(SYS_USER.USER_NAME.like(user.getUserName()))
                 .and(SYS_USER.PHONENUMBER.eq(user.getPhonenumber()))
                 .orderBy(SYS_USER.USER_ID, true);
