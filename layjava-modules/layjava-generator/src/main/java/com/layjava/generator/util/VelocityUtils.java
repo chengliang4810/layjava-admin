@@ -11,7 +11,7 @@ import com.layjava.generator.domain.GenTableColumn;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.velocity.VelocityContext;
-import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.map.MapUtil;
 import org.noear.solon.Solon;
@@ -323,7 +323,7 @@ public class VelocityUtils {
      */
     public static String getTreecode(Map<String, Object> paramsObj) {
         if (MapUtil.isNotEmpty(paramsObj) && paramsObj.containsKey(GenConstants.TREE_CODE)) {
-            return StringUtil.toCamelCase(Convert.toStr(paramsObj.get(GenConstants.TREE_CODE)));
+            return StringUtil.toCamelCase(ConvertUtil.toStr(paramsObj.get(GenConstants.TREE_CODE)));
         }
         return StringUtil.EMPTY;
     }

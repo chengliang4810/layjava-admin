@@ -10,7 +10,7 @@ import com.layjava.common.core.utils.reflect.ReflectUtil;
 import com.layjava.common.excel.annotation.ExcelEnumFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.annotation.AnnotationUtil;
-import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 
 import java.lang.reflect.Field;
@@ -56,7 +56,7 @@ public class ExcelEnumConvert implements Converter<Object> {
         enumCodeToTextMap.forEach((key, value) -> enumTextToCodeMap.put(value, key));
         // 应该从text -> code中查找
         Object codeValue = enumTextToCodeMap.get(textValue);
-        return Convert.convert(contentProperty.getField().getType(), codeValue);
+        return ConvertUtil.convert(contentProperty.getField().getType(), codeValue);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ExcelEnumConvert implements Converter<Object> {
             return new WriteCellData<>("" );
         }
         Map<Object, String> enumValueMap = beforeConvert(contentProperty);
-        String value = Convert.toStr(enumValueMap.get(object), "" );
+        String value = ConvertUtil.toStr(enumValueMap.get(object), "" );
         return new WriteCellData<>(value);
     }
 

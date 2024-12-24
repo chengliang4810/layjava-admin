@@ -1,7 +1,5 @@
 package com.layjava.common.excel.convert;
 
-import org.dromara.hutool.core.annotation.AnnotationUtil;
-import org.dromara.hutool.core.convert.Convert;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.GlobalConfiguration;
@@ -13,6 +11,8 @@ import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.excel.annotation.ExcelDictFormat;
 import com.layjava.common.excel.utils.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.annotation.AnnotationUtil;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.Solon;
 
@@ -47,7 +47,7 @@ public class ExcelDictConvert implements Converter<Object> {
         } else {
             value = Solon.context().getBean(DictService.class).getDictValue(type, label, anno.separator());
         }
-        return Convert.convert(contentProperty.getField().getType(), value);
+        return ConvertUtil.convert(contentProperty.getField().getType(), value);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class ExcelDictConvert implements Converter<Object> {
         }
         ExcelDictFormat anno = getAnnotation(contentProperty.getField());
         String type = anno.dictType();
-        String value = Convert.toStr(object);
+        String value = ConvertUtil.toStr(object);
         String label;
         if (StringUtil.isBlank(type)) {
             label = ExcelUtil.convertByExp(value, anno.readConverterExp(), anno.separator());

@@ -1,7 +1,6 @@
 package com.layjava.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import org.dromara.hutool.core.convert.Convert;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.R;
 import com.layjava.common.core.utils.StringUtil;
@@ -11,6 +10,7 @@ import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysDeptBo;
 import com.layjava.system.domain.vo.SysDeptVo;
 import com.layjava.system.service.ISysDeptService;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.noear.solon.annotation.*;
 
 import java.util.List;
@@ -49,7 +49,7 @@ public class SysDeptController extends BaseController {
     public R<List<SysDeptVo>> excludeChild(Long deptId) {
         List<SysDeptVo> depts = deptService.selectDeptList(new SysDeptBo());
         depts.removeIf(d -> d.getDeptId().equals(deptId)
-                || StringUtil.splitList(d.getAncestors()).contains(Convert.toStr(deptId)));
+                || StringUtil.splitList(d.getAncestors()).contains(ConvertUtil.toStr(deptId)));
         return R.ok(depts);
     }
 

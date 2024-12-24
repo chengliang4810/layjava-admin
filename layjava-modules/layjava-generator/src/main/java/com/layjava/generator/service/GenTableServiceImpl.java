@@ -32,6 +32,7 @@ import org.apache.velocity.app.Velocity;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
+import org.dromara.hutool.core.util.ByteUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.data.annotation.Tran;
@@ -479,7 +480,7 @@ public class GenTableServiceImpl implements IGenTableService {
             try {
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
-                IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
+                IoUtil.write(zip, false, sw.toString().getBytes(StandardCharsets.UTF_8));
                 zip.flush();
                 zip.closeEntry();
             } catch (IOException e) {

@@ -2,7 +2,7 @@ package com.layjava.system.service.impl;
 
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.collection.ListUtil;
-import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.tree.MapTree;
 import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
@@ -149,7 +149,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
     @Override
     public String selectDeptNameByIds(String deptIds) {
         List<String> list = new ArrayList<>();
-        for (Long id : StringUtil.splitTo(deptIds, Convert::toLong)) {
+        for (Long id : StringUtil.splitTo(deptIds, ConvertUtil::toLong)) {
             SysDeptVo vo = this.selectDeptById(id);
             if (ObjUtil.isNotNull(vo)) {
                 list.add(vo.getDeptName());
@@ -285,7 +285,7 @@ public class SysDeptServiceImpl implements ISysDeptService, DeptService {
      */
     private void updateParentDeptStatusNormal(SysDept dept) {
         String ancestors = dept.getAncestors();
-        Long[] deptIds = Convert.toLongArray(ancestors);
+        Long[] deptIds = ConvertUtil.toLongArray(ancestors);
         SysDept sysDept = UpdateWrapper.of(SysDept.class)
                 .set(SysDept::getStatus, UserConstants.DEPT_NORMAL).toEntity();
         baseMapper.updateByQuery(sysDept, QueryWrapper.create().from(SYS_DEPT).where(SYS_DEPT.DEPT_ID.in(Arrays.asList(deptIds))));

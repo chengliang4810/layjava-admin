@@ -1,12 +1,12 @@
 package com.layjava.common.mybatis.helper;
 
-import org.dromara.hutool.core.convert.Convert;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.mybatis.enums.DataBaseType;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.datasource.FlexDataSource;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.noear.solon.Solon;
 
 import javax.sql.DataSource;
@@ -62,7 +62,7 @@ public class DataBaseHelper {
 
     public static String findInSet(Object var1, String var2) {
         DataBaseType dataBasyType = getDataBaseType();
-        String var = Convert.toStr(var1);
+        String var = ConvertUtil.toStr(var1);
         if (dataBasyType == DataBaseType.SQL_SERVER) {
             // charindex(',100,' , ',0,100,101,') <> 0
             return "charindex(',%s,' , ','+%s+',') <> 0".formatted(var, var2);

@@ -1,7 +1,6 @@
 package com.layjava.generator.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import org.dromara.hutool.core.convert.Convert;
 import com.layjava.common.core.domain.R;
 import com.layjava.common.core.utils.DateUtil;
 import com.layjava.common.log.annotation.Log;
@@ -14,6 +13,7 @@ import com.layjava.generator.domain.GenTable;
 import com.layjava.generator.domain.GenTableColumn;
 import com.layjava.generator.service.IGenTableService;
 import lombok.RequiredArgsConstructor;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.validation.annotation.Validated;
@@ -97,7 +97,7 @@ public class GenController extends BaseController {
     @SaCheckPermission("tool:gen:import" )
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public R<Void> importTableSave(String tables, String dataName) {
-        String[] tableNames = Convert.toStrArray(tables);
+        String[] tableNames = ConvertUtil.toStrArray(tables);
         // 查询表信息
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames, dataName);
         genTableService.importGenTable(tableList, dataName);
@@ -168,7 +168,7 @@ public class GenController extends BaseController {
     @SaCheckPermission("tool:gen:code" )
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
     public DownloadedFile batchGenCode(String tableIdStr) throws IOException {
-        String[] tableIds = Convert.toStrArray(tableIdStr);
+        String[] tableIds = ConvertUtil.toStrArray(tableIdStr);
         byte[] data = genTableService.downloadCode(tableIds);
         return genCode(data);
     }

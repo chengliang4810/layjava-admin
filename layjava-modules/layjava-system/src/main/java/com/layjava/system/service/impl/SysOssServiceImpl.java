@@ -1,6 +1,6 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.OssService;
@@ -70,7 +70,7 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
     @Override
     public String selectUrlByIds(String ossIds) {
         List<String> list = new ArrayList<>();
-        for (Long id : StringUtil.splitTo(ossIds, Convert::toLong)) {
+        for (Long id : StringUtil.splitTo(ossIds, ConvertUtil::toLong)) {
             SysOssVo vo = this.getById(id);
             if (ObjUtil.isNotNull(vo)) {
                 try {

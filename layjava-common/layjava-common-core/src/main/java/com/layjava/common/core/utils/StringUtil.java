@@ -3,7 +3,7 @@ package com.layjava.common.core.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.lang.Validator;
 import org.dromara.hutool.core.text.AntPathMatcher;
 import org.dromara.hutool.core.text.StrUtil;
@@ -276,7 +276,7 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils {
      * @return 分割后的数据列表
      */
     public static List<String> splitList(String str) {
-        return splitTo(str, Convert::toStr);
+        return splitTo(str, ConvertUtil::toStr);
     }
 
     /**
@@ -287,7 +287,7 @@ public class StringUtil extends org.apache.commons.lang3.StringUtils {
      * @return 分割后的数据列表
      */
     public static List<String> splitList(String str, String separator) {
-        return splitTo(str, separator, Convert::toStr);
+        return splitTo(str, separator, ConvertUtil::toStr);
     }
 
     /**

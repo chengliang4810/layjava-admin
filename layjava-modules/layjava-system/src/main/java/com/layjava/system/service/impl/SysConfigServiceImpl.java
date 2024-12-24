@@ -1,6 +1,6 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.convert.Convert;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.exception.ServiceException;
@@ -86,7 +86,7 @@ public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
         if (ObjUtil.isNull(retConfig)) {
             return false;
         }
-        return Convert.toBoolean(retConfig.getConfigValue());
+        return ConvertUtil.toBoolean(retConfig.getConfigValue());
     }
 
     /**

@@ -1,7 +1,6 @@
 package com.layjava.system.service.impl;
 
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.convert.Convert;
 import com.layjava.common.core.utils.StreamUtil;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.system.domain.SysDept;
@@ -11,6 +10,7 @@ import com.layjava.system.mapper.SysRoleDeptMapper;
 import com.layjava.system.service.ISysDataScopeService;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.convert.ConvertUtil;
 import org.noear.solon.annotation.Component;
 
 import java.util.List;
@@ -41,7 +41,7 @@ public class SysDataScopeServiceImpl implements ISysDataScopeService {
                 QueryWrapper.create().from(SYS_ROLE_DEPT).select(SYS_ROLE_DEPT.DEPT_ID)
                         .where(SYS_ROLE_DEPT.ROLE_ID.eq(roleId)));
         if (CollUtil.isNotEmpty(list)) {
-            return StreamUtil.join(list, rd -> Convert.toStr(rd.getDeptId()));
+            return StreamUtil.join(list, rd -> ConvertUtil.toStr(rd.getDeptId()));
         }
         return null;
     }
@@ -54,7 +54,7 @@ public class SysDataScopeServiceImpl implements ISysDataScopeService {
         List<Long> ids = StreamUtil.toList(deptList, SysDept::getDeptId);
         ids.add(deptId);
         if (CollUtil.isNotEmpty(ids)) {
-            return StreamUtil.join(ids, Convert::toStr);
+            return StreamUtil.join(ids, ConvertUtil::toStr);
         }
         return null;
     }
