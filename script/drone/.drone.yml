@@ -3,12 +3,29 @@ type: docker
 name: default
 
 steps:
-  - name: maven-package
+  # maven 打包jar
+  - name: package-jar
     image: maven:3.9.9-amazoncorretto-17
     commands:
-      - echo hello-world
       - mvn clean package -DskipTests=true
+    # 指定runner名称
+    node: [ "layjava-runner" ]
+    # 触发条件
+    trigger:
+      event:
+        - push
+    # 分支条件
+    when:
+      branch:
+        - master
 
+  # 构建docker镜像
+  - name: build-docker-image
+    image: plugins/docker
+    privileged: true
+    settings:
+      # 项目根据的Dockerfile
+      dockerfile: Dockerfile
     # 指定runner名称
     node: ["layjava-runner"]
     # 触发条件
