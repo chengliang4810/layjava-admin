@@ -1,0 +1,21 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: maven-package
+    image: maven:3-jdk-10
+    commands:
+      - echo hello-world
+      - mvn clean package -DskipTests=true
+
+    # 指定runner名称
+    node: ["layjava-runner"]
+    # 触发条件
+    trigger:
+      event:
+        - push
+    # 分支条件
+    when:
+      branch:
+        - master
