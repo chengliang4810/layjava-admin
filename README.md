@@ -1,5 +1,7 @@
 # layjava-admin
 
+[![Build Status](https://drone.wangsr.vip/api/badges/opensolon/layjava-admin/status.svg)](https://drone.wangsr.vip/opensolon/layjava-admin)
+
 #### 介绍
 layjava admin（“累”Java） 是基于solon的管理系统， 
 > 基于 RuoYi-Vue-Plus 代码基础上进行 改造升级(不兼容原框架)
