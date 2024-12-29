@@ -210,8 +210,7 @@ public class GenTableServiceImpl implements IGenTableService {
     public List<GenTable> selectDbTableListByNames(String[] tableNames, String dataName) {
         try {
             DataSourceKey.use(dataName);
-            List<GenTable> genTables = baseMapper.selectDbTableListByNames(tableNames);
-            return genTables;
+            return baseMapper.selectDbTableListByNames(tableNames);
         } finally {
             DataSourceKey.clear();
         }
