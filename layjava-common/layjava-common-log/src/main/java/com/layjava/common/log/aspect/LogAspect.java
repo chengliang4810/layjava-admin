@@ -2,6 +2,7 @@ package com.layjava.common.log.aspect;
 
 import cn.dev33.satoken.router.SaHttpMethod;
 import com.alibaba.ttl.TransmittableThreadLocal;
+import com.layjava.common.core.constant.HttpStatus;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
@@ -49,6 +50,13 @@ public class LogAspect implements RouterInterceptor {
 
     @Override
     public void doIntercept(Context ctx, Handler mainHandler, RouterInterceptorChain chain) throws Throwable {
+
+        if (mainHandler == null){
+            log.error("Resource Not Found : {}", ctx.path());
+            ctx.status(HttpStatus.NOT_FOUND);
+            return;
+        }
+
         Log anno = null;
         Action action = ctx.action();
         if (action != null) {
