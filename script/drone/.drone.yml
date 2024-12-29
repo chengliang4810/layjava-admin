@@ -22,7 +22,6 @@ steps:
   # 构建docker镜像
   - name: build-docker-image
     image: plugins/docker
-    privileged: true
     settings:
       # 项目根据的Dockerfile
       dockerfile: Dockerfile
