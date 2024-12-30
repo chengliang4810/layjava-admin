@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: koderover.tencentcloudcr.com/koderover-demo/backend:latest
+          image: registry.cn-chengdu.aliyuncs.com/layjava/admin-api:latest
           imagePullPolicy: Always
           command:
             - /workspace/backend
