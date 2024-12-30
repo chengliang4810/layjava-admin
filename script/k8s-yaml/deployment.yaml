@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app.kubernetes.io/name: demo
+    app.kubernetes.io/instance: backend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: demo
+      app.kubernetes.io/instance: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: demo
+        app.kubernetes.io/instance: backend
+    spec:
+      containers:
+        - name: backend
+          image: koderover.tencentcloudcr.com/koderover-demo/backend:latest
+          imagePullPolicy: Always
+          command:
+            - /workspace/backend
+          ports:
+            - protocol: TCP
+              containerPort: 8989
+          resources:
+            limits:
+              memory: 50Mi
+              cpu: 50m
+      imagePullSecrets:
+        - name: default-registry-secret
