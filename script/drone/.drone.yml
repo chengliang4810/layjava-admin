@@ -6,6 +6,9 @@ steps:
   # maven 打包jar
   - name: package-jar
     image: maven:3.9.9-amazoncorretto-17
+    volumes: # 将容器内目录挂载到宿主机，仓库需要开启Trusted设 置
+      - name: maven_cache
+        path: /root/.m2 # 将maven下载依赖的目录挂载出来，防止重复下载
     commands:
       - mvn clean package -DskipTests=true
     # 指定runner名称
@@ -22,9 +25,11 @@ steps:
   # 构建docker镜像
   - name: build-docker-image
     image: plugins/docker
-    settings:
-      # 项目根据的Dockerfile
-      dockerfile: Dockerfile
+    pull: if-not-exists
+    commands:
+      - docker build -t xxxx/work-wl/drone-test:${DRONE_BUILD_NUMBER} .
+      - docker stop spring && docker rm spring
+      - docker run -d -p 8081:8081 --ulimit nofile=1024 --name spring registry.cn-chengdu.aliyuncs.com/work-wl/drone-test:${DRONE_BUILD_NUMBER}
     # 指定runner名称
     node: ["layjava-runner"]
     # 触发条件
@@ -35,3 +40,12 @@ steps:
     when:
       branch:
         - master
+
+
+volumes:
+  - name: maven_cache
+    host:
+      path: /storge/drone/cache
+  - name: socker
+    host:
+      path: /var/run/docker.sock
