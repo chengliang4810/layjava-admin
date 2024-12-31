@@ -2,7 +2,7 @@ kind: pipeline
 type: docker
 name: default
 # 指定runner名称
-node: [ "wangsr-docker-runner" ]
+node: ["wangsr-docker-runner"]
 
 steps:
   # maven 打包jar
@@ -49,25 +49,25 @@ steps:
       branch: master
 
 #  重启layjava-admin-api容器（同一台机器使用）
-  - name: restart-docker-image
-    image: plugins/docker
-    pull: if-not-exists
-    # 指定runner名称
-    node: [ "layjava-docker-runner" ]
-    volumes:
-      - name: socker
-        path: /var/run/docker.sock
-    commands:
-      - docker ps
-      - docker restart layjava-admin-api
-    # 触发条件
-    trigger:
-      event:
-        - push
-      branch:
-        - master
-    depends_on:
-      - deployment-jar
+#  - name: restart-docker-image
+#    image: plugins/docker
+#    pull: if-not-exists
+#    # 指定runner名称
+#    node: [ "layjava-docker-runner" ]
+#    volumes:
+#      - name: socker
+#        path: /var/run/docker.sock
+#    commands:
+#      - docker ps
+#      - docker restart layjava-admin-api
+#    # 触发条件
+#    trigger:
+#      event:
+#        - push
+#      branch:
+#        - master
+#    depends_on:
+#      - deployment-jar
 
 # 钉钉通知
   - name: dingtalk
@@ -118,7 +118,7 @@ volumes:
 kind: pipeline
 type: docker
 name: restart
-node: [ "layjava-docker-runner"]
+node: ["layjava-docker-runner"]
 
 steps:
   - name: restart-docker-image
