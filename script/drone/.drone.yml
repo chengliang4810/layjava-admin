@@ -15,8 +15,10 @@ steps:
     commands:
       # 打包jar
       - mvn clean package -DskipTests=true
-      # 复制jar到指定目录
-      - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
+      # 复制jar到指定目录, 本机部署时有用
+      # - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
+      # 复制jar到当前目录， scp发送
+      - cp layjava-admin/target/layjava-admin.jar ./layjava-admin.jar
     # 指定runner名称
     node: [ "wangsr-docker-runner" ]
     # 触发条件
@@ -40,12 +42,6 @@ steps:
       port: 22
       target: /app/layjava-admin/api
       source: layjava-admin.jar
-    commands:
-      - pwd
-      - ls -l
-    volumes:
-      - name: app
-        path: /jar
     depends_on:
       - package-jar
     when:
