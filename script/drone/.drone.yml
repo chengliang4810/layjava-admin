@@ -15,7 +15,7 @@ steps:
     commands:
       # 打包jar
       - mvn clean package -DskipTests=true
-      # 复制jar到指定目录, 本机部署时有用
+      # 复制jar到指定目录, 与主机目录共享
       # - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
       # 复制jar到当前目录， scp发送
       - cp layjava-admin/target/layjava-admin.jar ./layjava-admin.jar
@@ -47,10 +47,10 @@ steps:
     when:
       branch: master
 
-  # 重启layjava-admin-api容器
+#  重启layjava-admin-api容器（同一台机器使用）
   - name: restart-docker-image
     image: plugins/docker
-    # pull: if-not-exists
+    pull: if-not-exists
     # 指定runner名称
     node: [ "layjava-docker-runner" ]
     volumes:
@@ -102,3 +102,16 @@ volumes:
   - name: dingtalk
     host:
       path: /app/dingtalk
+
+#---
+#kind: pipeline
+#type: docker
+#name: default
+#node: [ "layjava-docker-runner"]
+#
+## 映射主机目录
+#volumes:
+#  # docker的
+#  - name: socker
+#    host:
+#      path: /var/run/docker.sock
