@@ -133,7 +133,7 @@ steps:
       - docker ps
       - docker restart layjava-admin-api
     depends_on:
-      - default
+      - deployment-jar
     trigger:
       event:
         - push
