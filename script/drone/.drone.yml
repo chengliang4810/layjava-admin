@@ -1,6 +1,13 @@
+# drone配置文件说明  https://docs.drone.io/yaml/docker/#the-node-attribute
 kind: pipeline
 type: docker
 name: default
+# 触发条件
+trigger:
+  branch:
+    - master
+  event:
+    - push
 
 steps:
   # maven 打包jar
@@ -18,15 +25,9 @@ steps:
       - mvn clean package -DskipTests=true
       # 复制jar到指定目录, 与主机目录共享
       # - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
-      # 复制jar到当前目录， scp发送
+      # 复制jar到当前目录， 通过linux的scp发送到远程机器
       - cp layjava-admin/target/layjava-admin.jar ./layjava-admin.jar
-    # 触发条件
-    trigger:
-      branch:
-        - master
-      event:
-        - push
-
+  # 部署jar到远程机器
   - name: deployment-jar
     image: appleboy/drone-scp
     pull: if-not-exists
@@ -43,11 +44,12 @@ steps:
       source: layjava-admin.jar
     depends_on:
       - package-jar
-    when:
-      branch: master
+  # 到远程机器上重启layjava-admin-api
   - name: restart-remote-docker-image
     image: appleboy/drone-ssh
     pull: if-not-exists
+    depends_on:
+      - deployment-jar
     settings:
       host:
         from_secret: remote_host
@@ -68,14 +70,7 @@ steps:
 #      - name: socker
 #        path: /var/run/docker.sock
 #    commands:
-#      - docker ps
 #      - docker restart layjava-admin-api
-#    # 触发条件
-#    trigger:
-#      event:
-#        - push
-#      branch:
-#        - master
 #    depends_on:
 #      - deployment-jar
 
