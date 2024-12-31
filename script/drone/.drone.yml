@@ -56,11 +56,6 @@ steps:
       type: markdown
     depends_on:
       - deployment-jar
-    when:
-      branch:
-        -master
-      event:
-        - push
 
   # 构建docker镜像
 #  - name: restart-docker-image
