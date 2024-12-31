@@ -50,10 +50,16 @@ steps:
 # 钉钉通知
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
+    # 指定runner名称
+    node: [ "wangsr-docker-runner" ]
+    tpl: /tpl/markdown.tpl
     settings:
       token:
         from_secret: dingding_token
       type: markdown
+    volumes: # 将容器内目录挂载到宿主机，仓库需要开启Trusted设 置
+      - name: dingtalk
+        path: /tpl
     depends_on:
       - deployment-jar
 
@@ -85,3 +91,6 @@ volumes:
   - name: app
     host:
       path: /app/layjava-admin/api
+  - name: dingtalk
+    host:
+      path: /app/dingtalk
