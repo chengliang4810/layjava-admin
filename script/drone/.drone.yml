@@ -52,18 +52,19 @@ steps:
     image: lddsb/drone-dingtalk-message
     # 指定runner名称
     node: [ "wangsr-docker-runner" ]
-    tpl: /tpl/markdown.tpl
     settings:
+      type: markdown
+      tpl: /tpl/markdown.tpl
       token:
         from_secret: dingding_token
-      type: markdown
     volumes: # 将容器内目录挂载到宿主机，仓库需要开启Trusted设 置
       - name: dingtalk
         path: /tpl
     depends_on:
+      - package-jar
       - deployment-jar
 
-  # 构建docker镜像
+  # 构建docker镜像, 本地部署时有用
 #  - name: restart-docker-image
 #    image: plugins/docker
 #    pull: if-not-exists
