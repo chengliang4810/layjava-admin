@@ -2,7 +2,7 @@ kind: pipeline
 type: docker
 name: default
 # 指定runner名称
-node: ["wangsr-docker-runner"]
+node: "wangsr-docker-runner"
 
 steps:
   # maven 打包jar
@@ -118,7 +118,7 @@ volumes:
 kind: pipeline
 type: docker
 name: restart
-node: ["layjava-docker-runner"]
+node: "layjava-docker-runner"
 
 steps:
   - name: restart-docker-image
