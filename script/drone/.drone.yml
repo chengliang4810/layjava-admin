@@ -45,7 +45,7 @@ steps:
       - ls -l
     volumes:
       - name: app
-        path: ./
+        path: /jar
     depends_on:
       - package-jar
     when:
