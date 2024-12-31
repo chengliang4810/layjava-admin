@@ -11,7 +11,7 @@ steps:
       - name: maven_cache
         path: /root/.m2 # 将maven下载依赖的目录挂载出来，防止重复下载\
       - name: app
-        path: /app/
+        path: /app
     commands:
       # 打包jar
       - mvn clean package -DskipTests=true
@@ -38,11 +38,11 @@ steps:
       password:
         from_secret: remote_ps
       port: 22
-      target: /app/layjava-admin/api/
-      source: /app/*.jar
+      target: /app/layjava-admin/api
+      source: /app/layjava-admin.jar
     volumes:
       - name: app
-        path: /app/
+        path: /app
     depends_on:
       - package-jar
     when:
