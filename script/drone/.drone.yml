@@ -26,8 +26,11 @@ steps:
     when:
       branch:
         - master
+
   - name: copy-artifact
     image: appleboy/drone-scp
+    # 指定runner名称
+    node: [ "wangsr-docker-runner" ]
     settings:
       host:
         from_secret: remote_host
