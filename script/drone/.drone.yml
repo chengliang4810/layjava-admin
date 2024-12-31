@@ -39,10 +39,13 @@ steps:
         from_secret: remote_ps
       port: 22
       target: /app/layjava-admin/api
-      source: /app/layjava-admin.jar
+      source: layjava-admin.jar
+    commands:
+      - pwd
+      - ls -l
     volumes:
       - name: app
-        path: /app
+        path: ./
     depends_on:
       - package-jar
     when:
