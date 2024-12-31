@@ -29,7 +29,6 @@ steps:
   # 部署jar到远程机器
   - name: deployment-jar
     image: appleboy/drone-scp
-    pull: if-not-exists
     settings:
       host:
         from_secret: remote_host
@@ -46,7 +45,7 @@ steps:
   # 到远程机器上重启layjava-admin-api
   - name: restart-remote-docker-image
     image: appleboy/drone-ssh
-    pull: if-not-exists
+    # pull: if-not-exists
     depends_on:
       - deployment-jar
     settings:
