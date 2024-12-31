@@ -17,7 +17,7 @@ steps:
       # 复制jar到指定目录
       - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
     # 指定runner名称
-    node: [ "layjava-docker-runner" ]
+    node: [ "wangsr-docker-runner" ]
     # 触发条件
     trigger:
       event:
@@ -26,21 +26,39 @@ steps:
     when:
       branch:
         - master
+  - name: copy-artifact
+    image: appleboy/drone-scp
+    settings:
+      host:
+        from_secret: remote_host
+      username:
+        from_secret: remote_user
+      password:
+        from_secret: remote_ps
+      port: 22
+      target: /app/layjava-admin/api
+    volumes:
+      - name: app
+        path: /app/
+    depends_on:
+      - build
+    when:
+      branch: master
 
   # 构建docker镜像
-  - name: restart-docker-image
-    image: plugins/docker
-    pull: if-not-exists
-    commands:
-      - docker restart layjava-admin-api
-    # 指定runner名称
-    node: ["layjava-docker-runner"]
-    # 触发条件
-    trigger:
-      event:
-        - push
-      branch:
-        - master
+#  - name: restart-docker-image
+#    image: plugins/docker
+#    pull: if-not-exists
+#    commands:
+#      - docker restart layjava-admin-api
+#    # 指定runner名称
+#    node: ["layjava-docker-runner"]
+#    # 触发条件
+#    trigger:
+#      event:
+#        - push
+#      branch:
+#        - master
 
 # 映射主机目录
 volumes:
