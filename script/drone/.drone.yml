@@ -37,8 +37,8 @@ steps:
       password:
         from_secret: remote_ps
       port: 22
-      target: /app/layjava-admin/api/layjava-admin.jar
-      source: /app/layjava-admin.jar
+      target: /app/layjava-admin/api/
+      source: /app/
     volumes:
       - name: app
         path: /app/
