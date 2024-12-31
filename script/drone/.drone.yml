@@ -38,7 +38,7 @@ steps:
         from_secret: remote_ps
       port: 22
       target: /app/layjava-admin/api
-      source: /app/layjava-admin.jar
+      source: layjava-admin.jar
     volumes:
       - name: app
         path: /app/
