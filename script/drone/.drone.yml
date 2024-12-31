@@ -10,9 +10,12 @@ steps:
       - name: maven_cache
         path: /root/.m2 # 将maven下载依赖的目录挂载出来，防止重复下载\
       - name: app
-        path: layjava-admin/target/
+        path: /app/
     commands:
+      # 打包jar
       - mvn clean package -DskipTests=true
+      # 复制jar到指定目录
+      - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
     # 指定runner名称
     node: [ "layjava-docker-runner" ]
     # 触发条件
