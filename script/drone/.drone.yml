@@ -20,14 +20,12 @@ steps:
     node: [ "wangsr-docker-runner" ]
     # 触发条件
     trigger:
-      event:
-        - push
-    # 分支条件
-    when:
       branch:
         - master
+      event:
+        - push
 
-  - name: copy-artifact
+  - name: deployment-jar
     image: appleboy/drone-scp
     # 指定runner名称
     node: [ "wangsr-docker-runner" ]
@@ -44,7 +42,7 @@ steps:
       - name: app
         path: /app/
     depends_on:
-      - build
+      - package-jar
     when:
       branch: master
 
