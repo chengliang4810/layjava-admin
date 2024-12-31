@@ -41,6 +41,7 @@ steps:
       branch:
         - master
 
+# 映射主机目录
 volumes:
   - name: maven_cache
     host:
