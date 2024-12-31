@@ -91,7 +91,6 @@ steps:
       - deployment-jar
       - restart-docker-image
 
-
 # 映射主机目录
 volumes:
   # maven仓库目录，避免重复下载依赖
