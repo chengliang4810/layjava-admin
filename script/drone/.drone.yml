@@ -9,6 +9,7 @@ steps:
   # maven 打包jar
   - name: package-jar
     image: maven:3.9.9-amazoncorretto-17
+    pull: if-not-exists
     timeout: 3m
     volumes: # 将容器内目录挂载到宿主机，仓库需要开启Trusted设 置
       - name: maven_cache
@@ -31,6 +32,7 @@ steps:
 
   - name: deployment-jar
     image: appleboy/drone-scp
+    pull: if-not-exists
     # 指定runner名称
     node: [ "wangsr-docker-runner" ]
     settings:
@@ -48,6 +50,20 @@ steps:
       - package-jar
     when:
       branch: master
+  - name: restart-remote-docker-image
+    image: appleboy/drone-ssh
+    pull: if-not-exists
+    settings:
+      host:
+        from_secret: remote_host
+      username:
+        from_secret: remote_user
+      password:
+        from_secret: remote_ps
+      port: 22
+      command_timeout: 2m
+      script:
+        - docker restart layjava-admin-api
 
 #  重启layjava-admin-api容器（同一台机器使用）
 #  - name: restart-docker-image
@@ -73,6 +89,7 @@ steps:
 # 钉钉通知
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
+    pull: if-not-exists
     # 指定runner名称
     node: [ "wangsr-docker-runner" ]
     settings:
@@ -114,35 +131,3 @@ volumes:
   - name: dingtalk
     host:
       path: /app/dingtalk
-
----
-kind: pipeline
-type: docker
-name: restart
-node:
-  name: layjava-docker-runner
-
-steps:
-  - name: restart-docker-image
-    image: plugins/docker
-    pull: if-not-exists
-    volumes:
-      - name: socker
-        path: /var/run/docker.sock
-    commands:
-      - docker ps
-      - docker restart layjava-admin-api
-    depends_on:
-      - deployment-jar
-    trigger:
-      event:
-        - push
-      branch:
-        - master
-
-# 映射主机目录
-volumes:
-  # docker的
-  - name: socker
-    host:
-      path: /var/run/docker.sock
