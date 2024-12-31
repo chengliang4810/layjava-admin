@@ -1,9 +1,6 @@
 kind: pipeline
 type: docker
 name: default
-# 指定runner名称
-node:
-  name: wangsr-docker-runner
 
 steps:
   # maven 打包jar
@@ -33,8 +30,6 @@ steps:
   - name: deployment-jar
     image: appleboy/drone-scp
     pull: if-not-exists
-    # 指定runner名称
-    node: [ "wangsr-docker-runner" ]
     settings:
       host:
         from_secret: remote_host
@@ -69,8 +64,6 @@ steps:
 #  - name: restart-docker-image
 #    image: plugins/docker
 #    pull: if-not-exists
-#    # 指定runner名称
-#    node: [ "layjava-docker-runner" ]
 #    volumes:
 #      - name: socker
 #        path: /var/run/docker.sock
@@ -90,8 +83,6 @@ steps:
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
     pull: if-not-exists
-    # 指定runner名称
-    node: [ "wangsr-docker-runner" ]
     settings:
       type: markdown
       tpl: "# [TPL_REPO_SHORT_NAME] 部署[TPL_BUILD_STATUS], 耗时:[TPL_BUILD_CONSUMING]秒
