@@ -51,10 +51,13 @@ steps:
   - name: restart-docker-image
     image: plugins/docker
     pull: if-not-exists
+    # 指定runner名称
+    node: [ "layjava-docker-runner" ]
+    volumes:
+      - name: socker
+        path: /var/run/docker.sock
     commands:
         - docker restart layjava-admin-api
-    # 指定runner名称
-    node: ["layjava-docker-runner"]
     # 触发条件
     trigger:
       event:
