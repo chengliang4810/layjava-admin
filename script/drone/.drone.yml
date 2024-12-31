@@ -54,6 +54,13 @@ steps:
       token:
         from_secret: dingding_token
       type: markdown
+    depends_on:
+      - deployment-jar
+    when:
+      branch:
+        -master
+      event:
+        - push
 
   # 构建docker镜像
 #  - name: restart-docker-image
