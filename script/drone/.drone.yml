@@ -13,7 +13,6 @@ steps:
   # maven 打包jar
   - name: package-jar
     image: maven:3.9.9-amazoncorretto-17
-    pull: if-not-exists
     timeout: 3m
     volumes: # 将容器内目录挂载到宿主机，仓库需要开启Trusted设 置
       - name: maven_cache
