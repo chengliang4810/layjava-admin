@@ -76,6 +76,7 @@ steps:
     settings:
       type: markdown
       tpl: /tpl/markdown.tpl
+      secret: SEC6a614e73a9880edfb83e875e63306a40bef8ff73c98e37046922303a4a7613c0
       token:
         from_secret: dingding_token
     volumes: # 将容器内目录挂载到宿主机，仓库需要开启Trusted设 置
