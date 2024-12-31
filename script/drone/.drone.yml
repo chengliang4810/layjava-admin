@@ -48,11 +48,12 @@ steps:
       branch: master
 
 # 钉钉通知
-#  - name: dingtalk
-#    image: lddsb/drone-dingtalk-message
-#    settings:
-#      token: your-dingtalk-robot-access-token
-#      type: markdown
+  - name: dingtalk
+    image: lddsb/drone-dingtalk-message
+    settings:
+      token:
+        from_secret: dingding_token
+      type: markdown
 
   # 构建docker镜像
 #  - name: restart-docker-image
