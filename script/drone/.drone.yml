@@ -47,6 +47,23 @@ steps:
     when:
       branch: master
 
+  # 重启layjava-admin-api容器
+  - name: restart-docker-image
+    image: plugins/docker
+    pull: if-not-exists
+    commands:
+        - docker restart layjava-admin-api
+    # 指定runner名称
+    node: ["layjava-docker-runner"]
+    # 触发条件
+    trigger:
+      event:
+        - push
+      branch:
+        - master
+    depends_on:
+      - deployment-jar
+
 # 钉钉通知
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
@@ -63,21 +80,7 @@ steps:
     depends_on:
       - package-jar
       - deployment-jar
-
-  # 构建docker镜像, 本地部署时有用
-#  - name: restart-docker-image
-#    image: plugins/docker
-#    pull: if-not-exists
-#    commands:
-#      - docker restart layjava-admin-api
-#    # 指定runner名称
-#    node: ["layjava-docker-runner"]
-#    # 触发条件
-#    trigger:
-#      event:
-#        - push
-#      branch:
-#        - master
+      - restart-docker-image
 
 # 映射主机目录
 volumes:
