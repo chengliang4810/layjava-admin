@@ -36,8 +36,6 @@ steps:
     trigger:
       event:
         - push
-    # 分支条件
-    when:
       branch:
         - master
 
