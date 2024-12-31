@@ -1,6 +1,8 @@
 kind: pipeline
 type: docker
 name: default
+# 指定runner名称
+node: [ "wangsr-docker-runner" ]
 
 steps:
   # maven 打包jar
@@ -19,8 +21,6 @@ steps:
       # - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
       # 复制jar到当前目录， scp发送
       - cp layjava-admin/target/layjava-admin.jar ./layjava-admin.jar
-    # 指定runner名称
-    node: [ "wangsr-docker-runner" ]
     # 触发条件
     trigger:
       branch:
@@ -40,6 +40,7 @@ steps:
       password:
         from_secret: remote_ps
       port: 22
+      command_timeout: 3m
       target: /app/layjava-admin/api
       source: layjava-admin.jar
     depends_on:
@@ -113,15 +114,33 @@ volumes:
     host:
       path: /app/dingtalk
 
-#---
-#kind: pipeline
-#type: docker
-#name: default
-#node: [ "layjava-docker-runner"]
-#
-## 映射主机目录
-#volumes:
-#  # docker的
-#  - name: socker
-#    host:
-#      path: /var/run/docker.sock
+---
+kind: pipeline
+type: docker
+name: restart
+node: [ "layjava-docker-runner"]
+
+steps:
+  - name: restart-docker-image
+    image: plugins/docker
+    pull: if-not-exists
+    volumes:
+      - name: socker
+        path: /var/run/docker.sock
+    commands:
+      - docker ps
+      - docker restart layjava-admin-api
+    depends_on:
+      - default
+    trigger:
+      event:
+        - push
+      branch:
+        - master
+
+# 映射主机目录
+volumes:
+  # docker的
+  - name: socker
+    host:
+      path: /var/run/docker.sock
