@@ -3,11 +3,11 @@ kind: pipeline
 type: docker
 name: default
 # 触发条件
-trigger:
-  branch:
-    - master
-  event:
-    - push
+#trigger:
+#  branch:
+#    - master
+#  event:
+#    - push
 
 steps:
   # maven 打包jar
