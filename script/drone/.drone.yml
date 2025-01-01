@@ -88,7 +88,7 @@ steps:
     depends_on:
       - package-jar
       - deployment-jar
-      - restart-docker-image
+      - restart-remote-docker-image
 
 # 映射主机目录
 volumes:
