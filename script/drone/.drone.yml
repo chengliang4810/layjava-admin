@@ -76,10 +76,10 @@ steps:
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
     pull: if-not-exists
-    when:
-      status:
-        - success
-        - failure
+#    when:
+#      status:
+#        - success
+#        - failure
     settings:
       type: markdown
       tpl: /tpl/markdown.tpl
