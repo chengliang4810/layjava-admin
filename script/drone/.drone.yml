@@ -3,11 +3,11 @@ kind: pipeline
 type: docker
 name: default
 # 触发条件
-#trigger:
-#  branch:
-#    - master
-#  event:
-#    - push
+trigger:
+  branch:
+    - master
+  event:
+    - push
 
 steps:
   # maven 打包jar
@@ -43,7 +43,7 @@ steps:
     depends_on:
       - package-jar
   # 到远程机器上重启layjava-admin-api
-  - name: restart-remote-docker-image
+  - name: restart
     image: appleboy/drone-ssh
     # pull: if-not-exists
     depends_on:
@@ -98,7 +98,7 @@ steps:
     depends_on:
       - package-jar
       - deployment-jar
-      - restart-remote-docker-image
+      - restart
 
 # 映射主机目录
 volumes:
