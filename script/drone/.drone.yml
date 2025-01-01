@@ -25,7 +25,7 @@ steps:
       # 复制jar到指定目录, 与主机目录共享
       # - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
       # 复制jar到当前目录， 通过linux的scp发送到远程机器
-      - cp layjava-admin/target/layjava-admin.jar ./layjava-admin.jar
+      # - cp layjava-admin/target/layjava-admin.jar ./layjava-admin.jar
   # 部署jar到远程机器
   - name: deployment-jar
     image: appleboy/drone-scp
@@ -76,6 +76,10 @@ steps:
   - name: dingtalk
     image: lddsb/drone-dingtalk-message
     pull: if-not-exists
+    when:
+      status:
+        - success
+        - failure
     settings:
       type: markdown
       tpl: /tpl/markdown.tpl
