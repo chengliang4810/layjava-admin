@@ -79,6 +79,10 @@ steps:
     settings:
       type: markdown
       tpl: /tpl/markdown.tpl
+      tpl_build_status_success: 成功
+      tpl_build_status_failure: 失败
+      msg_at_mobiles:
+        from_secret: dingding_notify_phone
       secret: SEC6a614e73a9880edfb83e875e63306a40bef8ff73c98e37046922303a4a7613c0
       token:
         from_secret: dingding_token
