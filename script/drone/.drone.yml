@@ -83,6 +83,7 @@ steps:
         - failure
     settings:
       type: markdown
+      tips_title: 您有一个部署通知
       tpl: /tpl/markdown.tpl
       tpl_build_status_success: 成功
       tpl_build_status_failure: 失败
