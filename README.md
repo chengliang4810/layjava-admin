@@ -4,6 +4,8 @@
 
 #### 介绍
 layjava admin（“累”Java） 是基于solon的管理系统， 
+
+
 > 基于 RuoYi-Vue-Plus 代码基础上进行 改造升级(不兼容原框架)
 
 > 核心变化: MybatisPlus替换为MybatisFlex、Spring替换为solon生态
@@ -13,9 +15,9 @@ layjava admin（“累”Java） 是基于solon的管理系统，
 
 > 文档地址: [https://docs.layjava.com](https://docs.layjava.com)
 
-## 功能列表
+> 演示系统: [https://admin.layjava.com](https://admin.layjava.com)
 
-> 注: 移除了多租户
+## 功能列表
 
 | 业务     | 功能说明                                                                 |
 |--------|----------------------------------------------------------------------|
