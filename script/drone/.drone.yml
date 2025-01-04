@@ -21,7 +21,7 @@ steps:
         path: /app
     commands:
       # 打包jar
-      - mvn clean package -DskipTests=true
+      - mvn clean package -P prod -DskipTests=true
       # 复制jar到指定目录, 与主机目录共享
       # - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
       # 复制jar到当前目录， 通过linux的scp发送到远程机器
