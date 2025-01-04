@@ -186,8 +186,7 @@ public class SysLoginService {
         }
 
         // 登录成功 清空错误次数
-        // cacheService.remove(errorKey);
-        cacheService.store(errorKey, 0, 0);
+        cacheService.remove(errorKey);
     }
 
 }

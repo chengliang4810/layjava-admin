@@ -18,11 +18,6 @@
             <groupId>com.layjava</groupId>
             <artifactId>layjava-common-core</artifactId>
         </dependency>
-        <!--本地缓存-->
-        <dependency>
-            <groupId>org.noear</groupId>
-            <artifactId>solon.cache.caffeine</artifactId>
-        </dependency>
         <!-- redis缓存 -->
         <dependency>
             <groupId>org.noear</groupId>

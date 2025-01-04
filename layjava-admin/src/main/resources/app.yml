@@ -42,7 +42,7 @@ security:
 
 # 本地缓存
 layjava.cache:
-  driverType: "caffeine" #缓存类型
+  driverType: "local" #缓存类型
   keyHeader: "layjava"
 
 # 代码生成
