@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import org.noear.solon.validation.annotation.Length;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.NotNull;
-import org.noear.solon.validation.annotation.Size;
 
 
 /**
@@ -93,7 +92,7 @@ public class SysMenuBo extends BaseEntity {
      * 权限标识
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Size(min = 0, max = 100, message = "权限标识长度不能超过{max}个字符")
+    @Length(min = 0, max = 100, message = "权限标识长度不能超过{max}个字符")
     private String perms;
 
     /**
