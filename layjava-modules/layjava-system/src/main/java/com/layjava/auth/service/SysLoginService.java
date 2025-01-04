@@ -18,9 +18,9 @@ import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.ISysPermissionService;
 import com.layjava.system.service.ISysSocialService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthUser;
-import org.apache.ibatis.solon.annotation.Db;
 import org.dromara.hutool.core.bean.BeanUtil;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.text.StrUtil;
@@ -41,20 +41,17 @@ import java.util.function.Supplier;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class SysLoginService {
 
     @Inject(value = "${user.password.maxRetryCount: 5}", required = false)
     private Integer maxRetryCount;
     @Inject(value = "${user.password.lockTime: 10}", required = false)
     private Integer lockTime;
-    @Inject
-    private ISysPermissionService permissionService;
-    @Inject
-    private ISysSocialService sysSocialService;
-    @Inject
-    private CacheService cacheService;
-    @Db
-    private SysUserMapper userMapper;
+    private final ISysPermissionService permissionService;
+    private final ISysSocialService sysSocialService;
+    private final CacheService cacheService;
+    private final SysUserMapper userMapper;
 
 
     /**
@@ -189,7 +186,8 @@ public class SysLoginService {
         }
 
         // 登录成功 清空错误次数
-        cacheService.remove(errorKey);
+        // cacheService.remove(errorKey);
+        cacheService.store(errorKey, 0, 0);
     }
 
 }
