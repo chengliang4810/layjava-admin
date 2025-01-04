@@ -4,11 +4,7 @@ layjava.sql.print: true
 # Sqllite数据库配置
 solon.dataSources.master!: #数据源（!结尾表示 typed=true）
   class: "com.zaxxer.hikari.HikariDataSource"
-  # sqlite数据库
-  driverClassName: org.sqlite.JDBC
-  jdbcUrl: jdbc:sqlite:db/sqlite/layjava.db
-  # Mysql数据库
-#  driverClassName: com.mysql.cj.jdbc.Driver
-#  jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-#  username: root
-#  password: P@ssw0rd
+  driverClassName: com.mysql.cj.jdbc.Driver
+  jdbcUrl: jdbc:mysql://localhost:3306/layjava_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  username: root
+  password: P@ssw0rd

@@ -60,6 +60,10 @@ public class DataBaseHelper {
         return DataBaseType.SQL_SERVER == getDataBaseType();
     }
 
+    public static boolean isSqlite() {
+        return DataBaseType.SQLITE == getDataBaseType();
+    }
+
     public static String findInSet(Object var1, String var2) {
         DataBaseType dataBasyType = getDataBaseType();
         String var = ConvertUtil.toStr(var1);

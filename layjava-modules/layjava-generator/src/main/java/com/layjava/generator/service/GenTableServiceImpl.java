@@ -32,7 +32,6 @@ import org.apache.velocity.app.Velocity;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
-import org.dromara.hutool.core.util.ByteUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.data.annotation.Tran;
@@ -194,6 +193,19 @@ public class GenTableServiceImpl implements IGenTableService {
                     .and(QueryMethods.lower("D.NAME" ).like(tableName))
                     .and(QueryMethods.lower("CAST(F.VALUE AS nvarchar)" ).like(tableComment))
                     .orderBy("crdate", false);
+            return baseMapper.paginate(page, queryWrapper);
+        }
+
+        if (DataBaseHelper.isSqlite()) {
+            QueryWrapper queryWrapper = QueryWrapper.create()
+                    .select("name AS table_name", "tbl_name AS table_comment", "rootpage AS created")
+                    .from("sqlite_master")
+                    .where("type = 'table'")
+                    .and("name NOT LIKE 'pj_%' AND name NOT LIKE 'gen_%'")
+                    .and(QueryMethods.column("name").notIn(genTableNames, If::notEmpty))
+                    .and(QueryMethods.column("LOWER(name)").like(tableName))
+                    .and(QueryMethods.column("LOWER(sql)").like(tableComment))
+                    .orderBy("created", false);
             return baseMapper.paginate(page, queryWrapper);
         }
         throw new ServiceException("不支持的数据库类型" );

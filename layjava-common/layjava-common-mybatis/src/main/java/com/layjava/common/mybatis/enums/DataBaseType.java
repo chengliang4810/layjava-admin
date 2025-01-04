@@ -29,6 +29,11 @@ public enum DataBaseType {
     POSTGRE_SQL("PostgreSQL" ),
 
     /**
+     * SQLite
+     */
+    SQLITE("SQLite" ),
+
+    /**
      * SQL Server
      */
     SQL_SERVER("Microsoft SQL Server" );
