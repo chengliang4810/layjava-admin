@@ -2,9 +2,6 @@ package com.layjava.generator.mapper;
 
 import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
 import com.layjava.generator.domain.GenTableColumn;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * 业务字段 数据层
@@ -12,12 +9,5 @@ import java.util.List;
  * @author Lion Li
  */
 public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumn> {
-    /**
-     * 根据表名称查询列信息
-     *
-     * @param tableName 表名称
-     * @return 列信息
-     */
-    List<GenTableColumn> selectDbTableColumnsByName(@Param("tableName") String tableName);
 
 }

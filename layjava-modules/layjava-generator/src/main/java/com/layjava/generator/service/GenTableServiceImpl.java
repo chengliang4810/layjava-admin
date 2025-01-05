@@ -2,13 +2,12 @@ package com.layjava.generator.service;
 
 import com.layjava.common.core.constant.Constants;
 import com.layjava.common.core.exception.ServiceException;
+import com.layjava.common.core.utils.IdUtil;
 import com.layjava.common.core.utils.StreamUtil;
-import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.core.utils.file.FileUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
-import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.generator.constant.GenConstants;
 import com.layjava.generator.domain.GenTable;
@@ -18,34 +17,34 @@ import com.layjava.generator.mapper.GenTableMapper;
 import com.layjava.generator.util.GenUtils;
 import com.layjava.generator.util.VelocityInitializer;
 import com.layjava.generator.util.VelocityUtils;
-import com.mybatisflex.core.BaseMapper;
-import com.mybatisflex.core.datasource.DataSourceKey;
-import com.mybatisflex.core.keygen.impl.FlexIDKeyGenerator;
 import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.*;
-import com.mybatisflex.core.row.Db;
+import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.anyline.metadata.Column;
+import org.anyline.metadata.Table;
+import org.anyline.proxy.ServiceProxy;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.date.DateUtil;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.data.dynamicds.DynamicDs;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import static com.layjava.generator.domain.table.GenTableTableDef.GEN_TABLE;
 
 
 /**
@@ -61,6 +60,8 @@ public class GenTableServiceImpl implements IGenTableService {
     private final GenTableMapper baseMapper;
     private final GenTableColumnMapper genTableColumnMapper;
 
+    private static final String[] TABLE_IGNORE = new String[]{"sj_", "act_", "flw_", "gen_"};
+
     /**
      * 查询业务字段列表
      *
@@ -70,8 +71,9 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId) {
         return genTableColumnMapper.selectListByQuery(QueryWrapper.create()
-                .where(GenTableColumn::getTableId).eq(tableId)
-                .orderBy(GenTableColumn::getSort, true));
+                .eq(GenTableColumn::getTableId, tableId)
+                .orderBy(GenTableColumn::getSort, true)
+        );
     }
 
     /**
@@ -82,133 +84,96 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     @Override
     public GenTable selectGenTableById(Long id) {
-        GenTable genTable = baseMapper.selectOneWithRelationsById(id);
+        GenTable genTable = baseMapper.selectGenTableById(id);
         setTableFromOptions(genTable);
         return genTable;
     }
 
     @Override
     public PageResult<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery) {
-        QueryWrapper queryWrapper = this.buildGenTableQueryWrapper(genTable);
-        Page<GenTable> page = baseMapper.paginate(pageQuery, queryWrapper);
+        Page<GenTable> page = baseMapper.paginate(pageQuery.build(), this.buildGenTableQueryWrapper(genTable));
         return PageResult.build(page);
     }
 
     private QueryWrapper buildGenTableQueryWrapper(GenTable genTable) {
         Map<String, Object> params = genTable.getParams();
-        return QueryWrapper.create().from(GEN_TABLE)
-                .where(GEN_TABLE.DATA_NAME.eq(genTable.getDataName()))
-                .and(QueryMethods.lower(GEN_TABLE.TABLE_NAME).like(StringUtil.lowerCase(genTable.getTableName())))
-                .and(QueryMethods.lower(GEN_TABLE.TABLE_COMMENT).like(StringUtil.lowerCase(genTable.getTableComment())))
-                .and(GEN_TABLE.CREATE_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null));
+        return QueryWrapper.create().eq( "data_name", genTable.getDataName(), StringUtils.isNotEmpty(genTable.getDataName()))
+                .like( "lower(table_name)", StringUtils.lowerCase(genTable.getTableName()), StringUtils.isNotBlank(genTable.getTableName()))
+                .like("lower(table_comment)", StringUtils.lowerCase(genTable.getTableComment()),StringUtils.isNotBlank(genTable.getTableComment()))
+                .between("create_time", params.get("beginTime"), params.get("endTime"),params.get("beginTime") != null && params.get("endTime") != null);
     }
 
+    /**
+     * 查询数据库列表
+     *
+     * @param genTable  包含查询条件的GenTable对象
+     * @param pageQuery 包含分页信息的PageQuery对象
+     * @return 包含分页结果的PageResult对象
+     */
     @Override
+    @DynamicDs("${genTable.dataName}")
     public PageResult<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery) {
-        try {
-            DataSourceKey.use(genTable.getDataName());
-            List<String> value = baseMapper.selectTableNameList(genTable.getDataName());
-            genTable.getParams().put("genTableNames", value);
-            Page<GenTable> page = selectPageDbTableList(pageQuery.build(), genTable);
-            return PageResult.build(page);
-        } finally {
-            DataSourceKey.clear();
+        // 获取查询条件
+        String tableName = genTable.getTableName();
+        String tableComment = genTable.getTableComment();
+        LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.service(genTable.getDataName()).metadata().tables();
+        if (CollUtil.isEmpty(tablesMap)) {
+            return PageResult.build();
         }
+        List<String> tableNames = baseMapper.selectTableNameList(genTable.getDataName());
+        String[] tableArrays;
+        if (CollUtil.isNotEmpty(tableNames)) {
+            tableArrays = tableNames.toArray(new String[0]);
+        } else {
+            tableArrays = new String[0];
+        }
+        // 过滤并转换表格数据
+        List<GenTable> tables = tablesMap.values().stream()
+                .filter(x -> !startWithAnyIgnoreCase(x.getName(), TABLE_IGNORE))
+                .filter(x -> {
+                    if (CollUtil.isEmpty(tableNames)) {
+                        return true;
+                    }
+                    return !StringUtils.equalsAnyIgnoreCase(x.getName(), tableArrays);
+                })
+                .filter(x -> {
+                    boolean nameMatches = true;
+                    boolean commentMatches = true;
+                    // 进行表名称的模糊查询
+                    if (StringUtils.isNotBlank(tableName)) {
+                        nameMatches = StringUtils.containsIgnoreCase(x.getName(), tableName);
+                    }
+                    // 进行表描述的模糊查询
+                    if (StringUtils.isNotBlank(tableComment)) {
+                        commentMatches = StringUtils.containsIgnoreCase(x.getComment(), tableComment);
+                    }
+                    // 同时匹配名称和描述
+                    return nameMatches && commentMatches;
+                })
+                .map(x -> {
+                    GenTable gen = new GenTable();
+                    gen.setTableName(x.getName());
+                    gen.setTableComment(x.getComment());
+                    gen.setCreateTime(DateUtil.toLocalDateTime(x.getCreateTime()));
+                    gen.setUpdateTime(DateUtil.toLocalDateTime(x.getUpdateTime()));
+                    return gen;
+                }).toList();
+
+        Page<GenTable> page = pageQuery.build();
+        page.setTotalRow(tables.size());
+        // 手动分页 set数据
+        page.setRecords(ListUtil.page(tables, (int) page.getPageNumber() - 1, (int) page.getPageSize()));
+        return PageResult.build(page);
     }
 
-
-    private Page<GenTable> selectPageDbTableList(Page<GenTable> page, GenTable genTable) {
-        List<String> genTableNames = (List<String>) genTable.getParams().get("genTableNames" );
-        String tableName = StringUtil.lowerCase(genTable.getTableName());
-        String tableComment = StringUtil.lowerCase(genTable.getTableComment());
-
-        if (DataBaseHelper.isMySql()) {
-            QueryWrapper queryWrapper = QueryWrapper.create()
-                    .select("table_name", "table_comment", "create_time", "update_time" )
-                    .from("information_schema.tables" )
-                    .where("table_schema = (select database())" )
-                    .and("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'" )
-                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::notEmpty))
-                    .and(QueryMethods.column("lower(table_name)" ).like(tableName))
-                    .and(QueryMethods.column("lower(table_comment)" ).like(tableComment))
-                    .orderBy("create_time", false);
-            return baseMapper.paginate(page, queryWrapper);
+    public static boolean startWithAnyIgnoreCase(CharSequence cs, CharSequence... searchCharSequences) {
+        // 判断是否是以指定字符串开头
+        for (CharSequence searchCharSequence : searchCharSequences) {
+            if (StringUtils.startsWithIgnoreCase(cs, searchCharSequence)) {
+                return true;
+            }
         }
-        if (DataBaseHelper.isOracle()) {
-            QueryWrapper queryWrapper = QueryWrapper.create()
-                    .select(new QueryColumn("lower(dt.table_name)" ).as("table_name" ),
-                            new QueryColumn("dtc.comments" ).as("table_comment" ),
-                            new QueryColumn("uo.created" ).as("create_time" ),
-                            new QueryColumn("uo.last_ddl_time" ).as("update_time" )
-                    )
-                    .from(new QueryTable("user_tables" ).as("dt" ), new QueryTable("user_tab_comments" ).as("dtc" ), new QueryTable("user_objects" ).as("uo" ))
-                    .where("dt.table_name = dtc.table_name and dt.table_name = uo.object_name and uo.object_type = 'TABLE'" )
-                    .and("dt.table_name NOT LIKE 'pj_%' AND dt.table_name NOT LIKE 'GEN_%'" )
-                    .and(QueryMethods.column("lower(dt.table_name)" ).notIn(genTableNames, If::notEmpty))
-                    .and(QueryMethods.column("lower(dt.table_name)" ).like(tableName))
-                    .and(QueryMethods.column("lower(dtc.comments)" ).like(tableComment))
-                    .orderBy("create_time", false);
-            return baseMapper.paginate(page, queryWrapper);
-        }
-        if (DataBaseHelper.isPostgerSql()) {
-
-            QueryWrapper queryWrapper = QueryWrapper.create()
-                    .with("list_table" ).asRaw("""
-                            SELECT c.relname AS table_name,
-                                                    obj_description(c.oid) AS table_comment,
-                                                    CURRENT_TIMESTAMP AS create_time,
-                                                    CURRENT_TIMESTAMP AS update_time
-                                            FROM pg_class c
-                                                LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
-                                            WHERE (c.relkind = ANY (ARRAY ['r'::"char", 'p'::"char"]))
-                                                AND c.relname != 'spatial_%'::text
-                                                AND n.nspname = 'public'::name
-                                                AND n.nspname <![CDATA[ <> ]]> ''::name
-                            """)
-                    .select(new QueryColumn("c.relname" ).as("table_name" ),
-                            new QueryColumn("obj_description(c.oid)" ).as("table_comment" ),
-                            new QueryColumn("CURRENT_TIMESTAMP" ).as("create_time" ),
-                            new QueryColumn("CURRENT_TIMESTAMP" ).as("update_time" )
-                    )
-                    .from("list_table" )
-                    .where("table_name NOT LIKE 'pj_%' AND table_name NOT LIKE 'gen_%'" )
-                    .and(QueryMethods.column("table_name" ).notIn(genTableNames, If::notEmpty))
-                    .and(QueryMethods.lower("table_name" ).like(tableName))
-                    .and(QueryMethods.lower("table_comment" ).like(tableComment))
-                    .orderBy("create_time", false);
-            return baseMapper.paginate(page, queryWrapper);
-        }
-        if (DataBaseHelper.isSqlServer()) {
-            QueryWrapper queryWrapper = QueryWrapper.create()
-                    .select(new QueryColumn("cast(D.NAME as nvarchar)" ).as("table_name" ),
-                            new QueryColumn("cast(F.VALUE as nvarchar)" ).as("table_comment" ),
-                            new QueryColumn("crdate" ).as("create_time" ),
-                            new QueryColumn("refdate" ).as("update_time" )
-                    )
-                    .from(new QueryTable("SYSOBJECTS" ).as("D" ))
-                    .innerJoin("SYS.EXTENDED_PROPERTIES F" )
-                    .on("D.ID = F.MAJOR_ID" )
-                    .where("F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES' AND D.NAME NOT LIKE 'pj_%' AND D.NAME NOT LIKE 'gen_%'" )
-                    .and(QueryMethods.column("D.NAME" ).notIn(genTableNames, If::notEmpty))
-                    .and(QueryMethods.lower("D.NAME" ).like(tableName))
-                    .and(QueryMethods.lower("CAST(F.VALUE AS nvarchar)" ).like(tableComment))
-                    .orderBy("crdate", false);
-            return baseMapper.paginate(page, queryWrapper);
-        }
-
-        if (DataBaseHelper.isSqlite()) {
-            QueryWrapper queryWrapper = QueryWrapper.create()
-                    .select("name AS table_name", "tbl_name AS table_comment", "rootpage AS created")
-                    .from("sqlite_master")
-                    .where("type = 'table'")
-                    .and("name NOT LIKE 'pj_%' AND name NOT LIKE 'gen_%'")
-                    .and(QueryMethods.column("name").notIn(genTableNames, If::notEmpty))
-                    .and(QueryMethods.column("LOWER(name)").like(tableName))
-                    .and(QueryMethods.column("LOWER(sql)").like(tableComment))
-                    .orderBy("created", false);
-            return baseMapper.paginate(page, queryWrapper);
-        }
-        throw new ServiceException("不支持的数据库类型" );
+        return false;
     }
 
     /**
@@ -219,13 +184,31 @@ public class GenTableServiceImpl implements IGenTableService {
      * @return 数据库表集合
      */
     @Override
+    @DynamicDs("${dataName}")
     public List<GenTable> selectDbTableListByNames(String[] tableNames, String dataName) {
-        try {
-            DataSourceKey.use(dataName);
-            return baseMapper.selectDbTableListByNames(tableNames);
-        } finally {
-            DataSourceKey.clear();
+        Set<String> tableNameSet = new HashSet<>(List.of(tableNames));
+        LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.metadata().tables();
+
+        if (CollUtil.isEmpty(tablesMap)) {
+            return new ArrayList<>();
         }
+
+        List<Table<?>> tableList = tablesMap.values().stream()
+                .filter(x -> !StringUtils.containsAnyIgnoreCase(x.getName(), TABLE_IGNORE))
+                .filter(x -> tableNameSet.contains(x.getName())).toList();
+
+        if (CollUtil.isEmpty(tableList)) {
+            return new ArrayList<>();
+        }
+        return tableList.stream().map(x -> {
+            GenTable gen = new GenTable();
+            gen.setDataName(dataName);
+            gen.setTableName(x.getName());
+            gen.setTableComment(x.getComment());
+            gen.setCreateTime(DateUtil.toLocalDateTime(x.getCreateTime()));
+            gen.setUpdateTime(DateUtil.toLocalDateTime(x.getUpdateTime()));
+            return gen;
+        }).toList();
     }
 
     /**
@@ -266,7 +249,8 @@ public class GenTableServiceImpl implements IGenTableService {
     public void deleteGenTableByIds(Long[] tableIds) {
         List<Long> ids = Arrays.asList(tableIds);
         baseMapper.deleteBatchByIds(ids);
-        genTableColumnMapper.deleteByQuery(QueryWrapper.create().from(GenTableColumn.class).where(GenTableColumn::getTableId).in(ids));
+        QueryWrapper queryWrapper = QueryWrapper.create().in(GenTableColumn::getTableId, ids);
+        genTableColumnMapper.deleteByQuery(queryWrapper);
     }
 
     /**
@@ -284,29 +268,49 @@ public class GenTableServiceImpl implements IGenTableService {
                 String tableName = table.getTableName();
                 GenUtils.initTable(table, operId);
                 table.setDataName(dataName);
-                int row = baseMapper.insert(table, true);
+                int row = baseMapper.insert(table);
                 if (row > 0) {
                     // 保存列信息
-                    try {
-                        // DataSourceKey.use(dataName);
-                        List<GenTableColumn> genTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
-                        List<GenTableColumn> saveColumns = new ArrayList<>();
-                        for (GenTableColumn column : genTableColumns) {
-                            GenUtils.initColumnField(column, table);
-                            saveColumns.add(column);
-                        }
-                        if (CollUtil.isNotEmpty(saveColumns)) {
-                            genTableColumnMapper.insertBatch(saveColumns);
-                        }
-                    } finally {
-                        // DataSourceKey.clear();
+                    List<GenTableColumn> genTableColumns = this.selectDbTableColumnsByName(tableName, dataName);
+                    List<GenTableColumn> saveColumns = new ArrayList<>();
+                    for (GenTableColumn column : genTableColumns) {
+                        GenUtils.initColumnField(column, table);
+                        saveColumns.add(column);
                     }
-
+                    if (CollUtil.isNotEmpty(saveColumns)) {
+                        genTableColumnMapper.insertBatch(saveColumns);
+                    }
                 }
             }
         } catch (Exception e) {
             throw new ServiceException("导入失败：" + e.getMessage());
         }
+    }
+
+    /**
+     * 根据表名称查询列信息
+     *
+     * @param tableName 表名称
+     * @param dataName  数据源名称
+     * @return 列信息
+     */
+    @Override
+    @DynamicDs("${dataName}")
+    public List<GenTableColumn> selectDbTableColumnsByName(String tableName, String dataName) {
+        LinkedHashMap<String, Column> columns = ServiceProxy.metadata().columns(tableName);
+        List<GenTableColumn> tableColumns = new ArrayList<>();
+        columns.forEach((columnName, column) -> {
+            GenTableColumn tableColumn = new GenTableColumn();
+            tableColumn.setIsPk(String.valueOf(column.isPrimaryKey()));
+            tableColumn.setColumnName(column.getName());
+            tableColumn.setColumnComment(column.getComment());
+            tableColumn.setColumnType(column.getTypeName().toLowerCase());
+            tableColumn.setSort(column.getPosition());
+            tableColumn.setIsRequired(column.isNullable() == 0 ? "1" : "0");
+            tableColumn.setIsIncrement(column.isAutoIncrement() == -1 ? "0" : "1");
+            tableColumns.add(tableColumn);
+        });
+        return tableColumns;
     }
 
     /**
@@ -319,10 +323,10 @@ public class GenTableServiceImpl implements IGenTableService {
     public Map<String, String> previewCode(Long tableId) {
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 查询表信息
-        GenTable table = baseMapper.selectOneWithRelationsById(tableId);
+        GenTable table = baseMapper.selectGenTableById(tableId);
         List<Long> menuIds = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            menuIds.add(Long.valueOf(new FlexIDKeyGenerator().generate(null, null).toString()));
+            menuIds.add(IdUtil.getId());
         }
         table.setMenuIds(menuIds);
         // 设置主键列信息
@@ -354,6 +358,7 @@ public class GenTableServiceImpl implements IGenTableService {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         generatorCode(tableId, zip);
+        IoUtil.closeIfPossible(zip);
         return outputStream.toByteArray();
     }
 
@@ -365,7 +370,7 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     public void generatorCode(Long tableId) {
         // 查询表信息
-        GenTable table = baseMapper.selectOneWithRelationsById(tableId);
+        GenTable table = baseMapper.selectGenTableById(tableId);
         // 设置主键列信息
         setPkColumn(table);
 
@@ -376,7 +381,7 @@ public class GenTableServiceImpl implements IGenTableService {
         // 获取模板列表
         List<String> templates = VelocityUtils.getTemplateList(table.getTplCategory());
         for (String template : templates) {
-            if (!StringUtil.containsAny(template, "sql.vm", "api.ts.vm", "types.ts.vm", "index.vue.vm", "index-tree.vue.vm" )) {
+            if (!StringUtils.containsAny(template, "sql.vm", "api.ts.vm", "types.ts.vm", "index.vue.vm", "index-tree.vue.vm")) {
                 // 渲染模板
                 StringWriter sw = new StringWriter();
                 Template tpl = Velocity.getTemplate(template, Constants.UTF8);
@@ -399,18 +404,13 @@ public class GenTableServiceImpl implements IGenTableService {
     @Tran
     @Override
     public void synchDb(Long tableId) {
-        GenTable table = baseMapper.selectOneWithRelationsById(tableId);
+        GenTable table = baseMapper.selectGenTableById(tableId);
         List<GenTableColumn> tableColumns = table.getColumns();
         Map<String, GenTableColumn> tableColumnMap = StreamUtil.toIdentityMap(tableColumns, GenTableColumn::getColumnName);
-        List<GenTableColumn> dbTableColumns = null;
-        try {
-            DataSourceKey.use(table.getDataName());
-            dbTableColumns = genTableColumnMapper.selectDbTableColumnsByName(table.getTableName());
-        } finally {
-            DataSourceKey.clear();
-        }
+
+        List<GenTableColumn> dbTableColumns = this.selectDbTableColumnsByName(table.getTableName(), table.getDataName());
         if (CollUtil.isEmpty(dbTableColumns)) {
-            throw new ServiceException("同步数据失败，原表结构不存在" );
+            throw new ServiceException("同步数据失败，原表结构不存在");
         }
         List<String> dbTableColumnNames = StreamUtil.toList(dbTableColumns, GenTableColumn::getColumnName);
 
@@ -425,7 +425,7 @@ public class GenTableServiceImpl implements IGenTableService {
                     column.setDictType(prevColumn.getDictType());
                     column.setQueryType(prevColumn.getQueryType());
                 }
-                if (StringUtil.isNotEmpty(prevColumn.getIsRequired()) && !column.isPk()
+                if (StringUtils.isNotEmpty(prevColumn.getIsRequired()) && !column.isPk()
                         && (column.isInsert() || column.isEdit())
                         && ((column.isUsableColumn()) || (!column.isSuperColumn()))) {
                     // 如果是(新增/修改&非主键/非忽略及父属性)，继续保留必填/显示类型选项
@@ -435,9 +435,11 @@ public class GenTableServiceImpl implements IGenTableService {
             }
             saveColumns.add(column);
         });
-        if (CollUtil.isNotEmpty(saveColumns)) {
-            Db.executeBatch(saveColumns, 1000, GenTableColumnMapper.class, BaseMapper::insertOrUpdate);
+
+        if (CollUtil.isNotEmpty(saveColumns)){
+            saveColumns.forEach(genTableColumnMapper::insertOrUpdateSelective);
         }
+
         List<GenTableColumn> delColumns = StreamUtil.filter(tableColumns, column -> !dbTableColumnNames.contains(column.getColumnName()));
         if (CollUtil.isNotEmpty(delColumns)) {
             List<Long> ids = StreamUtil.toList(delColumns, GenTableColumn::getColumnId);
@@ -460,6 +462,7 @@ public class GenTableServiceImpl implements IGenTableService {
         for (String tableId : tableIds) {
             generatorCode(Long.parseLong(tableId), zip);
         }
+        IoUtil.closeIfPossible(zip);
         return outputStream.toByteArray();
     }
 
@@ -468,10 +471,10 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     private void generatorCode(Long tableId, ZipOutputStream zip) {
         // 查询表信息
-        GenTable table = baseMapper.selectOneWithRelationsById(tableId);
+        GenTable table = baseMapper.selectGenTableById(tableId);
         List<Long> menuIds = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
-            menuIds.add(Long.valueOf(new FlexIDKeyGenerator().generate(null, null).toString()));
+            menuIds.add(IdUtil.getId());
         }
         table.setMenuIds(menuIds);
         // 设置主键列信息
@@ -491,7 +494,8 @@ public class GenTableServiceImpl implements IGenTableService {
             try {
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
-                IoUtil.write(zip, false, sw.toString().getBytes(StandardCharsets.UTF_8));
+                IoUtil.writeUtf8(zip, false, sw.toString());
+                IoUtil.closeIfPossible(sw);
                 zip.flush();
                 zip.closeEntry();
             } catch (IOException e) {
@@ -510,12 +514,12 @@ public class GenTableServiceImpl implements IGenTableService {
         if (GenConstants.TPL_TREE.equals(genTable.getTplCategory())) {
             String options = JsonUtils.toJsonString(genTable.getParams());
             Dict paramsObj = JsonUtils.parseMap(options);
-            if (StringUtil.isEmpty(paramsObj.getStr(GenConstants.TREE_CODE))) {
-                throw new ServiceException("树编码字段不能为空" );
-            } else if (StringUtil.isEmpty(paramsObj.getStr(GenConstants.TREE_PARENT_CODE))) {
-                throw new ServiceException("树父编码字段不能为空" );
-            } else if (StringUtil.isEmpty(paramsObj.getStr(GenConstants.TREE_NAME))) {
-                throw new ServiceException("树名称字段不能为空" );
+            if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_CODE))) {
+                throw new ServiceException("树编码字段不能为空");
+            } else if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_PARENT_CODE))) {
+                throw new ServiceException("树父编码字段不能为空");
+            } else if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_NAME))) {
+                throw new ServiceException("树名称字段不能为空");
             }
         }
     }
@@ -549,7 +553,7 @@ public class GenTableServiceImpl implements IGenTableService {
             String treeCode = paramsObj.getStr(GenConstants.TREE_CODE);
             String treeParentCode = paramsObj.getStr(GenConstants.TREE_PARENT_CODE);
             String treeName = paramsObj.getStr(GenConstants.TREE_NAME);
-            String parentMenuId = paramsObj.getStr(GenConstants.PARENT_MENU_ID);
+            Long parentMenuId = paramsObj.getLong(GenConstants.PARENT_MENU_ID);
             String parentMenuName = paramsObj.getStr(GenConstants.PARENT_MENU_NAME);
 
             genTable.setTreeCode(treeCode);
@@ -569,10 +573,11 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     public static String getGenPath(GenTable table, String template) {
         String genPath = table.getGenPath();
-        if (StringUtil.equals(genPath, "/" )) {
-            return System.getProperty("user.dir" ) + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
+        if (StringUtils.equals(genPath, "/")) {
+            return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
         }
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
     }
+    
 }
 

@@ -1,6 +1,5 @@
 package com.layjava.generator.domain;
 
-import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.generator.constant.GenConstants;
 import com.mybatisflex.annotation.Column;
@@ -10,6 +9,7 @@ import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.Validated;
 
@@ -35,19 +35,19 @@ public class GenTable extends BaseEntity {
     /**
      * 数据源名称
      */
-    @NotBlank(message = "数据源名称不能为空" )
+    @NotBlank(message = "数据源名称不能为空")
     private String dataName;
 
     /**
      * 表名称
      */
-    @NotBlank(message = "表名称不能为空" )
+    @NotBlank(message = "表名称不能为空")
     private String tableName;
 
     /**
      * 表描述
      */
-    @NotBlank(message = "表描述不能为空" )
+    @NotBlank(message = "表描述不能为空")
     private String tableComment;
 
     /**
@@ -63,7 +63,7 @@ public class GenTable extends BaseEntity {
     /**
      * 实体类名称(首字母大写)
      */
-    @NotBlank(message = "实体类名称不能为空" )
+    @NotBlank(message = "实体类名称不能为空")
     private String className;
 
     /**
@@ -74,31 +74,31 @@ public class GenTable extends BaseEntity {
     /**
      * 生成包路径
      */
-    @NotBlank(message = "生成包路径不能为空" )
+    @NotBlank(message = "生成包路径不能为空")
     private String packageName;
 
     /**
      * 生成模块名
      */
-    @NotBlank(message = "生成模块名不能为空" )
+    @NotBlank(message = "生成模块名不能为空")
     private String moduleName;
 
     /**
      * 生成业务名
      */
-    @NotBlank(message = "生成业务名不能为空" )
+    @NotBlank(message = "生成业务名不能为空")
     private String businessName;
 
     /**
      * 生成功能名
      */
-    @NotBlank(message = "生成功能名不能为空" )
+    @NotBlank(message = "生成功能名不能为空")
     private String functionName;
 
     /**
      * 生成作者
      */
-    @NotBlank(message = "作者不能为空" )
+    @NotBlank(message = "作者不能为空")
     private String functionAuthor;
 
     /**
@@ -163,7 +163,7 @@ public class GenTable extends BaseEntity {
      * 上级菜单ID字段
      */
     @Column(ignore = true)
-    private String parentMenuId;
+    private Long parentMenuId;
 
     /**
      * 上级菜单名称字段
@@ -176,7 +176,7 @@ public class GenTable extends BaseEntity {
     }
 
     public static boolean isTree(String tplCategory) {
-        return tplCategory != null && StringUtil.equals(GenConstants.TPL_TREE, tplCategory);
+        return tplCategory != null && StringUtils.equals(GenConstants.TPL_TREE, tplCategory);
     }
 
     public boolean isCrud() {
@@ -184,7 +184,7 @@ public class GenTable extends BaseEntity {
     }
 
     public static boolean isCrud(String tplCategory) {
-        return tplCategory != null && StringUtil.equals(GenConstants.TPL_CRUD, tplCategory);
+        return tplCategory != null && StringUtils.equals(GenConstants.TPL_CRUD, tplCategory);
     }
 
     public boolean isSuperColumn(String javaField) {
@@ -192,6 +192,7 @@ public class GenTable extends BaseEntity {
     }
 
     public static boolean isSuperColumn(String tplCategory, String javaField) {
-        return StringUtil.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
+        return StringUtils.equalsAnyIgnoreCase(javaField, GenConstants.BASE_ENTITY);
     }
+
 }
