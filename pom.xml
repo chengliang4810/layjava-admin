@@ -39,6 +39,7 @@
         <mysql.version>8.4.0</mysql.version>
         <hikaricp.version>4.0.3</hikaricp.version>
         <mybatis-flex.version>1.10.2</mybatis-flex.version>
+        <anyline.version>8.7.2-20250102</anyline.version>
         <velocity.version>2.3</velocity.version>
         <!-- excel -->
         <alibaba-ttl.version>2.14.4</alibaba-ttl.version>
