@@ -1,7 +1,7 @@
 # 打印Sql
 layjava.sql.print: true
 
-# Sqllite数据库配置
+# MySql数据库配置
 solon.dataSources.master!: #数据源（!结尾表示 typed=true）
   class: "com.zaxxer.hikari.HikariDataSource"
   driverClassName: com.mysql.cj.jdbc.Driver
