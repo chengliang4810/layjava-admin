@@ -66,6 +66,7 @@ public class VelocityUtils {
         velocityContext.put("ClassName", genTable.getClassName());
         velocityContext.put("className", StringUtil.uncapitalize(genTable.getClassName()));
         velocityContext.put("moduleName", genTable.getModuleName());
+        velocityContext.put("ModuleName", StringUtil.capitalize(moduleName));
         velocityContext.put("BusinessName", StringUtil.capitalize(genTable.getBusinessName()));
         velocityContext.put("businessName", genTable.getBusinessName());
         velocityContext.put("basePackage", getPackagePrefix(packageName));
