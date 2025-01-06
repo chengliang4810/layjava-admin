@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Controller
 @RequiredArgsConstructor
-@Mapping("/tool/generator/template")
+@Mapping("/generator/template")
 public class GenTemplateController extends BaseController {
 
     private final IGenTemplateService genTemplateService;

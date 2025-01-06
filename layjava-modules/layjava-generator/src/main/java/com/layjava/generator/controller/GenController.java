@@ -29,8 +29,8 @@ import java.util.Map;
  * @author Lion Li
  */
 @Controller
-@Mapping("/tool/gen" )
 @RequiredArgsConstructor
+@Mapping("/generator/code")
 public class GenController extends BaseController {
 
     private final IGenTableService genTableService;
