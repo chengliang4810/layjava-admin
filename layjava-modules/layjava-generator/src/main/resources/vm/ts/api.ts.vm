@@ -1,63 +1,42 @@
-import request from '@/utils/request';
-import { AxiosPromise } from 'axios';
-import { ${BusinessName}VO, ${BusinessName}Form, ${BusinessName}Query } from '@/api/${moduleName}/${businessName}/types';
+import { request } from '@/service/http'
 
 /**
  * 查询${functionName}列表
- * @param query
+ * @param params
  * @returns {*}
  */
-
-export const list${BusinessName} = (query?: ${BusinessName}Query): AxiosPromise<${BusinessName}VO[]> => {
-  return request({
-    url: '/${moduleName}/${businessName}/list',
-    method: 'get',
-    params: query
-  });
-};
+export function get${BusinessName}List(params?: ${ModuleName}.${BusinessName}Query) {
+  return request.Get<Service.ResponsePageResult<${ModuleName}.${BusinessName}Vo>>('/${moduleName}/${businessName}/list', { params })
+}
 
 /**
- * 查询${functionName}详细
- * @param ${pkColumn.javaField}
+ * 查询表详细信息
+ * @returns 查询表详细信息
  */
-export const get${BusinessName} = (${pkColumn.javaField}: string | number): AxiosPromise<${BusinessName}VO> => {
-  return request({
-    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
-    method: 'get'
-  });
-};
+export function get${BusinessName}(${pkColumn.javaField}: string) {
+  return request.Get<Service.ResponseResult<${ModuleName}.${BusinessName}Vo>>(`/${moduleName}/${businessName}/${${pkColumn.javaField}}`)
+}
 
 /**
  * 新增${functionName}
  * @param data
  */
-export const add${BusinessName} = (data: ${BusinessName}Form) => {
-  return request({
-    url: '/${moduleName}/${businessName}',
-    method: 'post',
-    data: data
-  });
-};
+export function add${BusinessName}(data: ${ModuleName}.${BusinessName}Form) {
+  return request.Post<Service.ResponseResult<void>>('/${moduleName}/${businessName}', data)
+}
 
 /**
  * 修改${functionName}
  * @param data
  */
-export const update${BusinessName} = (data: ${BusinessName}Form) => {
-  return request({
-    url: '/${moduleName}/${businessName}',
-    method: 'put',
-    data: data
-  });
-};
+export function update${BusinessName}(data: ${ModuleName}.${BusinessName}Form) {
+  return request.Put<Service.ResponseResult<void>>('/${moduleName}/${businessName}', data)
+}
 
 /**
  * 删除${functionName}
  * @param ${pkColumn.javaField}
  */
-export const del${BusinessName} = (${pkColumn.javaField}: string | number | Array<string | number>) => {
-  return request({
-    url: '/${moduleName}/${businessName}/' + ${pkColumn.javaField},
-    method: 'delete'
-  });
-};
+export function delete${BusinessName}(${pkColumn.javaField}: string | Array<string>) {
+  return request.Delete<Service.ResponseResult<void>>(`/${moduleName}/${businessName}/${${pkColumn.javaField}}`)
+}
