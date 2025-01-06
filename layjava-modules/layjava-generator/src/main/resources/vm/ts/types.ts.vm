@@ -10,10 +10,10 @@ namespace ${ModuleName} {
 #foreach ($column in $columns)
 #if($column.list)
       /** $column.columnComment */
-      $column.javaField:#if($column.javaField.indexOf("id") != -1 || $column.javaField.indexOf("Id") != -1) string;#elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Float' || $column.javaType == 'BigDecimal') number;#elseif($column.javaType == 'Boolean') boolean;#else string;#end
+      $column.javaField:#if($column.javaField.indexOf("id") != -1 || $column.javaField.indexOf("Id") != -1) string#elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Float' || $column.javaType == 'BigDecimal') number#elseif($column.javaType == 'Boolean') boolean#else string#end
     #if($column.htmlType == "imageUpload")
       /** ${column.columnComment}Url */
-      ${column.javaField}Url: string;
+      ${column.javaField}Url: string
 #end
 #end
 #end
@@ -23,7 +23,7 @@ namespace ${ModuleName} {
 #foreach ($column in $columns)
 #if($column.query)
       /** $column.columnComment */
-      $column.javaField?:#if($column.javaField.indexOf("id") != -1 || $column.javaField.indexOf("Id") != -1) string;#elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Float' || $column.javaType == 'BigDecimal') number;#elseif($column.javaType == 'Boolean') boolean;#else string;#end
+      $column.javaField?:#if($column.javaField.indexOf("id") != -1 || $column.javaField.indexOf("Id") != -1) string#elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Float' || $column.javaType == 'BigDecimal') number#elseif($column.javaType == 'Boolean') boolean#else string#end
 #end
 #end
       /** 其他参数 */
@@ -34,7 +34,7 @@ namespace ${ModuleName} {
 #foreach ($column in $columns)
 #if($column.insert || $column.edit)
       /** $column.columnComment */
-      $column.javaField?:#if($column.javaField.indexOf("id") != -1 || $column.javaField.indexOf("Id") != -1) string;#elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Float' || $column.javaType == 'BigDecimal') number;#elseif($column.javaType == 'Boolean') boolean;#else string;#end
+      $column.javaField?:#if($column.javaField.indexOf("id") != -1 || $column.javaField.indexOf("Id") != -1) string#elseif($column.javaType == 'Long' || $column.javaType == 'Integer' || $column.javaType == 'Double' || $column.javaType == 'Float' || $column.javaType == 'BigDecimal') number#elseif($column.javaType == 'Boolean') boolean#else string#end
 #end
 #end
     }
