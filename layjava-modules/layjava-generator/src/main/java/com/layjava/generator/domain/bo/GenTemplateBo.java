@@ -44,25 +44,22 @@ public class GenTemplateBo extends BaseEntity {
     /**
      * 文件路径
      */
-    @NotBlank(message = "文件路径不能为空", groups = { AddGroup.class, UpdateGroup.class })
+//    @NotBlank(message = "文件路径不能为空", groups = { AddGroup.class, UpdateGroup.class })
     private String path;
 
     /**
      * 数据库类型
      */
-    @NotBlank(message = "数据库类型不能为空", groups = { AddGroup.class, UpdateGroup.class })
     private String dbType;
 
     /**
      * 模板内容
      */
-    @NotBlank(message = "模板内容不能为空", groups = { AddGroup.class, UpdateGroup.class })
     private String content;
 
     /**
      * 备注
      */
-    @NotBlank(message = "备注不能为空", groups = { AddGroup.class, UpdateGroup.class })
     private String remark;
 
 
