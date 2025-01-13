@@ -38,3 +38,11 @@ layjava admin（“累”Java） 是基于solon的管理系统，
 | 定时任务   | 运行报表、任务管理(添加、修改、删除)、日志管理、执行器管理等                                      |
 | 代码生成   | 多数据源前后端代码的生成（java、html、xml、sql）支持CRUD下载                              |
 | 系统接口   | 根据业务代码自动生成相关的api接口文档                                                 |
+
+
+## 系统预览图
+
+![img.png](docs/images/img.png)
+![img.png](docs/images/img1.png)
+![img.png](docs/images/img2.png)
+![solon-admin.png](docs/images/solon-admin.png)

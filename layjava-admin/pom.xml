@@ -33,11 +33,13 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- 系统功能模块 -->
         <dependency>
             <groupId>com.layjava</groupId>
             <artifactId>layjava-system</artifactId>
         </dependency>
 
+        <!-- 代码生成模块 -->
         <dependency>
             <groupId>com.layjava</groupId>
             <artifactId>layjava-generator</artifactId>
