@@ -15,7 +15,6 @@ import com.layjava.generator.service.IGenTemplateService;
 import lombok.RequiredArgsConstructor;
 import org.noear.solon.annotation.*;
 import org.noear.solon.validation.annotation.NoRepeatSubmit;
-import org.noear.solon.validation.annotation.NotEmpty;
 import org.noear.solon.validation.annotation.NotNull;
 import org.noear.solon.validation.annotation.Validated;
 
@@ -89,7 +88,7 @@ public class GenTemplateController extends BaseController {
     @Mapping("/{ids}")
     @SaCheckPermission("generator:template:remove")
     @Log(title = "代码生成模板", businessType = BusinessType.DELETE)
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") Long[] ids) {
+    public R<Void> remove(@NotNull(message = "主键不能为空") Long[] ids) {
         return toAjax(genTemplateService.deleteWithValidByIds(List.of(ids), true));
     }
 }
