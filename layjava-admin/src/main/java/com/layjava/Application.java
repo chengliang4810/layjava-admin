@@ -1,7 +1,9 @@
 package com.layjava;
 
+import com.layjava.domain.LayJavaVersion;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
 import org.noear.solon.annotation.SolonMain;
 
@@ -19,19 +21,17 @@ public class Application {
         Solon.start(Application.class, args);
     }
 
-
-    @Mapping("/")
-    public String index(){
-        return "欢迎使用LayJava-Admin";
-    }
-
     /**
      * 获取应用版本号
      * @return 版本号
      */
+    @Get
     @Mapping("/version")
-    public String version(){
-        return Solon.cfg().get("solon.app.version");
+    public LayJavaVersion version(){
+        return LayJavaVersion.builder()
+                .name("LayJava-Admin开源管理系统")
+                .version(Solon.cfg().get("solon.app.version"))
+                .build();
     }
 
 }
