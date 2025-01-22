@@ -6,11 +6,9 @@
 [![JDK-21](https://img.shields.io/badge/JDK-21-green.svg)]()
 <br>
 [![Build Status](https://drone.wangsr.vip/api/badges/opensolon/layjava-admin/status.svg)](https://drone.wangsr.vip/opensolon/layjava-admin)
-[![star](https://gitee.com/opensolon/layjava-admin/badge/star.svg?theme=dark)](https://gitee.com/opensolon/layjava-admin/stargazers)
 ![GitHub Repo stars](https://img.shields.io/github/stars/chengliang4810/layjava-admin)
-
+[![star](https://gitee.com/opensolon/layjava-admin/badge/star.svg?theme=dark)](https://gitee.com/opensolon/layjava-admin/stargazers)
 [![Star](https://gitcode.com/chengliang4810/layjava-admin/star/badge.svg)](https://gitcode.com/chengliang4810/layjava-admin)
-
 
 #### 介绍
 layjava admin（“累”Java） 是基于solon的管理系统， 
