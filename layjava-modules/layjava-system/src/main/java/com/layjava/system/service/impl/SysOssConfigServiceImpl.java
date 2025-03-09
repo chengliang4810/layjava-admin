@@ -14,9 +14,9 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.solon.annotation.Db;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,7 +35,7 @@ import static com.layjava.system.domain.table.SysOssConfigTableDef.SYS_OSS_CONFI
 @Component
 public class SysOssConfigServiceImpl implements ISysOssConfigService {
 
-    @Db
+    @Inject
     private SysOssConfigMapper baseMapper;
 
     /**

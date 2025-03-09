@@ -15,7 +15,6 @@ import ${package.Service}.${table.serviceName};
 </#if>
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
-import org.apache.ibatis.solon.annotation.Db;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.core.util.MapstructUtils;
@@ -34,7 +33,7 @@ import java.util.Map;
 @Component
 public class ${table.serviceImplName} <#if table.serviceInterface> implements ${table.serviceName}</#if> {
 
-    @Db
+    @Inject
     private ${table.mapperName} ${table.entityPath}Mapper;
 
     @Override

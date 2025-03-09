@@ -27,7 +27,6 @@ import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthResponse;
 import me.zhyd.oauth.model.AuthUser;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.validation.ValidUtils;
@@ -51,7 +50,7 @@ public class SocialAuthStrategy implements AuthStrategyService {
     private SocialProperties socialProperties;
     @Inject
     private ISysSocialService sysSocialService;
-    @Db
+    @Inject
     private SysUserMapper userMapper;
     @Inject
     private SysLoginService loginService;

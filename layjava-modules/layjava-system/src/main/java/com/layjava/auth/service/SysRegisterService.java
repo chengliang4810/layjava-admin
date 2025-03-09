@@ -15,7 +15,6 @@ import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.ISysUserService;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventBus;
@@ -37,7 +36,7 @@ public class SysRegisterService {
     private ISysUserService userService;
     @Inject
     private CacheService cacheService;
-    @Db
+    @Inject
     private SysUserMapper userMapper;
     private CaptchaProperties captchaProperties;
 

@@ -19,7 +19,6 @@ import com.layjava.system.service.ISysLogininforService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 
@@ -40,7 +39,7 @@ import static com.layjava.system.domain.table.SysLogininforTableDef.SYS_LOGININF
 @Component
 public class SysLogininforServiceImpl implements ISysLogininforService {
 
-    @Db
+    @Inject
     private SysLogininforMapper baseMapper;
     @Inject
     private ISysClientService clientService;

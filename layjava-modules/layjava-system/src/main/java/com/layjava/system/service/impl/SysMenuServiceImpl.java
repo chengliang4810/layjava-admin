@@ -17,11 +17,11 @@ import com.layjava.system.mapper.SysRoleMenuMapper;
 import com.layjava.system.service.ISysMenuService;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.solon.annotation.Db;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.collection.ListUtil;
 import org.dromara.hutool.core.tree.MapTree;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,11 +43,11 @@ import static com.mybatisflex.core.query.QueryMethods.distinct;
 @Component
 public class SysMenuServiceImpl implements ISysMenuService {
 
-    @Db
+    @Inject
     private SysMenuMapper baseMapper;
-    @Db
+    @Inject
     private SysRoleMapper roleMapper;
-    @Db
+    @Inject
     private SysRoleMenuMapper roleMenuMapper;
 
     /**

@@ -3,9 +3,9 @@ package com.layjava.system.service.impl;
 import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.core.utils.ip.AddressUtil;
+import com.layjava.common.log.event.OperLogEvent;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
-import com.layjava.common.log.event.OperLogEvent;
 import com.layjava.system.domain.SysOperLog;
 import com.layjava.system.domain.bo.SysOperLogBo;
 import com.layjava.system.domain.vo.SysOperLogVo;
@@ -14,8 +14,8 @@ import com.layjava.system.service.ISysOperLogService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -33,7 +33,7 @@ import static com.layjava.system.domain.table.SysOperLogTableDef.SYS_OPER_LOG;
 @Component
 public class SysOperLogServiceImpl implements ISysOperLogService {
 
-    @Db
+    @Inject
     private SysOperLogMapper baseMapper;
 
     /**

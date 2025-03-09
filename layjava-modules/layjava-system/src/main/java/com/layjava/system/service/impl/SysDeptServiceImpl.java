@@ -1,10 +1,5 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.collection.ListUtil;
-import org.dromara.hutool.core.convert.ConvertUtil;
-import org.dromara.hutool.core.tree.MapTree;
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.DeptService;
@@ -23,8 +18,13 @@ import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.ISysDeptService;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateWrapper;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.convert.ConvertUtil;
+import org.dromara.hutool.core.tree.MapTree;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,11 +43,11 @@ import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 @Component
 public class SysDeptServiceImpl implements ISysDeptService, DeptService {
 
-    @Db
+    @Inject
     private SysDeptMapper baseMapper;
-    @Db
+    @Inject
     private SysRoleMapper roleMapper;
-    @Db
+    @Inject
     private SysUserMapper userMapper;
 
     /**

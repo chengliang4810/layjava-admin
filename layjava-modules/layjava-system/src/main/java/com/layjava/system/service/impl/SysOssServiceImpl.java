@@ -1,7 +1,5 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.convert.ConvertUtil;
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.OssService;
 import com.layjava.common.core.utils.StreamUtil;
@@ -15,8 +13,10 @@ import com.layjava.system.mapper.SysOssMapper;
 import com.layjava.system.service.ISysOssService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.convert.ConvertUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.core.handle.UploadedFile;
 
@@ -38,7 +38,7 @@ import static com.layjava.system.domain.table.SysOssTableDef.SYS_OSS;
 @Component
 public class SysOssServiceImpl implements ISysOssService, OssService {
 
-    @Db
+    @Inject
     private SysOssMapper baseMapper;
 
     @Override

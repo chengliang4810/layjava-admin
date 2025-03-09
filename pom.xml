@@ -38,7 +38,7 @@
         <!-- 数据源 -->
         <mysql.version>8.4.0</mysql.version>
         <hikaricp.version>4.0.3</hikaricp.version>
-        <mybatis-flex.version>1.10.2</mybatis-flex.version>
+        <mybatis-flex.version>1.10.8</mybatis-flex.version>
         <anyline.version>8.7.2-jdk17-20250212</anyline.version>
         <velocity.version>2.3</velocity.version>
         <!-- excel -->

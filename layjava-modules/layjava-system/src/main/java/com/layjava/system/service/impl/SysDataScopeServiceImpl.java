@@ -1,6 +1,5 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.collection.CollUtil;
 import com.layjava.common.core.utils.StreamUtil;
 import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.system.domain.SysDept;
@@ -9,9 +8,10 @@ import com.layjava.system.mapper.SysDeptMapper;
 import com.layjava.system.mapper.SysRoleDeptMapper;
 import com.layjava.system.service.ISysDataScopeService;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.convert.ConvertUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ import static com.layjava.system.domain.table.SysRoleDeptTableDef.SYS_ROLE_DEPT;
 @Component("sdss" )
 public class SysDataScopeServiceImpl implements ISysDataScopeService {
 
-    @Db
+    @Inject
     private SysRoleDeptMapper roleDeptMapper;
-    @Db
+    @Inject
     private SysDeptMapper deptMapper;
 
     @Override

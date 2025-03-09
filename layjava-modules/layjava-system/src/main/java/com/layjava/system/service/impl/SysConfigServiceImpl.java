@@ -1,7 +1,5 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.convert.ConvertUtil;
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.ConfigService;
@@ -17,8 +15,10 @@ import com.layjava.system.service.ISysConfigService;
 import com.mybatisflex.annotation.UseDataSource;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.convert.ConvertUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,7 +35,7 @@ import static com.layjava.system.domain.table.SysConfigTableDef.SYS_CONFIG;
 @Component
 public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
 
-    @Db
+    @Inject
     private SysConfigMapper baseMapper;
 
     @Override

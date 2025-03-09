@@ -2,9 +2,6 @@ package com.layjava.system.service.impl;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.stp.StpUtil;
-import org.dromara.hutool.core.bean.BeanUtil;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.TenantConstants;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.domain.model.LoginUser;
@@ -30,8 +27,11 @@ import com.mybatisflex.core.BaseMapper;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.bean.BeanUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.*;
 
@@ -49,13 +49,13 @@ import static com.layjava.system.domain.table.SysUserRoleTableDef.SYS_USER_ROLE;
 @Component
 public class SysRoleServiceImpl implements ISysRoleService {
 
-    @Db
+    @Inject
     private SysRoleMapper baseMapper;
-    @Db
+    @Inject
     private SysRoleMenuMapper roleMenuMapper;
-    @Db
+    @Inject
     private SysUserRoleMapper userRoleMapper;
-    @Db
+    @Inject
     private SysRoleDeptMapper roleDeptMapper;
 
     @Override

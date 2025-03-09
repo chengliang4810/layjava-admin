@@ -5,9 +5,9 @@ import com.layjava.common.mybatis.listener.BaseEntityInsertListener;
 import com.layjava.common.mybatis.listener.BaseEntityUpdateListener;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.query.QueryColumnBehavior;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Inject;
 
 /**
  * ORM框架配置
@@ -31,7 +31,7 @@ public class MybatisFlexConfig {
      * @param globalConfig globalConfig
      */
     @Bean
-    public FlexGlobalConfig configuration(@Db FlexGlobalConfig globalConfig) {
+    public FlexGlobalConfig configuration(@Inject FlexGlobalConfig globalConfig) {
         // BaseEntity数据填充
         globalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
         globalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);

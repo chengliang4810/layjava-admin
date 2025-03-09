@@ -1,6 +1,5 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.crypto.SecureUtil;
 import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
@@ -13,8 +12,9 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.crypto.SecureUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +31,7 @@ import static com.layjava.system.domain.table.SysClientTableDef.SYS_CLIENT;
 @Component
 public class SysClientServiceImpl implements ISysClientService {
 
-    @Db
+    @Inject
     private SysClientMapper baseMapper;
 
     /**

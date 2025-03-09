@@ -1,8 +1,6 @@
 package com.layjava.system.service.impl;
 
 import cn.dev33.satoken.context.SaHolder;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.CacheConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.DictService;
@@ -22,8 +20,10 @@ import com.layjava.system.service.ISysDictTypeService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.update.UpdateChain;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,9 +42,9 @@ import static com.layjava.system.domain.table.SysDictTypeTableDef.SYS_DICT_TYPE;
 @Component
 public class SysDictTypeServiceImpl implements ISysDictTypeService, DictService {
 
-    @Db
+    @Inject
     private SysDictTypeMapper baseMapper;
-    @Db
+    @Inject
     private SysDictDataMapper dictDataMapper;
 
     @Override

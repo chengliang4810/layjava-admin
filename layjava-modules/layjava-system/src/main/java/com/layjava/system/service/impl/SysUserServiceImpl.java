@@ -1,8 +1,5 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.array.ArrayUtil;
-import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.service.UserService;
@@ -29,8 +26,11 @@ import com.mybatisflex.core.query.If;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.util.UpdateEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.array.ArrayUtil;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.List;
 import java.util.Map;
@@ -51,17 +51,17 @@ import static com.mybatisflex.core.query.QueryMethods.distinct;
 @Component
 public class SysUserServiceImpl implements ISysUserService, UserService {
 
-    @Db
+    @Inject
     private SysUserMapper baseMapper;
-    @Db
+    @Inject
     private SysDeptMapper deptMapper;
-    @Db
+    @Inject
     private SysRoleMapper roleMapper;
-    @Db
+    @Inject
     private SysPostMapper postMapper;
-    @Db
+    @Inject
     private SysUserRoleMapper userRoleMapper;
-    @Db
+    @Inject
     private SysUserPostMapper userPostMapper;
 
     @Override

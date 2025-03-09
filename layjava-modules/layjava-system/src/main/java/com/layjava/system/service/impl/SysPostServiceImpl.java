@@ -12,8 +12,8 @@ import com.layjava.system.mapper.SysUserPostMapper;
 import com.layjava.system.service.ISysPostService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +29,9 @@ import static com.layjava.system.domain.table.SysPostTableDef.SYS_POST;
 @Component
 public class SysPostServiceImpl implements ISysPostService {
 
-    @Db
+    @Inject
     private SysPostMapper baseMapper;
-    @Db
+    @Inject
     private SysUserPostMapper userPostMapper;
 
     @Override

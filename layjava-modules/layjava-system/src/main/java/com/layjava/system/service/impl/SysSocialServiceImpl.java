@@ -7,8 +7,8 @@ import com.layjava.system.domain.vo.SysSocialVo;
 import com.layjava.system.mapper.SysSocialMapper;
 import com.layjava.system.service.ISysSocialService;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.apache.ibatis.solon.annotation.Db;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import static com.layjava.system.domain.table.SysSocialTableDef.SYS_SOCIAL;
 @Component
 public class SysSocialServiceImpl implements ISysSocialService {
 
-    @Db
+    @Inject
     private SysSocialMapper baseMapper;
 
 

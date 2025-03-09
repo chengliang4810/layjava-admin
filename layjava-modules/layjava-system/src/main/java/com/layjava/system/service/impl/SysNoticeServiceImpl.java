@@ -1,6 +1,5 @@
 package com.layjava.system.service.impl;
 
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
@@ -14,8 +13,9 @@ import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.ISysNoticeService;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import org.apache.ibatis.solon.annotation.Db;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.annotation.Inject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,9 +31,9 @@ import static com.layjava.system.domain.table.SysNoticeTableDef.SYS_NOTICE;
 @Component
 public class SysNoticeServiceImpl implements ISysNoticeService {
 
-    @Db
+    @Inject
     private SysNoticeMapper baseMapper;
-    @Db
+    @Inject
     private SysUserMapper userMapper;
 
     @Override
