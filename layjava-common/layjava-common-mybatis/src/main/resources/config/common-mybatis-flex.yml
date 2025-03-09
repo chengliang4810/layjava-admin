@@ -1,15 +1,15 @@
 # 配置数据源对应的 mybatis 信息（要与 DataSource bean 的名字对上）
-mybatisFlex.master:
-  typeAliases:    #支持包名 或 类名（大写开头 或 *）//支持 ** 或 * 占位符
+mybatis-flex:
+  type-aliases-package:    #支持包名 或 类名（大写开头 或 *）//支持 ** 或 * 占位符
     - "com.layjava.**.domain"
-  mappers:        #支持包名 或 类名（大写开头 或 *）或 xml（.xml结尾）//支持 ** 或 * 占位符
+  mapper-locations:        #支持包名 或 类名（大写开头 或 *）或 xml（.xml结尾）//支持 ** 或 * 占位符
     - "com.layjava.**.mapper.*Mapper"
     - "classpath:mapper/**/*.xml"
   configuration:  #扩展配置（要与 FlexConfiguration 类的属性一一对应）
     mapperVerifyEnabled: false #如果为 true，则要求所有 mapper 有 @Mapper 主解
     mapUnderscoreToCamelCase: true
     autoMappingBehavior: full #自动映射策略（NONE/PARTIAL/FULL）
-  globalConfig:   #全局配置（要与 FlexGlobalConfig 类的属性一一对应）//只是示例，别照抄
+  global-config:   #全局配置（要与 FlexGlobalConfig 类的属性一一对应）//只是示例，别照抄
     printBanner: false
     keyConfig:
       keyType: Generator
