@@ -1,4 +1,4 @@
-package com.layjava.generator.service;
+package com.layjava.generator.service.impl;
 
 import com.layjava.common.core.constant.Constants;
 import com.layjava.common.core.exception.ServiceException;
@@ -14,6 +14,7 @@ import com.layjava.generator.domain.GenTable;
 import com.layjava.generator.domain.GenTableColumn;
 import com.layjava.generator.mapper.GenTableColumnMapper;
 import com.layjava.generator.mapper.GenTableMapper;
+import com.layjava.generator.service.IGenTableService;
 import com.layjava.generator.util.GenUtils;
 import com.layjava.generator.util.VelocityInitializer;
 import com.layjava.generator.util.VelocityUtils;
