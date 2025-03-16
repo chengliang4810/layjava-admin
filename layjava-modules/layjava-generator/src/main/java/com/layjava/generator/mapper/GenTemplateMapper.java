@@ -1,7 +1,7 @@
 package com.layjava.generator.mapper;
 
-import com.layjava.generator.domain.GenTemplate;
 import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
+import com.layjava.generator.domain.GenTemplate;
 
 /**
  * 代码生成模板Mapper接口

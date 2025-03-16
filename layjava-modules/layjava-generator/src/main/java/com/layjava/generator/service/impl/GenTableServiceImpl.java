@@ -34,7 +34,6 @@ import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.collection.ListUtil;
-import org.dromara.hutool.core.date.DateUtil;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.util.ObjUtil;
@@ -160,8 +159,8 @@ public class GenTableServiceImpl implements IGenTableService {
                     GenTable gen = new GenTable();
                     gen.setTableName(x.getName());
                     gen.setTableComment(x.getComment());
-                    gen.setCreateTime(DateUtil.toLocalDateTime(x.getCreateTime()));
-                    gen.setUpdateTime(DateUtil.toLocalDateTime(x.getUpdateTime()));
+                    gen.setCreateTime(x.getCreateTime());
+                    gen.setUpdateTime(x.getUpdateTime());
                     return gen;
                 }).toList();
 
@@ -211,8 +210,8 @@ public class GenTableServiceImpl implements IGenTableService {
             gen.setDataName(dataName);
             gen.setTableName(x.getName());
             gen.setTableComment(x.getComment());
-            gen.setCreateTime(DateUtil.toLocalDateTime(x.getCreateTime()));
-            gen.setUpdateTime(DateUtil.toLocalDateTime(x.getUpdateTime()));
+            gen.setCreateTime(x.getCreateTime());
+            gen.setUpdateTime(x.getUpdateTime());
             return gen;
         }).toList();
     }

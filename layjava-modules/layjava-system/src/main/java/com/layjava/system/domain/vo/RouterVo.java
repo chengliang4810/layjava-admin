@@ -3,8 +3,6 @@ package com.layjava.system.domain.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * 路由配置信息
  *

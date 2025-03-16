@@ -1,7 +1,5 @@
 package com.layjava.system.domain.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.layjava.system.domain.SysUser;
 import com.mybatisflex.annotation.RelationManyToMany;
 import com.mybatisflex.annotation.RelationOneToOne;

@@ -2,7 +2,6 @@ package com.layjava.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
-import org.dromara.hutool.core.util.ObjUtil;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -15,6 +14,7 @@ import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.vo.SysUserVo;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.validation.ValidUtils;
