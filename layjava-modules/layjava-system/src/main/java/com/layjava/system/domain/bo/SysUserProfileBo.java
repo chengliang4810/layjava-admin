@@ -1,7 +1,7 @@
 package com.layjava.system.domain.bo;
 
 import com.layjava.common.core.xss.Xss;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ import org.noear.solon.validation.annotation.Size;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class SysUserProfileBo extends BaseEntity {
+public class SysUserProfileBo extends BoBaseEntity {
 
     /**
      * 用户ID

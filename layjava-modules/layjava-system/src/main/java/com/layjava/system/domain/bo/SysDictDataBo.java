@@ -1,6 +1,6 @@
 package com.layjava.system.domain.bo;
 
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.system.domain.SysDictData;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -18,7 +18,7 @@ import org.noear.solon.validation.annotation.Size;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysDictData.class, reverseConvertGenerate = false)
-public class SysDictDataBo extends BaseEntity {
+public class SysDictDataBo extends BoBaseEntity {
 
     /**
      * 字典编码

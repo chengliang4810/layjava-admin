@@ -1,6 +1,6 @@
 package com.layjava.system.domain.bo;
 
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.system.domain.SysOss;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysOss.class, reverseConvertGenerate = false)
-public class SysOssBo extends BaseEntity {
+public class SysOssBo extends BoBaseEntity {
 
     /**
      * ossId

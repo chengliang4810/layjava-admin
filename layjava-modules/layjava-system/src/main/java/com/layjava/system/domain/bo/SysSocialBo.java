@@ -2,7 +2,7 @@ package com.layjava.system.domain.bo;
 
 import com.layjava.common.core.validate.group.AddGroup;
 import com.layjava.common.core.validate.group.UpdateGroup;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.system.domain.SysSocial;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -21,7 +21,7 @@ import org.noear.solon.validation.annotation.NotNull;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysSocial.class, reverseConvertGenerate = false)
-public class SysSocialBo extends BaseEntity {
+public class SysSocialBo extends BoBaseEntity {
 
     /**
      * 主键

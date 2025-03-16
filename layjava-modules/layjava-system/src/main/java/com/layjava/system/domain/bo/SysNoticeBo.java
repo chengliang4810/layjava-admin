@@ -1,7 +1,7 @@
 package com.layjava.system.domain.bo;
 
 import com.layjava.common.core.xss.Xss;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.system.domain.SysNotice;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -19,7 +19,7 @@ import org.noear.solon.validation.annotation.Size;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysNotice.class, reverseConvertGenerate = false)
-public class SysNoticeBo extends BaseEntity {
+public class SysNoticeBo extends BoBaseEntity {
 
     /**
      * 公告ID

@@ -1,6 +1,6 @@
 package com.layjava.system.domain.bo;
 
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.system.domain.SysPost;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -19,7 +19,7 @@ import org.noear.solon.validation.annotation.Size;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysPost.class, reverseConvertGenerate = false)
-public class SysPostBo extends BaseEntity {
+public class SysPostBo extends BoBaseEntity {
 
     /**
      * 岗位ID

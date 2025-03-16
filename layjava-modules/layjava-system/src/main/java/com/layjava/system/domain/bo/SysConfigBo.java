@@ -1,6 +1,6 @@
 package com.layjava.system.domain.bo;
 
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.system.domain.SysConfig;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -18,7 +18,7 @@ import org.noear.solon.validation.annotation.Size;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysConfig.class, reverseConvertGenerate = false)
-public class SysConfigBo extends BaseEntity {
+public class SysConfigBo extends BoBaseEntity {
 
     /**
      * 参数主键

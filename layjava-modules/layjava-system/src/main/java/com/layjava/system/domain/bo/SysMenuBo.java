@@ -1,7 +1,7 @@
 package com.layjava.system.domain.bo;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.system.domain.SysMenu;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -20,7 +20,7 @@ import org.noear.solon.validation.annotation.NotNull;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysMenu.class, reverseConvertGenerate = false)
-public class SysMenuBo extends BaseEntity {
+public class SysMenuBo extends BoBaseEntity {
 
     /**
      * 菜单ID

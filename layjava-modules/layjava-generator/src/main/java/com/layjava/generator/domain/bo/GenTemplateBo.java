@@ -2,7 +2,7 @@ package com.layjava.generator.domain.bo;
 
 import com.layjava.common.core.validate.group.AddGroup;
 import com.layjava.common.core.validate.group.UpdateGroup;
-import com.layjava.common.mybatis.core.entity.BaseEntity;
+import com.layjava.common.mybatis.core.entity.BoBaseEntity;
 import com.layjava.generator.domain.GenTemplate;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -21,7 +21,7 @@ import org.noear.solon.validation.annotation.NotNull;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = GenTemplate.class, reverseConvertGenerate = false)
-public class GenTemplateBo extends BaseEntity {
+public class GenTemplateBo extends BoBaseEntity {
 
     /**
      * 编号
@@ -66,6 +66,4 @@ public class GenTemplateBo extends BaseEntity {
      * 备注
      */
     private String remark;
-
-
 }
