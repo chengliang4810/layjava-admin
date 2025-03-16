@@ -5,7 +5,7 @@ import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.mybatisflex.annotation.AbstractInsertListener;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 新增数据自动填充
@@ -17,7 +17,7 @@ public class BaseEntityInsertListener extends AbstractInsertListener<BaseEntity>
 
     @Override
     public void doInsert(BaseEntity entity) {
-        LocalDateTime now = LocalDateTime.now();
+        Date currentTime = new Date();
         // 获取当前登录用户
         LoginUser loginUser = LoginHelper.getLoginUser();
         if (loginUser != null) {
@@ -31,8 +31,8 @@ public class BaseEntityInsertListener extends AbstractInsertListener<BaseEntity>
         }
 
         // 时间
-        entity.setCreateTime(now);
-        entity.setUpdateTime(now);
+        entity.setCreateTime(currentTime);
+        entity.setUpdateTime(currentTime);
     }
 
 }

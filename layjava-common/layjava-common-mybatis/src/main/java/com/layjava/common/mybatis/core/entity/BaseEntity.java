@@ -1,13 +1,10 @@
 package com.layjava.common.mybatis.core.entity;
 
-import com.mybatisflex.annotation.Column;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * Entity基类
@@ -26,33 +23,26 @@ public class BaseEntity implements Serializable {
     /**
      * 创建部门
      */
-    private Long createDept;
+    protected Long createDept;
 
     /**
      * 创建者
      */
-    private Long createBy;
+    protected Long createBy;
 
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    protected Date createTime;
 
     /**
      * 更新者
      */
-    private Long updateBy;
+    protected Long updateBy;
 
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
-
-    /**
-     * 请求参数
-     */
-    // @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @Column(ignore = true)
-    private Map<String, Object> params = new HashMap<>();
+    protected Date updateTime;
 
 }

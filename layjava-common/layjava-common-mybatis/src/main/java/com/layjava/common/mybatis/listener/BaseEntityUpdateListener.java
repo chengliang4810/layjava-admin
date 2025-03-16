@@ -5,7 +5,7 @@ import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.mybatisflex.annotation.AbstractUpdateListener;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * 更新数据自动填充
@@ -18,7 +18,7 @@ public class BaseEntityUpdateListener extends AbstractUpdateListener<BaseEntity>
     @Override
     public void doUpdate(BaseEntity entity) {
         // 修改时间
-        entity.setUpdateTime(LocalDateTime.now());
+        entity.setUpdateTime(new Date());
         // 获取当前登录用户
         LoginUser loginUser = LoginHelper.getLoginUser();
         if (loginUser != null) {
