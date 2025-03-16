@@ -43,6 +43,12 @@
             <artifactId>mybatis-flex-solon-plugin</artifactId>
             <version>${mybatis-flex.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.dromara.autotable</groupId>
+            <artifactId>auto-table-solon-plugin</artifactId>
+            <version>${autotable.version}</version>
+        </dependency>
     </dependencies>
 
 
