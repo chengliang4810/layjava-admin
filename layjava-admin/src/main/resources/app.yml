@@ -57,3 +57,25 @@ gen:
   tablePrefix: sys_
   # 使用的模版 默认是vben，原生的是vue
   platform: vue
+
+# 表自动配置
+auto-table:
+  enable: true
+  show-banner: false
+  # 自定义的索引前缀
+  index-prefix: idx_
+  # 自动删除数据库中多余的列
+  auto-drop-column: false
+  # 自动删除数据库中多余的索引
+  auto-drop-index: false
+  # update(默认)：系统启动时，会自动判断哪些表是新建的，哪些字段要新增修改，哪些索引/约束要新增删除等。
+  model: update
+  # 记录表信息维护过程中执行的SQL
+  recordSql:
+    enable: true
+    # 记录方式，默认是数据库，可选文件(file)方式
+    recordType: file
+    # 当前SQL的版本，建议指定，会体现在数据库的字段或者文件名上
+    version: 1.0.0
+    # 记录文件的路径
+    folderPath: ./db/sql

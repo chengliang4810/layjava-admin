@@ -1,7 +1,6 @@
 package com.layjava;
 
 import com.layjava.domain.LayJavaVersion;
-import org.dromara.autotable.solon.annotation.EnableAutoTable;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
@@ -16,7 +15,7 @@ import org.noear.solon.annotation.SolonMain;
  */
 @SolonMain
 @Controller
-@EnableAutoTable
+// @EnableAutoTable
 public class Application {
 
     public static void main(String[] args) {

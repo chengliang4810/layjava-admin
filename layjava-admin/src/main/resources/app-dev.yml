@@ -1,6 +1,13 @@
 # 打印Sql
 layjava.sql.print: true
 
+# 表自动配置
+auto-table:
+  # 自动删除数据库中多余的列
+  auto-drop-column: true
+  # 自动删除数据库中多余的索引
+  auto-drop-index: true
+
 # MySql数据库配置
 solon.dataSources.master!: #数据源（!结尾表示 typed=true）
   class: "com.zaxxer.hikari.HikariDataSource"
