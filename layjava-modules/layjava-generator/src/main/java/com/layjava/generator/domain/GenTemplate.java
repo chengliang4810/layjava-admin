@@ -56,6 +56,11 @@ public class GenTemplate extends BaseEntity {
     private String content;
 
     /**
+     * 是否启用
+     */
+    private Boolean enabled;
+
+    /**
      * 备注
      */
     private String remark;
