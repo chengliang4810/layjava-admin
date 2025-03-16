@@ -6,7 +6,7 @@ import com.layjava.common.mybatis.listener.BaseEntityUpdateListener;
 import com.mybatisflex.core.FlexGlobalConfig;
 import com.mybatisflex.core.query.QueryColumnBehavior;
 import com.mybatisflex.solon.MyBatisFlexCustomizer;
-import org.noear.solon.annotation.Configuration;
+import org.noear.solon.annotation.Component;
 
 /**
  * ORM框架配置
@@ -14,7 +14,7 @@ import org.noear.solon.annotation.Configuration;
  * @author chengliang
  * @since 2024/02/27
  */
-@Configuration
+@Component
 public class MybatisFlexConfig implements MyBatisFlexCustomizer {
 
     static {
@@ -30,5 +30,4 @@ public class MybatisFlexConfig implements MyBatisFlexCustomizer {
         flexGlobalConfig.registerInsertListener(new BaseEntityInsertListener(), BaseEntity.class);
         flexGlobalConfig.registerUpdateListener(new BaseEntityUpdateListener(), BaseEntity.class);
     }
-
 }
