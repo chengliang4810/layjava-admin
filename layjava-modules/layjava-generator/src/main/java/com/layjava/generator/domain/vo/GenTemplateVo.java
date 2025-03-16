@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 
 /**
@@ -65,6 +65,6 @@ public class GenTemplateVo implements Serializable {
     /**
      * 最后更新时间
      */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
 }

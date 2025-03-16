@@ -45,7 +45,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -514,8 +513,8 @@ public class GenTableServiceImpl implements IGenTableService {
             try {
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(genTemplate.getPath(), table)));
-                cn.hutool.core.io.IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
-                cn.hutool.core.io.IoUtil.close(sw);
+                IoUtil.writeUtf8(zip, false, sw.toString());
+                IoUtil.closeIfPossible(sw);
                 zip.flush();
                 zip.closeEntry();
             } catch (IOException e) {

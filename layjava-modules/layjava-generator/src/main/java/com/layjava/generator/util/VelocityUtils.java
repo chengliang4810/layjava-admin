@@ -10,7 +10,13 @@ import com.layjava.generator.domain.GenTable;
 import com.layjava.generator.domain.GenTableColumn;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.velocity.VelocityContext;
+import org.beetl.core.Configuration;
+import org.beetl.core.GroupTemplate;
+import org.beetl.core.Template;
+import org.beetl.core.resource.StringTemplateResourceLoader;
 import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.map.MapUtil;
@@ -62,7 +68,7 @@ public class VelocityUtils {
         VelocityContext velocityContext = new VelocityContext();
         velocityContext.put("tplCategory", genTable.getTplCategory());
         velocityContext.put("tableName", genTable.getTableName());
-        velocityContext.put("functionName", StringUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】" );
+        velocityContext.put("functionName", StringUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
         velocityContext.put("ClassName", genTable.getClassName());
         velocityContext.put("className", StringUtil.uncapitalize(genTable.getClassName()));
         velocityContext.put("moduleName", genTable.getModuleName());
@@ -119,38 +125,38 @@ public class VelocityUtils {
      */
     public static List<String> getTemplateList(String tplCategory) {
         List<String> templates = new ArrayList<>();
-        templates.add("vm/java/domain.java.vm" );
-        templates.add("vm/java/vo.java.vm" );
-        templates.add("vm/java/bo.java.vm" );
-        templates.add("vm/java/mapper.java.vm" );
-        templates.add("vm/java/service.java.vm" );
-        templates.add("vm/java/serviceImpl.java.vm" );
-        templates.add("vm/java/controller.java.vm" );
-        templates.add("vm/xml/mapper.xml.vm" );
+        templates.add("vm/java/domain.java.vm");
+        templates.add("vm/java/vo.java.vm");
+        templates.add("vm/java/bo.java.vm");
+        templates.add("vm/java/mapper.java.vm");
+        templates.add("vm/java/service.java.vm");
+        templates.add("vm/java/serviceImpl.java.vm");
+        templates.add("vm/java/controller.java.vm");
+        templates.add("vm/xml/mapper.xml.vm");
         if (DataBaseHelper.isOracle()) {
-            templates.add("vm/sql/oracle/sql.vm" );
+            templates.add("vm/sql/oracle/sql.vm");
         } else if (DataBaseHelper.isPostgerSql()) {
-            templates.add("vm/sql/postgres/sql.vm" );
+            templates.add("vm/sql/postgres/sql.vm");
         } else if (DataBaseHelper.isSqlServer()) {
-            templates.add("vm/sql/sqlserver/sql.vm" );
+            templates.add("vm/sql/sqlserver/sql.vm");
         } else {
-            templates.add("vm/sql/sql.vm" );
+            templates.add("vm/sql/sql.vm");
         }
 
         if (StringUtil.equals("vben", genConfig.getPlatform())) {
             // 添加vben
-            templates.add("vm/vben/api/index.ts.vm" );
-            templates.add("vm/vben/api/model.ts.vm" );
-            templates.add("vm/vben/views/data.ts.vm" );
-            templates.add("vm/vben/views/index.vue.vm" );
-            templates.add("vm/vben/views/modal.vue.vm" );
+            templates.add("vm/vben/api/index.ts.vm");
+            templates.add("vm/vben/api/model.ts.vm");
+            templates.add("vm/vben/views/data.ts.vm");
+            templates.add("vm/vben/views/index.vue.vm");
+            templates.add("vm/vben/views/modal.vue.vm");
         } else {
-            templates.add("vm/ts/api.ts.vm" );
-            templates.add("vm/ts/types.ts.vm" );
+            templates.add("vm/ts/api.ts.vm");
+            templates.add("vm/ts/types.ts.vm");
             if (GenConstants.TPL_CRUD.equals(tplCategory)) {
-                templates.add("vm/vue/index.vue.vm" );
+                templates.add("vm/vue/index.vue.vm");
             } else if (GenConstants.TPL_TREE.equals(tplCategory)) {
-                templates.add("vm/vue/index-tree.vue.vm" );
+                templates.add("vm/vue/index-tree.vue.vm");
             }
         }
 
@@ -161,6 +167,7 @@ public class VelocityUtils {
     /**
      * 获取文件名
      */
+    @SneakyThrows
     public static String getFileName(String template, GenTable genTable) {
         // 文件名称
         String fileName = "";
@@ -173,62 +180,26 @@ public class VelocityUtils {
         // 业务名称
         String businessName = genTable.getBusinessName();
 
-        String javaPath = PROJECT_PATH + "/" + StringUtil.replace(packageName, ".", "/" );
+        String javaPath = PROJECT_PATH + "/" + StringUtils.replace(packageName, ".", "/");
         String mybatisPath = MYBATIS_PATH + "/" + moduleName;
         String vuePath = "vue";
 
-        if (template.contains("domain.java.vm" )) {
-            fileName = StringUtil.format("{}/domain/{}.java", javaPath, className);
-        }
-        if (template.contains("vo.java.vm" )) {
-            fileName = StringUtil.format("{}/domain/vo/{}Vo.java", javaPath, className);
-        }
-        if (template.contains("bo.java.vm" )) {
-            fileName = StringUtil.format("{}/domain/bo/{}Bo.java", javaPath, className);
-        }
-        if (template.contains("mapper.java.vm" )) {
-            fileName = StringUtil.format("{}/mapper/{}Mapper.java", javaPath, className);
-        } else if (template.contains("service.java.vm" )) {
-            fileName = StringUtil.format("{}/service/I{}Service.java", javaPath, className);
-        } else if (template.contains("serviceImpl.java.vm" )) {
-            fileName = StringUtil.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
-        } else if (template.contains("controller.java.vm" )) {
-            fileName = StringUtil.format("{}/controller/{}Controller.java", javaPath, className);
-        } else if (template.contains("mapper.xml.vm" )) {
-            fileName = StringUtil.format("{}/{}Mapper.xml", mybatisPath, className);
-        } else if (template.contains("sql.vm" )) {
-            fileName = businessName + "Menu.sql";
-        } else if (template.contains("api.ts.vm" )) {
-            fileName = StringUtil.format("{}/api/{}/{}/index.ts", vuePath, moduleName, businessName);
-        } else if (template.contains("types.ts.vm" )) {
-            fileName = StringUtil.format("{}/api/{}/{}/types.ts", vuePath, moduleName, businessName);
-        } else if (template.contains("index.vue.vm" )) {
-            fileName = StringUtil.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
-        } else if (template.contains("index-tree.vue.vm" )) {
-            fileName = StringUtil.format("{}/views/{}/{}/index.vue", vuePath, moduleName, businessName);
-        }
-
-        String vbenPath = "vben";
-        String BusinessName = StringUtil.capitalize(genTable.getBusinessName());
-
-        // 添加vben
-        if (template.contains("index.ts.vm" )) {
-            fileName = StringUtil.format("{}/api/{}/{}/index.ts", vbenPath, moduleName, businessName);
-        }
-        if (template.contains("model.ts.vm" )) {
-            fileName = StringUtil.format("{}/api/{}/{}/model.ts", vbenPath, moduleName, businessName);
-        }
-        if (template.contains("index.vue.vm" )) {
-            fileName = StringUtil.format("{}/views/{}/{}/index.vue", vbenPath, moduleName, businessName);
-        }
-        if (template.contains("data.ts.vm" )) {
-            fileName = StringUtil.format("{}/views/{}/{}/{}.data.ts", vbenPath, moduleName, businessName, businessName);
-        }
-        if (template.contains("modal.vue.vm" )) {
-            fileName = StringUtil.format("{}/views/{}/{}/{}Modal.vue", vbenPath, moduleName, businessName, BusinessName);
-        }
-
-        return fileName;
+        //初始化代码
+        StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
+        Configuration cfg = Configuration.defaultConfiguration();
+        GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
+        //获取模板
+        Template t = gt.getTemplate(template);
+        t.binding("packageName", packageName);
+        t.binding("moduleName", moduleName);
+        t.binding("businessName", businessName);
+        t.binding("className", className);
+        t.binding("tableName", genTable.getTableName());
+        t.binding("javaPath", javaPath);
+        t.binding("mybatisPath", mybatisPath);
+        t.binding("vuePath", vuePath);
+        //渲染结果
+        return t.render();
     }
 
     /**
@@ -238,7 +209,7 @@ public class VelocityUtils {
      * @return 包前缀名称
      */
     public static String getPackagePrefix(String packageName) {
-        int lastIndex = packageName.lastIndexOf("." );
+        int lastIndex = packageName.lastIndexOf(".");
         return StringUtil.substring(packageName, 0, lastIndex);
     }
 
@@ -253,10 +224,10 @@ public class VelocityUtils {
         HashSet<String> importList = new HashSet<>();
         for (GenTableColumn column : columns) {
             if (!column.isSuperColumn() && GenConstants.TYPE_DATE.equals(column.getJavaType())) {
-                importList.add("java.util.Date" );
-                importList.add("com.fasterxml.jackson.annotation.JsonFormat" );
+                importList.add("java.util.Date");
+                importList.add("com.fasterxml.jackson.annotation.JsonFormat");
             } else if (!column.isSuperColumn() && GenConstants.TYPE_BIGDECIMAL.equals(column.getJavaType())) {
-                importList.add("java.math.BigDecimal" );
+                importList.add("java.math.BigDecimal");
             }
         }
         return importList;
@@ -272,7 +243,7 @@ public class VelocityUtils {
         List<GenTableColumn> columns = genTable.getColumns();
         Set<String> dicts = new HashSet<>();
         addDicts(dicts, columns);
-        return StringUtil.join(dicts, ", " );
+        return StringUtil.join(dicts, ", ");
     }
 
     /**
@@ -286,7 +257,7 @@ public class VelocityUtils {
             if (!column.isSuperColumn() && StringUtil.isNotEmpty(column.getDictType()) && StringUtil.equalsAny(
                     column.getHtmlType(),
                     new String[]{GenConstants.HTML_SELECT, GenConstants.HTML_RADIO, GenConstants.HTML_CHECKBOX})) {
-                dicts.add("'" + column.getDictType() + "'" );
+                dicts.add("'" + column.getDictType() + "'");
             }
         }
     }
