@@ -23,7 +23,7 @@ import ${import};
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = ${ClassName}.class, reverseConvertGenerate = false)
-public class ${ClassName}Bo extends BaseEntity {
+public class ${ClassName}Bo extends BoBaseEntity {
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField) && ($column.query || $column.insert || $column.edit))
