@@ -10,10 +10,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
+import org.dromara.autotable.annotation.Ignore;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.Validated;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 业务表 gen_table
@@ -170,6 +173,10 @@ public class GenTable extends BaseEntity {
      */
     @Column(ignore = true)
     private String parentMenuName;
+
+    @Ignore
+    @Column(ignore = true)
+    private Map<String, Object> params = new HashMap<>();
 
     public boolean isTree() {
         return isTree(this.tplCategory);
