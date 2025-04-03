@@ -1,9 +1,9 @@
 package com.layjava.generator.domain;
 
+import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.noear.solon.validation.annotation.NotBlank;
@@ -22,7 +22,7 @@ public class GenTableColumn extends BaseEntity {
     /**
      * 编号
      */
-    @Id
+    @TableId
     private Long columnId;
 
     /**

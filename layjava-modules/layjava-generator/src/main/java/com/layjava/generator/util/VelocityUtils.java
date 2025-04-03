@@ -3,7 +3,6 @@ package com.layjava.generator.util;
 import com.layjava.common.core.utils.DateUtil;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
-import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.generator.config.GenConfig;
 import com.layjava.generator.constant.GenConstants;
 import com.layjava.generator.domain.GenTable;

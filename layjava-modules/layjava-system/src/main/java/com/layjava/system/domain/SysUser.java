@@ -1,9 +1,9 @@
 package com.layjava.system.domain;
 
+import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.layjava.common.core.constant.UserConstants;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class SysUser extends BaseEntity {
     /**
      * 用户ID
      */
-    @Id
+    @TableId
     private Long userId;
 
     /**

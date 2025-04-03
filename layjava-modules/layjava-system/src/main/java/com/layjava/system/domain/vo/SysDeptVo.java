@@ -5,7 +5,6 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.layjava.common.excel.annotation.ExcelDictFormat;
 import com.layjava.common.excel.convert.ExcelDictConvert;
 import com.layjava.system.domain.SysDept;
-import com.mybatisflex.annotation.RelationOneToOne;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
@@ -67,7 +66,7 @@ public class SysDeptVo implements Serializable {
      * 负责人
      */
     @ExcelProperty(value = "负责人")
-    @RelationOneToOne(valueField = "userName", selfField = "leader", joinSelfColumn = "leader", targetField = "userId", joinTargetColumn = "user_id", targetTable = "sys_user")
+    // @RelationOneToOne(valueField = "userName", selfField = "leader", joinSelfColumn = "leader", targetField = "userId", joinTargetColumn = "user_id", targetTable = "sys_user")
     private String leaderName;
 
     /**

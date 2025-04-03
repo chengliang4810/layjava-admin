@@ -1,12 +1,12 @@
 package com.layjava.common.mybatis.core.page;
 
+import cn.xbatis.core.mybatis.mapper.context.Pager;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.core.utils.sql.SqlUtil;
-import com.mybatisflex.core.constant.SqlConsts;
-import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryColumn;
-import com.mybatisflex.core.query.QueryOrderBy;
+import db.sql.api.impl.cmd.Methods;
+import db.sql.api.impl.cmd.basic.OrderByDirection;
+import db.sql.api.impl.cmd.struct.query.OrderBy;
 import lombok.Data;
 import org.dromara.hutool.core.util.ObjUtil;
 
@@ -55,13 +55,13 @@ public class PageQuery implements Serializable {
      */
     public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
 
-    public <T> Page<T> build() {
+    public <T> Pager<T> build() {
         Integer pageNum = ObjUtil.defaultIfNull(getPageNum(), DEFAULT_PAGE_NUM);
         Integer pageSize = ObjUtil.defaultIfNull(getPageSize(), DEFAULT_PAGE_SIZE);
         if (pageNum <= 0) {
             pageNum = DEFAULT_PAGE_NUM;
         }
-        return new Page<>(pageNum, pageSize);
+        return new Pager<>(pageNum, pageSize);
     }
 
     /**
@@ -73,9 +73,9 @@ public class PageQuery implements Serializable {
      * {isAsc:"desc",orderByColumn:"id,createTime"} order by id desc,create_time desc
      * {isAsc:"asc,desc",orderByColumn:"id,createTime"} order by id asc,create_time desc
      */
-    public QueryOrderBy[] buildOrderBy() {
+    public OrderBy[] buildOrderBy() {
         if (StringUtil.isBlank(orderByColumn) || StringUtil.isBlank(isAsc)) {
-            return new QueryOrderBy[]{};
+            return new OrderBy[]{};
         }
 
         String orderBy = SqlUtil.escapeOrderBySql(orderByColumn);
@@ -89,15 +89,15 @@ public class PageQuery implements Serializable {
         if (isAscArr.length != 1 && isAscArr.length != orderByArr.length) {
             throw new ServiceException("排序参数有误" );
         }
-        QueryOrderBy[] orderBys = new QueryOrderBy[orderByArr.length];
+        OrderBy[] orderBys = new OrderBy[orderByArr.length];
         // 每个字段各自排序
         for (int i = 0; i < orderByArr.length; i++) {
             String orderByStr = orderByArr[i];
             String isAscStr = isAscArr.length == 1 ? isAscArr[0] : isAscArr[i];
             if ("asc".equals(isAscStr)) {
-                orderBys[i] = new QueryOrderBy(new QueryColumn(orderByStr), SqlConsts.ASC);
+                orderBys[i] = new OrderBy().orderBy(OrderByDirection.ASC,  Methods.column(orderByStr));
             } else if ("desc".equals(isAscStr)) {
-                orderBys[i] = new QueryOrderBy(new QueryColumn(orderByStr), SqlConsts.DESC);
+                orderBys[i] =  new OrderBy().orderBy(OrderByDirection.DESC, Methods.column(orderByStr));
             } else {
                 throw new ServiceException("排序参数有误" );
             }

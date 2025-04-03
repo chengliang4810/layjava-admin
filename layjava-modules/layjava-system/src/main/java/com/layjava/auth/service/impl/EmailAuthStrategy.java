@@ -2,6 +2,7 @@ package com.layjava.auth.service.impl;
 
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.xbatis.core.sql.executor.Where;
 import com.layjava.auth.domain.vo.LoginVo;
 import com.layjava.auth.service.AuthStrategy;
 import com.layjava.auth.service.AuthStrategyService;
@@ -20,7 +21,6 @@ import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
-import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.dromara.hutool.json.JSONUtil;
@@ -28,8 +28,6 @@ import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.validation.ValidUtils;
-
-import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 
 
 /**
@@ -93,9 +91,8 @@ public class EmailAuthStrategy implements AuthStrategyService {
     }
 
     private SysUserVo loadUserByEmail(String email) {
-        SysUser user = userMapper.selectOneByQuery(QueryWrapper.create().from(SYS_USER)
-                .select(SYS_USER.EMAIL, SYS_USER.STATUS)
-                .and(SYS_USER.EMAIL.eq(email)));
+        SysUser user = userMapper.get(Where.create().eq(SysUser::getEmail, email), SysUser::getEmail, SysUser::getStatus);
+
         if (ObjUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", email);
             throw new UserException("user.not.exists", email);

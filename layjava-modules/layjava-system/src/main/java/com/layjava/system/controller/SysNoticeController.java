@@ -10,7 +10,6 @@ import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.system.domain.bo.SysNoticeBo;
 import com.layjava.system.domain.vo.SysNoticeVo;
-import com.layjava.system.service.ISysNoticeService;
 import org.noear.solon.annotation.*;
 
 /**

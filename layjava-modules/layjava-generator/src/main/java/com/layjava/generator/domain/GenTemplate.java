@@ -1,12 +1,12 @@
 package com.layjava.generator.domain;
 
+import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-  import org.dromara.autotable.annotation.AutoColumn;
+import org.dromara.autotable.annotation.AutoColumn;
 import org.dromara.autotable.annotation.AutoTable;
 import org.dromara.autotable.annotation.PrimaryKey;
 import org.dromara.autotable.annotation.mysql.MysqlTypeConstant;
@@ -32,7 +32,7 @@ public class GenTemplate extends BaseEntity {
     /**
      * 编号
      */
-    @Id
+    @TableId
     @PrimaryKey
     @AutoColumn(comment = "编号")
     private Long id;

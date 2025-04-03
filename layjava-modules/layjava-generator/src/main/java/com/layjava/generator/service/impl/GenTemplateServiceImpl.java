@@ -1,5 +1,7 @@
 package com.layjava.generator.service.impl;
 
+import cn.xbatis.core.mybatis.mapper.context.Pager;
+import cn.xbatis.core.sql.executor.Where;
 import com.layjava.common.core.utils.MapstructUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
@@ -8,8 +10,6 @@ import com.layjava.generator.domain.bo.GenTemplateBo;
 import com.layjava.generator.domain.vo.GenTemplateVo;
 import com.layjava.generator.mapper.GenTemplateMapper;
 import com.layjava.generator.service.IGenTemplateService;
-import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
@@ -17,8 +17,6 @@ import org.noear.solon.annotation.Component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import static com.layjava.generator.domain.table.GenTemplateTableDef.GEN_TEMPLATE;
 
 
 /**
@@ -39,7 +37,7 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
      */
     @Override
     public GenTemplateVo queryById(Long id) {
-        return baseMapper.selectOneWithRelationsByIdAs(id, GenTemplateVo.class);
+        return baseMapper.getVoById(id);
     }
 
     /**
@@ -47,8 +45,8 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
      */
     @Override
     public PageResult<GenTemplateVo> queryPageList(GenTemplateBo bo, PageQuery pageQuery) {
-        QueryWrapper qw = buildQueryWrapper(bo);
-        Page<GenTemplateVo> result = baseMapper.paginateAs(pageQuery, qw, GenTemplateVo.class);
+        Where qw = buildQueryWrapper(bo);
+        Pager<GenTemplateVo> result = baseMapper.paging(pageQuery.build(), qw, GenTemplateVo.class);
         return PageResult.build(result);
     }
 
@@ -57,19 +55,19 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
      */
     @Override
     public List<GenTemplateVo> queryList(GenTemplateBo bo) {
-        QueryWrapper qw = buildQueryWrapper(bo);
-        return baseMapper.selectListByQueryAs(qw, GenTemplateVo.class);
+        Where qw = buildQueryWrapper(bo);
+        return baseMapper.list(qw, GenTemplateVo.class);
     }
 
-    private QueryWrapper buildQueryWrapper(GenTemplateBo bo) {
+    private Where buildQueryWrapper(GenTemplateBo bo) {
         Map<String, Object> params = bo.getParams();
-        return QueryWrapper.create()
-                .from(GEN_TEMPLATE)
-                .where(GEN_TEMPLATE.CATEGORY.eq(bo.getCategory()))
-                .and(GEN_TEMPLATE.NAME.like(bo.getName()))
-                .and(GEN_TEMPLATE.PATH.eq(bo.getPath()))
-                .and(GEN_TEMPLATE.DB_TYPE.eq(bo.getDbType()))
-                .and(GEN_TEMPLATE.CONTENT.eq(bo.getContent()));
+        return Where.create();
+//                .from(GEN_TEMPLATE)
+//                .where(GEN_TEMPLATE.CATEGORY.eq(bo.getCategory()))
+//                .and(GEN_TEMPLATE.NAME.like(bo.getName()))
+//                .and(GEN_TEMPLATE.PATH.eq(bo.getPath()))
+//                .and(GEN_TEMPLATE.DB_TYPE.eq(bo.getDbType()))
+//                .and(GEN_TEMPLATE.CONTENT.eq(bo.getContent()));
     }
 
     /**
@@ -78,7 +76,7 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
     @Override
     public Boolean insertByBo(GenTemplateBo bo) {
         GenTemplate add = MapstructUtil.convert(bo, GenTemplate.class);
-        boolean flag = baseMapper.insert(add, true) > 0;
+        boolean flag = baseMapper.save(add, true) > 0;
         if (flag) {
             bo.setId(add.getId());
         }
@@ -102,6 +100,6 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
         if (isValid) {
             /// 做一些业务上的校验,判断是否需要校验
         }
-        return baseMapper.deleteBatchByIds(ids) > 0;
+        return baseMapper.deleteByIds(ids) > 0;
     }
 }

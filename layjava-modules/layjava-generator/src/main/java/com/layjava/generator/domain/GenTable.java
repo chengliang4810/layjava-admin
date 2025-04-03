@@ -1,11 +1,9 @@
 package com.layjava.generator.domain;
 
+import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
 import com.layjava.generator.constant.GenConstants;
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.RelationOneToMany;
-import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -32,7 +30,7 @@ public class GenTable extends BaseEntity {
     /**
      * 编号
      */
-    @Id
+    @TableId
     private Long tableId;
 
     /**
@@ -117,15 +115,16 @@ public class GenTable extends BaseEntity {
     /**
      * 主键信息
      */
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private GenTableColumn pkColumn;
 
     /**
      * 表列信息
      */
     @Validated
-    @Column(ignore = true)
-    @RelationOneToMany(selfField = "tableId", targetField = "tableId", orderBy = "sort" )
+    @cn.xbatis.db.annotations.Ignore
+    // TODO
+//    @RelationOneToMany(selfField = "tableId", targetField = "tableId", orderBy = "sort" )
     private List<GenTableColumn> columns;
 
     /**
@@ -141,41 +140,41 @@ public class GenTable extends BaseEntity {
     /**
      * 树编码字段
      */
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private String treeCode;
 
     /**
      * 树父编码字段
      */
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private String treeParentCode;
 
     /**
      * 树名称字段
      */
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private String treeName;
 
     /*
      * 菜单id列表
      */
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private List<Long> menuIds;
 
     /**
      * 上级菜单ID字段
      */
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private Long parentMenuId;
 
     /**
      * 上级菜单名称字段
      */
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private String parentMenuName;
 
     @Ignore
-    @Column(ignore = true)
+    @cn.xbatis.db.annotations.Ignore
     private Map<String, Object> params = new HashMap<>();
 
     public boolean isTree() {

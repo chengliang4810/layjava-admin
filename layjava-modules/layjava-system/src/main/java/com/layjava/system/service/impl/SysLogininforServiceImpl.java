@@ -13,21 +13,15 @@ import com.layjava.system.domain.bo.SysLogininforBo;
 import com.layjava.system.domain.vo.SysLogininforVo;
 import com.layjava.system.mapper.SysLogininforMapper;
 import com.layjava.system.service.ISysClientService;
-import com.layjava.system.service.ISysLogininforService;
-import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.dromara.hutool.http.useragent.UserAgent;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static com.layjava.system.domain.table.SysLogininforTableDef.SYS_LOGININFOR;
 
 /**
  * 系统访问日志情况信息 服务层处理
@@ -108,18 +102,22 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
     @Override
     public PageResult<SysLogininforVo> selectPageLogininforList(SysLogininforBo logininfor, PageQuery pageQuery) {
         Map<String, Object> params = logininfor.getParams();
-        QueryWrapper lqw = QueryWrapper.create().from(SYS_LOGININFOR)
-                .where(SYS_LOGININFOR.IPADDR.like(logininfor.getIpaddr()))
-                .and(SYS_LOGININFOR.STATUS.eq(logininfor.getStatus()))
-                .and(SYS_LOGININFOR.USER_NAME.like(logininfor.getUserName()))
-                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null));
-        if (StringUtil.isBlank(pageQuery.getOrderByColumn())) {
-            lqw.orderBy(SYS_LOGININFOR.INFO_ID, false);
-        } else {
-            lqw.orderBy(pageQuery.buildOrderBy());
-        }
-        Page<SysLogininforVo> page = baseMapper.paginateAs(pageQuery.build(), lqw, SysLogininforVo.class);
-        return PageResult.build(page);
+
+//        QueryWrapper lqw = QueryChain.create().from(SYS_LOGININFOR)
+//                .where(SYS_LOGININFOR.IPADDR.like(logininfor.getIpaddr()))
+//                .and(SYS_LOGININFOR.STATUS.eq(logininfor.getStatus()))
+//                .and(SYS_LOGININFOR.USER_NAME.like(logininfor.getUserName()))
+//                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null));
+//
+//        if (StringUtil.isBlank(pageQuery.getOrderByColumn())) {
+//            lqw.orderBy(SYS_LOGININFOR.INFO_ID, false);
+//        } else {
+//            lqw.orderBy(pageQuery.buildOrderBy());
+//        }
+//        QueryChain.create()
+//                .orderBy(new OrderBy());
+//        Page<SysLogininforVo> page = baseMapper.paging(pageQuery.build(), lqw);
+        return PageResult.build();
     }
 
     /**
@@ -131,7 +129,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
     public void insertLogininfor(SysLogininforBo bo) {
         SysLogininfor logininfor = MapstructUtil.convert(bo, SysLogininfor.class);
         logininfor.setLoginTime(new Date());
-        baseMapper.insert(logininfor, true);
+        baseMapper.save(logininfor);
     }
 
     /**
@@ -143,12 +141,13 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
     @Override
     public List<SysLogininforVo> selectLogininforList(SysLogininforBo logininfor) {
         Map<String, Object> params = logininfor.getParams();
-        return baseMapper.selectListByQueryAs(QueryWrapper.create().from(SYS_LOGININFOR)
-                .where(SYS_LOGININFOR.IPADDR.like(logininfor.getIpaddr()))
-                .and(SYS_LOGININFOR.STATUS.eq(logininfor.getStatus()))
-                .and(SYS_LOGININFOR.USER_NAME.like(logininfor.getUserName()))
-                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null))
-                .orderBy(SYS_LOGININFOR.INFO_ID, false), SysLogininforVo.class);
+        return null;
+//        return baseMapper.selectListByQueryAs(QueryWrapper.create().from(SYS_LOGININFOR)
+//                .where(SYS_LOGININFOR.IPADDR.like(logininfor.getIpaddr()))
+//                .and(SYS_LOGININFOR.STATUS.eq(logininfor.getStatus()))
+//                .and(SYS_LOGININFOR.USER_NAME.like(logininfor.getUserName()))
+//                .and(SYS_LOGININFOR.LOGIN_TIME.between(params.get("beginTime" ), params.get("endTime" ), params.get("beginTime" ) != null && params.get("endTime" ) != null))
+//                .orderBy(SYS_LOGININFOR.INFO_ID, false), SysLogininforVo.class);
     }
 
     /**
@@ -159,7 +158,7 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
      */
     @Override
     public int deleteLogininforByIds(Long[] infoIds) {
-        return baseMapper.deleteBatchByIds(Arrays.asList(infoIds));
+        return baseMapper.deleteByIds(infoIds);
     }
 
     /**
@@ -167,6 +166,6 @@ public class SysLogininforServiceImpl implements ISysLogininforService {
      */
     @Override
     public void cleanLogininfor() {
-        baseMapper.deleteByQuery(new QueryWrapper());
+        baseMapper.deleteAll();
     }
 }

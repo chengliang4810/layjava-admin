@@ -1,8 +1,6 @@
 package com.layjava.system.domain.vo;
 
 import com.layjava.system.domain.SysUser;
-import com.mybatisflex.annotation.RelationManyToMany;
-import com.mybatisflex.annotation.RelationOneToOne;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
@@ -110,13 +108,13 @@ public class SysUserVo implements Serializable {
     /**
      * 部门对象
      */
-    @RelationOneToOne(selfField = "deptId", joinSelfColumn = "dept_id", targetField = "deptId", joinTargetColumn = "dept_id", targetTable = "sys_dept")
+    //@RelationOneToOne(selfField = "deptId", joinSelfColumn = "dept_id", targetField = "deptId", joinTargetColumn = "dept_id", targetTable = "sys_dept")
     private SysDeptVo dept;
 
     /**
      * 角色对象
      */
-    @RelationManyToMany(selfField = "userId", joinSelfColumn = "user_id", targetTable = "sys_role", targetField = "roleId", joinTargetColumn = "role_id", joinTable = "sys_user_role")
+    //@RelationManyToMany(selfField = "userId", joinSelfColumn = "user_id", targetTable = "sys_role", targetField = "roleId", joinTargetColumn = "role_id", joinTable = "sys_user_role")
     private List<SysRoleVo> roles;
 
     /**

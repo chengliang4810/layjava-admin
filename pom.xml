@@ -31,15 +31,16 @@
 
         <!-- 通用 -->
         <lombok.version>1.18.34</lombok.version>
-        <hutool.version>6.0.0-M18</hutool.version>
+        <hutool.version>6.0.0-M20</hutool.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
 
         <!-- 数据源 -->
         <mysql.version>8.4.0</mysql.version>
+        <sqlite.version>3.47.2.0</sqlite.version>
         <hikaricp.version>4.0.3</hikaricp.version>
-        <autotable.version>2.2.0</autotable.version>
-        <mybatis-flex.version>1.10.8</mybatis-flex.version>
+        <autotable.version>2.2.1</autotable.version>
+        <xbatis.version>1.8.3</xbatis.version>
         <anyline.version>8.7.2-jdk17-20250212</anyline.version>
         <velocity.version>2.3</velocity.version>
         <beetl.version>3.19.0.RELEASE</beetl.version>
@@ -127,7 +128,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.47.2.0</version>
+                <version>${sqlite.version}</version>
             </dependency>
 
             <!-- Mysql驱动包 -->
@@ -157,12 +158,18 @@
                 <version>${ip2region.version}</version>
             </dependency>
 
+            <!-- 持久层框架 -->
             <dependency>
-                <groupId>com.mybatis-flex</groupId>
-                <artifactId>mybatis-flex-dependencies</artifactId>
-                <version>${mybatis-flex.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>cn.xbatis</groupId>
+                <artifactId>xbatis-solon-plugin</artifactId>
+                <version>${xbatis.version}</version>
+            </dependency>
+
+            <!-- JavaBean维护表结构 -->
+            <dependency>
+                <groupId>org.dromara.autotable</groupId>
+                <artifactId>auto-table-solon-plugin</artifactId>
+                <version>${autotable.version}</version>
             </dependency>
 
             <!-- velocity代码生成使用模板 -->
@@ -218,11 +225,6 @@
                             <groupId>io.github.linpeilie</groupId>
                             <artifactId>mapstruct-plus-processor</artifactId>
                             <version>${mapstruct-plus.version}</version>
-                        </path>
-                        <path>
-                            <groupId>com.mybatis-flex</groupId>
-                            <artifactId>mybatis-flex-processor</artifactId>
-                            <version>${mybatis-flex.version}</version>
                         </path>
                     </annotationProcessorPaths>
                     <compilerArgs>

@@ -1,6 +1,9 @@
 package com.layjava.generator.service.impl;
 
 import cn.hutool.core.io.FileUtil;
+import cn.xbatis.core.mybatis.mapper.context.Pager;
+import cn.xbatis.core.sql.executor.Where;
+import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.utils.IdUtil;
 import com.layjava.common.core.utils.StreamUtil;
@@ -19,8 +22,6 @@ import com.layjava.generator.service.IGenTableService;
 import com.layjava.generator.util.GenUtils;
 import com.layjava.generator.util.VelocityInitializer;
 import com.layjava.generator.util.VelocityUtils;
-import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.anyline.metadata.Column;
@@ -33,7 +34,6 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 import org.dromara.hutool.core.collection.CollUtil;
-import org.dromara.hutool.core.collection.ListUtil;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.util.ObjUtil;
@@ -74,9 +74,9 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     @Override
     public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId) {
-        return genTableColumnMapper.selectListByQuery(QueryWrapper.create()
+        return genTableColumnMapper.list(QueryChain.<GenTableColumn>create()
                 .eq(GenTableColumn::getTableId, tableId)
-                .orderBy(GenTableColumn::getSort, true)
+                .orderBy(GenTableColumn::getSort)
         );
     }
 
@@ -95,16 +95,17 @@ public class GenTableServiceImpl implements IGenTableService {
 
     @Override
     public PageResult<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery) {
-        Page<GenTable> page = baseMapper.paginate(pageQuery.build(), this.buildGenTableQueryWrapper(genTable));
+        Pager<GenTable> page = baseMapper.paging(pageQuery.build(), this.buildGenTableQueryWrapper(genTable).getWhere());
         return PageResult.build(page);
     }
 
-    private QueryWrapper buildGenTableQueryWrapper(GenTable genTable) {
+    private QueryChain<GenTable> buildGenTableQueryWrapper(GenTable genTable) {
         Map<String, Object> params = genTable.getParams();
-        return QueryWrapper.create().eq( "data_name", genTable.getDataName(), StringUtils.isNotEmpty(genTable.getDataName()))
-                .like( "lower(table_name)", StringUtils.lowerCase(genTable.getTableName()), StringUtils.isNotBlank(genTable.getTableName()))
-                .like("lower(table_comment)", StringUtils.lowerCase(genTable.getTableComment()),StringUtils.isNotBlank(genTable.getTableComment()))
-                .between("create_time", params.get("beginTime"), params.get("endTime"),params.get("beginTime") != null && params.get("endTime") != null);
+//        QueryChain<T> between = QueryChain.of(baseMapper).eq(StringUtils.isNotEmpty(genTable.getDataName()), new Column("data_name"), genTable.getDataName())
+//                .like(StringUtils.isNotBlank(genTable.getTableName()), "lower(table_name)", StringUtils.lowerCase(genTable.getTableName()))
+//                .like(StringUtils.isNotBlank(genTable.getTableComment()), "lower(table_comment)", StringUtils.lowerCase(genTable.getTableComment()))
+//                .between(params.get("beginTime") != null && params.get("endTime") != null, "create_time", params.get("beginTime"), params.get("endTime"));
+        return QueryChain.of(baseMapper);
     }
 
     /**
@@ -158,15 +159,15 @@ public class GenTableServiceImpl implements IGenTableService {
                     GenTable gen = new GenTable();
                     gen.setTableName(x.getName());
                     gen.setTableComment(x.getComment());
-                    gen.setCreateTime(x.getCreateTime());
-                    gen.setUpdateTime(x.getUpdateTime());
+//                    gen.setCreateTime(x.getCreateTime());
+//                    gen.setUpdateTime(x.getUpdateTime());
                     return gen;
                 }).toList();
 
-        Page<GenTable> page = pageQuery.build();
-        page.setTotalRow(tables.size());
-        // 手动分页 set数据
-        page.setRecords(ListUtil.page(tables, (int) page.getPageNumber() - 1, (int) page.getPageSize()));
+        Pager<GenTable> page = pageQuery.build();
+//        page.setTotalRow(tables.size());
+//        // 手动分页 set数据
+//        page.setRecords(ListUtil.page(tables, (int) page.getPageNumber() - 1, (int) page.getPageSize()));
         return PageResult.build(page);
     }
 
@@ -209,8 +210,8 @@ public class GenTableServiceImpl implements IGenTableService {
             gen.setDataName(dataName);
             gen.setTableName(x.getName());
             gen.setTableComment(x.getComment());
-            gen.setCreateTime(x.getCreateTime());
-            gen.setUpdateTime(x.getUpdateTime());
+//            gen.setCreateTime(x.getCreateTime());
+//            gen.setUpdateTime(x.getUpdateTime());
             return gen;
         }).toList();
     }
@@ -252,9 +253,8 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     public void deleteGenTableByIds(Long[] tableIds) {
         List<Long> ids = Arrays.asList(tableIds);
-        baseMapper.deleteBatchByIds(ids);
-        QueryWrapper queryWrapper = QueryWrapper.create().in(GenTableColumn::getTableId, ids);
-        genTableColumnMapper.deleteByQuery(queryWrapper);
+        baseMapper.deleteByIds(ids);
+        genTableColumnMapper.delete(Where.create().in(GenTableColumn::getTableId, ids));
     }
 
     /**
@@ -272,7 +272,7 @@ public class GenTableServiceImpl implements IGenTableService {
                 String tableName = table.getTableName();
                 GenUtils.initTable(table, operId);
                 table.setDataName(dataName);
-                int row = baseMapper.insert(table);
+                int row = baseMapper.save(table);
                 if (row > 0) {
                     // 保存列信息
                     List<GenTableColumn> genTableColumns = this.selectDbTableColumnsByName(tableName, dataName);
@@ -282,7 +282,7 @@ public class GenTableServiceImpl implements IGenTableService {
                         saveColumns.add(column);
                     }
                     if (CollUtil.isNotEmpty(saveColumns)) {
-                        genTableColumnMapper.insertBatch(saveColumns);
+                        genTableColumnMapper.saveBatch(saveColumns);
                     }
                 }
             }
@@ -341,7 +341,7 @@ public class GenTableServiceImpl implements IGenTableService {
 
         VelocityContext context = VelocityUtils.prepareContext(table);
 
-        List<GenTemplate> genTemplateList = templateMapper.selectListByQuery(QueryWrapper.create().eq(GenTemplate::getEnabled, true));
+        List<GenTemplate> genTemplateList = templateMapper.list(Where.create().eq(GenTemplate::getEnabled, true));
         for (GenTemplate genTemplate : genTemplateList) {
             String templateName = genTemplate.getName() + ".vm";
             // 获取字符串资源库
@@ -389,7 +389,7 @@ public class GenTableServiceImpl implements IGenTableService {
         StringResourceRepository repository = StringResourceLoader.getRepository();
 
         // 获取模板列表
-        List<GenTemplate> genTemplateList =  templateMapper.selectListByQuery(QueryWrapper.create().eq(GenTemplate::getEnabled, true));
+        List<GenTemplate> genTemplateList =  templateMapper.list(Where.create().eq(GenTemplate::getEnabled, true));
         for (GenTemplate genTemplate : genTemplateList) {
             String templateName = genTemplate.getName() + ".vm";
             if (!StringUtils.containsAny(templateName, "sql.vm", "api.ts.vm", "types.ts.vm", "index.vue.vm", "index-tree.vue.vm")) {
@@ -451,14 +451,14 @@ public class GenTableServiceImpl implements IGenTableService {
         });
 
         if (CollUtil.isNotEmpty(saveColumns)){
-            saveColumns.forEach(genTableColumnMapper::insertOrUpdateSelective);
+            saveColumns.forEach(genTableColumnMapper::saveOrUpdate);
         }
 
         List<GenTableColumn> delColumns = StreamUtil.filter(tableColumns, column -> !dbTableColumnNames.contains(column.getColumnName()));
         if (CollUtil.isNotEmpty(delColumns)) {
             List<Long> ids = StreamUtil.toList(delColumns, GenTableColumn::getColumnId);
             if (CollUtil.isNotEmpty(ids)) {
-                genTableColumnMapper.deleteBatchByIds(ids);
+                genTableColumnMapper.deleteByIds(ids);
             }
         }
     }
@@ -500,7 +500,7 @@ public class GenTableServiceImpl implements IGenTableService {
         VelocityContext context = VelocityUtils.prepareContext(table);
 
         // 获取模板列表
-        List<GenTemplate> genTemplateList =  templateMapper.selectListByQuery(QueryWrapper.create().eq(GenTemplate::getEnabled, true));
+        List<GenTemplate> genTemplateList =  templateMapper.list(Where.create().eq(GenTemplate::getEnabled, true));
         for (GenTemplate genTemplate : genTemplateList) {
             String templateName = genTemplate.getName() + ".vm";
             // 获取字符串资源库

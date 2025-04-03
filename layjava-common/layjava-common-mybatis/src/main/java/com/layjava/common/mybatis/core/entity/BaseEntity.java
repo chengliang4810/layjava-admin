@@ -1,10 +1,11 @@
 package com.layjava.common.mybatis.core.entity;
 
+import cn.xbatis.db.annotations.TableField;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Entity基类
@@ -14,7 +15,6 @@ import java.util.Date;
  */
 
 @Data
-// @FieldNameConstants(onlyExplicitlyIncluded = true)
 public class BaseEntity implements Serializable {
 
     @Serial
@@ -23,26 +23,31 @@ public class BaseEntity implements Serializable {
     /**
      * 创建部门
      */
+    @TableField(defaultValue = "{CURRENT_DEPT_ID}")
     protected Long createDept;
 
     /**
      * 创建者
      */
+    @TableField(defaultValue = "{CURRENT_USER_ID}")
     protected Long createBy;
 
     /**
      * 创建时间
      */
-    protected Date createTime;
+    @TableField(defaultValue = "{NOW}")
+    protected LocalDateTime createTime;
 
     /**
      * 更新者
      */
+    @TableField(defaultValue = "{CURRENT_USER_ID}", updateDefaultValue = "{CURRENT_USER_ID}")
     protected Long updateBy;
 
     /**
      * 更新时间
      */
-    protected Date updateTime;
+    @TableField(defaultValue = "{NOW}", updateDefaultValue = "{NOW}")
+    protected LocalDateTime updateTime;
 
 }

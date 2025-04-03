@@ -1,6 +1,6 @@
 # common配置，非必要情况下不用修改
 # server配置
-server.port: 8989
+server.port: 5320
 
 solon:
   # 应用环境配置

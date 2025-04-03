@@ -1,7 +1,7 @@
 package com.layjava.common.mybatis.core.page;
 
+import cn.xbatis.core.mybatis.mapper.context.Pager;
 import com.layjava.common.core.domain.R;
-import com.mybatisflex.core.paginate.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -35,11 +35,11 @@ public class PageResult<V> extends R<PageInfo<V>> implements Serializable {
         setData(PageInfo.build(list, total));
     }
 
-    public static <V> PageResult<V> build(Page<V> page) {
+    public static <V> PageResult<V> build(Pager<V> page) {
         PageResult<V> rspData = new PageResult<>();
         rspData.setCode(HttpStatus.HTTP_OK);
         rspData.setMsg("查询成功" );
-        rspData.setData(PageInfo.build(page.getRecords(), page.getTotalRow()));
+        rspData.setData(PageInfo.build(page.getResults(), page.getTotal()));
         return rspData;
     }
 

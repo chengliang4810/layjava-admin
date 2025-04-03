@@ -7,7 +7,6 @@ import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessType;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
-import com.layjava.common.mybatis.helper.DataBaseHelper;
 import com.layjava.common.web.core.BaseController;
 import com.layjava.generator.domain.GenTable;
 import com.layjava.generator.domain.GenTableColumn;
@@ -187,6 +186,7 @@ public class GenController extends BaseController {
     @Mapping(value = "/datasource/name" )
     @SaCheckPermission("tool:gen:list" )
     public R<Object> getCurrentDataSourceNameList() {
-        return R.ok(DataBaseHelper.getDataSourceNameList());
+        return R.ok();
+        // return R.ok(DataBaseHelper.getDataSourceNameList());
     }
 }

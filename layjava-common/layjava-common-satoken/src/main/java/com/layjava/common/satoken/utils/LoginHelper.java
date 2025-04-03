@@ -102,6 +102,17 @@ public class LoginHelper {
     }
 
     /**
+     * 获取租户id
+     */
+    public static String getTenantId() {
+        LoginUser loginUser = getLoginUser();
+        if (ObjUtil.isNull(loginUser)) {
+            return null;
+        }
+        return loginUser.getTenantId();
+    }
+
+    /**
      * 获取用户账户
      */
     public static String getUsername() {

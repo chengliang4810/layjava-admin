@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Lion Li
  */
-public interface GenTableMapper extends BaseMapperPlus<GenTable> {
+public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
 
     /**
      * 查询所有表信息

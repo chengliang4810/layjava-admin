@@ -37,18 +37,23 @@
             <artifactId>HikariCP</artifactId>
         </dependency>
 
-        <!-- mybatis flex -->
         <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-solon-plugin</artifactId>
-            <version>${mybatis-flex.version}</version>
+            <groupId>org.noear</groupId>
+            <artifactId>mybatis-solon-plugin</artifactId>
         </dependency>
 
+        <!-- xbatis -->
+        <dependency>
+            <groupId>cn.xbatis</groupId>
+            <artifactId>xbatis-solon-plugin</artifactId>
+        </dependency>
+
+        <!-- JavaBean生成数据库表 -->
         <dependency>
             <groupId>org.dromara.autotable</groupId>
             <artifactId>auto-table-solon-plugin</artifactId>
-            <version>${autotable.version}</version>
         </dependency>
+
     </dependencies>
 
 

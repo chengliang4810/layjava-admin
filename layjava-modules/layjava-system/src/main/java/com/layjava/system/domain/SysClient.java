@@ -1,8 +1,8 @@
 package com.layjava.system.domain;
 
+import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -25,7 +25,7 @@ public class SysClient extends BaseEntity {
     /**
      * id
      */
-    @Id
+    @TableId
     private Long id;
 
     /**

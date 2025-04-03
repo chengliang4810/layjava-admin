@@ -8,6 +8,6 @@ import com.layjava.generator.domain.GenTableColumn;
  *
  * @author Lion Li
  */
-public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumn> {
+public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumn, GenTableColumn> {
 
 }

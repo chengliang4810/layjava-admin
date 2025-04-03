@@ -1,6 +1,7 @@
 package com.layjava.auth.service;
 
 import cn.dev33.satoken.secure.BCrypt;
+import cn.xbatis.core.sql.executor.Where;
 import com.layjava.common.core.constant.Constants;
 import com.layjava.common.core.constant.GlobalConstants;
 import com.layjava.common.core.domain.model.RegisterBody;
@@ -11,16 +12,14 @@ import com.layjava.common.core.exception.user.UserException;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.log.event.LogininforEvent;
 import com.layjava.common.web.config.properties.CaptchaProperties;
+import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.bo.SysUserBo;
 import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.ISysUserService;
-import com.mybatisflex.core.query.QueryWrapper;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventBus;
 import org.noear.solon.data.cache.CacheService;
-
-import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 
 
 /**
@@ -61,10 +60,10 @@ public class SysRegisterService {
         sysUser.setUserType(userType);
 
 
-        boolean exist = userMapper.selectCountByQuery(QueryWrapper.create()
-                .from(SYS_USER)
-                .and(SYS_USER.USER_NAME.eq(sysUser.getUserName()))
-                .and(SYS_USER.USER_ID.ne(sysUser.getUserId()))) > 0;
+        boolean exist = userMapper.exists(Where.create()
+                        .eq(SysUser::getUserName, sysUser.getUserName())
+                        .ne(SysUser::getUserId, sysUser.getUserId())
+        );
         if (exist) {
             throw new UserException("保存用户 {} 失败，注册账号已存在", username);
         }
