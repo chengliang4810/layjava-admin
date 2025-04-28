@@ -4,6 +4,8 @@ import com.layjava.common.core.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 /**
  * sql操作工具类
@@ -47,7 +49,7 @@ public class SqlUtil {
         if (StringUtil.isEmpty(value)) {
             return;
         }
-        String[] sqlKeywords = StringUtil.split(SQL_REGEX, "\\|" );
+        List<String> sqlKeywords = StringUtil.splitList(SQL_REGEX, "\\|" );
         for (String sqlKeyword : sqlKeywords) {
             if (StringUtil.indexOfIgnoreCase(value, sqlKeyword) > -1) {
                 throw new IllegalArgumentException("参数存在SQL注入风险" );

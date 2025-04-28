@@ -4,15 +4,15 @@ import cn.dev33.satoken.router.SaHttpMethod;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.layjava.common.core.constant.HttpStatus;
 import com.layjava.common.core.domain.model.LoginUser;
+import com.layjava.common.core.utils.JsonUtil;
 import com.layjava.common.core.utils.StringUtil;
-import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.log.annotation.Log;
 import com.layjava.common.log.enums.BusinessStatus;
 import com.layjava.common.log.event.OperLogEvent;
 import com.layjava.common.satoken.utils.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.StopWatch;
 import org.dromara.hutool.core.array.ArrayUtil;
+import org.dromara.hutool.core.date.StopWatch;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.map.MapUtil;
 import org.dromara.hutool.core.util.ObjUtil;
@@ -112,7 +112,7 @@ public class LogAspect implements RouterInterceptor {
             // 设置消耗时间
             StopWatch stopWatch = TIME_THREADLOCAL.get();
             stopWatch.stop();
-            operLog.setCostTime(stopWatch.getTime());
+            operLog.setCostTime(stopWatch.getTotalTimeMillis());
             // 发布事件保存数据库
             EventBus.publish(operLog);
         } catch (Exception exp) {
@@ -145,7 +145,7 @@ public class LogAspect implements RouterInterceptor {
         }
         // 是否需要保存response，参数和值
         if (!(jsonResult instanceof DownloadedFile) && log.isSaveResponseData() && ObjUtil.isNotNull(jsonResult)) {
-            operLog.setJsonResult(StringUtil.substring(JsonUtils.toJsonString(jsonResult), 0, 2000));
+            operLog.setJsonResult(StringUtil.substring(JsonUtil.toJsonString(jsonResult), 0, 2000));
         }
     }
 
@@ -165,7 +165,7 @@ public class LogAspect implements RouterInterceptor {
         } else {
             MapUtil.removeAny(paramsMap, EXCLUDE_PROPERTIES);
             MapUtil.removeAny(paramsMap, excludeParamNames);
-            operLog.setOperParam(StringUtil.substring(JsonUtils.toJsonString(paramsMap), 0, 2000));
+            operLog.setOperParam(StringUtil.substring(JsonUtil.toJsonString(paramsMap), 0, 2000));
         }
     }
 
@@ -179,12 +179,12 @@ public class LogAspect implements RouterInterceptor {
         }
         for (Object o : paramsArray) {
             if (ObjUtil.isNotNull(o) && !isFilterObject(o)) {
-                String str = JsonUtils.toJsonString(o);
-                Dict dict = JsonUtils.parseMap(str);
+                String str = JsonUtil.toJsonString(o);
+                Dict dict = JsonUtil.parseMap(str);
                 if (MapUtil.isNotEmpty(dict)) {
                     MapUtil.removeAny(dict, EXCLUDE_PROPERTIES);
                     MapUtil.removeAny(dict, excludeParamNames);
-                    str = JsonUtils.toJsonString(dict);
+                    str = JsonUtil.toJsonString(dict);
                 }
                 params.add(str);
             }

@@ -384,7 +384,7 @@ public class ExcelUtil {
                 }
             }
         }
-        return StringUtil.stripEnd(propertyString.toString(), separator);
+        return StringUtil.removeSuffix(propertyString.toString(), separator);
     }
 
     /**
@@ -413,7 +413,7 @@ public class ExcelUtil {
                 }
             }
         }
-        return StringUtil.stripEnd(propertyString.toString(), separator);
+        return StringUtil.removeSuffix(propertyString.toString(), separator);
     }
 
     /**

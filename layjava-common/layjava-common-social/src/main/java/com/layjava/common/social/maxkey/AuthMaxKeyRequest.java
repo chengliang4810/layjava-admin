@@ -1,6 +1,6 @@
 package com.layjava.common.social.maxkey;
 
-import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.core.utils.JsonUtil;
 import me.zhyd.oauth.cache.AuthStateCache;
 import me.zhyd.oauth.config.AuthConfig;
 import me.zhyd.oauth.exception.AuthException;
@@ -32,7 +32,7 @@ public class AuthMaxKeyRequest extends AuthDefaultRequest {
     @Override
     protected AuthToken getAccessToken(AuthCallback authCallback) {
         String body = doPostAuthorizationCode(authCallback.getCode());
-        Dict object = JsonUtils.parseMap(body);
+        Dict object = JsonUtil.parseMap(body);
         // oauth/token 验证异常
         if (object.containsKey("error" )) {
             throw new AuthException(object.getStr("error_description" ));
@@ -53,7 +53,7 @@ public class AuthMaxKeyRequest extends AuthDefaultRequest {
     @Override
     protected AuthUser getUserInfo(AuthToken authToken) {
         String body = doGetUserInfo(authToken);
-        Dict object = JsonUtils.parseMap(body);
+        Dict object = JsonUtil.parseMap(body);
         // oauth/token 验证异常
         if (object.containsKey("error" )) {
             throw new AuthException(object.getStr("error_description" ));

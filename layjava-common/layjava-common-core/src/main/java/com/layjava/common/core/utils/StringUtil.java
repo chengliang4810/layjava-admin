@@ -5,12 +5,14 @@ import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.convert.ConvertUtil;
 import org.dromara.hutool.core.lang.Validator;
+import org.dromara.hutool.core.regex.ReUtil;
 import org.dromara.hutool.core.text.AntPathMatcher;
 import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.text.split.SplitUtil;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -20,9 +22,24 @@ import java.util.stream.Collectors;
  * @date 2024/08/26
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StringUtil extends org.apache.commons.lang3.StringUtils {
+public class StringUtil extends StrUtil{
 
     public static final String SEPARATOR = ",";
+
+    /**
+     * HTML标签正则
+     */
+    public static final Pattern RE_HTML_MARK = Pattern.compile("(<[^<]*?>)|(<\\s*?/[^<]*?>)|(<[^<]*?/\\s*?>)", Pattern.CASE_INSENSITIVE);
+
+    /**
+     * 清除所有HTML标签，但是不删除标签内的内容
+     *
+     * @param content 文本
+     * @return 清除标签后的文本
+     */
+    public static String cleanHtmlTag(final String content) {
+        return ReUtil.replaceAll(content, RE_HTML_MARK, StrUtil.EMPTY);
+    }
 
     /**
      * 获取参数不为空值

@@ -13,7 +13,7 @@ import com.layjava.common.core.domain.model.SmsLoginBody;
 import com.layjava.common.core.enums.LoginType;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.utils.StringUtil;
-import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.core.utils.JsonUtil;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.vo.SysUserVo;
@@ -43,7 +43,7 @@ public class SmsAuthStrategy implements AuthStrategyService {
 
     @Override
     public LoginVo login(String body, SysClient client) {
-        SmsLoginBody loginBody = JsonUtils.parseObject(body, SmsLoginBody.class);
+        SmsLoginBody loginBody = JsonUtil.parseObject(body, SmsLoginBody.class);
         ValidUtils.validateEntity(loginBody);
         String phonenumber = loginBody.getPhonenumber();
         String smsCode = loginBody.getSmsCode();

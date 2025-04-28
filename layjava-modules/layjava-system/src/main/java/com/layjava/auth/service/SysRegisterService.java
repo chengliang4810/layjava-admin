@@ -82,7 +82,7 @@ public class SysRegisterService {
      * @param uuid     唯一标识
      */
     public void validateCaptcha(String username, String code, String uuid) {
-        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtil.defaultString(uuid, "" );
+        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtil.defaultIfBlank(uuid, "" );
         String captcha = cacheService.get(verifyKey, String.class);
         cacheService.remove(verifyKey);
         if (captcha == null) {

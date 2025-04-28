@@ -5,7 +5,6 @@ import com.layjava.common.core.domain.R;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.http.meta.HttpStatus;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -37,24 +36,24 @@ public class PageResult<V> extends R<PageInfo<V>> implements Serializable {
 
     public static <V> PageResult<V> build(Pager<V> page) {
         PageResult<V> rspData = new PageResult<>();
-        rspData.setCode(HttpStatus.HTTP_OK);
-        rspData.setMsg("查询成功" );
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
         rspData.setData(PageInfo.build(page.getResults(), page.getTotal()));
         return rspData;
     }
 
     public static <V> PageResult<V> build(List<V> list) {
         PageResult<V> rspData = new PageResult<>();
-        rspData.setCode(HttpStatus.HTTP_OK);
-        rspData.setMsg("查询成功" );
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
         rspData.setData(PageInfo.build(list, list.size()));
         return rspData;
     }
 
     public static <V> PageResult<V> build() {
         PageResult<V> rspData = new PageResult<>();
-        rspData.setCode(HttpStatus.HTTP_OK);
-        rspData.setMsg("查询成功" );
+        rspData.setCode(200);
+        rspData.setMsg("查询成功");
         return rspData;
     }
 

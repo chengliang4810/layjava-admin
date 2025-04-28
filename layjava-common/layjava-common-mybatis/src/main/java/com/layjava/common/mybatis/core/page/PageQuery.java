@@ -82,7 +82,8 @@ public class PageQuery implements Serializable {
         orderBy = StringUtil.toUnderScoreCase(orderBy);
 
         // 兼容前端排序类型
-        isAsc = StringUtil.replaceEach(isAsc, new String[]{"ascending", "descending"}, new String[]{"asc", "desc"});
+        isAsc = StringUtil.replace(isAsc, "ascending", "asc");
+        isAsc = StringUtil.replace(isAsc, "descending", "desc");
 
         String[] orderByArr = orderBy.split(StringUtil.SEPARATOR);
         String[] isAscArr = isAsc.split(StringUtil.SEPARATOR);

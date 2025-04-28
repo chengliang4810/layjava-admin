@@ -2,7 +2,6 @@ package com.layjava.common.core.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
@@ -16,7 +15,7 @@ import java.util.Date;
  * @author ruoyi
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
+public class DateUtil {
 
     public static final String YYYY = "yyyy";
 
@@ -84,7 +83,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String datePath() {
         Date now = new Date();
-        return DateFormatUtils.format(now, "yyyy/MM/dd" );
+        return org.dromara.hutool.core.date.DateUtil.format(now, "yyyy/MM/dd" );
     }
 
     /**
@@ -92,21 +91,7 @@ public class DateUtil extends org.apache.commons.lang3.time.DateUtils {
      */
     public static String dateTime() {
         Date now = new Date();
-        return DateFormatUtils.format(now, "yyyyMMdd" );
-    }
-
-    /**
-     * 日期型字符串转化为日期 格式
-     */
-    public static Date parseDate(Object str) {
-        if (str == null) {
-            return null;
-        }
-        try {
-            return parseDate(str.toString(), PARSE_PATTERNS);
-        } catch (ParseException e) {
-            return null;
-        }
+        return org.dromara.hutool.core.date.DateUtil.format(now, "yyyyMMdd" );
     }
 
     /**

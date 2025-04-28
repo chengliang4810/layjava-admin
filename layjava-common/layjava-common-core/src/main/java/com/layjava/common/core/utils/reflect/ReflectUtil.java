@@ -5,10 +5,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
@@ -31,8 +31,8 @@ public class ReflectUtil extends org.dromara.hutool.core.reflect.method.MethodUt
     @SuppressWarnings("unchecked" )
     public static <E> E invokeGetter(Object obj, String propertyName) {
         Object object = obj;
-        for (String name : StringUtil.split(propertyName, "." )) {
-            String getterMethodName = GETTER_PREFIX + StringUtil.capitalize(name);
+        for (String name : StringUtil.splitList(propertyName, "." )) {
+            String getterMethodName = GETTER_PREFIX + StringUtil.upperFirst(name);
             object = invoke(object, getterMethodName);
         }
         return (E) object;
@@ -44,13 +44,13 @@ public class ReflectUtil extends org.dromara.hutool.core.reflect.method.MethodUt
      */
     public static <E> void invokeSetter(Object obj, String propertyName, E value) {
         Object object = obj;
-        String[] names = StringUtil.split(propertyName, "." );
-        for (int i = 0; i < names.length; i++) {
-            if (i < names.length - 1) {
-                String getterMethodName = GETTER_PREFIX + StringUtil.capitalize(names[i]);
+        List<String> names = StringUtil.splitList(propertyName, "." );
+        for (int i = 0; i < names.size(); i++) {
+            if (i < names.size() - 1) {
+                String getterMethodName = GETTER_PREFIX + StringUtil.upperFirst(names.get(i));
                 object = invoke(object, getterMethodName);
             } else {
-                String setterMethodName = SETTER_PREFIX + StringUtil.capitalize(names[i]);
+                String setterMethodName = SETTER_PREFIX + StringUtil.upperFirst(names.get(i));
                 Method method = getMethodByName(object.getClass(), setterMethodName);
                 invoke(object, method, value);
             }

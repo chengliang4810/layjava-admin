@@ -11,7 +11,7 @@ import com.layjava.common.core.domain.model.LoginBody;
 import com.layjava.common.core.domain.model.RegisterBody;
 import com.layjava.common.core.domain.model.SocialLoginBody;
 import com.layjava.common.core.utils.StringUtil;
-import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.core.utils.JsonUtil;
 import com.layjava.common.social.config.properties.SocialLoginConfigProperties;
 import com.layjava.common.social.config.properties.SocialProperties;
 import com.layjava.common.social.utils.SocialUtils;
@@ -53,7 +53,7 @@ public class AuthController {
     @Post
     @Mapping("/login" )
     public R<LoginVo> login(@Body String body) {
-        LoginBody loginBody = JsonUtils.parseObject(body, LoginBody.class);
+        LoginBody loginBody = JsonUtil.parseObject(body, LoginBody.class);
         ValidUtils.validateEntity(loginBody);
         // 授权类型和客户端id
         String clientId = loginBody.getClientId();

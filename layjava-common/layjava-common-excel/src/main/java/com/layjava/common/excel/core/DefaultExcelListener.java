@@ -4,7 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.exception.ExcelAnalysisException;
 import com.alibaba.excel.exception.ExcelDataConvertException;
-import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.core.utils.JsonUtil;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.text.StrUtil;
@@ -76,7 +76,7 @@ public class DefaultExcelListener<T> extends AnalysisEventListener<T> implements
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         this.headMap = headMap;
-        log.debug("解析到一条表头数据: {}", JsonUtils.toJsonString(headMap));
+        log.debug("解析到一条表头数据: {}", JsonUtil.toJsonString(headMap));
     }
 
     @Override

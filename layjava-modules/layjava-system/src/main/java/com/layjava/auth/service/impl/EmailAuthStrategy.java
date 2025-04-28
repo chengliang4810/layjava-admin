@@ -15,6 +15,7 @@ import com.layjava.common.core.enums.LoginType;
 import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.exception.user.UserException;
+import com.layjava.common.core.utils.JsonUtil;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
@@ -23,7 +24,6 @@ import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.util.ObjUtil;
-import org.dromara.hutool.json.JSONUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
@@ -48,7 +48,7 @@ public class EmailAuthStrategy implements AuthStrategyService {
 
     @Override
     public LoginVo login(String body, SysClient client) {
-        EmailLoginBody loginBody = JSONUtil.toBean(body, EmailLoginBody.class);
+        EmailLoginBody loginBody = JsonUtil.parseObject(body, EmailLoginBody.class);
         ValidUtils.validateEntity(loginBody);
         String email = loginBody.getEmail();
         String emailCode = loginBody.getEmailCode();

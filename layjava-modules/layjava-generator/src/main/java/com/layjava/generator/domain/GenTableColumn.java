@@ -112,7 +112,7 @@ public class GenTableColumn extends BaseEntity {
     private Integer sort;
 
     public String getCapJavaField() {
-        return StringUtil.capitalize(javaField);
+        return StringUtil.upperFirst(javaField);
     }
 
     public boolean isPk() {
@@ -193,7 +193,7 @@ public class GenTableColumn extends BaseEntity {
     }
 
     public String readConverterExp() {
-        String remarks = StringUtil.substringBetween(this.columnComment, "（", "）" );
+        String remarks = StringUtil.subBetween(this.columnComment, "（", "）" );
         StringBuffer sb = new StringBuffer();
         if (StringUtil.isNotEmpty(remarks)) {
             for (String value : remarks.split(" " )) {

@@ -2,7 +2,7 @@ package com.layjava.generator.util;
 
 import com.layjava.common.core.utils.DateUtil;
 import com.layjava.common.core.utils.StringUtil;
-import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.core.utils.JsonUtil;
 import com.layjava.generator.config.GenConfig;
 import com.layjava.generator.constant.GenConstants;
 import com.layjava.generator.domain.GenTable;
@@ -69,10 +69,10 @@ public class VelocityUtils {
         velocityContext.put("tableName", genTable.getTableName());
         velocityContext.put("functionName", StringUtil.isNotEmpty(functionName) ? functionName : "【请填写功能名称】");
         velocityContext.put("ClassName", genTable.getClassName());
-        velocityContext.put("className", StringUtil.uncapitalize(genTable.getClassName()));
+        velocityContext.put("className", StringUtil.lowerFirst(genTable.getClassName()));
         velocityContext.put("moduleName", genTable.getModuleName());
-        velocityContext.put("ModuleName", StringUtil.capitalize(moduleName));
-        velocityContext.put("BusinessName", StringUtil.capitalize(genTable.getBusinessName()));
+        velocityContext.put("ModuleName", StringUtil.upperFirst(moduleName));
+        velocityContext.put("BusinessName", StringUtil.upperFirst(genTable.getBusinessName()));
         velocityContext.put("businessName", genTable.getBusinessName());
         velocityContext.put("basePackage", getPackagePrefix(packageName));
         velocityContext.put("packageName", packageName);
@@ -93,14 +93,14 @@ public class VelocityUtils {
 
     public static void setMenuVelocityContext(VelocityContext context, GenTable genTable) {
         String options = genTable.getOptions();
-        Dict paramsObj = JsonUtils.parseMap(options);
+        Dict paramsObj = JsonUtil.parseMap(options);
         String parentMenuId = getParentMenuId(paramsObj);
         context.put("parentMenuId", parentMenuId);
     }
 
     public static void setTreeVelocityContext(VelocityContext context, GenTable genTable) {
         String options = genTable.getOptions();
-        Dict paramsObj = JsonUtils.parseMap(options);
+        Dict paramsObj = JsonUtil.parseMap(options);
         String treeCode = getTreecode(paramsObj);
         String treeParentCode = getTreeParentCode(paramsObj);
         String treeName = getTreeName(paramsObj);
@@ -242,7 +242,7 @@ public class VelocityUtils {
         List<GenTableColumn> columns = genTable.getColumns();
         Set<String> dicts = new HashSet<>();
         addDicts(dicts, columns);
-        return StringUtil.join(dicts, ", ");
+        return StringUtil.join(", ", dicts);
     }
 
     /**
@@ -333,7 +333,7 @@ public class VelocityUtils {
      */
     public static int getExpandColumn(GenTable genTable) {
         String options = genTable.getOptions();
-        Dict paramsObj = JsonUtils.parseMap(options);
+        Dict paramsObj = JsonUtil.parseMap(options);
         String treeName = paramsObj.getStr(GenConstants.TREE_NAME);
         int num = 0;
         for (GenTableColumn column : genTable.getColumns()) {

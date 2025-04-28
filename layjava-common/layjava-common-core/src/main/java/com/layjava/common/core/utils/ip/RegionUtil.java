@@ -16,7 +16,7 @@ import java.io.File;
  * @author lishuyan
  */
 @Slf4j
-public class RegionUtils {
+public class RegionUtil {
 
     private static final Searcher SEARCHER;
 

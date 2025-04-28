@@ -7,7 +7,7 @@ import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.core.utils.IdUtil;
 import com.layjava.common.core.utils.StreamUtil;
-import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.core.utils.JsonUtil;
 import com.layjava.common.mybatis.core.page.PageQuery;
 import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.common.satoken.utils.LoginHelper;
@@ -234,7 +234,7 @@ public class GenTableServiceImpl implements IGenTableService {
     @Tran
     @Override
     public void updateGenTable(GenTable genTable) {
-        String options = JsonUtils.toJsonString(genTable.getParams());
+        String options = JsonUtil.toJsonString(genTable.getParams());
         genTable.setOptions(options);
         int row = baseMapper.update(genTable);
         if (row > 0) {
@@ -531,8 +531,8 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     public void validateEdit(GenTable genTable) {
         if (GenConstants.TPL_TREE.equals(genTable.getTplCategory())) {
-            String options = JsonUtils.toJsonString(genTable.getParams());
-            Dict paramsObj = JsonUtils.parseMap(options);
+            String options = JsonUtil.toJsonString(genTable.getParams());
+            Dict paramsObj = JsonUtil.parseMap(options);
             if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_CODE))) {
                 throw new ServiceException("树编码字段不能为空");
             } else if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_PARENT_CODE))) {
@@ -567,7 +567,7 @@ public class GenTableServiceImpl implements IGenTableService {
      * @param genTable 设置后的生成对象
      */
     public void setTableFromOptions(GenTable genTable) {
-        Dict paramsObj = JsonUtils.parseMap(genTable.getOptions());
+        Dict paramsObj = JsonUtil.parseMap(genTable.getOptions());
         if (ObjUtil.isNotNull(paramsObj)) {
             String treeCode = paramsObj.getStr(GenConstants.TREE_CODE);
             String treeParentCode = paramsObj.getStr(GenConstants.TREE_PARENT_CODE);

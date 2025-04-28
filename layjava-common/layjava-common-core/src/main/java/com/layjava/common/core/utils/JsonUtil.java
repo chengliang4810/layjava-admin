@@ -1,6 +1,5 @@
-package com.layjava.common.json.utils;
+package com.layjava.common.core.utils;
 
-import com.layjava.common.core.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.dromara.hutool.core.map.Dict;
@@ -14,7 +13,7 @@ import org.noear.snack.ONode;
  * @date 2024/08/07
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class JsonUtils {
+public class JsonUtil {
 
     /**
      * 对象转 JsonString

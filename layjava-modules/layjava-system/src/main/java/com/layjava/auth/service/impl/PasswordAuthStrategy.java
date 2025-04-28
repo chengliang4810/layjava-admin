@@ -15,7 +15,7 @@ import com.layjava.common.core.enums.LoginType;
 import com.layjava.common.core.exception.user.CaptchaException;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
 import com.layjava.common.core.utils.StringUtil;
-import com.layjava.common.json.utils.JsonUtils;
+import com.layjava.common.core.utils.JsonUtil;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.domain.vo.SysUserVo;
@@ -46,7 +46,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 
     @Override
     public LoginVo login(String body, SysClient client) {
-        PasswordLoginBody loginBody = JsonUtils.parseObject(body, PasswordLoginBody.class);
+        PasswordLoginBody loginBody = JsonUtil.parseObject(body, PasswordLoginBody.class);
         ValidUtils.validateEntity(loginBody);
         String username = loginBody.getUserName();
         String password = loginBody.getPassword();
@@ -90,7 +90,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
      * @param uuid     唯一标识
      */
     private void validateCaptcha(String username, String code, String uuid) {
-        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtil.defaultString(uuid, "" );
+        String verifyKey = GlobalConstants.CAPTCHA_CODE_KEY + StringUtil.defaultIfBlank(uuid, "" );
         String captcha = cacheService.get(verifyKey, String.class);
         cacheService.remove(verifyKey);
         if (captcha == null) {
