@@ -1,6 +1,6 @@
 package com.layjava.common.satoken.config;
 
-import cn.dev33.satoken.solon.dao.SaTokenDaoOfRedissonJackson;
+import cn.dev33.satoken.dao.SaTokenDaoForRedisson;
 import cn.dev33.satoken.stp.StpInterface;
 import com.layjava.common.satoken.core.SaPermissionImpl;
 import org.noear.solon.annotation.Bean;
@@ -21,14 +21,14 @@ public class SaTokenConfig {
     }
 
     /**
-     * Sa-Token 持久层实现 [ Redisson客户端、Redis存储、Jackson序列化 ]
+     * Sa-Token 持久层实现 [ Redisson客户端、Redis存储、snack3序列化 ]
      *
      * @param redissonClient Redisson客户端
      * @return Sa-Token 持久层实现
      */
     @Bean
     @Condition(onBean = RedissonClient.class)
-    public SaTokenDaoOfRedissonJackson saTokenDaoInit(@Inject RedissonClient redissonClient) {
-        return new SaTokenDaoOfRedissonJackson(redissonClient);
+    public SaTokenDaoForRedisson saTokenDaoForRedissonInit(@Inject RedissonClient redissonClient) {
+        return new SaTokenDaoForRedisson(redissonClient);
     }
 }

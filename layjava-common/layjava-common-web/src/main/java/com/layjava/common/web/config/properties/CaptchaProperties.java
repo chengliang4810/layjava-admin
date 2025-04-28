@@ -7,7 +7,7 @@ import org.noear.solon.annotation.Inject;
 /**
  * 验证码 配置属性
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Data
 @Configuration

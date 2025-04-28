@@ -1,9 +1,9 @@
 package com.layjava.system.domain;
 
+import cn.xbatis.db.annotations.Ignore;
+import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 菜单权限表 sys_menu
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data
@@ -24,7 +24,7 @@ public class SysMenu extends BaseEntity {
     /**
      * 菜单ID
      */
-    @Id
+    @TableId
     private Long menuId;
 
     /**
@@ -112,13 +112,13 @@ public class SysMenu extends BaseEntity {
     /**
      * 父菜单名称
      */
-    @Column(ignore = true)
+    @Ignore
     private String parentName;
 
     /**
      * 子菜单
      */
-    @Column(ignore = true)
+    @Ignore
     private List<SysMenu> children = new ArrayList<>();
 
 }

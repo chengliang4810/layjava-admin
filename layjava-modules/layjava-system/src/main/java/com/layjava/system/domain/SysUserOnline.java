@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * 当前在线会话
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data

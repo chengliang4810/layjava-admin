@@ -11,25 +11,18 @@ import com.layjava.common.core.constant.GlobalConstants;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.domain.model.SmsLoginBody;
 import com.layjava.common.core.enums.LoginType;
-import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
-import com.layjava.common.core.exception.user.UserException;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
-import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
-import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.validation.ValidUtils;
-
-import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 
 
 /**
@@ -93,17 +86,17 @@ public class SmsAuthStrategy implements AuthStrategyService {
     }
 
     private SysUserVo loadUserByPhonenumber(String phonenumber) {
-        SysUser user = userMapper.selectOneByQuery(
-                QueryWrapper.create().from(SYS_USER)
-                        .select(SYS_USER.PHONENUMBER, SYS_USER.STATUS)
-                        .and(SYS_USER.PHONENUMBER.eq(phonenumber)));
-        if (ObjUtil.isNull(user)) {
-            log.info("登录用户：{} 不存在.", phonenumber);
-            throw new UserException("user.not.exists", phonenumber);
-        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            log.info("登录用户：{} 已被停用.", phonenumber);
-            throw new UserException("user.blocked", phonenumber);
-        }
+//        SysUser user = userMapper.selectOneByQuery(
+//                QueryWrapper.create().from(SYS_USER)
+//                        .select(SYS_USER.PHONENUMBER, SYS_USER.STATUS)
+//                        .and(SYS_USER.PHONENUMBER.eq(phonenumber)));
+//        if (ObjUtil.isNull(user)) {
+//            log.info("登录用户：{} 不存在.", phonenumber);
+//            throw new UserException("user.not.exists", phonenumber);
+//        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+//            log.info("登录用户：{} 已被停用.", phonenumber);
+//            throw new UserException("user.blocked", phonenumber);
+//        }
         return userMapper.selectUserByPhonenumber(phonenumber);
     }
 

@@ -17,8 +17,6 @@ import com.layjava.common.social.config.properties.SocialProperties;
 import com.layjava.common.social.utils.SocialUtils;
 import com.layjava.system.domain.SysClient;
 import com.layjava.system.service.ISysClientService;
-import com.layjava.system.service.ISysConfigService;
-import com.layjava.system.service.ISysSocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthResponse;
@@ -32,7 +30,7 @@ import org.noear.solon.validation.ValidUtils;
 /**
  * 认证
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Slf4j
 @SaIgnore
@@ -42,11 +40,9 @@ import org.noear.solon.validation.ValidUtils;
 public class AuthController {
 
     private final SysLoginService loginService;
-    private final ISysConfigService configService;
     private final ISysClientService clientService;
     private final SocialProperties socialProperties;
     private final SysRegisterService registerService;
-    private final ISysSocialService socialUserService;
 
     /**
      * 登录方法
@@ -116,7 +112,7 @@ public class AuthController {
         if (!response.ok()) {
             return R.fail(response.getMsg());
         }
-        loginService.socialRegister(authUserData);
+        // loginService.socialRegister(authUserData);
         return R.ok();
     }
 
@@ -128,8 +124,9 @@ public class AuthController {
     @Delete
     @Mapping(value = "/unlock/{socialId}" )
     public R<Void> unlockSocial(Long socialId) {
-        Boolean rows = socialUserService.deleteWithValidById(socialId);
-        return rows ? R.ok() : R.fail("取消授权失败" );
+        // Boolean rows = socialUserService.deleteWithValidById(socialId);
+        // return rows ? R.ok() : R.fail("取消授权失败" );
+        return R.ok();
     }
 
     /**
@@ -148,9 +145,9 @@ public class AuthController {
     @Post
     @Mapping("/register" )
     public R<Void> register(RegisterBody user) {
-        if (!configService.selectRegisterEnabled()) {
-            return R.fail("当前系统没有开启注册功能！" );
-        }
+//        if (!configService.selectRegisterEnabled()) {
+//            return R.fail("当前系统没有开启注册功能！" );
+//        }
         registerService.register(user);
         return R.ok();
     }

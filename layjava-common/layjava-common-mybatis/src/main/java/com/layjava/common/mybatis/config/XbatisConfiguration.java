@@ -1,6 +1,7 @@
 package com.layjava.common.mybatis.config;
 
-import cn.xbatis.core.XbatisConfig;
+import cn.xbatis.core.XbatisGlobalConfig;
+import cn.xbatis.core.tenant.TenantContext;
 import com.layjava.common.core.exception.ServiceException;
 import com.layjava.common.mybatis.core.mapper.BaseMapper;
 import com.layjava.common.satoken.utils.LoginHelper;
@@ -14,13 +15,15 @@ public class XbatisConfiguration {
     @Bean
     public void init() {
         // 租户ID获取器
-        // TenantContext.registerTenantGetter(LoginHelper::getTenantId);
+         TenantContext.registerTenantGetter(LoginHelper::getTenantId);
 
         // 单Mapper
-        XbatisConfig.setSingleMapperClass(BaseMapper.class);
+        XbatisGlobalConfig.setSingleMapperClass(BaseMapper.class);
 
+
+        // 动态值设置 TODO 定义标准接口，实现自动注册
         // 当前登录用户的ID
-        XbatisConfig.setDefaultValue("{CURRENT_USER_ID}", (entity, type) -> {
+        XbatisGlobalConfig.setDynamicValue("{CURRENT_USER_ID}", (entity, type) -> {
             if (type == Long.class) {
                 return LoginHelper.getUserId();
             } else if (type == String.class) {
@@ -30,7 +33,7 @@ public class XbatisConfiguration {
         });
 
         // 当前登录用户的部门Id
-        XbatisConfig.setDefaultValue("{CURRENT_DEPT_ID}", (entity, type) -> {
+        XbatisGlobalConfig.setDynamicValue("{CURRENT_DEPT_ID}", (entity, type) -> {
             if (type == Long.class) {
                 return LoginHelper.getDeptId();
             } else if (type == String.class) {

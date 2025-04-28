@@ -1,7 +1,7 @@
 package com.layjava.system.domain;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
+import cn.xbatis.db.annotations.TableId;
+import cn.xbatis.db.annotations.Table;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
@@ -19,7 +19,7 @@ public class SysUserPost {
     /**
      * 用户ID
      */
-    @Id
+    @TableId
     private Long userId;
 
     /**

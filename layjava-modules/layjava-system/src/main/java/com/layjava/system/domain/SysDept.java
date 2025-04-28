@@ -1,8 +1,8 @@
 package com.layjava.system.domain;
 
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
+import cn.xbatis.db.annotations.TableId;
+import cn.xbatis.db.annotations.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,7 +11,7 @@ import java.io.Serial;
 /**
  * 部门表 sys_dept
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data
@@ -25,7 +25,7 @@ public class SysDept extends BaseEntity {
     /**
      * 部门ID
      */
-    @Id
+    @TableId
     private Long deptId;
 
     /**

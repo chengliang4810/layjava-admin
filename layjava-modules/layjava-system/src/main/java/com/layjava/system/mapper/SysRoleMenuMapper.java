@@ -7,8 +7,8 @@ import com.layjava.system.domain.SysRoleMenu;
 /**
  * 角色与菜单关联表 数据层
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
-public interface SysRoleMenuMapper extends BaseMapperPlus<SysRoleMenu> {
+public interface SysRoleMenuMapper extends BaseMapperPlus<SysRoleMenu, SysRoleMenu> {
 
 }

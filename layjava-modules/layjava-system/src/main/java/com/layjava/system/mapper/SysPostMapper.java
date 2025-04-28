@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * 岗位信息 数据层
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
-public interface SysPostMapper extends BaseMapperPlus<SysPost> {
+public interface SysPostMapper extends BaseMapperPlus<SysPost, SysPostVo> {
 
     /**
      * 根据用户ID获取岗位选择框列表

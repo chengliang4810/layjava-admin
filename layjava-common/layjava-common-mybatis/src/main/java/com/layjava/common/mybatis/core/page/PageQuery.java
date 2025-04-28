@@ -16,7 +16,7 @@ import java.io.Serializable;
 /**
  * 分页查询实体类
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data

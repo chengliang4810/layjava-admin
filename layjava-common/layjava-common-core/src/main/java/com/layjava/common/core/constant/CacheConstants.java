@@ -3,7 +3,7 @@ package com.layjava.common.core.constant;
 /**
  * 缓存的key 常量
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 public interface CacheConstants {
 

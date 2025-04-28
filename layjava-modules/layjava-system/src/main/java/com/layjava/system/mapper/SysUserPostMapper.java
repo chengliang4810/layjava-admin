@@ -7,8 +7,8 @@ import com.layjava.system.domain.SysUserPost;
 /**
  * 用户与岗位关联表 数据层
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
-public interface SysUserPostMapper extends BaseMapperPlus<SysUserPost> {
+public interface SysUserPostMapper extends BaseMapperPlus<SysUserPost, SysUserPost> {
 
 }

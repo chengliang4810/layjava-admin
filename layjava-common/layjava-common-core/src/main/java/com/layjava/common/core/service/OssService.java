@@ -3,7 +3,7 @@ package com.layjava.common.core.service;
 /**
  * 通用 OSS服务
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 public interface OssService {
 

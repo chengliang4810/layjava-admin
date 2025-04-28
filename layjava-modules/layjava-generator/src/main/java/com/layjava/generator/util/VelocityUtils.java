@@ -132,15 +132,15 @@ public class VelocityUtils {
         templates.add("vm/java/serviceImpl.java.vm");
         templates.add("vm/java/controller.java.vm");
         templates.add("vm/xml/mapper.xml.vm");
-        if (DataBaseHelper.isOracle()) {
-            templates.add("vm/sql/oracle/sql.vm");
-        } else if (DataBaseHelper.isPostgerSql()) {
-            templates.add("vm/sql/postgres/sql.vm");
-        } else if (DataBaseHelper.isSqlServer()) {
-            templates.add("vm/sql/sqlserver/sql.vm");
-        } else {
-            templates.add("vm/sql/sql.vm");
-        }
+//        if (DataBaseHelper.isOracle()) {
+//            templates.add("vm/sql/oracle/sql.vm");
+//        } else if (DataBaseHelper.isPostgerSql()) {
+//            templates.add("vm/sql/postgres/sql.vm");
+//        } else if (DataBaseHelper.isSqlServer()) {
+//            templates.add("vm/sql/sqlserver/sql.vm");
+//        } else {
+//            templates.add("vm/sql/sql.vm");
+//        }
 
         if (StringUtil.equals("vben", genConfig.getPlatform())) {
             // 添加vben

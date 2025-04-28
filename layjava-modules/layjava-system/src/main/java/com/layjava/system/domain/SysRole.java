@@ -1,8 +1,8 @@
 package com.layjava.system.domain;
 
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
+import cn.xbatis.db.annotations.TableId;
+import cn.xbatis.db.annotations.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 /**
  * 角色表 sys_role
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data
@@ -23,7 +23,7 @@ public class SysRole extends BaseEntity {
     /**
      * 角色ID
      */
-    @Id
+    @TableId
     private Long roleId;
 
     /**

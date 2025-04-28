@@ -8,7 +8,7 @@ import java.lang.annotation.*;
 /**
  * 字典格式化
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

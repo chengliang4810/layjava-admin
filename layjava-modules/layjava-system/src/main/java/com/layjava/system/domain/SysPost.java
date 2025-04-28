@@ -1,15 +1,15 @@
 package com.layjava.system.domain;
 
 import com.layjava.common.mybatis.core.entity.BaseEntity;
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.Table;
+import cn.xbatis.db.annotations.TableId;
+import cn.xbatis.db.annotations.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * 岗位表 sys_post
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data
@@ -20,7 +20,7 @@ public class SysPost extends BaseEntity {
     /**
      * 岗位序号
      */
-    @Id
+    @TableId
     private Long postId;
 
     /**

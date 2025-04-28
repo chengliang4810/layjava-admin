@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * 业务表 gen_table
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Data
 @Table("gen_table")

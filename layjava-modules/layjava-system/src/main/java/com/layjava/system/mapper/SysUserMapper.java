@@ -5,25 +5,23 @@ import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.UpdateChain;
 import com.layjava.common.mybatis.core.mapper.BaseMapperPlus;
 import com.layjava.common.mybatis.core.page.PageQuery;
-import com.layjava.common.mybatis.core.page.PageResult;
 import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import org.dromara.hutool.core.collection.ListUtil;
 
 import java.util.List;
 
-import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
-
 
 /**
  * 用户表 数据层
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
     default Pager<SysUserVo> selectPageUserList(PageQuery pageQuery, Where queryWrapper) {
-        return this.paging(pageQuery, queryWrapper, SysUserVo.class, DataColumn.of("deptName", "u.dept_id"), DataColumn.of("userName", "u.user_id"));
+        return null;
+//        return this.paging(pageQuery, queryWrapper, SysUserVo.class, DataColumn.of("deptName", "u.dept_id"), DataColumn.of("userName", "u.user_id"));
     }
 
     /**

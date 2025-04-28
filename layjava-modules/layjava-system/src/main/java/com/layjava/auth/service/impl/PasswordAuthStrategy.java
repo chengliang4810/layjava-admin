@@ -12,27 +12,19 @@ import com.layjava.common.core.constant.GlobalConstants;
 import com.layjava.common.core.domain.model.LoginUser;
 import com.layjava.common.core.domain.model.PasswordLoginBody;
 import com.layjava.common.core.enums.LoginType;
-import com.layjava.common.core.enums.UserStatus;
 import com.layjava.common.core.exception.user.CaptchaException;
 import com.layjava.common.core.exception.user.CaptchaExpireException;
-import com.layjava.common.core.exception.user.UserException;
-import com.layjava.common.core.service.ConfigService;
 import com.layjava.common.core.utils.StringUtil;
 import com.layjava.common.json.utils.JsonUtils;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysClient;
-import com.layjava.system.domain.SysUser;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
-import com.mybatisflex.core.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.validation.ValidUtils;
-
-import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 
 /**
  * 密码认证策略
@@ -43,8 +35,8 @@ import static com.layjava.system.domain.table.SysUserTableDef.SYS_USER;
 @Component("password" + AuthStrategy.BASE_NAME)
 public class PasswordAuthStrategy implements AuthStrategyService {
 
-    @Inject
-    private ConfigService configService;
+//    @Inject
+//    private ConfigService configService;
     @Inject
     private CacheService cacheService;
     @Inject
@@ -61,11 +53,11 @@ public class PasswordAuthStrategy implements AuthStrategyService {
         String code = loginBody.getCode();
         String uuid = loginBody.getUuid();
 
-        String captchaEnabled = configService.getConfigValue("system_captcha_enable" );
-        // TODO 验证码开关
-        if ("on".equals(captchaEnabled)) {
-            validateCaptcha(username, code, uuid);
-        }
+//        String captchaEnabled = configService.getConfigValue("system_captcha_enable" );
+//        // TODO 验证码开关
+//        if ("on".equals(captchaEnabled)) {
+//            validateCaptcha(username, code, uuid);
+//        }
 
         SysUserVo user = loadUserByUsername(username);
         loginService.checkLogin(LoginType.PASSWORD, username, () -> !BCrypt.checkpw(password, user.getPassword()));
@@ -112,18 +104,18 @@ public class PasswordAuthStrategy implements AuthStrategyService {
     }
 
     private SysUserVo loadUserByUsername(String username) {
-        SysUser user = userMapper.selectOneByQuery(
-                QueryWrapper.create()
-                        .select(SYS_USER.USER_NAME, SYS_USER.STATUS)
-                        .from(SYS_USER)
-                        .and(SYS_USER.USER_NAME.eq(username)));
-        if (ObjUtil.isNull(user)) {
-            log.info("登录用户：{} 不存在.", username);
-            throw new UserException("user.not.exists", username);
-        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            log.info("登录用户：{} 已被停用.", username);
-            throw new UserException("user.blocked", username);
-        }
+//        SysUser user = userMapper.selectOneByQuery(
+//                QueryWrapper.create()
+//                        .select(SYS_USER.USER_NAME, SYS_USER.STATUS)
+//                        .from(SYS_USER)
+//                        .and(SYS_USER.USER_NAME.eq(username)));
+//        if (ObjUtil.isNull(user)) {
+//            log.info("登录用户：{} 不存在.", username);
+//            throw new UserException("user.not.exists", username);
+//        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+//            log.info("登录用户：{} 已被停用.", username);
+//            throw new UserException("user.blocked", username);
+//        }
         return userMapper.selectUserByUserName(username);
     }
 

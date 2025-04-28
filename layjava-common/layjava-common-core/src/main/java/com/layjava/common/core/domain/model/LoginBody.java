@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 用户登录对象
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data

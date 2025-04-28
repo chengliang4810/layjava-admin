@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * 业务 服务层
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 public interface IGenTableService {
 

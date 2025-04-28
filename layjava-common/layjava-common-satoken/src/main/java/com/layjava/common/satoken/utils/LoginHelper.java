@@ -24,7 +24,7 @@ import java.util.function.Supplier;
  * 多用户体系 针对 多种用户类型 但权限控制不一致
  * 可以组成 多用户类型表与多设备类型 分别控制权限
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginHelper {

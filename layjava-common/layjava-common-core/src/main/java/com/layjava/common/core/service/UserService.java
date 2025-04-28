@@ -3,7 +3,7 @@ package com.layjava.common.core.service;
 /**
  * 通用 用户服务
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 public interface UserService {
 

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 业务 数据层
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
 

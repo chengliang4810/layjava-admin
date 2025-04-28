@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.dromara.autotable.annotation.AutoColumn;
-import org.dromara.autotable.annotation.AutoTable;
 import org.dromara.autotable.annotation.PrimaryKey;
 import org.dromara.autotable.annotation.mysql.MysqlTypeConstant;
 
@@ -21,7 +20,7 @@ import java.io.Serial;
  */
 @Data
 @Table("gen_template")
-@AutoTable(value = "gen_template", comment = "代码模板")
+// @AutoTable(value = "gen_template", comment = "代码模板")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class GenTemplate extends BaseEntity {

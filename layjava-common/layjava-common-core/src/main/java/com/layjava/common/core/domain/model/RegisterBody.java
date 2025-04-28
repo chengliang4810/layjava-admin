@@ -10,7 +10,7 @@ import static com.layjava.common.core.constant.UserConstants.*;
 /**
  * 用户注册对象
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

@@ -7,7 +7,7 @@ import org.noear.solon.validation.annotation.NotBlank;
 /**
  * 三方登录对象
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data

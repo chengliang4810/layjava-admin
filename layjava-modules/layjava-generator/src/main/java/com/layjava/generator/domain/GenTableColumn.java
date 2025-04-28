@@ -11,7 +11,7 @@ import org.noear.solon.validation.annotation.NotBlank;
 /**
  * 代码生成业务字段表 gen_table_column
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Data

@@ -3,7 +3,7 @@ package com.layjava.common.core.constant;
 /**
  * 租户常量信息
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 public interface TenantConstants {
 

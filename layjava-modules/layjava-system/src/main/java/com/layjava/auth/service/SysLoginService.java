@@ -12,12 +12,9 @@ import com.layjava.common.core.utils.DateUtil;
 import com.layjava.common.log.event.LogininforEvent;
 import com.layjava.common.satoken.utils.LoginHelper;
 import com.layjava.system.domain.SysUser;
-import com.layjava.system.domain.bo.SysSocialBo;
-import com.layjava.system.domain.vo.SysSocialVo;
 import com.layjava.system.domain.vo.SysUserVo;
 import com.layjava.system.mapper.SysUserMapper;
 import com.layjava.system.service.ISysPermissionService;
-import com.layjava.system.service.ISysSocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthUser;
@@ -36,7 +33,7 @@ import java.util.function.Supplier;
 /**
  * 登录校验方法
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 
 @Slf4j
@@ -49,38 +46,8 @@ public class SysLoginService {
     @Inject(value = "${user.password.lockTime: 10}", required = false)
     private Integer lockTime;
     private final ISysPermissionService permissionService;
-    private final ISysSocialService sysSocialService;
     private final CacheService cacheService;
     private final SysUserMapper userMapper;
-
-
-    /**
-     * 绑定第三方用户
-     *
-     * @param authUserData 授权响应实体
-     * @return 统一响应实体
-     */
-    public void socialRegister(AuthUser authUserData) {
-        String authId = authUserData.getSource() + authUserData.getUuid();
-        // 第三方用户信息
-        SysSocialBo bo = BeanUtil.toBean(authUserData, SysSocialBo.class);
-        BeanUtil.copyProperties(authUserData.getToken(), bo);
-        bo.setUserId(LoginHelper.getUserId());
-        bo.setAuthId(authId);
-        bo.setOpenId(authUserData.getUuid());
-        bo.setUserName(authUserData.getUsername());
-        bo.setNickName(authUserData.getNickname());
-        // 查询是否已经绑定用户
-        List<SysSocialVo> list = sysSocialService.selectByAuthId(authId);
-        if (CollUtil.isEmpty(list)) {
-            // 没有绑定用户, 新增用户信息
-            sysSocialService.insertByBo(bo);
-        } else {
-            // 更新用户信息
-            bo.setId(list.get(0).getId());
-            sysSocialService.updateByBo(bo);
-        }
-    }
 
 
     /**

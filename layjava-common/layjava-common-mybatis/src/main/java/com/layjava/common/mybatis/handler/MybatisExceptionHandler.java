@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Mybatis异常处理器
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Slf4j
 public class MybatisExceptionHandler {

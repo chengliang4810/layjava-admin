@@ -7,7 +7,7 @@ import lombok.Getter;
  * 设备类型
  * 针对一套 用户体系
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Getter
 @AllArgsConstructor

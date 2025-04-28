@@ -13,9 +13,7 @@ import com.layjava.system.domain.bo.SysUserPasswordBo;
 import com.layjava.system.domain.bo.SysUserProfileBo;
 import com.layjava.system.domain.vo.AvatarVo;
 import com.layjava.system.domain.vo.ProfileVo;
-import com.layjava.system.domain.vo.SysOssVo;
 import com.layjava.system.domain.vo.SysUserVo;
-import com.layjava.system.service.ISysOssService;
 import com.layjava.system.service.ISysUserService;
 import org.dromara.hutool.core.bean.BeanUtil;
 import org.dromara.hutool.core.io.file.FileNameUtil;
@@ -28,7 +26,7 @@ import java.util.Arrays;
 /**
  * 个人信息 业务处理
  *
- * @author Lion Li
+ * @author Lion Li,chengliang4810
  */
 @Controller
 @Mapping("/system/user/profile" )
@@ -36,8 +34,6 @@ public class SysProfileController extends BaseController {
 
     @Inject
     private ISysUserService userService;
-    @Inject
-    private ISysOssService ossService;
 
     /**
      * 个人信息
@@ -114,13 +110,13 @@ public class SysProfileController extends BaseController {
             if (!StringUtil.equalsAnyIgnoreCase(extension, MimeTypeUtil.IMAGE_EXTENSION)) {
                 return R.fail("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtil.IMAGE_EXTENSION) + "格式" );
             }
-            SysOssVo oss = ossService.upload(avatarfile);
-            String avatar = oss.getUrl();
-            if (userService.updateUserAvatar(LoginHelper.getUserId(), oss.getOssId())) {
-                AvatarVo avatarVo = new AvatarVo();
-                avatarVo.setImgUrl(avatar);
-                return R.ok(avatarVo);
-            }
+//            SysOssVo oss = ossService.upload(avatarfile);
+//            String avatar = oss.getUrl();
+//            if (userService.updateUserAvatar(LoginHelper.getUserId(), oss.getOssId())) {
+//                AvatarVo avatarVo = new AvatarVo();
+//                avatarVo.setImgUrl(avatar);
+//                return R.ok(avatarVo);
+//            }
         }
         return R.fail("上传图片异常，请联系管理员" );
     }
