@@ -1,21 +1,21 @@
-# layjava-admin
+# jimuqu-admin
 
-[![LayJava Admin](https://img.shields.io/badge/LayJava_Admin-1.0.0-success.svg)](https://gitee.com/chengliang4810/layjava-admin)
-![GitHub License](https://img.shields.io/github/license/chengliang4810/layjava-admin)
+[![LayJava Admin](https://img.shields.io/badge/LayJava_Admin-1.0.0-success.svg)](https://gitee.com/chengliang4810/jimuqu-admin)
+![GitHub License](https://img.shields.io/github/license/chengliang4810/jimuqu-admin)
 [![Solon](https://img.shields.io/badge/Solon-3.0.6-blue.svg)]()
 [![JDK-17](https://img.shields.io/badge/JDK-17-green.svg)]()
 [![JDK-21](https://img.shields.io/badge/JDK-21-green.svg)]()
 <br>
-![GitHub last commit](https://img.shields.io/github/last-commit/chengliang4810/layjava-admin)
-[![Build Status](https://drone.wangsr.vip/api/badges/opensolon/layjava-admin/status.svg)](https://drone.wangsr.vip/opensolon/layjava-admin)
+![GitHub last commit](https://img.shields.io/github/last-commit/chengliang4810/jimuqu-admin)
+[![Build Status](https://drone.wangsr.vip/api/badges/opensolon/jimuqu-admin/status.svg)](https://drone.wangsr.vip/opensolon/jimuqu-admin)
 <br>
-![GitHub Repo stars](https://img.shields.io/github/stars/chengliang4810/layjava-admin)
-[![star](https://gitee.com/opensolon/layjava-admin/badge/star.svg?theme=dark)](https://gitee.com/opensolon/layjava-admin/stargazers)
-[![Star](https://gitcode.com/chengliang4810/layjava-admin/star/badge.svg)](https://gitcode.com/chengliang4810/layjava-admin)
+![GitHub Repo stars](https://img.shields.io/github/stars/chengliang4810/jimuqu-admin)
+[![star](https://gitee.com/opensolon/jimuqu-admin/badge/star.svg?theme=dark)](https://gitee.com/opensolon/jimuqu-admin/stargazers)
+[![Star](https://gitcode.com/chengliang4810/jimuqu-admin/star/badge.svg)](https://gitcode.com/chengliang4810/jimuqu-admin)
 
 
 #### 介绍
-layjava admin（“累”Java） 是基于solon的管理系统， 
+jimuqu admin（“累”Java） 是基于solon的管理系统， 
 
 
 > 基于 RuoYi-Vue-Plus 代码基础上进行 改造升级(不兼容原框架)
@@ -25,9 +25,9 @@ layjava admin（“累”Java） 是基于solon的管理系统，
 > 项目代码、文档 均开源免费可商用 遵循开源协议在项目中保留开源协议文件即可<br>
 活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
 
-> 文档地址: [https://docs.layjava.com](https://docs.layjava.com)
+> 文档地址: [https://docs.jimuqu.com](https://docs.jimuqu.com)
 
-> 演示系统: [https://admin.layjava.com](https://admin.layjava.com)
+> 演示系统: [https://admin.jimuqu.com](https://admin.jimuqu.com)
 
 ## 功能列表
 

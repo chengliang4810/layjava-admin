@@ -5,7 +5,7 @@
  Source Server Type    : MySQL
  Source Server Version : 80038 (8.0.38)
  Source Host           : localhost:3306
- Source Schema         : layjava_db
+ Source Schema         : jimuqu_db
 
  Target Server Type    : MySQL
  Target Server Version : 80038 (8.0.38)

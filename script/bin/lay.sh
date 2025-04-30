@@ -1,6 +1,6 @@
 #!/bin/sh
 # ./lay.sh start 启动 stop 停止 restart 重启 status 状态
-AppName=layjava-admin.jar
+AppName=jimuqu-admin.jar
 
 # JVM参数
 JVM_OPTS="-Dname=$AppName  -Duser.timezone=Asia/Shanghai -Xms512m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -XX:+UseZGC"

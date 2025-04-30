@@ -23,9 +23,9 @@ steps:
       # 打包jar
       - mvn clean package -P prod -DskipTests=true
       # 复制jar到指定目录, 与主机目录共享
-      # - cp layjava-admin/target/layjava-admin.jar /app/layjava-admin.jar
+      # - cp jimuqu-admin/target/jimuqu-admin.jar /app/jimuqu-admin.jar
       # 复制jar到当前目录， 通过linux的scp发送到远程机器
-      - cp layjava-admin/target/layjava-admin.jar ./layjava-admin.jar
+      - cp jimuqu-admin/target/jimuqu-admin.jar ./jimuqu-admin.jar
   # 部署jar到远程机器
   - name: deployment-jar
     image: appleboy/drone-scp
@@ -38,11 +38,11 @@ steps:
         from_secret: remote_ps
       port: 22
       command_timeout: 3m
-      target: /app/layjava-admin/api
-      source: layjava-admin.jar
+      target: /app/jimuqu-admin/api
+      source: jimuqu-admin.jar
     depends_on:
       - package-jar
-  # 到远程机器上重启layjava-admin-api
+  # 到远程机器上重启jimuqu-admin-api
   - name: restart
     image: appleboy/drone-ssh
     # pull: if-not-exists
@@ -58,9 +58,9 @@ steps:
       port: 22
       command_timeout: 2m
       script:
-        - docker restart layjava-admin-api
+        - docker restart jimuqu-admin-api
 
-#  重启layjava-admin-api容器（同一台机器使用）
+#  重启jimuqu-admin-api容器（同一台机器使用）
 #  - name: restart-docker-image
 #    image: plugins/docker
 #    pull: if-not-exists
@@ -68,7 +68,7 @@ steps:
 #      - name: socker
 #        path: /var/run/docker.sock
 #    commands:
-#      - docker restart layjava-admin-api
+#      - docker restart jimuqu-admin-api
 #    depends_on:
 #      - deployment-jar
 
@@ -112,7 +112,7 @@ volumes:
       path: /var/run/docker.sock
   - name: app
     host:
-      path: /app/layjava-admin/api
+      path: /app/jimuqu-admin/api
   - name: dingtalk
     host:
       path: /app/dingtalk

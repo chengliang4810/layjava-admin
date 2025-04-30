@@ -5,16 +5,16 @@ FROM docker.1panel.live/bellsoft/liberica-openjdk-debian:17.0.11-cds
 
 LABEL maintainer="chengliang4810"
 
-RUN mkdir -p /layjava/server/logs \
-    /layjava/server/temp
+RUN mkdir -p /jimuqu/server/logs \
+    /jimuqu/server/temp
 
-WORKDIR /layjava/server
+WORKDIR /jimuqu/server
 
 ENV SERVER_PORT=8080 LANG=C.UTF-8 LC_ALL=C.UTF-8 JAVA_OPTS=""
 
 EXPOSE ${SERVER_PORT}
 
-ADD ./layjava-admin/target/layjava-admin.jar ./app.jar
+ADD ./jimuqu-admin/target/jimuqu-admin.jar ./app.jar
 
 ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -Dserver.port=${SERVER_PORT} \
            -XX:+HeapDumpOnOutOfMemoryError -XX:+UseZGC ${JAVA_OPTS} \

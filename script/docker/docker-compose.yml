@@ -10,7 +10,7 @@ services:
       # root 密码
       MYSQL_ROOT_PASSWORD: P@ssw0rd
       # 初始化数据库(后续的初始化sql会在这个库执行)
-      MYSQL_DATABASE: layjava
+      MYSQL_DATABASE: jimuqu
     ports:
       - "3306:3306"
     volumes:
@@ -99,29 +99,29 @@ services:
     privileged: true
     network_mode: "host"
 
-  layjava-admin-server1:
-    image: layjava/layjava-admin
-    container_name: layjava-admin-server1
+  jimuqu-admin-server1:
+    image: jimuqu/jimuqu-admin
+    container_name: jimuqu-admin-server1
     environment:
       # 时区上海
       TZ: Asia/Shanghai
       SERVER_PORT: 8080
     volumes:
       # 配置文件
-      - /docker/server1/logs/:/layjava/server/logs/
+      - /docker/server1/logs/:/jimuqu/server/logs/
     privileged: true
     network_mode: "host"
 
-  layjava-admin-server2:
-    image: layjava/layjava-admin
-    container_name: layjava-admin-server2
+  jimuqu-admin-server2:
+    image: jimuqu/jimuqu-admin
+    container_name: jimuqu-admin-server2
     environment:
       # 时区上海
       TZ: Asia/Shanghai
       SERVER_PORT: 8081
     volumes:
       # 配置文件
-      - /docker/server2/logs/:/layjava/server/logs/
+      - /docker/server2/logs/:/jimuqu/server/logs/
     privileged: true
     network_mode: "host"
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jimuqu</groupId>
+        <artifactId>jimuqu-modules</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>jimuqu-system</artifactId>
+
+    <dependencies>
+        <!-- 通用 -->
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-core</artifactId>
+        </dependency>
+        <!-- 缓存 -->
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-cache</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-excel</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-satoken</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-mybatis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-social</artifactId>
+        </dependency>
+
+        <!-- 接口文档 -->
+<!--        <dependency>-->
+<!--            <groupId>com.jimuqu/groupId>-->
+<!--            <artifactId>jimuqu-common-doc</artifactId>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.dromara.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jimuqu</groupId>
+            <artifactId>jimuqu-common-log</artifactId>
+        </dependency>
+
+    </dependencies>
+
+</project>

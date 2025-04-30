@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.jimuqu</groupId>
+        <artifactId>jimuqu-admin</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>jimuqu-common</artifactId>
+    <packaging>pom</packaging>
+
+    <description>
+        common 通用模块
+    </description>
+    <modules>
+        <module>jimuqu-common-bom</module>
+        <module>jimuqu-common-core</module>
+        <module>jimuqu-common-doc</module>
+        <module>jimuqu-common-web</module>
+        <module>jimuqu-common-mybatis</module>
+        <module>jimuqu-common-security</module>
+        <module>jimuqu-common-satoken</module>
+        <module>jimuqu-common-log</module>
+        <module>jimuqu-common-social</module>
+        <module>jimuqu-common-excel</module>
+        <module>jimuqu-common-cache</module>
+    </modules>
+
+</project>

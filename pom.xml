@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.layjava</groupId>
-    <artifactId>layjava-admin-parent</artifactId>
+    <groupId>com.jimuqu</groupId>
+    <artifactId>jimuqu-admin</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -17,9 +17,9 @@
     </parent>
 
     <modules>
-        <module>layjava-admin</module>
-        <module>layjava-common</module>
-        <module>layjava-modules</module>
+        <module>jimuqu-starter</module>
+        <module>jimuqu-common</module>
+        <module>jimuqu-modules</module>
     </modules>
 
     <properties>
@@ -84,8 +84,8 @@
         <dependencies>
             <!-- common 的依赖配置-->
             <dependency>
-                <groupId>com.layjava</groupId>
-                <artifactId>layjava-common-bom</artifactId>
+                <groupId>com.jimuqu</groupId>
+                <artifactId>jimuqu-common-bom</artifactId>
                 <version>${revision}</version>
                 <type>pom</type>
                 <scope>import</scope>
@@ -211,14 +211,14 @@
             </dependency>
 
             <dependency>
-                <groupId>com.layjava</groupId>
-                <artifactId>layjava-system</artifactId>
+                <groupId>com.jimuqu</groupId>
+                <artifactId>jimuqu-system</artifactId>
                 <version>${revision}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.layjava</groupId>
-                <artifactId>layjava-generator</artifactId>
+                <groupId>com.jimuqu</groupId>
+                <artifactId>jimuqu-generator</artifactId>
                 <version>${revision}</version>
             </dependency>
         </dependencies>
