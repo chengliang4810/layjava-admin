@@ -3,6 +3,8 @@ package com.jimuqu.auth.service.impl;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.util.ObjUtil;
+import cn.xbatis.core.sql.executor.Where;
 import com.jimuqu.auth.domain.vo.LoginVo;
 import com.jimuqu.auth.service.AuthStrategy;
 import com.jimuqu.auth.service.AuthStrategyService;
@@ -12,12 +14,15 @@ import com.jimuqu.common.core.constant.GlobalConstants;
 import com.jimuqu.common.core.domain.model.LoginUser;
 import com.jimuqu.common.core.domain.model.PasswordLoginBody;
 import com.jimuqu.common.core.enums.LoginType;
+import com.jimuqu.common.core.enums.UserStatus;
 import com.jimuqu.common.core.exception.user.CaptchaException;
 import com.jimuqu.common.core.exception.user.CaptchaExpireException;
+import com.jimuqu.common.core.exception.user.UserException;
 import com.jimuqu.common.core.utils.JsonUtil;
 import com.jimuqu.common.core.utils.StringUtil;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.system.domain.SysClient;
+import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.vo.SysUserVo;
 import com.jimuqu.system.mapper.SysUserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +53,7 @@ public class PasswordAuthStrategy implements AuthStrategyService {
     public LoginVo login(String body, SysClient client) {
         PasswordLoginBody loginBody = JsonUtil.parseObject(body, PasswordLoginBody.class);
         ValidUtils.validateEntity(loginBody);
-        String username = loginBody.getUserName();
+        String username = loginBody.getUsername();
         String password = loginBody.getPassword();
         String code = loginBody.getCode();
         String uuid = loginBody.getUuid();
@@ -104,18 +109,19 @@ public class PasswordAuthStrategy implements AuthStrategyService {
     }
 
     private SysUserVo loadUserByUsername(String username) {
+        SysUser user = userMapper.get(Where.create().eq(SysUser::getUserName, username), SysUser::getUserName, SysUser::getStatus);
 //        SysUser user = userMapper.selectOneByQuery(
 //                QueryWrapper.create()
 //                        .select(SYS_USER.USER_NAME, SYS_USER.STATUS)
 //                        .from(SYS_USER)
 //                        .and(SYS_USER.USER_NAME.eq(username)));
-//        if (ObjUtil.isNull(user)) {
-//            log.info("登录用户：{} 不存在.", username);
-//            throw new UserException("user.not.exists", username);
-//        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-//            log.info("登录用户：{} 已被停用.", username);
-//            throw new UserException("user.blocked", username);
-//        }
+        if (ObjUtil.isNull(user)) {
+            log.info("登录用户：{} 不存在.", username);
+            throw new UserException("user.not.exists", username);
+        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
+            log.info("登录用户：{} 已被停用.", username);
+            throw new UserException("user.blocked", username);
+        }
         return userMapper.selectUserByUserName(username);
     }
 

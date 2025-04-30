@@ -21,7 +21,7 @@ public class PasswordLoginBody extends LoginBody {
      */
     @NotBlank(message = "{user.username.not.blank}")
     @Length(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH, message = "{user.username.length.valid}")
-    private String userName;
+    private String username;
 
     /**
      * 用户密码

@@ -2,6 +2,7 @@ package com.jimuqu.system.mapper;
 
 import cn.xbatis.core.mybatis.mapper.context.Pager;
 import cn.xbatis.core.sql.executor.Where;
+import cn.xbatis.core.sql.executor.chain.QueryChain;
 import cn.xbatis.core.sql.executor.chain.UpdateChain;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
@@ -60,9 +61,7 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      * @return 用户对象信息
      */
     default SysUserVo selectUserByUserName(String userName) {
-//        Where where = Where.create().eq(SysUser::getUserName, userName);
-//        return selectOneWithRelationsByQueryAs(queryWrapper, SysUserVo.class);
-        return null;
+        return QueryChain.of(this).eq(SysUser::getUserName, userName).returnType(SysUserVo.class).get();
     }
 
     /**
