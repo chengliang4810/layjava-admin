@@ -6,9 +6,11 @@ import cn.xbatis.core.sql.executor.chain.QueryChain;
 import cn.xbatis.core.sql.executor.chain.UpdateChain;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
+import com.jimuqu.system.domain.SysDept;
+import com.jimuqu.system.domain.SysRole;
 import com.jimuqu.system.domain.SysUser;
+import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.vo.SysUserVo;
-import org.dromara.hutool.core.collection.ListUtil;
 
 import java.util.List;
 
@@ -21,8 +23,13 @@ import java.util.List;
 public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
     default Pager<SysUserVo> selectPageUserList(PageQuery pageQuery, Where queryWrapper) {
-        return null;
-//        return this.paging(pageQuery, queryWrapper, SysUserVo.class, DataColumn.of("deptName", "u.dept_id"), DataColumn.of("userName", "u.user_id"));
+        return QueryChain.of(this, queryWrapper)
+                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getId, SysUserRole::getUserId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .where(queryWrapper)
+                .returnType(SysUserVo.class)
+                .paging(pageQuery.build());
     }
 
     /**
@@ -34,12 +41,12 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
 
     default List<SysUserVo> selectUserList(Where queryWrapper) {
-        return ListUtil.zero();
-//        return this.selectListWithRelationsByQueryAs(queryWrapper, SysUserVo.class, DataPermission.of(
-//                        DataColumn.of("deptName", "u.dept_id"),
-//                        DataColumn.of("userName", "u.user_id")
-//                )
-//        );
+        return QueryChain.of(this, queryWrapper)
+                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getId, SysUserRole::getUserId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .where(queryWrapper)
+                .returnType(SysUserVo.class).list();
     }
 
     /**
@@ -61,7 +68,13 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      * @return 用户对象信息
      */
     default SysUserVo selectUserByUserName(String userName) {
-        return QueryChain.of(this).eq(SysUser::getUserName, userName).returnType(SysUserVo.class).get();
+        //     //@RelationOneToOne(selfField = "deptId", joinSelfColumn = "dept_id", targetField = "deptId", joinTargetColumn = "dept_id", targetTable = "sys_dept")
+        return QueryChain.of(this)
+                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getId, SysUserRole::getUserId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .eq(SysUser::getUserName, userName)
+                .returnType(SysUserVo.class).get();
     }
 
     /**
@@ -71,9 +84,12 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      * @return 用户对象信息
      */
     default SysUserVo selectUserByPhonenumber(String phonenumber) {
-//        QueryWrapper queryWrapper = QueryWrapper.create().where(SYS_USER.PHONENUMBER.eq(phonenumber));
-//        return selectOneWithRelationsByQueryAs(queryWrapper, SysUserVo.class);
-        return null;
+        return QueryChain.of(this)
+                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getId, SysUserRole::getUserId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .eq(SysUser::getPhonenumber, phonenumber)
+                .returnType(SysUserVo.class).get();
     }
 
     /**
@@ -83,9 +99,12 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      * @return 用户对象信息
      */
     default SysUserVo selectUserByEmail(String email) {
-//        QueryWrapper queryWrapper = QueryWrapper.create().where(SYS_USER.EMAIL.eq(email));
-//        return selectOneWithRelationsByQueryAs(queryWrapper, SysUserVo.class);
-        return null;
+        return QueryChain.of(this)
+                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getId, SysUserRole::getUserId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .eq(SysUser::getEmail, email)
+                .returnType(SysUserVo.class).get();
     }
 
     /**
@@ -96,9 +115,12 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      */
 
     default SysUserVo selectUserById(Long userId) {
-//        QueryWrapper queryWrapper = QueryWrapper.create().where(SysUser::getUserId).eq(userId);
-//        return selectOneWithRelationsByQueryAs(queryWrapper, SysUserVo.class, DataColumn.of("deptName", "dept_id"), DataColumn.of("userName", "user_id"));
-        return null;
+        return QueryChain.of(this)
+                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getId, SysUserRole::getUserId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .eq(SysUser::getId, userId)
+                .returnType(SysUserVo.class).get();
     }
 
 

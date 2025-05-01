@@ -3,15 +3,18 @@ package com.jimuqu.common.satoken.utils;
 import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.context.model.SaStorage;
 import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.stp.SaLoginModel;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.core.domain.model.LoginUser;
 import com.jimuqu.common.core.enums.UserType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.dromara.hutool.core.bean.BeanUtil;
+import org.dromara.hutool.core.bean.copier.CopyOptions;
 import org.dromara.hutool.core.util.ObjUtil;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -43,12 +46,12 @@ public class LoginHelper {
      * @param loginUser 登录用户信息
      * @param model     配置参数
      */
-    public static void login(LoginUser loginUser, SaLoginModel model) {
+    public static void login(LoginUser loginUser, SaLoginParameter model) {
         SaStorage storage = SaHolder.getStorage();
         storage.set(LOGIN_USER_KEY, loginUser);
         storage.set(USER_KEY, loginUser.getUserId());
         storage.set(DEPT_KEY, loginUser.getDeptId());
-        model = ObjUtil.defaultIfNull(model, new SaLoginModel());
+        model = ObjUtil.defaultIfNull(model, new SaLoginParameter());
         StpUtil.login(loginUser.getLoginId());
         SaSession tokenSession = StpUtil.getTokenSession();
         tokenSession.updateTimeout(model.getTimeout());
@@ -59,12 +62,15 @@ public class LoginHelper {
      * 获取用户(多级缓存)
      */
     public static LoginUser getLoginUser() {
-        return (LoginUser) getStorageIfAbsentSet(LOGIN_USER_KEY, () -> {
+        return getStorageIfAbsentSet(LOGIN_USER_KEY, () -> {
             SaSession session = StpUtil.getTokenSession();
             if (ObjUtil.isNull(session)) {
                 return null;
             }
-            return session.get(LOGIN_USER_KEY);
+            // TODO Sa-Token 1.4.2 存入与返回对象类型不一致， 返回类型为Map
+            Object o = session.get(LOGIN_USER_KEY);
+            LoginUser loginUser = new LoginUser();
+            return BeanUtil.fillBeanWithMap((Map<?, ?>) o, loginUser, CopyOptions.of());
         });
     }
 
@@ -145,14 +151,15 @@ public class LoginHelper {
         return getLoginUser() != null;
     }
 
-    public static Object getStorageIfAbsentSet(String key, Supplier<Object> handle) {
+    public static <T> T getStorageIfAbsentSet(String key, Supplier<T> handle) {
         try {
             Object obj = SaHolder.getStorage().get(key);
             if (ObjUtil.isNull(obj)) {
-                obj = handle.get();
-                SaHolder.getStorage().set(key, obj);
+                T tObj = handle.get();
+                SaHolder.getStorage().set(key, tObj);
+                return tObj;
             }
-            return obj;
+            return (T)obj;
         } catch (Exception e) {
             return null;
         }

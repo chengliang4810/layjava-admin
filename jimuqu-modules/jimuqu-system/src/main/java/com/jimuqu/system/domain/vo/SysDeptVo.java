@@ -1,5 +1,7 @@
 package com.jimuqu.system.domain.vo;
 
+import cn.xbatis.db.annotations.Ignores;
+import cn.xbatis.db.annotations.ResultEntity;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.jimuqu.common.excel.annotation.ExcelDictFormat;
@@ -19,7 +21,9 @@ import java.util.Date;
  */
 @Data
 @ExcelIgnoreUnannotated
+@ResultEntity(SysDept.class)
 @AutoMapper(target = SysDept.class)
+@Ignores({"parentName", "leaderName"})
 public class SysDeptVo implements Serializable {
 
     @Serial

@@ -91,13 +91,13 @@ public class SysLoginService {
     public LoginUser buildLoginUser(SysUserVo user) {
         LoginUser loginUser = new LoginUser();
         loginUser.setTenantId(user.getTenantId());
-        loginUser.setUserId(user.getUserId());
+        loginUser.setUserId(user.getId());
         loginUser.setDeptId(user.getDeptId());
         loginUser.setUsername(user.getUserName());
         loginUser.setNickname(user.getNickName());
         loginUser.setUserType(user.getUserType());
-        loginUser.setMenuPermission(permissionService.getMenuPermission(user.getUserId()));
-        loginUser.setRolePermission(permissionService.getRolePermission(user.getUserId()));
+        loginUser.setMenuPermission(permissionService.getMenuPermission(user.getId()));
+        loginUser.setRolePermission(permissionService.getRolePermission(user.getId()));
         loginUser.setDeptName(ObjUtil.isNull(user.getDept()) ? "" : user.getDept().getDeptName());
         List<RoleDTO> roles = BeanUtil.copyToList(user.getRoles(), RoleDTO.class);
         loginUser.setRoles(roles);
@@ -111,7 +111,7 @@ public class SysLoginService {
      */
     public void recordLoginInfo(Long userId, String ip) {
         SysUser sysUser = new SysUser();
-        sysUser.setUserId(userId);
+        sysUser.setId(userId);
         sysUser.setLoginIp(ip);
         sysUser.setLoginDate(DateUtil.getNowDate());
         sysUser.setUpdateBy(userId);

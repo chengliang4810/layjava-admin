@@ -1,6 +1,7 @@
 package com.jimuqu.common.mybatis.core.entity;
 
 import cn.xbatis.db.annotations.TableField;
+import cn.xbatis.db.annotations.TableId;
 import lombok.Data;
 
 import java.io.Serial;
@@ -19,6 +20,12 @@ public class BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 主键
+     */
+    @TableId
+    protected Long id;
 
     /**
      * 创建部门

@@ -1,5 +1,6 @@
 package com.jimuqu.system.domain.vo;
 
+import cn.xbatis.db.annotations.Ignore;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.jimuqu.common.core.constant.UserConstants;
@@ -91,6 +92,7 @@ public class SysRoleVo implements Serializable {
     /**
      * 用户是否存在此角色标识 默认不存在
      */
+    @Ignore
     private boolean flag = false;
 
     public boolean isSuperAdmin() {

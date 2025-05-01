@@ -1,5 +1,10 @@
 package com.jimuqu.system.domain.vo;
 
+import cn.xbatis.db.annotations.Ignore;
+import cn.xbatis.db.annotations.NestedResultEntity;
+import cn.xbatis.db.annotations.ResultEntity;
+import com.jimuqu.system.domain.SysDept;
+import com.jimuqu.system.domain.SysRole;
 import com.jimuqu.system.domain.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -16,6 +21,7 @@ import java.util.List;
  * @author Michelle.Chung
  */
 @Data
+@ResultEntity(SysUser.class)
 @AutoMapper(target = SysUser.class)
 public class SysUserVo implements Serializable {
 
@@ -25,7 +31,7 @@ public class SysUserVo implements Serializable {
     /**
      * 用户ID
      */
-    private Long userId;
+    private Long id;
 
     /**
      * 租户ID
@@ -108,6 +114,7 @@ public class SysUserVo implements Serializable {
     /**
      * 部门对象
      */
+    @NestedResultEntity(target = SysDept.class)
     //@RelationOneToOne(selfField = "deptId", joinSelfColumn = "dept_id", targetField = "deptId", joinTargetColumn = "dept_id", targetTable = "sys_dept")
     private SysDeptVo dept;
 
@@ -115,21 +122,25 @@ public class SysUserVo implements Serializable {
      * 角色对象
      */
     //@RelationManyToMany(selfField = "userId", joinSelfColumn = "user_id", targetTable = "sys_role", targetField = "roleId", joinTargetColumn = "role_id", joinTable = "sys_user_role")
+     @NestedResultEntity(target = SysRole.class)
     private List<SysRoleVo> roles;
 
     /**
      * 角色组
      */
+    @Ignore
     private Long[] roleIds;
 
     /**
      * 岗位组
      */
+    @Ignore
     private Long[] postIds;
 
     /**
      * 数据权限 当前角色ID
      */
+    @Ignore
     private Long roleId;
 
 }

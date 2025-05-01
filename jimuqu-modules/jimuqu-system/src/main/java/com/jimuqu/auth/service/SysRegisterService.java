@@ -62,7 +62,7 @@ public class SysRegisterService {
 
         boolean exist = userMapper.exists(Where.create()
                         .eq(SysUser::getUserName, sysUser.getUserName())
-                        .ne(SysUser::getUserId, sysUser.getUserId())
+                        .ne(SysUser::getId, sysUser.getUserId())
         );
         if (exist) {
             throw new UserException("保存用户 {} 失败，注册账号已存在", username);

@@ -4,7 +4,9 @@ import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.vo.SysUserVo;
+import com.jimuqu.system.mapper.SysUserMapper;
 import com.jimuqu.system.service.ISysUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 
@@ -12,7 +14,10 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class SysUserServiceImpl implements ISysUserService {
+
+    private final SysUserMapper sysUserMapper;
 
     @Override
     public PageResult<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery) {
@@ -46,7 +51,7 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Override
     public SysUserVo selectUserById(Long userId) {
-        return null;
+        return sysUserMapper.selectUserById(userId);
     }
 
     @Override

@@ -1,9 +1,8 @@
 package com.jimuqu.system.domain;
 
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.core.constant.UserConstants;
-import com.jimuqu.common.mybatis.core.entity.BaseEntity;
+import com.jimuqu.common.mybatis.core.entity.TenantEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,15 +17,9 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @Table("sys_user")
-public class SysUser extends BaseEntity {
-
-    /**
-     * 用户ID
-     */
-    @TableId
-    private Long userId;
+@EqualsAndHashCode(callSuper = true)
+public class SysUser extends TenantEntity {
 
     /**
      * 部门ID
@@ -106,11 +99,11 @@ public class SysUser extends BaseEntity {
 
 
     public SysUser(Long userId) {
-        this.userId = userId;
+        this.id = userId;
     }
 
     public boolean isSuperAdmin() {
-        return UserConstants.SUPER_ADMIN_ID.equals(this.userId);
+        return UserConstants.SUPER_ADMIN_ID.equals(this.id);
     }
 
 }

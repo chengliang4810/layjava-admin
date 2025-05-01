@@ -1,13 +1,11 @@
 package com.jimuqu.generator.domain;
 
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.dromara.autotable.annotation.AutoColumn;
-import org.dromara.autotable.annotation.PrimaryKey;
 import org.dromara.autotable.annotation.mysql.MysqlTypeConstant;
 
 import java.io.Serial;
@@ -27,14 +25,6 @@ public class GenTemplate extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 编号
-     */
-    @TableId
-    @PrimaryKey
-    @AutoColumn(comment = "编号")
-    private Long id;
 
     /**
      * 模板分类，用于批量选择模板
