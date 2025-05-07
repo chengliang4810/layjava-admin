@@ -9,6 +9,7 @@ import org.noear.solon.core.handle.ModelAndView;
 import org.noear.solon.core.handle.Render;
 import org.noear.solon.validation.annotation.NotBlacklist;
 import org.noear.solon.validation.annotation.Valid;
+import org.noear.solon.web.cors.annotation.CrossOrigin;
 
 import java.io.File;
 
@@ -23,6 +24,7 @@ import java.io.File;
  */
 @Valid
 @NotBlacklist
+@CrossOrigin(origins = "*")
 public class BaseController implements Render {
 
     /**
