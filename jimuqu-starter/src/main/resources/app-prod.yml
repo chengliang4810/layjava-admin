@@ -2,7 +2,7 @@
 solon.dataSources.master!: #数据源（!结尾表示 typed=true）
   class: "com.zaxxer.hikari.HikariDataSource"
   driverClassName: com.mysql.cj.jdbc.Driver
-  jdbcUrl: jdbc:mysql://mysql:3306/jimuqu_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+  jdbcUrl: jdbc:mysql://mariadb:3306/jimuqu_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
   username: jimuqu
   password: P@ssw0rd
 
