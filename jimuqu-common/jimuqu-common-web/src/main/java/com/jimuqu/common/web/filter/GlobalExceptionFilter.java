@@ -35,6 +35,8 @@ public class GlobalExceptionFilter implements Filter {
         }
         // 权限异常
         catch (AuthException e) {
+            // 设置响应状态码为 401， 如果全部返回200 则不需要下面这行
+            ctx.status(e.getCode());
             ctx.render(R.fail(e.getCode(), e.getMessage()));
         }
         // 其他异常
