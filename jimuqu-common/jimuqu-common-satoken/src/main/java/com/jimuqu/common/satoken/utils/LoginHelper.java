@@ -67,8 +67,14 @@ public class LoginHelper {
             if (ObjUtil.isNull(session)) {
                 return null;
             }
-            // TODO Sa-Token 1.4.2 存入与返回对象类型不一致， 返回类型为Map
             Object o = session.get(LOGIN_USER_KEY);
+            if (ObjUtil.isNull(o)) {
+                return null;
+            }
+            if (o instanceof LoginUser) {
+                return (LoginUser) o;
+            }
+            // TODO Sa-Token 1.4.2 存入与返回对象类型不一致， 返回类型为Map
             LoginUser loginUser = new LoginUser();
             return BeanUtil.fillBeanWithMap((Map<?, ?>) o, loginUser, CopyOptions.of());
         });
