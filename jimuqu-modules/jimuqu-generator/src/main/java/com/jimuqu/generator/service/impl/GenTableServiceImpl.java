@@ -8,6 +8,7 @@ import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.IdUtil;
 import com.jimuqu.common.core.utils.JsonUtil;
 import com.jimuqu.common.core.utils.StreamUtil;
+import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.satoken.utils.LoginHelper;
@@ -39,7 +40,7 @@ import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
-import org.noear.solon.data.annotation.Tran;
+import org.noear.solon.data.annotation.Transaction;
 import org.noear.solon.data.dynamicds.DynamicDs;
 
 import java.io.ByteArrayOutputStream;
@@ -106,7 +107,13 @@ public class GenTableServiceImpl implements IGenTableService {
 //                .like(StringUtils.isNotBlank(genTable.getTableName()), "lower(table_name)", StringUtils.lowerCase(genTable.getTableName()))
 //                .like(StringUtils.isNotBlank(genTable.getTableComment()), "lower(table_comment)", StringUtils.lowerCase(genTable.getTableComment()))
 //                .between(params.get("beginTime") != null && params.get("endTime") != null, "create_time", params.get("beginTime"), params.get("endTime"));
-        return QueryChain.of(baseMapper);
+
+        return QueryChain.of(baseMapper)
+                .forSearch(true)
+                .eq(GenTable::getDataName, genTable.getDataName())
+                .like(GenTable::getTableName, genTable.getTableName())
+                .like(GenTable::getTableComment, genTable.getTableComment())
+                .between(BaseEntity::getCreateTime, params.get("beginTime"), params.get("endTime"));
     }
 
     /**
@@ -232,7 +239,7 @@ public class GenTableServiceImpl implements IGenTableService {
      *
      * @param genTable 业务信息
      */
-    @Tran
+    @Transaction
     @Override
     public void updateGenTable(GenTable genTable) {
         String options = JsonUtil.toJsonString(genTable.getParams());
@@ -250,7 +257,7 @@ public class GenTableServiceImpl implements IGenTableService {
      *
      * @param tableIds 需要删除的数据ID
      */
-    @Tran
+    @Transaction
     @Override
     public void deleteGenTableByIds(Long[] tableIds) {
         List<Long> ids = Arrays.asList(tableIds);
@@ -264,7 +271,7 @@ public class GenTableServiceImpl implements IGenTableService {
      * @param tableList 导入表列表
      * @param dataName  数据源名称
      */
-    @Tran
+    @Transaction
     @Override
     public void importGenTable(List<GenTable> tableList, String dataName) {
         Long operId = LoginHelper.getUserId();
@@ -416,7 +423,7 @@ public class GenTableServiceImpl implements IGenTableService {
      *
      * @param tableId 表名称
      */
-    @Tran
+    @Transaction
     @Override
     public void synchDb(Long tableId) {
         GenTable table = baseMapper.selectGenTableById(tableId);
