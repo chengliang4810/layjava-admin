@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Entity基类
@@ -43,7 +43,7 @@ public class BaseEntity implements Serializable {
      * 创建时间
      */
     @TableField(defaultValue = "{NOW}")
-    protected LocalDateTime createTime;
+    protected Date createTime;
 
     /**
      * 更新者
@@ -55,6 +55,6 @@ public class BaseEntity implements Serializable {
      * 更新时间
      */
     @TableField(defaultValue = "{NOW}", updateDefaultValue = "{NOW}")
-    protected LocalDateTime updateTime;
+    protected Date updateTime;
 
 }

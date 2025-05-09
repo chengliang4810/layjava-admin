@@ -34,6 +34,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.resource.loader.StringResourceLoader;
 import org.apache.velocity.runtime.resource.util.StringResourceRepository;
 import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
 import org.dromara.hutool.core.util.ObjUtil;
@@ -159,15 +160,15 @@ public class GenTableServiceImpl implements IGenTableService {
                     GenTable gen = new GenTable();
                     gen.setTableName(x.getName());
                     gen.setTableComment(x.getComment());
-//                    gen.setCreateTime(x.getCreateTime());
-//                    gen.setUpdateTime(x.getUpdateTime());
+                    gen.setCreateTime(x.getCreateTime());
+                    gen.setUpdateTime(x.getUpdateTime());
                     return gen;
                 }).toList();
 
         Pager<GenTable> page = pageQuery.build();
-//        page.setTotalRow(tables.size());
+        page.setTotal(tables.size());
 //        // 手动分页 set数据
-//        page.setRecords(ListUtil.page(tables, (int) page.getPageNumber() - 1, (int) page.getPageSize()));
+        page.setResults(ListUtil.page(tables, (int) page.getNumber() - 1, (int) page.getSize()));
         return PageResult.build(page);
     }
 
@@ -210,8 +211,8 @@ public class GenTableServiceImpl implements IGenTableService {
             gen.setDataName(dataName);
             gen.setTableName(x.getName());
             gen.setTableComment(x.getComment());
-//            gen.setCreateTime(x.getCreateTime());
-//            gen.setUpdateTime(x.getUpdateTime());
+            gen.setCreateTime(x.getCreateTime());
+            gen.setUpdateTime(x.getUpdateTime());
             return gen;
         }).toList();
     }
