@@ -12,11 +12,11 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
 
     @Override
     public Set<String> getRolePermission(Long userId) {
-        return Set.of();
+        return Set.of("root");
     }
 
     @Override
     public Set<String> getMenuPermission(Long userId) {
-        return Set.of();
+        return Set.of("*:*:*");
     }
 }

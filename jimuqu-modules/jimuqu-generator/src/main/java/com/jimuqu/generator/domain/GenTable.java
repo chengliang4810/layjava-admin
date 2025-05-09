@@ -1,7 +1,6 @@
 package com.jimuqu.generator.domain;
 
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import com.jimuqu.generator.constant.GenConstants;
 import lombok.Data;
@@ -26,12 +25,6 @@ import java.util.Map;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 public class GenTable extends BaseEntity {
-
-    /**
-     * 编号
-     */
-    @TableId
-    private Long tableId;
 
     /**
      * 数据源名称

@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Controller
 @RequiredArgsConstructor
-@Mapping("/generator/code")
+@Mapping("/tool/gen-code")
 public class GenController extends BaseController {
 
     private final IGenTableService genTableService;
