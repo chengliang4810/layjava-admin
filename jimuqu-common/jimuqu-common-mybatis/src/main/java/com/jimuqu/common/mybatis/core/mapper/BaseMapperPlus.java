@@ -100,6 +100,7 @@ public interface BaseMapperPlus<T, V> extends MybatisMapper<T> {
         Pager<T> paging = this.paging(page, where);
         // 创建一个新的VO对象分页列表，并设置分页信息
         Pager<C> voPage = new Pager<>(paging.getNumber(), page.getSize());
+        voPage.setTotal(paging.getTotal());
         if (CollUtil.isEmpty(paging.getResults())) {
             return (P) voPage;
         }

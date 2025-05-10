@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Controller
 @RequiredArgsConstructor
-@Mapping("/generator/template")
+@Mapping("/tool/gen-template")
 public class GenTemplateController extends BaseController {
 
     private final IGenTemplateService genTemplateService;

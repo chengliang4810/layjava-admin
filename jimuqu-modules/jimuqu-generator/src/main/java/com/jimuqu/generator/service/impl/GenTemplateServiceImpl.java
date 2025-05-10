@@ -1,7 +1,7 @@
 package com.jimuqu.generator.service.impl;
 
 import cn.xbatis.core.mybatis.mapper.context.Pager;
-import cn.xbatis.core.sql.executor.Where;
+import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.mybatis.core.page.PageResult;
@@ -45,9 +45,8 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
      */
     @Override
     public PageResult<GenTemplateVo> queryPageList(GenTemplateBo bo, PageQuery pageQuery) {
-        Where qw = buildQueryWrapper(bo);
-        Pager<GenTemplateVo> result = baseMapper.paging(pageQuery.build(), qw, GenTemplateVo.class);
-        return PageResult.build(result);
+        Pager<GenTemplateVo> paging = buildQueryChain(bo).returnType(GenTemplateVo.class).paging(pageQuery.build());
+        return PageResult.build(paging);
     }
 
     /**
@@ -55,19 +54,17 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
      */
     @Override
     public List<GenTemplateVo> queryList(GenTemplateBo bo) {
-        Where qw = buildQueryWrapper(bo);
-        return baseMapper.list(qw, GenTemplateVo.class);
+        QueryChain<GenTemplate> queryChain = buildQueryChain(bo);
+        return queryChain.returnType(GenTemplateVo.class).list();
     }
 
-    private Where buildQueryWrapper(GenTemplateBo bo) {
+    private QueryChain<GenTemplate> buildQueryChain(GenTemplateBo bo) {
         Map<String, Object> params = bo.getParams();
-        return Where.create();
-//                .from(GEN_TEMPLATE)
-//                .where(GEN_TEMPLATE.CATEGORY.eq(bo.getCategory()))
-//                .and(GEN_TEMPLATE.NAME.like(bo.getName()))
-//                .and(GEN_TEMPLATE.PATH.eq(bo.getPath()))
-//                .and(GEN_TEMPLATE.DB_TYPE.eq(bo.getDbType()))
-//                .and(GEN_TEMPLATE.CONTENT.eq(bo.getContent()));
+        return QueryChain.of(baseMapper)
+                .forSearch(true)
+                .like(GenTemplate::getName, bo.getName())
+                .eq(GenTemplate::getCategory, bo.getCategory())
+                .eq(GenTemplate::getEnable, bo.getEnable());
     }
 
     /**

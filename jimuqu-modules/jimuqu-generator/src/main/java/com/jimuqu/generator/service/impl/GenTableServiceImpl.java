@@ -351,7 +351,7 @@ public class GenTableServiceImpl implements IGenTableService {
 
         VelocityContext context = VelocityUtils.prepareContext(table);
 
-        List<GenTemplate> genTemplateList = templateMapper.list(Where.create().eq(GenTemplate::getEnabled, true));
+        List<GenTemplate> genTemplateList = templateMapper.list(Where.create().eq(GenTemplate::getEnable, true));
         for (GenTemplate genTemplate : genTemplateList) {
             String templateName = genTemplate.getName() + ".vm";
             // 获取字符串资源库
@@ -399,7 +399,7 @@ public class GenTableServiceImpl implements IGenTableService {
         StringResourceRepository repository = StringResourceLoader.getRepository();
 
         // 获取模板列表
-        List<GenTemplate> genTemplateList =  templateMapper.list(Where.create().eq(GenTemplate::getEnabled, true));
+        List<GenTemplate> genTemplateList =  templateMapper.list(Where.create().eq(GenTemplate::getEnable, true));
         for (GenTemplate genTemplate : genTemplateList) {
             String templateName = genTemplate.getName() + ".vm";
             if (!StringUtils.containsAny(templateName, "sql.vm", "api.ts.vm", "types.ts.vm", "index.vue.vm", "index-tree.vue.vm")) {
@@ -510,7 +510,7 @@ public class GenTableServiceImpl implements IGenTableService {
         VelocityContext context = VelocityUtils.prepareContext(table);
 
         // 获取模板列表
-        List<GenTemplate> genTemplateList =  templateMapper.list(Where.create().eq(GenTemplate::getEnabled, true));
+        List<GenTemplate> genTemplateList =  templateMapper.list(Where.create().eq(GenTemplate::getEnable, true));
         for (GenTemplate genTemplate : genTemplateList) {
             String templateName = genTemplate.getName() + ".vm";
             // 获取字符串资源库
