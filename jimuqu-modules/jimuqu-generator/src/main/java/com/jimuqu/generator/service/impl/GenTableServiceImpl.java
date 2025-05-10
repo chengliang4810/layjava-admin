@@ -8,7 +8,6 @@ import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.IdUtil;
 import com.jimuqu.common.core.utils.JsonUtil;
 import com.jimuqu.common.core.utils.StreamUtil;
-import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.satoken.utils.LoginHelper;
@@ -38,6 +37,7 @@ import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.collection.ListUtil;
 import org.dromara.hutool.core.io.IoUtil;
 import org.dromara.hutool.core.map.Dict;
+import org.dromara.hutool.core.text.StrUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.data.annotation.Transaction;
@@ -98,6 +98,8 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     public PageResult<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery) {
         Pager<GenTable> page = baseMapper.paging(pageQuery.build(), this.buildGenTableQueryWrapper(genTable).getWhere());
+        System.out.println(page.getResults());
+        System.out.println(page.getTotal());
         return PageResult.build(page);
     }
 
@@ -111,9 +113,9 @@ public class GenTableServiceImpl implements IGenTableService {
         return QueryChain.of(baseMapper)
                 .forSearch(true)
                 .eq(GenTable::getDataName, genTable.getDataName())
-                .like(GenTable::getTableName, genTable.getTableName())
-                .like(GenTable::getTableComment, genTable.getTableComment())
-                .between(BaseEntity::getCreateTime, params.get("beginTime"), params.get("endTime"));
+                .and(StrUtil.isNotBlank(genTable.getTableName()), GenTable::getTableName, c-> c.lower().like(genTable.getTableName().toLowerCase()))
+                .and(StrUtil.isNotBlank(genTable.getTableComment()), GenTable::getTableComment, c-> c.lower().like(genTable.getTableComment().toLowerCase()))
+                .between(GenTable::getCreateTime, params.get("beginTime"), params.get("endTime"));
     }
 
     /**

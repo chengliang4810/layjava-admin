@@ -29,7 +29,7 @@ public class PageInfo<T> implements Serializable {
     /**
      * 列表数据
      */
-    private List<T> rows;
+    private List<T> items;
 
     /**
      * 分页
@@ -38,13 +38,13 @@ public class PageInfo<T> implements Serializable {
      * @param total 总记录数
      */
     public PageInfo(List<T> list, long total) {
-        this.rows = list;
+        this.items = list;
         this.total = total;
     }
 
     public static <T> PageInfo<T> build(List<T> list) {
         PageInfo<T> pageInfo = new PageInfo<>();
-        pageInfo.setRows(list);
+        pageInfo.setItems(list);
         pageInfo.setTotal(list.size());
         return pageInfo;
     }
