@@ -55,7 +55,7 @@ public class GenTemplateVo implements Serializable {
     /**
      * 是否启用
      */
-    private Boolean enable;
+    private Integer enable;
 
     /**
      * 备注

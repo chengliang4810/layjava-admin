@@ -1,6 +1,7 @@
 package com.jimuqu.generator.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.jimuqu.common.core.checker.Assert;
 import com.jimuqu.common.core.domain.R;
 import com.jimuqu.common.core.validate.group.AddGroup;
 import com.jimuqu.common.core.validate.group.UpdateGroup;
@@ -13,8 +14,12 @@ import com.jimuqu.generator.domain.bo.GenTemplateBo;
 import com.jimuqu.generator.domain.vo.GenTemplateVo;
 import com.jimuqu.generator.service.IGenTemplateService;
 import lombok.RequiredArgsConstructor;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Get;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.validation.annotation.NoRepeatSubmit;
+import org.noear.solon.validation.annotation.NotEmpty;
 import org.noear.solon.validation.annotation.NotNull;
 import org.noear.solon.validation.annotation.Validated;
 
@@ -26,6 +31,7 @@ import java.util.List;
  * @author chengliang4810
  * @date 2025-01-05
  */
+@Post
 @Controller
 @RequiredArgsConstructor
 @Mapping("/tool/gen-template")
@@ -58,8 +64,7 @@ public class GenTemplateController extends BaseController {
     /**
      * 新增代码生成模板
      */
-    @Post
-    @Mapping
+    @Mapping("/add")
     @NoRepeatSubmit
     @SaCheckPermission("generator:template:add")
     @Log(title = "代码生成模板", businessType = BusinessType.INSERT)
@@ -70,9 +75,8 @@ public class GenTemplateController extends BaseController {
     /**
      * 修改代码生成模板
      */
-    @Put
-    @Mapping
     @NoRepeatSubmit
+    @Mapping("/update")
     @SaCheckPermission("generator:template:edit")
     @Log(title = "代码生成模板", businessType = BusinessType.UPDATE)
     public R<Void> edit(@Validated(UpdateGroup.class) GenTemplateBo bo) {
@@ -84,11 +88,12 @@ public class GenTemplateController extends BaseController {
      *
      * @param ids 主键串
      */
-    @Delete
-    @Mapping("/{ids}")
+    @Mapping("/delete/{ids}")
     @SaCheckPermission("generator:template:remove")
     @Log(title = "代码生成模板", businessType = BusinessType.DELETE)
-    public R<Void> remove(@NotNull(message = "主键不能为空") Long[] ids) {
-        return toAjax(genTemplateService.deleteWithValidByIds(List.of(ids), true));
+    public R<Integer> remove(@NotEmpty(message = "主键不能为空") List<Long> ids) {
+        Integer num = genTemplateService.deleteWithValidByIds(ids);
+        Assert.gtZero(num, "删除失败");
+        return R.ok(num);
     }
 }

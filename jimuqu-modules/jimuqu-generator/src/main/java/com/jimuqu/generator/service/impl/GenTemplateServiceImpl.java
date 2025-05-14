@@ -93,10 +93,7 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
      * 批量删除代码生成模板
      */
     @Override
-    public Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid) {
-        if (isValid) {
-            /// 做一些业务上的校验,判断是否需要校验
-        }
-        return baseMapper.deleteByIds(ids) > 0;
+    public Integer deleteWithValidByIds(Collection<Long> ids) {
+        return baseMapper.deleteByIds(ids);
     }
 }

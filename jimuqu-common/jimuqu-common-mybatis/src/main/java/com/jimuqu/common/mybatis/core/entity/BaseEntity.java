@@ -1,5 +1,7 @@
 package com.jimuqu.common.mybatis.core.entity;
 
+import cn.xbatis.core.incrementer.IdentifierGeneratorType;
+import cn.xbatis.db.IdAutoType;
 import cn.xbatis.db.annotations.TableField;
 import cn.xbatis.db.annotations.TableId;
 import lombok.Data;
@@ -25,7 +27,7 @@ public class BaseEntity implements Serializable {
     /**
      * 主键
      */
-    @TableId
+    @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
     @AutoColumn(comment = "主键")
     protected Long id;
 

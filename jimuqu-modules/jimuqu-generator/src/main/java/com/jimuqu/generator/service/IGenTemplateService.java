@@ -44,5 +44,5 @@ public interface IGenTemplateService {
     /**
      * 校验并批量删除代码生成模板信息
      */
-    Boolean deleteWithValidByIds(Collection<Long> ids, Boolean isValid);
+    Integer deleteWithValidByIds(Collection<Long> ids);
 }

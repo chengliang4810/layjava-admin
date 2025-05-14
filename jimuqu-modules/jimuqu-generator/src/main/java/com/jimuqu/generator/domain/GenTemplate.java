@@ -60,8 +60,8 @@ public class GenTemplate extends BaseEntity {
     /**
      * 是否启用
      */
-    @AutoColumn(comment = "是否启用")
-    private Boolean enable;
+    @AutoColumn(comment = "是否启用", defaultValue = "1")
+    private Integer enable;
 
     /**
      * 备注
