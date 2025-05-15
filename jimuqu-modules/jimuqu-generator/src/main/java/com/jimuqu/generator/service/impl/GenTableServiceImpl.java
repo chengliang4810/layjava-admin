@@ -173,8 +173,7 @@ public class GenTableServiceImpl implements IGenTableService {
                 }).toList();
 
         Page<GenTable> page = pageQuery.build();
-        page.setTotal(tables.size());
-        return Page.<GenTable>of(ListUtil.page(tables, page.getNumber() - 1, page.getSize()), tables.size());
+        return Page.<GenTable>of(ListUtil.page(tables, page.getCurrentPage() - 1, page.getPageSize()), tables.size());
     }
 
     public static boolean startWithAnyIgnoreCase(CharSequence cs, CharSequence... searchCharSequences) {

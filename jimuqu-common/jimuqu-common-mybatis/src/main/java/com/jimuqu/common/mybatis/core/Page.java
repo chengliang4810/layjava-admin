@@ -25,11 +25,11 @@ public class Page<T> implements IPager<T> {
     /**
      * 页码
      */
-    private transient Integer number = 1;
+    private transient Integer currentPage = 1;
     /**
      * 每页条数
      */
-    private transient Integer size = 20;
+    private transient Integer pageSize = 20;
     /**
      * 是否执行count查询
      */
@@ -47,13 +47,13 @@ public class Page<T> implements IPager<T> {
         this.setItems(items);
     }
 
-    public Page(int size) {
-        this(1, size);
+    public Page(int pageSize) {
+        this(1, pageSize);
     }
 
-    public Page(int number, int size) {
-        this.number = number;
-        this.size = size;
+    public Page(int currentPage, int pageSize) {
+        this.currentPage = currentPage;
+        this.pageSize = pageSize;
     }
 
     public static <T> Page<T> of() {
@@ -98,12 +98,12 @@ public class Page<T> implements IPager<T> {
             return (V) this.getExecuteCount();
         }
         if (PagerField.NUMBER == field) {
-            //返回页码 ,getNumber改成你自己的方法或字段
-            return (V) this.getNumber();
+            //返回页码
+            return (V) this.getCurrentPage();
         }
         if (PagerField.SIZE == field) {
             //返回每页条数 ,getSize改成你自己的方法或字段
-            return (V) this.getSize();
+            return (V) this.getPageSize();
         }
         throw new RuntimeException("not support field: " + field);
     }
