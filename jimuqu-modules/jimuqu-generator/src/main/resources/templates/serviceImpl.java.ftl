@@ -16,7 +16,7 @@ import ${package.Service}.${table.serviceName};
 import lombok.extern.slf4j.Slf4j;
 import org.noear.solon.annotation.Component;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
+import com.jimuqu.common.mybatis.core.page.Page;
 import com.jimuqu.common.core.util.MapstructUtils;
 
 import java.util.List;
@@ -43,11 +43,11 @@ public class ${table.serviceImplName} <#if table.serviceInterface> implements ${
     }
 
     @Override
-    public PageResult<${entity}Vo> get${entity}VoList(${entity}Bo ${table.entityPath}Bo, PageQuery pageQuery) {
+    public Page<${entity}Vo> get${entity}VoList(${entity}Bo ${table.entityPath}Bo, PageQuery pageQuery) {
         Wrapper<${entity}> ${table.entityPath}Wrapper = buildWrapper(${table.entityPath}Bo);
 
         IPage<${entity}Vo> voPage = ${table.entityPath}Mapper.selectVoPage(pageQuery.build(), ${table.entityPath}Wrapper);
-        return PageResult.build(voPage);
+        return Page.build(voPage);
     }
 
     @Override

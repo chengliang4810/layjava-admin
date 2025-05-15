@@ -75,9 +75,9 @@ public class ${table.controllerName} {
      */
     @Get
     @Mapping("/list/{pageNum}/{pageSize}")
-    public PageResult<${entity}Vo> pageList(PageQuery pageQuery) {
+    public Page<${entity}Vo> pageList(PageQuery pageQuery) {
         SearchResult<${entity}> search = beanSearcher.search(${entity}.class);
-        return PageResult.build(search, ${entity}Vo.class);
+        return Page.build(search, ${entity}Vo.class);
     }
 
     /**

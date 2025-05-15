@@ -12,7 +12,7 @@ import com.jimuqu.system.domain.vo.SysRoleVo;
  */
 public interface SysRoleMapper extends BaseMapperPlus<SysRole, SysRoleVo> {
 
-//    default Pager<SysRoleVo> selectPageRoleList(@Param("pageQuery") PageQuery pageQuery, QueryWrapper queryWrapper) {
+//    default Page<SysRoleVo> selectPageRoleList(@Param("pageQuery") PageQuery pageQuery, QueryWrapper queryWrapper) {
 ////        selectRoleVo(queryWrapper);
 ////        return paginateAs(pageQuery, queryWrapper, SysRoleVo.class, DataColumn.of("deptName", "d.dept_id"), DataColumn.of("userName", "r.create_by"));
 //        return null;

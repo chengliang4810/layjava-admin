@@ -1,8 +1,8 @@
 package com.jimuqu.system.service;
 
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.vo.SysRoleVo;
@@ -18,7 +18,7 @@ import java.util.Set;
 public interface ISysRoleService {
 
 
-    PageResult<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery);
+    Page<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询角色数据

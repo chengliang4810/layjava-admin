@@ -7,8 +7,8 @@ import com.jimuqu.common.core.validate.group.AddGroup;
 import com.jimuqu.common.core.validate.group.UpdateGroup;
 import com.jimuqu.common.log.annotation.Log;
 import com.jimuqu.common.log.enums.BusinessType;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.generator.domain.bo.GenTemplateBo;
 import com.jimuqu.generator.domain.vo.GenTemplateVo;
@@ -45,7 +45,7 @@ public class GenTemplateController extends BaseController {
     @Get
     @Mapping("/list")
     @SaCheckPermission("generator:template:list")
-    public PageResult<GenTemplateVo> list(GenTemplateBo bo, PageQuery pageQuery) {
+    public Page<GenTemplateVo> list(GenTemplateBo bo, PageQuery pageQuery) {
         return genTemplateService.queryPageList(bo, pageQuery);
     }
 

@@ -1,7 +1,7 @@
 package com.jimuqu.system.service.impl;
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.vo.SysUserVo;
 import com.jimuqu.system.mapper.SysUserMapper;
@@ -20,7 +20,7 @@ public class SysUserServiceImpl implements ISysUserService {
     private final SysUserMapper sysUserMapper;
 
     @Override
-    public PageResult<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery) {
+    public Page<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery) {
         return null;
     }
 
@@ -30,12 +30,12 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     @Override
-    public PageResult<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery) {
+    public Page<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery) {
         return null;
     }
 
     @Override
-    public PageResult<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery) {
+    public Page<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery) {
         return null;
     }
 

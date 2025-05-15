@@ -43,7 +43,7 @@ public class ${ClassName}Controller extends BaseController {
     @Mapping("/list")
     @SaCheckPermission("${permissionPrefix}:list")
 #if($table.crud || $table.sub)
-    public PageResult<${ClassName}Vo> list(${ClassName}Bo bo, PageQuery pageQuery) {
+    public Page<${ClassName}Vo> list(${ClassName}Bo bo, PageQuery pageQuery) {
         return ${className}Service.queryPageList(bo, pageQuery);
     }
 #elseif($table.tree)

@@ -258,15 +258,7 @@
 </template>
 
 <script setup name="${BusinessName}" lang="ts">
-  import {
-    add${BusinessName},
-          ${BusinessName}Form,
-    get${BusinessName},
-    list${BusinessName},
-          ${BusinessName}Query,
-    update${BusinessName},
-          ${BusinessName}VO
-  } from '@/api/';
+  import {add${BusinessName}, ${BusinessName}Form, get${BusinessName}, list${BusinessName}, ${BusinessName}Query, update${BusinessName}, ${BusinessName}VO} from '@/api/';
 
   const { proxy } = getCurrentInstance() as ComponentInternalInstance;
 #if(${dicts} != '')

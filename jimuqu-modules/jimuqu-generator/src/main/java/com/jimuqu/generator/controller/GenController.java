@@ -5,8 +5,8 @@ import com.jimuqu.common.core.domain.R;
 import com.jimuqu.common.core.utils.DateUtil;
 import com.jimuqu.common.log.annotation.Log;
 import com.jimuqu.common.log.enums.BusinessType;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.generator.domain.GenTable;
 import com.jimuqu.generator.domain.GenTableColumn;
@@ -40,7 +40,7 @@ public class GenController extends BaseController {
     @Get
     @Mapping("/list" )
     @SaCheckPermission("tool:gen:list" )
-    public PageResult<GenTable> genList(GenTable genTable, PageQuery pageQuery) {
+    public Page<GenTable> genList(GenTable genTable, PageQuery pageQuery) {
         return genTableService.selectPageGenTableList(genTable, pageQuery);
     }
 
@@ -69,7 +69,7 @@ public class GenController extends BaseController {
     @Get
     @Mapping("/db/list" )
     @SaCheckPermission("tool:gen:list" )
-    public PageResult<GenTable> dataList(GenTable genTable, PageQuery pageQuery) {
+    public Page<GenTable> dataList(GenTable genTable, PageQuery pageQuery) {
         return genTableService.selectPageDbTableList(genTable, pageQuery);
     }
 
@@ -81,9 +81,8 @@ public class GenController extends BaseController {
     @Get
     @Mapping("/column/{tableId}" )
     @SaCheckPermission("tool:gen:list" )
-    public PageResult<GenTableColumn> columnList(Long tableId) {
-        List<GenTableColumn> list = genTableService.selectGenTableColumnListByTableId(tableId);
-        return PageResult.build(list);
+    public List<GenTableColumn> columnList(Long tableId) {
+        return genTableService.selectGenTableColumnListByTableId(tableId);
     }
 
     /**

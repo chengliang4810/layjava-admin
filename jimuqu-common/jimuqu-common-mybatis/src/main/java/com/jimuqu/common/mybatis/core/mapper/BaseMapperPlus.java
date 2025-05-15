@@ -2,7 +2,6 @@ package com.jimuqu.common.mybatis.core.mapper;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.xbatis.core.mybatis.mapper.MybatisMapper;
-import cn.xbatis.core.mybatis.mapper.context.Pager;
 import cn.xbatis.core.sql.executor.Where;
 import com.jimuqu.common.core.utils.MapstructUtil;
 import org.apache.ibatis.logging.Log;
@@ -83,29 +82,6 @@ public interface BaseMapperPlus<T, V> extends MybatisMapper<T> {
             return ListUtil.zero();
         }
         return MapstructUtil.convert(list, voClass);
-    }
-
-    /**
-     * 根据条件分页查询实体对象列表，并将其转换为指定的VO对象分页列表
-     *
-     * @param page    分页信息
-     * @param where 查询条件
-     * @param voClass 要转换的VO类的Class对象
-     * @param <C>     VO类的类型
-     * @param <P>     VO对象分页列表的类型
-     * @return 查询到的VO对象分页列表，经过转换为指定的VO类后返回
-     */
-    default <C, P extends Pager<C>> P paging(Pager<T> page, Where where, Class<C> voClass) {
-        // 根据条件分页查询实体对象列表
-        Pager<T> paging = this.paging(page, where);
-        // 创建一个新的VO对象分页列表，并设置分页信息
-        Pager<C> voPage = new Pager<>(paging.getNumber(), page.getSize());
-        voPage.setTotal(paging.getTotal());
-        if (CollUtil.isEmpty(paging.getResults())) {
-            return (P) voPage;
-        }
-        voPage.setResults(MapstructUtil.convert(paging.getResults(), voClass));
-        return (P) voPage;
     }
 
 }

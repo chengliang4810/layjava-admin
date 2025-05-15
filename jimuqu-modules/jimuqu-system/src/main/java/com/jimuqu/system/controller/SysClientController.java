@@ -6,8 +6,8 @@ import com.jimuqu.common.core.validate.group.AddGroup;
 import com.jimuqu.common.core.validate.group.UpdateGroup;
 import com.jimuqu.common.log.annotation.Log;
 import com.jimuqu.common.log.enums.BusinessType;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.bo.SysClientBo;
 import com.jimuqu.system.domain.vo.SysClientVo;
@@ -40,7 +40,7 @@ public class SysClientController extends BaseController {
     @Get
     @Mapping("/list")
     @SaCheckPermission("system:client:list")
-    public PageResult<SysClientVo> list(SysClientBo bo, PageQuery pageQuery) {
+    public Page<SysClientVo> list(SysClientBo bo, PageQuery pageQuery) {
         return sysClientService.queryPageList(bo, pageQuery);
     }
 

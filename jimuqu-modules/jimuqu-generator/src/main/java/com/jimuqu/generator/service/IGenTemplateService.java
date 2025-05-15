@@ -1,7 +1,7 @@
 package com.jimuqu.generator.service;
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.generator.domain.bo.GenTemplateBo;
 import com.jimuqu.generator.domain.vo.GenTemplateVo;
 
@@ -12,7 +12,7 @@ import java.util.List;
  * 代码生成模板Service接口
  *
  * @author chengliang4810
- * @date 2025-01-05
+ * @since 2025-01-05
  */
 public interface IGenTemplateService {
 
@@ -24,7 +24,7 @@ public interface IGenTemplateService {
     /**
      * 查询代码生成模板列表
      */
-    PageResult<GenTemplateVo> queryPageList(GenTemplateBo bo, PageQuery pageQuery);
+    Page<GenTemplateVo> queryPageList(GenTemplateBo bo, PageQuery pageQuery);
 
     /**
      * 查询代码生成模板列表

@@ -1,9 +1,9 @@
 package com.jimuqu.system.mapper;
 
-import cn.xbatis.core.mybatis.mapper.context.Pager;
 import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import cn.xbatis.core.sql.executor.chain.UpdateChain;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.system.domain.SysDept;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
-    default Pager<SysUserVo> selectPageUserList(PageQuery pageQuery, Where queryWrapper) {
+    default Page<SysUserVo> selectPageUserList(PageQuery pageQuery, Where queryWrapper) {
         return QueryChain.of(this, queryWrapper)
                 .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
@@ -55,8 +55,8 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      * @param queryWrapper 查询条件
      * @return 用户信息集合信息
      */
-    default Pager<SysUserVo> selectAllocatedList(PageQuery page, Where queryWrapper) {
-        return new Pager<>();
+    default Page<SysUserVo> selectAllocatedList(PageQuery page, Where queryWrapper) {
+        return new Page<>();
 //        return this.paginateAs(page, queryWrapper, SysUserVo.class, DataColumn.of("deptName", "d.dept_id"), DataColumn.of("userName", "u.user_id"));
     }
 

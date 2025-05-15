@@ -3,7 +3,7 @@ package ${package.Service};
 import ${package.Entity}.bo.${entity}Bo;
 import ${package.Entity}.vo.${entity}Vo;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
+import com.jimuqu.common.mybatis.core.page.Page;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public interface ${table.serviceName} {
      * @param pageQuery 分页查询条件
      * @return {@link List}<{@link ${entity}Vo}>
      */
-    PageResult<${entity}Vo> get${entity}VoList(${entity}Bo ${table.entityPath}Bo, PageQuery pageQuery);
+    Page<${entity}Vo> get${entity}VoList(${entity}Bo ${table.entityPath}Bo, PageQuery pageQuery);
 
     /**
      * 通过id查询${table.comment!}Vo

@@ -1,9 +1,9 @@
 package com.jimuqu.common.mybatis.core.page;
 
-import cn.xbatis.core.mybatis.mapper.context.Pager;
 import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.StringUtil;
 import com.jimuqu.common.core.utils.sql.SqlUtil;
+import com.jimuqu.common.mybatis.core.Page;
 import db.sql.api.impl.cmd.Methods;
 import db.sql.api.impl.cmd.basic.OrderByDirection;
 import db.sql.api.impl.cmd.struct.query.OrderBy;
@@ -55,13 +55,13 @@ public class PageQuery implements Serializable {
      */
     public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
 
-    public <T> Pager<T> build() {
+    public <T> Page<T> build() {
         Integer pageNum = ObjUtil.defaultIfNull(getPageNum(), DEFAULT_PAGE_NUM);
         Integer pageSize = ObjUtil.defaultIfNull(getPageSize(), DEFAULT_PAGE_SIZE);
         if (pageNum <= 0) {
             pageNum = DEFAULT_PAGE_NUM;
         }
-        return new Pager<>(pageNum, pageSize);
+        return Page.of(pageNum, pageSize);
     }
 
     /**

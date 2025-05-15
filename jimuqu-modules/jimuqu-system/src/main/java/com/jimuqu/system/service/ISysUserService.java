@@ -1,8 +1,8 @@
 package com.jimuqu.system.service;
 
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.vo.SysUserVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysUserService {
 
 
-    PageResult<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery);
+    Page<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询用户列表
@@ -32,7 +32,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    PageResult<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery);
+    Page<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery);
 
     /**
      * 根据条件分页查询未分配用户角色列表
@@ -40,7 +40,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    PageResult<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery);
+    Page<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery);
 
     /**
      * 通过用户名查询用户

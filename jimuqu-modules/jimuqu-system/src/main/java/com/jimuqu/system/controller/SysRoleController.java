@@ -4,8 +4,8 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.jimuqu.common.core.domain.R;
 import com.jimuqu.common.log.annotation.Log;
 import com.jimuqu.common.log.enums.BusinessType;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.bo.SysDeptBo;
@@ -43,7 +43,7 @@ public class SysRoleController extends BaseController {
     @SaCheckPermission("system:role:list")
     @Get
     @Mapping("/list")
-    public PageResult<SysRoleVo> list(SysRoleBo role, PageQuery pageQuery) {
+    public Page<SysRoleVo> list(SysRoleBo role, PageQuery pageQuery) {
         return roleService.selectPageRoleList(role, pageQuery);
     }
 
@@ -168,7 +168,7 @@ public class SysRoleController extends BaseController {
     @SaCheckPermission("system:role:list")
     @Get
     @Mapping("/authUser/allocatedList")
-    public PageResult<SysUserVo> allocatedList(SysUserBo user, PageQuery pageQuery) {
+    public Page<SysUserVo> allocatedList(SysUserBo user, PageQuery pageQuery) {
         return userService.selectAllocatedList(user, pageQuery);
     }
 
@@ -178,7 +178,7 @@ public class SysRoleController extends BaseController {
     @SaCheckPermission("system:role:list")
     @Get
     @Mapping("/authUser/unallocatedList")
-    public PageResult<SysUserVo> unallocatedList(SysUserBo user, PageQuery pageQuery) {
+    public Page<SysUserVo> unallocatedList(SysUserBo user, PageQuery pageQuery) {
         return userService.selectUnallocatedList(user, pageQuery);
     }
 

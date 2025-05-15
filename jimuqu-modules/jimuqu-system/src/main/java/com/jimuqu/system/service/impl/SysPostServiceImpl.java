@@ -1,7 +1,7 @@
 package com.jimuqu.system.service.impl;
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.bo.SysPostBo;
 import com.jimuqu.system.domain.vo.SysPostVo;
 import com.jimuqu.system.service.ISysPostService;
@@ -15,7 +15,7 @@ import java.util.List;
 public class SysPostServiceImpl implements ISysPostService {
 
     @Override
-    public PageResult<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery) {
+    public Page<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery) {
         return null;
     }
 

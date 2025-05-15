@@ -6,7 +6,7 @@ import {request} from '@/service/http'
  * @returns {*}
  */
 export function get${BusinessName}List(params?: ${ModuleName}.${BusinessName}Query) {
-  return request.Get<Service.ResponsePageResult<${ModuleName}.${BusinessName}Vo>>('/${moduleName}/${businessName}/list', { params })
+  return request.Get<Service.ResponsePage<${ModuleName}.${BusinessName}Vo>>('/${moduleName}/${businessName}/list', { params })
 }
 
 /**

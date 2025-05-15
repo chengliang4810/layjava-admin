@@ -1,8 +1,8 @@
 package com.jimuqu.system.service.impl;
 
 import cn.xbatis.core.sql.executor.Where;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.SysClient;
 import com.jimuqu.system.domain.bo.SysClientBo;
 import com.jimuqu.system.domain.vo.SysClientVo;
@@ -33,7 +33,7 @@ public class SysClientServiceImpl implements ISysClientService {
     }
 
     @Override
-    public PageResult<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery) {
+    public Page<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery) {
         return null;
     }
 

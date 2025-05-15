@@ -1,8 +1,8 @@
 package com.jimuqu.generator.service;
 
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.generator.domain.GenTable;
 import com.jimuqu.generator.domain.GenTableColumn;
 
@@ -30,7 +30,7 @@ public interface IGenTableService {
      * @param genTable 业务信息
      * @return 业务集合
      */
-    PageResult<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery);
+    Page<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery);
 
     /**
      * 查询据库列表
@@ -38,7 +38,7 @@ public interface IGenTableService {
      * @param genTable 业务信息
      * @return 数据库表集合
      */
-    PageResult<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery);
+    Page<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery);
 
     /**
      * 查询据库列表

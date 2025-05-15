@@ -5,8 +5,8 @@ import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.core.domain.R;
 import com.jimuqu.common.log.annotation.Log;
 import com.jimuqu.common.log.enums.BusinessType;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.bo.SysPostBo;
 import com.jimuqu.system.domain.vo.SysPostVo;
@@ -33,7 +33,7 @@ public class SysPostController extends BaseController {
     @SaCheckPermission("system:post:list")
     @Get
     @Mapping("/list")
-    public PageResult<SysPostVo> list(SysPostBo post, PageQuery pageQuery) {
+    public Page<SysPostVo> list(SysPostBo post, PageQuery pageQuery) {
         return postService.selectPagePostList(post, pageQuery);
     }
 

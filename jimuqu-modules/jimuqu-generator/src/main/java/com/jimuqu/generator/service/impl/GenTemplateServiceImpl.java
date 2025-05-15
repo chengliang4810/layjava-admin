@@ -1,10 +1,9 @@
 package com.jimuqu.generator.service.impl;
 
-import cn.xbatis.core.mybatis.mapper.context.Pager;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.utils.MapstructUtil;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.generator.domain.GenTemplate;
 import com.jimuqu.generator.domain.bo.GenTemplateBo;
 import com.jimuqu.generator.domain.vo.GenTemplateVo;
@@ -44,9 +43,10 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
      * 查询代码生成模板列表
      */
     @Override
-    public PageResult<GenTemplateVo> queryPageList(GenTemplateBo bo, PageQuery pageQuery) {
-        Pager<GenTemplateVo> paging = buildQueryChain(bo).returnType(GenTemplateVo.class).paging(pageQuery.build());
-        return PageResult.build(paging);
+    public Page<GenTemplateVo> queryPageList(GenTemplateBo bo, PageQuery pageQuery) {
+        return buildQueryChain(bo)
+                .returnType(GenTemplateVo.class)
+                .paging(pageQuery.build());
     }
 
     /**
@@ -58,6 +58,11 @@ public class GenTemplateServiceImpl implements IGenTemplateService {
         return queryChain.returnType(GenTemplateVo.class).list();
     }
 
+    /**
+     * 构建查询条件
+     * @param bo 查询对象
+     * @return 查询条件对象
+     */
     private QueryChain<GenTemplate> buildQueryChain(GenTemplateBo bo) {
         Map<String, Object> params = bo.getParams();
         return QueryChain.of(baseMapper)

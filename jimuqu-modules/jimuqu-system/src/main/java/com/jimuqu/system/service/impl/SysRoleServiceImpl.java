@@ -1,7 +1,7 @@
 package com.jimuqu.system.service.impl;
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.vo.SysRoleVo;
@@ -17,7 +17,7 @@ import java.util.Set;
 public class SysRoleServiceImpl implements ISysRoleService {
 
     @Override
-    public PageResult<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery) {
+    public Page<SysRoleVo> selectPageRoleList(SysRoleBo role, PageQuery pageQuery) {
         return null;
     }
 

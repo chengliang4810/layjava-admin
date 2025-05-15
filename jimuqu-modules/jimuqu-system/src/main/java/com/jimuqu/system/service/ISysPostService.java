@@ -1,8 +1,8 @@
 package com.jimuqu.system.service;
 
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.bo.SysPostBo;
 import com.jimuqu.system.domain.vo.SysPostVo;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public interface ISysPostService {
 
 
-    PageResult<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery);
+    Page<SysPostVo> selectPagePostList(SysPostBo post, PageQuery pageQuery);
 
     /**
      * 查询岗位信息集合

@@ -1,8 +1,8 @@
 package com.jimuqu.system.service;
 
 
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.system.domain.SysClient;
 import com.jimuqu.system.domain.bo.SysClientBo;
 import com.jimuqu.system.domain.vo.SysClientVo;
@@ -31,7 +31,7 @@ public interface ISysClientService {
     /**
      * 查询客户端管理列表
      */
-    PageResult<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery);
+    Page<SysClientVo> queryPageList(SysClientBo bo, PageQuery pageQuery);
 
     /**
      * 查询客户端管理列表

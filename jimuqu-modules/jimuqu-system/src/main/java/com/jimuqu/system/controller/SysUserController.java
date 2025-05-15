@@ -10,8 +10,8 @@ import com.jimuqu.common.core.utils.StreamUtil;
 import com.jimuqu.common.core.utils.StringUtil;
 import com.jimuqu.common.log.annotation.Log;
 import com.jimuqu.common.log.enums.BusinessType;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.bo.SysDeptBo;
@@ -56,7 +56,7 @@ public class SysUserController extends BaseController {
     @Get
     @Mapping("/list" )
     @SaCheckPermission("system:user:list" )
-    public PageResult<SysUserVo> list(SysUserBo user, PageQuery pageQuery) {
+    public Page<SysUserVo> list(SysUserBo user, PageQuery pageQuery) {
         return userService.selectPageUserList(user, pageQuery);
     }
 

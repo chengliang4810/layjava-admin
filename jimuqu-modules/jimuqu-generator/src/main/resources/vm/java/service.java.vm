@@ -5,7 +5,6 @@ import ${packageName}.domain.vo.${ClassName}Vo;
 import ${packageName}.domain.bo.${ClassName}Bo;
 #if($table.crud || $table.sub)
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 #end
 
 import java.util.Collection;
@@ -28,7 +27,7 @@ public interface I${ClassName}Service {
     /**
      * 查询${functionName}列表
      */
-    PageResult<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageQuery pageQuery);
+    Page<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageQuery pageQuery);
 #end
 
     /**

@@ -1,15 +1,14 @@
 package com.jimuqu.generator.service.impl;
 
 import cn.hutool.core.io.FileUtil;
-import cn.xbatis.core.mybatis.mapper.context.Pager;
 import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.IdUtil;
 import com.jimuqu.common.core.utils.JsonUtil;
 import com.jimuqu.common.core.utils.StreamUtil;
+import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
-import com.jimuqu.common.mybatis.core.page.PageResult;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.generator.constant.GenConstants;
 import com.jimuqu.generator.domain.GenTable;
@@ -96,20 +95,17 @@ public class GenTableServiceImpl implements IGenTableService {
     }
 
     @Override
-    public PageResult<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery) {
-        Pager<GenTable> page = baseMapper.paging(pageQuery.build(), this.buildGenTableQueryWrapper(genTable).getWhere());
-        System.out.println(page.getResults());
-        System.out.println(page.getTotal());
-        return PageResult.build(page);
+    public Page<GenTable> selectPageGenTableList(GenTable genTable, PageQuery pageQuery) {
+        return buildQueryChain(genTable).paging(pageQuery.build());
     }
 
-    private QueryChain<GenTable> buildGenTableQueryWrapper(GenTable genTable) {
+    /**
+     * 构建查询条件
+     * @param genTable 查询条件对象
+     * @return 查询条件对象
+     */
+    private QueryChain<GenTable> buildQueryChain(GenTable genTable) {
         Map<String, Object> params = genTable.getParams();
-//        QueryChain<T> between = QueryChain.of(baseMapper).eq(StringUtils.isNotEmpty(genTable.getDataName()), new Column("data_name"), genTable.getDataName())
-//                .like(StringUtils.isNotBlank(genTable.getTableName()), "lower(table_name)", StringUtils.lowerCase(genTable.getTableName()))
-//                .like(StringUtils.isNotBlank(genTable.getTableComment()), "lower(table_comment)", StringUtils.lowerCase(genTable.getTableComment()))
-//                .between(params.get("beginTime") != null && params.get("endTime") != null, "create_time", params.get("beginTime"), params.get("endTime"));
-
         return QueryChain.of(baseMapper)
                 .forSearch(true)
                 .eq(GenTable::getDataName, genTable.getDataName())
@@ -123,17 +119,19 @@ public class GenTableServiceImpl implements IGenTableService {
      *
      * @param genTable  包含查询条件的GenTable对象
      * @param pageQuery 包含分页信息的PageQuery对象
-     * @return 包含分页结果的PageResult对象
+     * @return 包含分页结果的Page对象
      */
     @Override
     @DynamicDs("${genTable.dataName}")
-    public PageResult<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery) {
+    public Page<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery) {
         // 获取查询条件
         String tableName = genTable.getTableName();
         String tableComment = genTable.getTableComment();
         LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.service(genTable.getDataName()).metadata().tables();
         if (CollUtil.isEmpty(tablesMap)) {
-            return PageResult.build();
+            Page<GenTable> pager = new Page<>();
+            pager.setTotal(0);
+            return pager;
         }
         List<String> tableNames = baseMapper.selectTableNameList(genTable.getDataName());
         String[] tableArrays;
@@ -174,11 +172,9 @@ public class GenTableServiceImpl implements IGenTableService {
                     return gen;
                 }).toList();
 
-        Pager<GenTable> page = pageQuery.build();
+        Page<GenTable> page = pageQuery.build();
         page.setTotal(tables.size());
-//        // 手动分页 set数据
-        page.setResults(ListUtil.page(tables, (int) page.getNumber() - 1, (int) page.getSize()));
-        return PageResult.build(page);
+        return Page.<GenTable>of(ListUtil.page(tables, page.getNumber() - 1, page.getSize()), tables.size());
     }
 
     public static boolean startWithAnyIgnoreCase(CharSequence cs, CharSequence... searchCharSequences) {
