@@ -129,9 +129,7 @@ public class GenTableServiceImpl implements IGenTableService {
         String tableComment = genTable.getTableComment();
         LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.service(genTable.getDataName()).metadata().tables();
         if (CollUtil.isEmpty(tablesMap)) {
-            Page<GenTable> pager = new Page<>();
-            pager.setTotal(0);
-            return pager;
+            return Page.of();
         }
         List<String> tableNames = baseMapper.selectTableNameList(genTable.getDataName());
         String[] tableArrays;
