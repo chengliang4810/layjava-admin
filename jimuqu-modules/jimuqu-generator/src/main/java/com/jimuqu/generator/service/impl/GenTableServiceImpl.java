@@ -127,7 +127,7 @@ public class GenTableServiceImpl implements IGenTableService {
         // 获取查询条件
         String tableName = genTable.getTableName();
         String tableComment = genTable.getTableComment();
-        LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.service(genTable.getDataName()).metadata().tables();
+        LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.service().metadata().tables();
         if (CollUtil.isEmpty(tablesMap)) {
             return Page.of();
         }
@@ -313,8 +313,8 @@ public class GenTableServiceImpl implements IGenTableService {
             tableColumn.setColumnComment(column.getComment());
             tableColumn.setColumnType(column.getTypeName().toLowerCase());
             tableColumn.setSort(column.getPosition());
-            tableColumn.setIsRequired(column.isNullable() == 0 ? "1" : "0");
-            tableColumn.setIsIncrement(column.isAutoIncrement() == -1 ? "0" : "1");
+            tableColumn.setIsRequired(column.isNullable() ? "1" : "0");
+            tableColumn.setIsIncrement(column.isAutoIncrement() ? "1" : "0");
             tableColumns.add(tableColumn);
         });
         return tableColumns;
