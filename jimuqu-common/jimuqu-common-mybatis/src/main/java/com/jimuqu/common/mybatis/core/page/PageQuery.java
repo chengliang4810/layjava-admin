@@ -26,42 +26,37 @@ public class PageQuery implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 当前页数
+     */
+    private Integer currentPage;
+    /**
      * 分页大小
      */
     private Integer pageSize;
-
-    /**
-     * 当前页数
-     */
-    private Integer pageNum;
-
     /**
      * 排序列
      */
     private String orderByColumn;
-
     /**
      * 排序的方向desc或者asc
      */
     private String isAsc;
-
     /**
      * 当前记录起始索引 默认值
      */
-    public static final int DEFAULT_PAGE_NUM = 1;
-
+    public static final int DEFAULT_CURRENT_PAGE = 1;
     /**
      * 每页显示记录数 默认值 默认查全部
      */
     public static final int DEFAULT_PAGE_SIZE = Integer.MAX_VALUE;
 
     public <T> Page<T> build() {
-        Integer pageNum = ObjUtil.defaultIfNull(getPageNum(), DEFAULT_PAGE_NUM);
+        Integer currentPage = ObjUtil.defaultIfNull(getCurrentPage(), DEFAULT_CURRENT_PAGE);
         Integer pageSize = ObjUtil.defaultIfNull(getPageSize(), DEFAULT_PAGE_SIZE);
-        if (pageNum <= 0) {
-            pageNum = DEFAULT_PAGE_NUM;
+        if (currentPage <= 0) {
+            currentPage = DEFAULT_CURRENT_PAGE;
         }
-        return Page.of(pageNum, pageSize);
+        return Page.of(currentPage, pageSize);
     }
 
     /**

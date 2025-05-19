@@ -1,6 +1,7 @@
 package com.jimuqu.common.mybatis.core;
 
 import cn.xbatis.page.IPager;
+import cn.xbatis.page.PageUtil;
 import cn.xbatis.page.PagerField;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -76,6 +77,10 @@ public class Page<T> implements IPager<T> {
         return new Page<T>(items).setTotal(total);
     }
 
+    public Integer getOffset() {
+        return PageUtil.getOffset(this.currentPage, this.pageSize);
+    }
+
     @Override
     public <V> void set(PagerField<V> field, V value) {
         if (PagerField.TOTAL == field) {
@@ -107,5 +112,7 @@ public class Page<T> implements IPager<T> {
         }
         throw new RuntimeException("not support field: " + field);
     }
+
+
 
 }
