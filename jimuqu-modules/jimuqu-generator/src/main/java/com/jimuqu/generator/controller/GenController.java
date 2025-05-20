@@ -67,7 +67,7 @@ public class GenController extends BaseController {
      * 查询数据库列表
      */
     @Get
-    @Mapping("/db/list" )
+    @Mapping("/db-list" )
     @SaCheckPermission("tool:gen:list" )
     public Page<GenTable> dataList(GenTable genTable, PageQuery pageQuery) {
         return genTableService.selectPageDbTableList(genTable, pageQuery);
@@ -91,7 +91,7 @@ public class GenController extends BaseController {
      * @param tables 表名串
      */
     @Post
-    @Mapping("/import/table" )
+    @Mapping("/import-table" )
     @SaCheckPermission("tool:gen:import" )
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public R<Void> importTableSave(String tables, String dataName) {

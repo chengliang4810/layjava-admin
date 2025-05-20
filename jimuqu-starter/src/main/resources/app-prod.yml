@@ -1,10 +1,20 @@
 # 数据库配置
-solon.dataSources.master!: #数据源（!结尾表示 typed=true）
-  class: "com.zaxxer.hikari.HikariDataSource"
-  driverClassName: com.mysql.cj.jdbc.Driver
-  jdbcUrl: jdbc:mysql://mariadb:3306/jimuqu_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
-  username: jimuqu
-  password: P@ssw0rd
+solon.dataSources.dynamic!: #数据源（!结尾表示 typed=true）
+  class: "org.noear.solon.data.dynamicds.DynamicDataSource"
+  strict: true #严格模式（指定的源不存时：严格模式会抛异常；非严格模式用默认源）
+  default: "master" #指定默认数据源
+  master:
+    dataSourceClassName: "com.zaxxer.hikari.HikariDataSource"
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://mariadb:3306/jimuqu_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+    username: jimuqu
+    password: P@ssw0rd
+  slave:
+    dataSourceClassName: "com.zaxxer.hikari.HikariDataSource"
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://mariadb:3306/jimuqu_db?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=true
+    username: jimuqu
+    password: P@ssw0rd
 
 #
 auto-table:

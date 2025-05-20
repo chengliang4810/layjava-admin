@@ -122,7 +122,7 @@ public class GenTableServiceImpl implements IGenTableService {
      * @return 包含分页结果的Page对象
      */
     @Override
-    @DynamicDs("${genTable.dataName}")
+//    @DynamicDs("${genTable.dataName}")
     public Page<GenTable> selectPageDbTableList(GenTable genTable, PageQuery pageQuery) {
         // 获取查询条件
         String tableName = genTable.getTableName();
@@ -193,10 +193,10 @@ public class GenTableServiceImpl implements IGenTableService {
      * @return 数据库表集合
      */
     @Override
-    @DynamicDs("${dataName}")
+//    @DynamicDs("${dataName}")
     public List<GenTable> selectDbTableListByNames(String[] tableNames, String dataName) {
         Set<String> tableNameSet = new HashSet<>(List.of(tableNames));
-        LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.service(dataName).metadata().tables();
+        LinkedHashMap<String, Table<?>> tablesMap = ServiceProxy.service().metadata().tables();
 
         if (CollUtil.isEmpty(tablesMap)) {
             return new ArrayList<>();
@@ -305,11 +305,12 @@ public class GenTableServiceImpl implements IGenTableService {
     @Override
     @DynamicDs("${dataName}")
     public List<GenTableColumn> selectDbTableColumnsByName(String tableName, String dataName) {
-        LinkedHashMap<String, Column> columns = ServiceProxy.service(dataName).metadata().columns(tableName);
+        // .service(dataName)
+        LinkedHashMap<String, Column> columns = ServiceProxy.metadata().columns(tableName);
         List<GenTableColumn> tableColumns = new ArrayList<>();
         columns.forEach((columnName, column) -> {
             GenTableColumn tableColumn = new GenTableColumn();
-            tableColumn.setIsPk(String.valueOf(column.isPrimaryKey()));
+            tableColumn.setIsPk(column.isPrimaryKey() ? "1" : "0");
             tableColumn.setColumnName(column.getName());
             tableColumn.setColumnComment(column.getComment());
             tableColumn.setColumnType(column.getTypeName().toLowerCase());
@@ -437,7 +438,7 @@ public class GenTableServiceImpl implements IGenTableService {
             GenUtils.initColumnField(column, table);
             if (tableColumnMap.containsKey(column.getColumnName())) {
                 GenTableColumn prevColumn = tableColumnMap.get(column.getColumnName());
-                column.setColumnId(prevColumn.getColumnId());
+                column.setId(prevColumn.getId());
                 if (column.isList()) {
                     // 如果是列表，继续保留查询方式/字典类型选项
                     column.setDictType(prevColumn.getDictType());
@@ -460,7 +461,7 @@ public class GenTableServiceImpl implements IGenTableService {
 
         List<GenTableColumn> delColumns = StreamUtil.filter(tableColumns, column -> !dbTableColumnNames.contains(column.getColumnName()));
         if (CollUtil.isNotEmpty(delColumns)) {
-            List<Long> ids = StreamUtil.toList(delColumns, GenTableColumn::getColumnId);
+            List<Long> ids = StreamUtil.toList(delColumns, GenTableColumn::getId);
             if (CollUtil.isNotEmpty(ids)) {
                 genTableColumnMapper.deleteByIds(ids);
             }

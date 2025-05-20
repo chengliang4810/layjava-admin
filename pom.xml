@@ -41,7 +41,7 @@
         <hikaricp.version>4.0.3</hikaricp.version>
         <autotable.version>2.4.1</autotable.version>
         <xbatis.version>1.8.7-M3</xbatis.version>
-        <anyline.version>8.7.2-jdk17-20250509</anyline.version>
+        <anyline.version>8.7.2-jdk17-20250520</anyline.version>
         <velocity.version>2.3</velocity.version>
         <beetl.version>3.19.0.RELEASE</beetl.version>
         <sa-token.version>1.42.0</sa-token.version>
