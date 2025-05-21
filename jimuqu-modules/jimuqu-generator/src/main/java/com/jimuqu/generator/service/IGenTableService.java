@@ -5,6 +5,7 @@ import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.generator.domain.GenTable;
 import com.jimuqu.generator.domain.GenTableColumn;
+import com.jimuqu.generator.domain.vo.GenTableVo;
 
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,7 @@ public interface IGenTableService {
      * @param dataName   数据源名称
      * @return 数据库表集合
      */
-    List<GenTable> selectDbTableListByNames(String[] tableNames, String dataName);
+    List<GenTableVo> selectDbTableListByNames(String[] tableNames, String dataName);
 
     /**
      * 查询所有表信息
@@ -62,7 +63,7 @@ public interface IGenTableService {
      * @param id 业务ID
      * @return 业务信息
      */
-    GenTable selectGenTableById(Long id);
+    GenTableVo selectGenTableById(Long id);
 
     /**
      * 修改业务
@@ -75,8 +76,9 @@ public interface IGenTableService {
      * 删除业务信息
      *
      * @param tableIds 需要删除的表数据ID
+     * @return
      */
-    void deleteGenTableByIds(Long[] tableIds);
+    int deleteGenTableByIds(Long[] tableIds);
 
     /**
      * 导入表结构
@@ -84,7 +86,7 @@ public interface IGenTableService {
      * @param tableList 导入表列表
      * @param dataName  数据源名称
      */
-    void importGenTable(List<GenTable> tableList, String dataName);
+    void importGenTable(List<GenTableVo> tableList, String dataName);
 
     /**
      * 根据表名称查询列信息
@@ -112,13 +114,6 @@ public interface IGenTableService {
     byte[] downloadCode(Long tableId);
 
     /**
-     * 生成代码（自定义路径）
-     *
-     * @param tableId 表名称
-     */
-    void generatorCode(Long tableId);
-
-    /**
      * 同步数据库
      *
      * @param tableId 表名称
@@ -131,7 +126,7 @@ public interface IGenTableService {
      * @param tableIds 表ID数组
      * @return 数据
      */
-    byte[] downloadCode(String[] tableIds);
+    byte[] downloadCode(List<String> tableIds);
 
     /**
      * 修改保存参数校验

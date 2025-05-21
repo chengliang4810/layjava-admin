@@ -10,10 +10,14 @@ import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.generator.domain.GenTable;
 import com.jimuqu.generator.domain.GenTableColumn;
+import com.jimuqu.generator.domain.vo.GenTableVo;
 import com.jimuqu.generator.service.IGenTableService;
 import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.convert.ConvertUtil;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Get;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.core.handle.DownloadedFile;
 import org.noear.solon.validation.annotation.Validated;
 
@@ -27,6 +31,7 @@ import java.util.Map;
  *
  * @author Lion Li,chengliang4810
  */
+@Post
 @Controller
 @RequiredArgsConstructor
 @Mapping("/tool/gen-code")
@@ -53,7 +58,7 @@ public class GenController extends BaseController {
     @Mapping("/{tableId}" )
     @SaCheckPermission("tool:gen:query" )
     public R<Map<String, Object>> getInfo(Long tableId) {
-        GenTable table = genTableService.selectGenTableById(tableId);
+        GenTableVo table = genTableService.selectGenTableById(tableId);
         List<GenTable> tables = genTableService.selectGenTableAll();
         List<GenTableColumn> list = genTableService.selectGenTableColumnListByTableId(tableId);
         Map<String, Object> result = new HashMap<>(3);
@@ -90,14 +95,13 @@ public class GenController extends BaseController {
      *
      * @param tables 表名串
      */
-    @Post
     @Mapping("/import-table" )
     @SaCheckPermission("tool:gen:import" )
     @Log(title = "代码生成", businessType = BusinessType.IMPORT)
     public R<Void> importTableSave(String tables, String dataName) {
         String[] tableNames = ConvertUtil.toStrArray(tables);
         // 查询表信息
-        List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames, dataName);
+        List<GenTableVo> tableList = genTableService.selectDbTableListByNames(tableNames, dataName);
         genTableService.importGenTable(tableList, dataName);
         return R.ok();
     }
@@ -105,7 +109,6 @@ public class GenController extends BaseController {
     /**
      * 修改保存代码生成业务
      */
-    @Put
     @Mapping
     @SaCheckPermission("tool:gen:edit" )
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
@@ -120,13 +123,11 @@ public class GenController extends BaseController {
      *
      * @param tableIds 表ID串
      */
-    @Delete
-    @Mapping("/{tableIds}" )
+    @Mapping("/delete/{tableIds}" )
     @SaCheckPermission("tool:gen:remove" )
     @Log(title = "代码生成", businessType = BusinessType.DELETE)
-    public R<Void> remove(Long[] tableIds) {
-        genTableService.deleteGenTableByIds(tableIds);
-        return R.ok();
+    public R<Integer> remove(Long[] tableIds) {
+        return R.ok(genTableService.deleteGenTableByIds(tableIds));
     }
 
     /**
@@ -135,7 +136,7 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/code/preview/{tableId}" )
+    @Mapping("/code-preview/{tableId}" )
     @SaCheckPermission("tool:gen:preview" )
     public R<Map<String, String>> preview(Long tableId) throws IOException {
         Map<String, String> dataMap = genTableService.previewCode(tableId);
@@ -159,14 +160,13 @@ public class GenController extends BaseController {
     /**
      * 批量生成代码
      *
-     * @param tableIdStr 表ID串
+     * @param tableIds 表ID串
      */
     @Get
-    @Mapping("/code/{tableIdStr}" )
+    @Mapping("/batch/{tableIds}" )
     @SaCheckPermission("tool:gen:code" )
     @Log(title = "代码生成", businessType = BusinessType.GENCODE)
-    public DownloadedFile batchGenCode(String tableIdStr) throws IOException {
-        String[] tableIds = ConvertUtil.toStrArray(tableIdStr);
+    public DownloadedFile batchGenCode(List<String> tableIds) throws IOException {
         byte[] data = genTableService.downloadCode(tableIds);
         return genCode(data);
     }
@@ -175,7 +175,7 @@ public class GenController extends BaseController {
      * 生成zip文件
      */
     private DownloadedFile genCode(byte[] data) throws IOException {
-        return new DownloadedFile("application/octet-stream", data, "code-" + DateUtil.dateTimeNow() + ".zip" );
+        return new DownloadedFile("application/octet-stream", data, "代码生成-" + DateUtil.dateTimeNow() + ".zip" );
     }
 
     /**

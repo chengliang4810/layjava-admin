@@ -1,7 +1,10 @@
 package com.jimuqu.generator.mapper;
 
+import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.generator.domain.GenTable;
+import com.jimuqu.generator.domain.GenTableColumn;
+import com.jimuqu.generator.domain.vo.GenTableVo;
 import org.noear.solon.data.dynamicds.DynamicDs;
 
 import java.util.List;
@@ -26,7 +29,14 @@ public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
      * @param id 业务ID
      * @return 业务信息
      */
-    GenTable selectGenTableById(Long id);
+    default GenTableVo selectGenTableById(Long id) {
+        return QueryChain.of(this)
+                .leftJoin(GenTable::getId, GenTableColumn::getTableId)
+                .eq(GenTable::getId, id)
+                .returnType(GenTableVo.class)
+                .limit(1)
+                .get();
+    };
 
     /**
      * 查询表名称业务信息

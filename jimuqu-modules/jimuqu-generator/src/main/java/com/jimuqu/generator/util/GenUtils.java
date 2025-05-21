@@ -3,8 +3,8 @@ package com.jimuqu.generator.util;
 import com.jimuqu.common.core.utils.StringUtil;
 import com.jimuqu.generator.config.GenConfig;
 import com.jimuqu.generator.constant.GenConstants;
-import com.jimuqu.generator.domain.GenTable;
 import com.jimuqu.generator.domain.GenTableColumn;
+import com.jimuqu.generator.domain.vo.GenTableVo;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RegExUtils;
@@ -30,7 +30,7 @@ public class GenUtils {
     /**
      * 初始化表信息
      */
-    public static void initTable(GenTable genTable, Long operId) {
+    public static void initTable(GenTableVo genTable, Long operId) {
         genTable.setClassName(convertClassName(genTable.getTableName()));
         genTable.setPackageName(genConfig.getPackageName());
         genTable.setModuleName(getModuleName(genTable.getPackageName()));
@@ -43,7 +43,7 @@ public class GenUtils {
     /**
      * 初始化列属性字段
      */
-    public static void initColumnField(GenTableColumn column, GenTable table) {
+    public static void initColumnField(GenTableColumn column, GenTableVo table) {
         String dataType = getDbType(column.getColumnType());
         String columnName = column.getColumnName();
         column.setTableId(table.getId());
