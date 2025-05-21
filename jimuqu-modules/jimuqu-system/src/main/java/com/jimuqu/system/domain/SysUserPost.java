@@ -1,7 +1,6 @@
 package com.jimuqu.system.domain;
 
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
@@ -19,7 +18,6 @@ public class SysUserPost {
     /**
      * 用户ID
      */
-    @TableId
     private Long userId;
 
     /**

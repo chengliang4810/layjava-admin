@@ -2,7 +2,6 @@ package com.jimuqu.system.domain;
 
 import cn.xbatis.db.annotations.Ignore;
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,12 +19,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_menu")
 public class SysMenu extends BaseEntity {
-
-    /**
-     * 菜单ID
-     */
-    @TableId
-    private Long menuId;
 
     /**
      * 父菜单ID

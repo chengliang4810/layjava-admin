@@ -1,7 +1,6 @@
 package com.jimuqu.system.domain;
 
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import lombok.Data;
 
 /**
@@ -17,7 +16,6 @@ public class SysRoleDept {
     /**
      * 角色ID
      */
-    @TableId
     private Long roleId;
 
     /**

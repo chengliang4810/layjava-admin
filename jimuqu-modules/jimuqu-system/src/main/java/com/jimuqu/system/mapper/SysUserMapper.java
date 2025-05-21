@@ -24,9 +24,9 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
     default Page<SysUserVo> selectPageUserList(PageQuery pageQuery, Where queryWrapper) {
         return QueryChain.of(this, queryWrapper)
-                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getDeptId, SysDept::getId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
-                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getId)
                 .where(queryWrapper)
                 .returnType(SysUserVo.class)
                 .paging(pageQuery.build());
@@ -42,9 +42,9 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
     default List<SysUserVo> selectUserList(Where queryWrapper) {
         return QueryChain.of(this, queryWrapper)
-                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getDeptId, SysDept::getId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
-                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getId)
                 .where(queryWrapper)
                 .returnType(SysUserVo.class).list();
     }
@@ -70,9 +70,9 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
     default SysUserVo selectUserByUserName(String userName) {
         //     //@RelationOneToOne(selfField = "deptId", joinSelfColumn = "dept_id", targetField = "deptId", joinTargetColumn = "dept_id", targetTable = "sys_dept")
         return QueryChain.of(this)
-                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getDeptId, SysDept::getId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
-                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getId)
                 .eq(SysUser::getUserName, userName)
                 .returnType(SysUserVo.class).get();
     }
@@ -85,9 +85,9 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      */
     default SysUserVo selectUserByPhonenumber(String phonenumber) {
         return QueryChain.of(this)
-                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getDeptId, SysDept::getId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
-                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getId)
                 .eq(SysUser::getPhonenumber, phonenumber)
                 .returnType(SysUserVo.class).get();
     }
@@ -100,9 +100,9 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      */
     default SysUserVo selectUserByEmail(String email) {
         return QueryChain.of(this)
-                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getDeptId, SysDept::getId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
-                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getId)
                 .eq(SysUser::getEmail, email)
                 .returnType(SysUserVo.class).get();
     }
@@ -116,9 +116,9 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
     default SysUserVo selectUserById(Long userId) {
         return QueryChain.of(this)
-                .leftJoin(SysUser::getDeptId, SysDept::getDeptId)
+                .leftJoin(SysUser::getDeptId, SysDept::getId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
-                .leftJoin(SysUserRole::getRoleId, SysRole::getRoleId)
+                .leftJoin(SysUserRole::getRoleId, SysRole::getId)
                 .eq(SysUser::getId, userId)
                 .returnType(SysUserVo.class).get();
     }

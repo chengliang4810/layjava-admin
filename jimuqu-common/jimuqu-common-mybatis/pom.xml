@@ -54,6 +54,11 @@
             <artifactId>auto-table-solon-plugin</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.therapi</groupId>
+            <artifactId>therapi-runtime-javadoc</artifactId>
+        </dependency>
+
     </dependencies>
 
 

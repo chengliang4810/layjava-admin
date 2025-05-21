@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
+import org.dromara.autotable.annotation.AutoColumn;
 import org.dromara.autotable.annotation.Ignore;
 import org.noear.solon.validation.annotation.NotBlank;
 import org.noear.solon.validation.annotation.Validated;
@@ -30,6 +31,7 @@ public class GenTable extends BaseEntity {
      * 数据源名称
      */
     @NotBlank(message = "数据源名称不能为空")
+    @AutoColumn(comment = "数据源名称")
     private String dataName;
 
     /**

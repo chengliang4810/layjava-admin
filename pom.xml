@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -39,6 +39,7 @@
         <mysql.version>8.4.0</mysql.version>
         <sqlite.version>3.47.2.0</sqlite.version>
         <hikaricp.version>4.0.3</hikaricp.version>
+        <therapi-javadoc.version>0.15.0</therapi-javadoc.version>
         <autotable.version>2.4.1</autotable.version>
         <xbatis.version>1.8.7</xbatis.version>
         <anyline.version>8.7.2-jdk17-20250520</anyline.version>
@@ -196,6 +197,13 @@
                 <version>${autotable.version}</version>
             </dependency>
 
+            <!-- 自动识别类注解 -->
+            <dependency>
+                <groupId>com.github.therapi</groupId>
+                <artifactId>therapi-runtime-javadoc</artifactId>
+                <version>${therapi-javadoc.version}</version>
+            </dependency>
+
             <!-- velocity代码生成使用模板 -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
@@ -241,6 +249,11 @@
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <annotationProcessorPaths>
                         <path>
+                            <groupId>com.github.therapi</groupId>
+                            <artifactId>therapi-runtime-javadoc-scribe</artifactId>
+                            <version>${therapi-javadoc.version}</version>
+                        </path>
+                        <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
@@ -255,6 +268,7 @@
                         <arg>
                             -Amapstruct.defaultComponentModel=solon
                         </arg>
+                        <arg>-parameters</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>

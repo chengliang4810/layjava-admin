@@ -1,7 +1,6 @@
 package com.jimuqu.system.domain;
 
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,12 +18,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_role")
 public class SysRole extends BaseEntity {
-
-    /**
-     * 角色ID
-     */
-    @TableId
-    private Long roleId;
 
     /**
      * 角色名称
@@ -72,7 +65,7 @@ public class SysRole extends BaseEntity {
     private String remark;
 
     public SysRole(Long roleId) {
-        this.roleId = roleId;
+        this.id = roleId;
     }
 
 }

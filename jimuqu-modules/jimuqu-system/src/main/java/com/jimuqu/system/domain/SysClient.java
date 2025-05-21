@@ -1,7 +1,6 @@
 package com.jimuqu.system.domain;
 
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,12 +20,6 @@ public class SysClient extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * id
-     */
-    @TableId
-    private Long id;
 
     /**
      * 客户端id
