@@ -138,7 +138,7 @@ public class SysUserController extends BaseController {
         userInfoVo.setPosts(postService.selectPostList(postBo));
         SysUserVo sysUser = userService.selectUserById(userId);
         userInfoVo.setUser(sysUser);
-        userInfoVo.setRoleIds(StreamUtil.toList(sysUser.getRoles(), SysRoleVo::getRoleId));
+        userInfoVo.setRoleIds(StreamUtil.toList(sysUser.getRoles(), SysRoleVo::getId));
         userInfoVo.setPostIds(postService.selectPostListByUserId(userId));
         return R.ok(userInfoVo);
     }

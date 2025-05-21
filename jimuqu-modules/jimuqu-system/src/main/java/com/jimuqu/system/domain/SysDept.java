@@ -14,8 +14,8 @@ import java.io.Serial;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Table("sys_dept")
+@EqualsAndHashCode(callSuper = true)
 public class SysDept extends BaseEntity {
 
     @Serial

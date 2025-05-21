@@ -12,8 +12,8 @@ import lombok.EqualsAndHashCode;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Table("sys_post")
+@EqualsAndHashCode(callSuper = true)
 public class SysPost extends BaseEntity {
 
     /**

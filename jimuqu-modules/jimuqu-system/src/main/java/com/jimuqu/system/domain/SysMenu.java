@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Table("sys_menu")
+@EqualsAndHashCode(callSuper = true)
 public class SysMenu extends BaseEntity {
 
     /**

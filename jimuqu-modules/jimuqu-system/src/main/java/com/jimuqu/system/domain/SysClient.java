@@ -14,8 +14,8 @@ import java.io.Serial;
  * @date 2023-05-15
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Table("sys_client")
+@EqualsAndHashCode(callSuper = true)
 public class SysClient extends BaseEntity {
 
     @Serial
