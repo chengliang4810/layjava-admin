@@ -7,7 +7,7 @@ import org.noear.solon.annotation.Bean;
 import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.redisson.api.RedissonClient;
+import org.noear.solon.cache.redisson.RedissonCacheService;
 
 @Configuration
 public class SaTokenConfig {
@@ -23,12 +23,13 @@ public class SaTokenConfig {
     /**
      * Sa-Token 持久层实现 [ Redisson客户端、Redis存储、snack3序列化 ]
      *
-     * @param redissonClient Redisson客户端
+     * @param redissonCacheService solon redis缓存服务
      * @return Sa-Token 持久层实现
      */
     @Bean
-    @Condition(onBean = RedissonClient.class)
-    public SaTokenDaoForRedisson saTokenDaoForRedissonInit(@Inject RedissonClient redissonClient) {
-        return new SaTokenDaoForRedisson(redissonClient);
+    @Condition(onBean = RedissonCacheService.class)
+    public SaTokenDaoForRedisson saTokenDaoForRedissonInit(@Inject RedissonCacheService redissonCacheService) {
+        return new SaTokenDaoForRedisson(redissonCacheService.client());
     }
+
 }

@@ -1,14 +1,11 @@
 package com.jimuqu.common.cache.config;
 
 import org.noear.solon.annotation.Bean;
-import org.noear.solon.annotation.Condition;
 import org.noear.solon.annotation.Configuration;
 import org.noear.solon.annotation.Inject;
-import org.noear.solon.cache.redisson.RedissonCacheService;
 import org.noear.solon.core.util.LogUtil;
 import org.noear.solon.data.cache.CacheService;
 import org.noear.solon.data.cache.CacheServiceSupplier;
-import org.redisson.api.RedissonClient;
 
 @Configuration
 public class CacheConfig {
@@ -23,17 +20,6 @@ public class CacheConfig {
     public CacheService cacheService(@Inject("${jimuqu.cache}") CacheServiceSupplier supplier) {
         LogUtil.global().info("Cache: " + supplier.get().getClass().getSimpleName());
         return supplier.get();
-    }
-
-    /**
-     * redissonClient
-     *
-     * @return RedissonClient
-     */
-    @Bean(typed = true)
-    @Condition(onBean = RedissonCacheService.class)
-    public RedissonClient redissonClient(@Inject RedissonCacheService redissonCacheService) {
-        return redissonCacheService.client();
     }
 
 }

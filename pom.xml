@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.noear</groupId>
         <artifactId>solon-parent</artifactId>
-        <version>3.2.1</version>
+        <version>3.3.1</version>
         <relativePath/>
     </parent>
 
@@ -44,7 +44,7 @@
         <anyline.version>8.7.2-jdk17-20250520</anyline.version>
         <velocity.version>2.3</velocity.version>
         <beetl.version>3.19.0.RELEASE</beetl.version>
-        <sa-token.version>1.42.0</sa-token.version>
+        <sa-token.version>1.43.0</sa-token.version>
         <!-- excel -->
         <alibaba-ttl.version>2.14.4</alibaba-ttl.version>
         <easyexcel.version>4.0.2</easyexcel.version>

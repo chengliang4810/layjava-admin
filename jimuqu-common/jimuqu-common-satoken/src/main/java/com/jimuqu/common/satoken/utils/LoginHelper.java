@@ -10,11 +10,8 @@ import com.jimuqu.common.core.domain.model.LoginUser;
 import com.jimuqu.common.core.enums.UserType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.dromara.hutool.core.bean.BeanUtil;
-import org.dromara.hutool.core.bean.copier.CopyOptions;
 import org.dromara.hutool.core.util.ObjUtil;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
 /**
@@ -62,7 +59,7 @@ public class LoginHelper {
      * 获取用户(多级缓存)
      */
     public static LoginUser getLoginUser() {
-        return getStorageIfAbsentSet(LOGIN_USER_KEY, () -> {
+        return (LoginUser) getStorageIfAbsentSet(LOGIN_USER_KEY, () -> {
             SaSession session = StpUtil.getTokenSession();
             if (ObjUtil.isNull(session)) {
                 return null;
@@ -71,12 +68,7 @@ public class LoginHelper {
             if (ObjUtil.isNull(o)) {
                 return null;
             }
-            if (o instanceof LoginUser) {
-                return (LoginUser) o;
-            }
-            // TODO Sa-Token 1.4.2 存入与返回对象类型不一致， 返回类型为Map
-            LoginUser loginUser = new LoginUser();
-            return BeanUtil.fillBeanWithMap((Map<?, ?>) o, loginUser, CopyOptions.of());
+            return o;
         });
     }
 
