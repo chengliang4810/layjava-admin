@@ -136,7 +136,7 @@ public class GenController extends BaseController {
      * @param tableId 表ID
      */
     @Get
-    @Mapping("/code-preview/{tableId}" )
+    @Mapping("/preview/{tableId}" )
     @SaCheckPermission("tool:gen:preview" )
     public R<Map<String, String>> preview(Long tableId) throws IOException {
         Map<String, String> dataMap = genTableService.previewCode(tableId);

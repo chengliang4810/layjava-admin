@@ -33,8 +33,8 @@ public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
         return QueryChain.of(this)
                 .leftJoin(GenTable::getId, GenTableColumn::getTableId)
                 .eq(GenTable::getId, id)
+                .limit(200)
                 .returnType(GenTableVo.class)
-                .limit(1)
                 .get();
     };
 
