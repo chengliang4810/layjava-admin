@@ -65,7 +65,7 @@ public class SysPostController extends BaseController {
      * 新增岗位
      */
     @SaCheckPermission("system:post:add")
-    @Log(title = "岗位管理", businessType = BusinessType.INSERT)
+    @Log(title = "岗位管理", businessType = BusinessType.ADD)
     @Post
     @Mapping
     public R<Void> add(SysPostBo post) {

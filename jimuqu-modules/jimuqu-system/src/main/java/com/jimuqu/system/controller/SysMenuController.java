@@ -108,7 +108,7 @@ public class SysMenuController extends BaseController {
     @Post
     @SaCheckRole(TenantConstants.SUPER_ADMIN_ROLE_KEY)
     @SaCheckPermission("system:menu:add" )
-    @Log(title = "菜单管理", businessType = BusinessType.INSERT)
+    @Log(title = "菜单管理", businessType = BusinessType.ADD)
     @Mapping
     public R<Void> add(@Validated SysMenuBo menu) {
         if (!menuService.checkMenuNameUnique(menu)) {

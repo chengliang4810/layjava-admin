@@ -76,7 +76,7 @@ public class SysRoleController extends BaseController {
      * 新增角色
      */
     @SaCheckPermission("system:role:add")
-    @Log(title = "角色管理", businessType = BusinessType.INSERT)
+    @Log(title = "角色管理", businessType = BusinessType.ADD)
     @Post
     @Mapping
     public R<Void> add(SysRoleBo role) {

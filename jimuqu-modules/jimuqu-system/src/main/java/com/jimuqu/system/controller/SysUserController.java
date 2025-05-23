@@ -149,7 +149,7 @@ public class SysUserController extends BaseController {
     @Post
     @Mapping
     @SaCheckPermission("system:user:add" )
-    @Log(title = "用户管理", businessType = BusinessType.INSERT)
+    @Log(title = "用户管理", businessType = BusinessType.ADD)
     public R<Void> add(SysUserBo user) {
         deptService.checkDeptDataScope(user.getDeptId());
         if (!userService.checkUserNameUnique(user)) {

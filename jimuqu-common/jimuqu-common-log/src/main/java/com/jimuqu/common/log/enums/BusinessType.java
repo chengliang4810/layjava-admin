@@ -14,7 +14,7 @@ public enum BusinessType {
     /**
      * 新增
      */
-    INSERT,
+    ADD,
 
     /**
      * 修改

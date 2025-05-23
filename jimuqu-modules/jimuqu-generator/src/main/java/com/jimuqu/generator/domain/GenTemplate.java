@@ -5,6 +5,7 @@ import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 import org.dromara.autotable.annotation.AutoColumn;
 import org.dromara.autotable.annotation.AutoTable;
 import org.dromara.autotable.annotation.ColumnType;
@@ -19,6 +20,7 @@ import java.io.Serial;
  * @date 2025-01-05
  */
 @Data
+@FieldNameConstants
 @Table("gen_template")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)

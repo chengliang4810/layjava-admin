@@ -76,7 +76,7 @@ public class SysClientController extends BaseController {
     @Mapping()
     @NoRepeatSubmit
     @SaCheckPermission("system:client:add")
-    @Log(title = "客户端管理", businessType = BusinessType.INSERT)
+    @Log(title = "客户端管理", businessType = BusinessType.ADD)
     public R<Void> add(@Validated(AddGroup.class) SysClientBo bo) {
         return toAjax(sysClientService.insertByBo(bo));
     }

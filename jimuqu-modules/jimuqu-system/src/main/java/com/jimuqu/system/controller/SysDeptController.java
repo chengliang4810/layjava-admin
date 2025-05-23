@@ -70,7 +70,7 @@ public class SysDeptController extends BaseController {
      * 新增部门
      */
     @SaCheckPermission("system:dept:add" )
-    @Log(title = "部门管理", businessType = BusinessType.INSERT)
+    @Log(title = "部门管理", businessType = BusinessType.ADD)
     @Post
     @Mapping
     public R<Void> add(SysDeptBo dept) {
