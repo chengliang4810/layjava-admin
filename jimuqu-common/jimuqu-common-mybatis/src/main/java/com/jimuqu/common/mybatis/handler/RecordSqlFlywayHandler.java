@@ -5,6 +5,7 @@ import org.dromara.autotable.core.AutoTableGlobalConfig;
 import org.dromara.autotable.core.config.PropertyConfig;
 import org.dromara.autotable.core.recordsql.AutoTableExecuteSqlLog;
 import org.dromara.autotable.core.recordsql.RecordSqlFileHandler;
+import org.dromara.autotable.core.recordsql.RecordSqlHandler;
 import org.dromara.autotable.core.utils.StringUtils;
 import org.noear.solon.annotation.Component;
 
@@ -17,13 +18,13 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * 记录sql flyway处理程序
- *
+ * 可按需要修改
  * @author chengliang4810
  * @since 2025/05/23
  */
 @Slf4j
 @Component
-public class RecordSqlFlywayHandler extends RecordSqlFileHandler {
+public class RecordSqlFlywayHandler extends RecordSqlFileHandler implements RecordSqlHandler {
 
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
