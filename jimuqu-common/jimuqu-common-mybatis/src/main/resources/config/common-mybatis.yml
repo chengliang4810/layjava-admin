@@ -1,5 +1,5 @@
 # 配置数据源对应的 mybatis 信息（要与 DataSource bean 的名字对上）
-mybatis.dynamic:
+mybatis.jimuqu:
 #  typeAliases与lombok @FieldNameConstants 注解存在冲突 （solon 3.3.1版本发现） 已提交修复PR https://gitee.com/opensolon/solon-integration/pulls/7
 #  typeAliases: #支持包名 或 类名（大写开头 或 *）//支持 ** 或 * 占位符
 #    - "com.jimuqu.**.domain.domain"

@@ -6,7 +6,7 @@ auto-table:
   auto-drop-index: true
 
 # MySql数据库配置
-solon.dataSources.dynamic!: #数据源（!结尾表示 typed=true）
+solon.dataSources.jimuqu!: #数据源（!结尾表示 typed=true）
   class: "org.noear.solon.data.dynamicds.DynamicDataSource"
   strict: true #严格模式（指定的源不存时：严格模式会抛异常；非严格模式用默认源）
   default: "master" #指定默认数据源
