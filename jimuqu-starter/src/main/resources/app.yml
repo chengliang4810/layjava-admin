@@ -76,6 +76,6 @@ auto-table:
     # 记录方式，默认是数据库，可选文件(file)方式
     recordType: file
     # 当前SQL的版本，建议指定，会体现在数据库的字段或者文件名上
-    version: 1.0.0
+    version: ${revision}
     # 记录文件的路径
     folderPath: ./db/sql
