@@ -83,7 +83,7 @@ public class ${ClassName}Controller extends BaseController {
     @Mapping
     @NoRepeatSubmit
     @SaCheckPermission("${permissionPrefix}:add")
-    @Log(title = "${functionName}", businessType = BusinessType.INSERT)
+    @Log(title = "${functionName}", businessType = BusinessType.ADD)
     public void add(@Validated(AddGroup.class) ${ClassName}Bo bo) {
         toAjax(${className}Service.insertByBo(bo));
     }

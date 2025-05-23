@@ -67,7 +67,7 @@ public class GenTemplateController extends BaseController {
     @Mapping("/add")
     @NoRepeatSubmit
     @SaCheckPermission("generator:template:add")
-    @Log(title = "代码生成模板", businessType = BusinessType.INSERT)
+    @Log(title = "代码生成模板", businessType = BusinessType.ADD)
     public R<Void> add(@Validated(AddGroup.class) GenTemplateBo bo) {
         return toAjax(genTemplateService.insertByBo(bo));
     }

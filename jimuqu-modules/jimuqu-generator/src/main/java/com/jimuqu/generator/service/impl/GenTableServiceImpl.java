@@ -279,8 +279,10 @@ public class GenTableServiceImpl implements IGenTableService {
                 String tableName = table.getTableName();
                 GenUtils.initTable(table, operId);
                 table.setDataName(dataName);
-                int row = baseMapper.save(MapstructUtil.convert(table, GenTable.class));
+                GenTable genTable = MapstructUtil.convert(table, GenTable.class);
+                int row = baseMapper.save(genTable);
                 if (row > 0) {
+                    table.setId(genTable.getId());
                     // 保存列信息
                     List<GenTableColumn> genTableColumns = this.selectDbTableColumnsByName(tableName, dataName);
                     List<GenTableColumn> saveColumns = new ArrayList<>();
