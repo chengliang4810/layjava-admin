@@ -10,7 +10,7 @@ solon:
     #应用名称
     name: jimuqu-admin
     #应用标题
-    title: "LayJavaAdmin"
+    title: "积木区-Admin"
     #应用组
     group: "jimuqu"
     # 版本
@@ -28,6 +28,15 @@ solon.config.load:
 
 # 记录器级别的配置示例
 solon.logging.logger:
+  # 关闭autotable的输出日志，默认是INFO级别
+  "org.dromara.autotable.core.utils.DBHelper":
+    level: WARN
+  "org.dromara.autotable.core":
+    level: WARN
+  # redis连接时的日志
+  "org.redisson.connection":
+    level: WARN
+  # 修改日志级别
   "com.zaxxer.hikari":
     level: WARN
 
