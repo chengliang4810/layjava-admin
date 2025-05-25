@@ -1,5 +1,6 @@
 package com.jimuqu.common.core.utils;
 
+import com.jimuqu.common.core.checker.Assert;
 import io.github.linpeilie.Converter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import org.dromara.hutool.core.collection.ListUtil;
 import org.dromara.hutool.core.map.MapUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.Solon;
+import org.noear.solon.lang.NonNull;
+import org.noear.solon.lang.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -34,13 +37,8 @@ public class MapstructUtil {
      * @param desc   描述对象 转换后的对象
      * @return desc
      */
-    public static <T, V> V convert(T source, Class<V> desc) {
-        if (ObjUtil.isNull(source)) {
-            return null;
-        }
-        if (ObjUtil.isNull(desc)) {
-            return null;
-        }
+    public static <T, V> V convert(@NonNull T source, @NonNull Class<V> desc) {
+        Assert.notNull(desc, "转换目标类型不能为空");
         return CONVERTER.convert(source, desc);
     }
 
@@ -52,12 +50,6 @@ public class MapstructUtil {
      * @return desc
      */
     public static <T, V> V convert(T source, V desc) {
-        if (ObjUtil.isNull(source)) {
-            return null;
-        }
-        if (ObjUtil.isNull(desc)) {
-            return null;
-        }
         return CONVERTER.convert(source, desc);
     }
 
