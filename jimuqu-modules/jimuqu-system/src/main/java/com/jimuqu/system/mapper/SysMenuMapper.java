@@ -1,8 +1,9 @@
 package com.jimuqu.system.mapper;
 
 import cn.xbatis.core.sql.executor.chain.QueryChain;
+import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
-import com.jimuqu.system.domain.SysMenu;
+import com.jimuqu.system.domain.*;
 import com.jimuqu.system.domain.vo.SysMenuVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -45,14 +46,18 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenu, SysMenuVo> {
      * @return 菜单列表
      */
     default List<SysMenu> selectMenuTreeAll() {
-        QueryChain.of(this);
 //        return selectListByQuery(QueryWrapper.create().from(SYS_MENU)
 //                .where(SYS_MENU.MENU_TYPE.in(UserConstants.TYPE_DIR, UserConstants.TYPE_MENU))
 //                .and(SYS_MENU.STATUS.eq(UserConstants.MENU_NORMAL))
 //                .orderBy(SYS_MENU.PARENT_ID, true)
 //                .orderBy(SYS_MENU.ORDER_NUM, true)
 //        );
-        return null;
+        return QueryChain.of(this)
+                .from(SysMenu.class)
+                .in(SysMenu::getMenuType, UserConstants.TYPE_DIR, UserConstants.TYPE_MENU)
+                .eq(SysMenu::getStatus, UserConstants.MENU_NORMAL)
+                .orderBy(SysMenu::getParentId, SysMenu::getOrderNum)
+                .list();
     }
 
     /**
@@ -61,7 +66,47 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenu, SysMenuVo> {
      * @param userId 用户ID
      * @return 菜单列表
      */
-    List<SysMenu> selectMenuTreeByUserId(Long userId);
+    default List<SysMenu> selectMenuTreeByUserId(Long userId){
+        // select distinct m.menu_id,
+        //                        m.parent_id,
+        //                        m.menu_name,
+        //                        m.path,
+        //                        m.component,
+        //                        m.query_param,
+        //                        m.visible,
+        //                        m.status,
+        //                        m.perms,
+        //                        m.is_frame,
+        //                        m.is_cache,
+        //                        m.menu_type,
+        //                        m.icon,
+        //                        m.order_num,
+        //                        m.create_time
+        //        from sys_menu m
+        //                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+        //                 left join sys_user_role sur on rm.role_id = sur.role_id
+        //                 left join sys_role ro on sur.role_id = ro.role_id
+        //                 left join sys_user u on sur.user_id = u.user_id
+        //        where u.user_id = #{userId}
+        //          and m.menu_type in ('M', 'C')
+        //          and m.status = '0'
+        //          and ro.status = '0'
+        //        order by m.parent_id, m.order_num
+        return QueryChain.of(this)
+                .selectDistinct()
+                .select(SysMenu.class)
+                .from(SysMenu.class)
+                .leftJoin(SysMenu::getId, SysRoleMenu::getMenuId)
+                .leftJoin(SysRoleMenu::getRoleId, SysUserRole::getRoleId)
+                .leftJoin(SysRole::getId, SysUserRole::getRoleId)
+                .leftJoin(SysUserRole::getUserId, SysUser::getId)
+                .in(SysMenu::getMenuType, UserConstants.TYPE_DIR, UserConstants.TYPE_MENU)
+                .eq(SysMenu::getStatus, UserConstants.MENU_NORMAL)
+                .eq(SysRole::getStatus, UserConstants.ROLE_NORMAL)
+                .eq(SysUser::getId, userId)
+                .orderBy(SysMenu::getParentId, SysMenu::getOrderNum)
+                .list();
+    }
 
     /**
      * 根据角色ID查询菜单树信息

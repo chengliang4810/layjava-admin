@@ -1,18 +1,24 @@
 package com.jimuqu.system.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import com.jimuqu.common.core.constant.UserConstants;
+import com.jimuqu.common.core.utils.StreamUtil;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.system.domain.SysMenu;
 import com.jimuqu.system.domain.bo.SysMenuBo;
+import com.jimuqu.system.domain.vo.MetaVo;
 import com.jimuqu.system.domain.vo.RouterVo;
 import com.jimuqu.system.domain.vo.SysMenuVo;
 import com.jimuqu.system.mapper.SysMenuMapper;
 import com.jimuqu.system.service.ISysMenuService;
+import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.tree.MapTree;
 import org.noear.solon.annotation.Component;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +27,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SysMenuServiceImpl implements ISysMenuService {
 
-    private SysMenuMapper menuMapper;
+    private final SysMenuMapper menuMapper;
 
     @Override
     public List<SysMenuVo> selectMenuList(Long userId) {
@@ -66,7 +72,47 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     @Override
     public List<RouterVo> buildMenus(List<SysMenu> menus) {
-        return List.of();
+        List<RouterVo> routers = new LinkedList<>();
+        for (SysMenu menu : menus) {
+            RouterVo router = new RouterVo();
+            router.setHidden("1".equals(menu.getVisible()));
+            router.setName(menu.getRouteName());
+            router.setPath(menu.getRouterPath());
+            router.setComponent(menu.getComponentInfo());
+            router.setQuery(menu.getQueryParam());
+            router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtil.equals("1", menu.getIsCache()), menu.getPath()));
+            List<SysMenu> cMenus = menu.getChildren();
+            if (CollUtil.isNotEmpty(cMenus) && UserConstants.TYPE_DIR.equals(menu.getMenuType())) {
+                router.setAlwaysShow(true);
+                router.setRedirect("noRedirect");
+                router.setChildren(buildMenus(cMenus));
+            } else if (menu.isMenuFrame()) {
+                router.setMeta(null);
+                List<RouterVo> childrenList = new ArrayList<>();
+                RouterVo children = new RouterVo();
+                children.setPath(menu.getPath());
+                children.setComponent(menu.getComponent());
+                children.setName(StringUtil.capitalize(menu.getPath()));
+                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), StringUtil.equals("1", menu.getIsCache()), menu.getPath()));
+                children.setQuery(menu.getQueryParam());
+                childrenList.add(children);
+                router.setChildren(childrenList);
+            } else if (menu.getParentId().intValue() == 0 && menu.isInnerLink()) {
+                router.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon()));
+                router.setPath("/");
+                List<RouterVo> childrenList = new ArrayList<>();
+                RouterVo children = new RouterVo();
+                String routerPath = SysMenu.innerLinkReplaceEach(menu.getPath());
+                children.setPath(routerPath);
+                children.setComponent(UserConstants.INNER_LINK);
+                children.setName(StringUtil.capitalize(routerPath));
+                children.setMeta(new MetaVo(menu.getMenuName(), menu.getIcon(), menu.getPath()));
+                childrenList.add(children);
+                router.setChildren(childrenList);
+            }
+            routers.add(router);
+        }
+        return routers;
     }
 
     @Override
@@ -109,7 +155,6 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return false;
     }
 
-
     /**
      * 根据父节点的ID获取所有子节点
      *
@@ -134,13 +179,13 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     private void recursionFn(List<SysMenu> list, SysMenu t) {
         // 得到子节点列表
-//        List<SysMenu> childList = StreamUtils.filter(list, n -> n.getParentId().equals(t.getMenuId()));
-//        t.setChildren(childList);
-//        for (SysMenu tChild : childList) {
-//            // 判断是否有子节点
-//            if (list.stream().anyMatch(n -> n.getParentId().equals(tChild.getMenuId()))) {
-//                recursionFn(list, tChild);
-//            }
-//        }
+        List<SysMenu> childList = StreamUtil.filter(list, n -> n.getParentId().equals(t.getId()));
+        t.setChildren(childList);
+        for (SysMenu tChild : childList) {
+            // 判断是否有子节点
+            if (list.stream().anyMatch(n -> n.getParentId().equals(tChild.getId()))) {
+                recursionFn(list, tChild);
+            }
+        }
     }
 }
