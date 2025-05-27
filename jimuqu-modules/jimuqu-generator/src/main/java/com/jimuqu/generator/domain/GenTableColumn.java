@@ -1,6 +1,9 @@
 package com.jimuqu.generator.domain;
 
+import cn.xbatis.core.incrementer.IdentifierGeneratorType;
+import cn.xbatis.db.IdAutoType;
 import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.core.utils.StringUtil;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
@@ -17,6 +20,12 @@ import org.noear.solon.validation.annotation.NotBlank;
 @Table("gen_table_column" )
 @EqualsAndHashCode(callSuper = true)
 public class GenTableColumn extends BaseEntity {
+
+    /**
+     * 主键
+     */
+    @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
+    protected Long id;
 
     /**
      * 归属表编号

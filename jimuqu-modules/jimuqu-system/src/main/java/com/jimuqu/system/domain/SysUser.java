@@ -1,6 +1,9 @@
 package com.jimuqu.system.domain;
 
+import cn.xbatis.core.incrementer.IdentifierGeneratorType;
+import cn.xbatis.db.IdAutoType;
 import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.mybatis.core.entity.TenantEntity;
 import lombok.Data;
@@ -20,6 +23,12 @@ import java.util.Date;
 @Table("sys_user")
 @EqualsAndHashCode(callSuper = true)
 public class SysUser extends TenantEntity {
+
+    /**
+     * 主键
+     */
+    @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
+    protected Long id;
 
     /**
      * 部门ID
