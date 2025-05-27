@@ -100,12 +100,14 @@ public class SysMenu extends BaseEntity {
      * 父菜单名称
      */
     @Ignore
+    @cn.xbatis.db.annotations.Ignore
     private String parentName;
 
     /**
      * 子菜单
      */
     @Ignore
+    @cn.xbatis.db.annotations.Ignore
     private List<SysMenu> children = new ArrayList<>();
 
     /**

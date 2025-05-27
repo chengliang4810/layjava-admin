@@ -45,7 +45,7 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenu, SysMenuVo> {
      *
      * @return 菜单列表
      */
-    default List<SysMenu> selectMenuTreeAll() {
+    default List<SysMenu> selectMenuAll() {
 //        return selectListByQuery(QueryWrapper.create().from(SYS_MENU)
 //                .where(SYS_MENU.MENU_TYPE.in(UserConstants.TYPE_DIR, UserConstants.TYPE_MENU))
 //                .and(SYS_MENU.STATUS.eq(UserConstants.MENU_NORMAL))
@@ -66,7 +66,7 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenu, SysMenuVo> {
      * @param userId 用户ID
      * @return 菜单列表
      */
-    default List<SysMenu> selectMenuTreeByUserId(Long userId){
+    default List<SysMenu> selectMenuByUserId(Long userId){
         // select distinct m.menu_id,
         //                        m.parent_id,
         //                        m.menu_name,
