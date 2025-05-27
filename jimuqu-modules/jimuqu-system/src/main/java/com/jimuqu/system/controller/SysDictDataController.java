@@ -67,7 +67,7 @@ public class SysDictDataController extends BaseController {
      * @param dictTypeKey 字典类型标识
      */
     @Get
-    @Mapping("/{dictTypeKey}")
+    @Mapping("/typeKey/{dictTypeKey}")
     @SaCheckPermission("system:dict:query")
     public List<SysDictDataVo> getListByDictTypeKey(@NotNull(message = "字典数据主键不能为空") String dictTypeKey) {
         return sysDictDataService.queryListByTypeKey(dictTypeKey);
