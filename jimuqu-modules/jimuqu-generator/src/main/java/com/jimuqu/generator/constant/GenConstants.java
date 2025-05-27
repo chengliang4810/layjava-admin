@@ -86,7 +86,7 @@ public interface GenConstants {
     /**
      * BO对象 不需要查询字段
      */
-    String[] COLUMNNAME_NOT_QUERY = {"create_dept", "create_by", "create_time", "del_flag", "update_by",
+    String[] COLUMNNAME_NOT_QUERY = {"id", "create_dept", "create_by", "create_time", "del_flag", "update_by",
         "update_time", "remark", "version", "tenant_id"};
 
     /**

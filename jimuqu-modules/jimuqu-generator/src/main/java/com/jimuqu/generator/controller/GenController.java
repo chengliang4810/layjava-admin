@@ -102,7 +102,7 @@ public class GenController extends BaseController {
         String[] tableNames = ConvertUtil.toStrArray(tables);
         // 查询表信息
         List<GenTableVo> tableList = genTableService.selectDbTableListByNames(tableNames, dataName);
-         genTableService.importGenTable(tableList, dataName);
+        genTableService.importGenTable(tableList, dataName);
         return R.ok();
     }
 

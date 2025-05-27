@@ -1,9 +1,6 @@
 package com.jimuqu.system.domain;
 
-import cn.xbatis.core.incrementer.IdentifierGeneratorType;
-import cn.xbatis.db.IdAutoType;
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,12 +18,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Table("sys_role")
 public class SysRole extends BaseEntity {
-
-    /**
-     * 主键
-     */
-    @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
-    protected Long id;
 
     /**
      * 角色名称

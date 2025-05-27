@@ -1,10 +1,7 @@
 package com.jimuqu.system.domain;
 
-import cn.xbatis.core.incrementer.IdentifierGeneratorType;
-import cn.xbatis.db.IdAutoType;
 import cn.xbatis.db.annotations.LogicDelete;
 import cn.xbatis.db.annotations.Table;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,12 +30,6 @@ public class SysPost extends BaseEntity {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 主键
-     */
-    @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
-    protected Long id;
 
     /**
      * 岗位编码

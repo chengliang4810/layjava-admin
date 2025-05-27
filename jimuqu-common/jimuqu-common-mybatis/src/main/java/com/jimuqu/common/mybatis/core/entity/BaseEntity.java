@@ -24,6 +24,12 @@ public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 主键
+     */
+    @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
+    protected Long id;
+
+    /**
      * 创建部门
      */
     @TableField(defaultValue = "{CURRENT_DEPT_ID}")
