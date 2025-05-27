@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * @date 2024/08/26
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class StringUtil extends StrUtil{
+public class StringUtil extends StrUtil {
 
     public static final String SEPARATOR = ",";
 
