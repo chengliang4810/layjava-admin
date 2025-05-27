@@ -4,17 +4,17 @@ import cn.hutool.core.lang.Validator;
 import cn.hutool.core.text.StrPool;
 import cn.xbatis.core.incrementer.IdentifierGeneratorType;
 import cn.xbatis.db.IdAutoType;
-import cn.xbatis.db.annotations.Ignore;
+import cn.xbatis.db.annotations.Ignores;
 import cn.xbatis.db.annotations.Table;
+import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.core.constant.Constants;
 import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.core.utils.StringUtil;
-import cn.xbatis.db.annotations.TableId;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 import me.zhyd.oauth.utils.StringUtils;
-import org.dromara.autotable.annotation.Ignore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,9 @@ import java.util.List;
 
 @Data
 @Table("sys_menu")
+@FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
+@Ignores({SysMenu.Fields.parentName, SysMenu.Fields.children})
 public class SysMenu extends BaseEntity {
 
     /**
@@ -109,15 +111,11 @@ public class SysMenu extends BaseEntity {
     /**
      * 父菜单名称
      */
-    @Ignore
-    @cn.xbatis.db.annotations.Ignore
     private String parentName;
 
     /**
      * 子菜单
      */
-    @Ignore
-    @cn.xbatis.db.annotations.Ignore
     private List<SysMenu> children = new ArrayList<>();
 
     /**

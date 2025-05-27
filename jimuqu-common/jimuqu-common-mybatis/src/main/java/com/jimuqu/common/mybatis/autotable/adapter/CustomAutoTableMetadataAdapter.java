@@ -65,7 +65,7 @@ public class CustomAutoTableMetadataAdapter implements AutoTableMetadataAdapter 
         }
 
         // 通过Ignores判断是否忽略
-        Ignores ignoresAnnotation = AnnotatedElementUtilsPlus.findDeepMergedAnnotation(field, Ignores.class);
+        Ignores ignoresAnnotation = AnnotatedElementUtilsPlus.findDeepMergedAnnotation(clazz, Ignores.class);
         if (ignoresAnnotation != null) {
             return Arrays.stream(ignoresAnnotation.value()).anyMatch(property -> property.equals(field.getName()));
         }
