@@ -1,7 +1,7 @@
 package com.jimuqu.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.jimuqu.common.core.domain.R;
+import com.jimuqu.common.core.checker.Assert;
 import com.jimuqu.common.core.validate.group.AddGroup;
 import com.jimuqu.common.core.validate.group.UpdateGroup;
 import com.jimuqu.common.log.annotation.Log;
@@ -10,10 +10,14 @@ import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.bo.SysClientBo;
+import com.jimuqu.system.domain.query.SysClientQuery;
 import com.jimuqu.system.domain.vo.SysClientVo;
-import com.jimuqu.system.service.ISysClientService;
-import org.noear.solon.annotation.*;
-import org.noear.solon.core.handle.DownloadedFile;
+import com.jimuqu.system.service.SysClientService;
+import lombok.RequiredArgsConstructor;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Get;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.validation.annotation.NoRepeatSubmit;
 import org.noear.solon.validation.annotation.NotEmpty;
 import org.noear.solon.validation.annotation.NotNull;
@@ -22,98 +26,76 @@ import org.noear.solon.validation.annotation.Validated;
 import java.util.List;
 
 /**
- * 客户端管理
+ * 授权管理对象 sys_client Controller
  *
- * @author Michelle.Chung
- * @date 2023-06-18
+ * @author chengliang4810
+ * @since 2025-05-27
  */
+@Post
 @Controller
+@RequiredArgsConstructor
 @Mapping("/system/client")
 public class SysClientController extends BaseController {
 
-    @Inject
-    private ISysClientService sysClientService;
+    private final SysClientService sysClientService;
 
     /**
-     * 查询客户端管理列表
+     * 查询授权管理对象 sys_client列表
      */
     @Get
     @Mapping("/list")
     @SaCheckPermission("system:client:list")
-    public Page<SysClientVo> list(SysClientBo bo, PageQuery pageQuery) {
-        return sysClientService.queryPageList(bo, pageQuery);
+    public Page<SysClientVo> list(SysClientQuery query, PageQuery pageQuery) {
+        return sysClientService.queryPageList(query, pageQuery);
     }
 
     /**
-     * 导出客户端管理列表
-     */
-    @Post
-    @Mapping("/export")
-    @SaCheckPermission("system:client:export")
-    @Log(title = "客户端管理", businessType = BusinessType.EXPORT)
-    public DownloadedFile export(SysClientBo bo) {
-//        List<SysClientVo> list = sysClientService.queryList(bo);
-//        return ExcelUtil.exportExcel(list, "客户端管理", SysClientVo.class);
-        return null;
-    }
-
-    /**
-     * 获取客户端管理详细信息
+     * 获取授权管理对象 sys_client详细信息
      *
-     * @param id 主键
+     * @param id 授权管理对象 sys_client主键
      */
     @Get
     @Mapping("/{id}")
     @SaCheckPermission("system:client:query")
-    public R<SysClientVo> getInfo(@NotNull(message = "主键不能为空") Long id) {
-        return R.ok(sysClientService.queryById(id));
+    public SysClientVo getInfo(@NotNull(message = "授权管理对象 sys_client主键不能为空") Long id) {
+        return sysClientService.queryById(id);
     }
 
     /**
-     * 新增客户端管理
+     * 新增授权管理对象 sys_client
      */
-    @Post
-    @Mapping()
+    @Mapping("/add")
     @NoRepeatSubmit
     @SaCheckPermission("system:client:add")
-    @Log(title = "客户端管理", businessType = BusinessType.ADD)
-    public R<Void> add(@Validated(AddGroup.class) SysClientBo bo) {
-        return toAjax(sysClientService.insertByBo(bo));
+    @Log(title = "新增授权管理对象 sys_client", businessType = BusinessType.ADD)
+    public Long add(@Validated(AddGroup.class) SysClientBo bo) {
+        boolean result = sysClientService.insertByBo(bo);
+        Assert.isTrue(result, "新增授权管理对象 sys_client失败");
+        return bo.getId();
     }
 
     /**
-     * 修改客户端管理
+     * 更新授权管理对象 sys_client
      */
-    @Put
-    @Mapping()
     @NoRepeatSubmit
-    @SaCheckPermission("system:client:edit")
-    @Log(title = "客户端管理", businessType = BusinessType.UPDATE)
-    public R<Void> edit(@Validated(UpdateGroup.class) SysClientBo bo) {
-        return toAjax(sysClientService.updateByBo(bo));
+    @Mapping("/update")
+    @SaCheckPermission("system:client:update")
+    @Log(title = "更新授权管理对象 sys_client", businessType = BusinessType.UPDATE)
+    public void edit(@Validated(UpdateGroup.class) SysClientBo bo) {
+        boolean result = sysClientService.updateByBo(bo);
+        Assert.isTrue(result, "更新授权管理对象 sys_client失败");
     }
 
     /**
-     * 状态修改
+     * 删除授权管理对象 sys_client
      */
-    @Put
-    @Mapping("/changeStatus")
-    @SaCheckPermission("system:client:edit")
-    @Log(title = "客户端管理", businessType = BusinessType.UPDATE)
-    public R<Void> changeStatus(SysClientBo bo) {
-        return toAjax(sysClientService.updateUserStatus(bo.getId(), bo.getStatus()));
+    @Mapping("/delete/{ids}")
+    @SaCheckPermission("system:client:delete")
+    @Log(title = "删除授权管理对象 sys_client", businessType = BusinessType.DELETE)
+    public Integer delete(@NotEmpty(message = "主键不能为空") List<Long> ids) {
+        Integer num = sysClientService.deleteByIds(ids);
+        Assert.gtZero(num, "删除授权管理对象 sys_client失败");
+        return num;
     }
 
-    /**
-     * 删除客户端管理
-     *
-     * @param ids 主键串
-     */
-    @Delete
-    @Mapping("/{ids}")
-    @SaCheckPermission("system:client:remove")
-    @Log(title = "客户端管理", businessType = BusinessType.DELETE)
-    public R<Void> remove(@NotEmpty(message = "主键不能为空") Long[] ids) {
-        return toAjax(sysClientService.deleteWithValidByIds(List.of(ids), true));
-    }
 }

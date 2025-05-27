@@ -16,7 +16,7 @@ import com.jimuqu.common.social.config.properties.SocialLoginConfigProperties;
 import com.jimuqu.common.social.config.properties.SocialProperties;
 import com.jimuqu.common.social.utils.SocialUtils;
 import com.jimuqu.system.domain.SysClient;
-import com.jimuqu.system.service.ISysClientService;
+import com.jimuqu.system.service.SysClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.model.AuthResponse;
@@ -40,7 +40,7 @@ import org.noear.solon.validation.ValidUtils;
 public class AuthController {
 
     private final SysLoginService loginService;
-    private final ISysClientService clientService;
+    private final SysClientService clientService;
     private final SocialProperties socialProperties;
     private final SysRegisterService registerService;
 
