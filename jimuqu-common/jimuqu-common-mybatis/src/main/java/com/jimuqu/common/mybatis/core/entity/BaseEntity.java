@@ -14,7 +14,7 @@ import java.util.Date;
  * Entity基类
  *
  * @author chengliang
- * @date 2024/06/13
+ * @since 2024/06/13
  */
 
 @Data

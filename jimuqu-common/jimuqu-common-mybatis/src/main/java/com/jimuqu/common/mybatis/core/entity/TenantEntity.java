@@ -15,7 +15,7 @@ public class TenantEntity extends BaseEntity {
      * 租户Id
      */
     @TenantId
-    @AutoColumn(comment = "租户Id")
+    @AutoColumn(comment = "租户Id", length = 10)
     protected String tenantId;
 
 }
