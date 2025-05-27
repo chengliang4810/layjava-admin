@@ -62,9 +62,10 @@ public class GenUtils {
         } else if (arraysContains(GenConstants.COLUMNTYPE_TIME, dataType)) {
             column.setJavaType(GenConstants.TYPE_DATE);
             column.setHtmlType(GenConstants.HTML_DATETIME);
+            column.setLength(-1);
         } else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
             column.setHtmlType(GenConstants.HTML_INPUT);
-
+            column.setLength(-1);
             // 如果是浮点型 统一用BigDecimal
             List<String> str = StringUtil.splitList(StringUtil.subBetween(column.getColumnType(), "(", ")" ), StringUtil.SEPARATOR);
             if (str != null && str.size() == 2 && Integer.parseInt(str.get(1)) > 0) {

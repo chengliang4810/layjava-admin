@@ -53,6 +53,16 @@ public class GenTableColumn extends BaseEntity {
     private String javaType;
 
     /**
+     * 列默认值
+     */
+    private String defaultValue;
+
+    /**
+     * 列长度
+     */
+    private Integer length;
+
+    /**
      * JAVA字段名
      */
     @NotBlank(message = "Java属性不能为空" )

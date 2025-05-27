@@ -318,6 +318,8 @@ public class GenTableServiceImpl implements IGenTableService {
             tableColumn.setIsPk(column.isPrimaryKey() ? "1" : "0");
             tableColumn.setColumnName(column.getName());
             tableColumn.setColumnComment(column.getComment());
+            tableColumn.setLength(column.getLength());
+            tableColumn.setDefaultValue(Optional.ofNullable(column.getDefaultValue()).map(StrUtil::toString).orElse(""));
             tableColumn.setColumnType(column.getTypeName().toLowerCase());
             tableColumn.setSort(column.getPosition());
             tableColumn.setIsRequired(column.isNullable() ? "1" : "0");
