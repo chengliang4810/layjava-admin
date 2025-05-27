@@ -54,7 +54,7 @@ public class SysDictDataQuery implements Serializable, ObjectConditionLifeCycle 
      * 字典类型
      */
     @Condition(value = EQ)
-    private String dictType;
+    private String dictTypeKey;
     /**
      * 样式属性（其他样式扩展）
      */

@@ -48,7 +48,7 @@ public class SysDictDataVo implements Serializable {
     /**
      * 字典类型
      */
-    private String dictType;
+    private String dictTypeKey;
     /**
      * 样式属性（其他样式扩展）
      */

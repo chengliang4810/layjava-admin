@@ -51,7 +51,7 @@ public class SysDictDataBo extends BoBaseEntity {
      * 字典类型
      */
     @NotBlank(message = "字典类型不能为空", groups = { AddGroup.class, UpdateGroup.class })
-    private String dictType;
+    private String dictTypeKey;
     /**
      * 样式属性（其他样式扩展）
      */

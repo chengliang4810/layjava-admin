@@ -61,7 +61,7 @@ public class SysDictData extends TenantEntity {
      * 字典类型
      */
     @AutoColumn(comment = "字典类型", length = 100)
-    private String dictType;
+    private String dictTypeKey;
     /**
      * 样式属性（其他样式扩展）
      */
