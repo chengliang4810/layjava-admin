@@ -23,6 +23,7 @@ import com.jimuqu.system.service.ISysDeptService;
 import com.jimuqu.system.service.ISysPostService;
 import com.jimuqu.system.service.ISysRoleService;
 import com.jimuqu.system.service.ISysUserService;
+import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.array.ArrayUtil;
 import org.dromara.hutool.core.tree.MapTree;
 import org.dromara.hutool.core.util.ObjUtil;
@@ -39,16 +40,13 @@ import java.util.List;
  */
 @Controller
 @Mapping("/system/user" )
+@RequiredArgsConstructor
 public class SysUserController extends BaseController {
 
-    @Inject
-    private ISysUserService userService;
-    @Inject
-    private ISysRoleService roleService;
-    @Inject
-    private ISysPostService postService;
-    @Inject
-    private ISysDeptService deptService;
+    private final ISysUserService userService;
+    private final ISysRoleService roleService;
+    private final ISysPostService postService;
+    private final ISysDeptService deptService;
 
     /**
      * 获取用户列表

@@ -1,5 +1,6 @@
 package com.jimuqu.system.mapper;
 
+import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.system.domain.SysMenu;
 import com.jimuqu.system.domain.vo.SysMenuVo;
@@ -44,6 +45,7 @@ public interface SysMenuMapper extends BaseMapperPlus<SysMenu, SysMenuVo> {
      * @return 菜单列表
      */
     default List<SysMenu> selectMenuTreeAll() {
+        QueryChain.of(this);
 //        return selectListByQuery(QueryWrapper.create().from(SYS_MENU)
 //                .where(SYS_MENU.MENU_TYPE.in(UserConstants.TYPE_DIR, UserConstants.TYPE_MENU))
 //                .and(SYS_MENU.STATUS.eq(UserConstants.MENU_NORMAL))
