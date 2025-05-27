@@ -35,52 +35,52 @@ public class SysClient extends BaseEntity {
      * 主键
      */
     @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
-    @AutoColumn(comment = "主键", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "主键")
     private Long id;
     /**
      * 客户端id
      */
-    @AutoColumn(comment = "客户端id", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "客户端id", length = 255)
     private String clientId;
     /**
      * 客户端key
      */
-    @AutoColumn(comment = "客户端key", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "客户端key", length = 255)
     private String clientKey;
     /**
      * 客户端秘钥
      */
-    @AutoColumn(comment = "客户端秘钥", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "客户端秘钥", length = 255)
     private String clientSecret;
     /**
      * 授权类型
      */
-    @AutoColumn(comment = "授权类型", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "授权类型", length = 255)
     private String grantType;
     /**
      * 设备类型
      */
-    @AutoColumn(comment = "设备类型", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "设备类型", length = 255)
     private String deviceType;
     /**
      * token活跃超时时间
      */
-    @AutoColumn(comment = "token活跃超时时间", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "token活跃超时时间", defaultValue = "-1")
     private Long activeTimeout;
     /**
      * token固定超时时间
      */
-    @AutoColumn(comment = "token固定超时时间", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "token固定超时时间", defaultValue = "-1")
     private Long timeout;
     /**
      * 状态（0正常 1停用）
      */
-    @AutoColumn(comment = "状态（0正常 1停用）", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "状态（0正常 1停用）", length = 255, defaultValue = "0")
     private String status;
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @AutoColumn(comment = "删除标志（0代表存在 2代表删除）", length = -1, defaultValue = "", type = "")
+    @AutoColumn(comment = "删除标志（0代表存在 2代表删除）", length = 255, defaultValue = "0")
     private String delFlag;
 
 }
