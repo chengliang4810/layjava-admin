@@ -110,11 +110,6 @@ public class PasswordAuthStrategy implements AuthStrategyService {
 
     private SysUserVo loadUserByUsername(String username) {
         SysUser user = userMapper.get(Where.create().eq(SysUser::getUserName, username), SysUser::getUserName, SysUser::getStatus);
-//        SysUser user = userMapper.selectOneByQuery(
-//                QueryWrapper.create()
-//                        .select(SYS_USER.USER_NAME, SYS_USER.STATUS)
-//                        .from(SYS_USER)
-//                        .and(SYS_USER.USER_NAME.eq(username)));
         if (ObjUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", username);
             throw new UserException("user.not.exists", username);

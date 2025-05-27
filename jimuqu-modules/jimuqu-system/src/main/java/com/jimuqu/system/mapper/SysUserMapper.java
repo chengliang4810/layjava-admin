@@ -68,7 +68,6 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
      * @return 用户对象信息
      */
     default SysUserVo selectUserByUserName(String userName) {
-        //     //@RelationOneToOne(selfField = "deptId", joinSelfColumn = "dept_id", targetField = "deptId", joinTargetColumn = "dept_id", targetTable = "sys_dept")
         return QueryChain.of(this)
                 .leftJoin(SysUser::getDeptId, SysDept::getId)
                 .leftJoin(SysUser::getId, SysUserRole::getUserId)
