@@ -1,5 +1,6 @@
 package com.jimuqu.system.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.mybatis.core.Page;
@@ -12,6 +13,8 @@ import com.jimuqu.system.mapper.SysDictDataMapper;
 import com.jimuqu.system.service.SysDictDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
 import org.noear.solon.annotation.Component;
 
 import java.util.Collection;
@@ -56,6 +59,22 @@ public class SysDictDataServiceImpl implements SysDictDataService {
     public List<SysDictDataVo> queryList(SysDictDataQuery query) {
         QueryChain<SysDictData> queryChain = buildQueryChain(query);
         return queryChain.returnType(SysDictDataVo.class).list();
+    }
+
+    /**
+     * 按类型键查询列表
+     *
+     * @param dictTypeKey 字典类型键
+     * @return {@link List }<{@link SysDictDataVo }>
+     */
+    @Override
+    public List<SysDictDataVo> queryListByTypeKey(String dictTypeKey) {
+        if (StrUtil.isBlank(dictTypeKey)) {
+            return ListUtil.zero();
+        }
+        return QueryChain.of(sysDictDataMapper)
+                .returnType(SysDictDataVo.class)
+                .eq(SysDictData::getDictTypeKey, dictTypeKey).list();
     }
 
     /**

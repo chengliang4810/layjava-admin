@@ -62,6 +62,18 @@ public class SysDictDataController extends BaseController {
     }
 
     /**
+     * 获取字典数据详细信息
+     *
+     * @param dictTypeKey 字典类型标识
+     */
+    @Get
+    @Mapping("/{dictTypeKey}")
+    @SaCheckPermission("system:dict:query")
+    public List<SysDictDataVo> getListByDictTypeKey(@NotNull(message = "字典数据主键不能为空") String dictTypeKey) {
+        return sysDictDataService.queryListByTypeKey(dictTypeKey);
+    }
+
+    /**
      * 新增字典数据
      */
     @Mapping("/add")

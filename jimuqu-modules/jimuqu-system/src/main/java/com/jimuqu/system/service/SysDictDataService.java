@@ -65,4 +65,13 @@ public interface SysDictDataService {
      * @return {@link Integer } 删除成功条数
      */
     Integer deleteByIds(Collection<Long> ids);
+
+
+    /**
+     * 按类型键查询列表
+     *
+     * @param dictTypeKey 字典类型键
+     * @return {@link List }<{@link SysDictDataVo }>
+     */
+    List<SysDictDataVo> queryListByTypeKey(String dictTypeKey);
 }
