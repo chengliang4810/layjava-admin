@@ -180,6 +180,11 @@ public interface GenConstants {
     String QUERY_EQ = "EQ";
 
     /**
+     * 取件查询
+     */
+    String QUERY_BETWEEN = "BETWEEN";
+
+    /**
      * 需要
      */
     String REQUIRE = "1";

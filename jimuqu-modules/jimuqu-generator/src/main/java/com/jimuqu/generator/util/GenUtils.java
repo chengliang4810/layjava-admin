@@ -63,6 +63,7 @@ public class GenUtils {
             column.setJavaType(GenConstants.TYPE_DATE);
             column.setHtmlType(GenConstants.HTML_DATETIME);
             column.setLength(-1);
+            column.setQueryType(GenConstants.QUERY_BETWEEN);
         } else if (arraysContains(GenConstants.COLUMNTYPE_NUMBER, dataType)) {
             column.setHtmlType(GenConstants.HTML_INPUT);
             column.setLength(-1);
