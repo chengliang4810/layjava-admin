@@ -238,8 +238,8 @@ public class GenTableServiceImpl implements IGenTableService {
      *
      * @param genTable 业务信息
      */
-    @Transaction
     @Override
+    @Transaction
     public void updateGenTable(GenTable genTable) {
         String options = JsonUtil.toJsonString(genTable.getParams());
         genTable.setOptions(options);
@@ -496,26 +496,6 @@ public class GenTableServiceImpl implements IGenTableService {
                 zip.closeEntry();
             } catch (IOException e) {
                 log.error("渲染模板失败，表名：" + table.getTableName(), e);
-            }
-        }
-    }
-
-    /**
-     * 修改保存参数校验
-     *
-     * @param genTable 业务信息
-     */
-    @Override
-    public void validateEdit(GenTable genTable) {
-        if (GenConstants.TPL_TREE.equals(genTable.getTplCategory())) {
-            String options = JsonUtil.toJsonString(genTable.getParams());
-            Dict paramsObj = JsonUtil.parseMap(options);
-            if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_CODE))) {
-                throw new ServiceException("树编码字段不能为空");
-            } else if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_PARENT_CODE))) {
-                throw new ServiceException("树父编码字段不能为空");
-            } else if (StringUtils.isEmpty(paramsObj.getStr(GenConstants.TREE_NAME))) {
-                throw new ServiceException("树名称字段不能为空");
             }
         }
     }

@@ -109,11 +109,10 @@ public class GenController extends BaseController {
     /**
      * 修改保存代码生成业务
      */
-    @Mapping
-    @SaCheckPermission("tool:gen:edit" )
+    @Mapping("/update")
+    @SaCheckPermission("tool:gen:update" )
     @Log(title = "代码生成", businessType = BusinessType.UPDATE)
     public R<Void> editSave(@Validated GenTable genTable) {
-        genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);
         return R.ok();
     }
