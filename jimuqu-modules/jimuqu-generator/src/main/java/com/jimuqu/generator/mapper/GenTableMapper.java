@@ -21,7 +21,11 @@ public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
      *
      * @return 表信息集合
      */
-    List<GenTable> selectGenTableAll();
+    default List<GenTable> selectGenTableAll(){
+        return QueryChain.of(this)
+                .leftJoin(GenTable::getId, GenTableColumn::getTableId)
+                .list();
+    }
 
     /**
      * 查询表ID业务信息
@@ -33,7 +37,7 @@ public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
         return QueryChain.of(this)
                 .leftJoin(GenTable::getId, GenTableColumn::getTableId)
                 .eq(GenTable::getId, id)
-                .limit(200)
+                .limit(-1)
                 .returnType(GenTableVo.class)
                 .get();
     };

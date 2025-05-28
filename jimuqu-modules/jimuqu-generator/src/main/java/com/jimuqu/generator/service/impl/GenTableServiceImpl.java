@@ -77,10 +77,10 @@ public class GenTableServiceImpl implements IGenTableService {
      */
     @Override
     public List<GenTableColumn> selectGenTableColumnListByTableId(Long tableId) {
-        return genTableColumnMapper.list(QueryChain.<GenTableColumn>create()
+        return QueryChain.of(genTableColumnMapper)
                 .eq(GenTableColumn::getTableId, tableId)
                 .orderBy(GenTableColumn::getSort)
-        );
+                .list();
     }
 
     /**
@@ -103,6 +103,7 @@ public class GenTableServiceImpl implements IGenTableService {
 
     /**
      * 构建查询条件
+     *
      * @param genTable 查询条件对象
      * @return 查询条件对象
      */
@@ -111,8 +112,8 @@ public class GenTableServiceImpl implements IGenTableService {
         return QueryChain.of(baseMapper)
                 .forSearch(true)
                 .eq(GenTable::getDataName, genTable.getDataName())
-                .and(StrUtil.isNotBlank(genTable.getTableName()), GenTable::getTableName, c-> c.lower().like(genTable.getTableName().toLowerCase()))
-                .and(StrUtil.isNotBlank(genTable.getTableComment()), GenTable::getTableComment, c-> c.lower().like(genTable.getTableComment().toLowerCase()))
+                .and(StrUtil.isNotBlank(genTable.getTableName()), GenTable::getTableName, c -> c.lower().like(genTable.getTableName().toLowerCase()))
+                .and(StrUtil.isNotBlank(genTable.getTableComment()), GenTable::getTableComment, c -> c.lower().like(genTable.getTableComment().toLowerCase()))
                 .between(GenTable::getCreateTime, params.get("beginTime"), params.get("endTime"));
     }
 
@@ -423,7 +424,7 @@ public class GenTableServiceImpl implements IGenTableService {
             saveColumns.add(column);
         });
 
-        if (CollUtil.isNotEmpty(saveColumns)){
+        if (CollUtil.isNotEmpty(saveColumns)) {
             saveColumns.forEach(genTableColumnMapper::saveOrUpdate);
         }
 
@@ -473,7 +474,7 @@ public class GenTableServiceImpl implements IGenTableService {
         VelocityContext context = VelocityUtils.prepareContext(table);
 
         // 获取模板列表
-        List<GenTemplateVo> genTemplateList =  templateMapper.selectEnableList();
+        List<GenTemplateVo> genTemplateList = templateMapper.selectEnableList();
 
         System.out.println("gentemplateList;   " + genTemplateList);
 
@@ -573,6 +574,6 @@ public class GenTableServiceImpl implements IGenTableService {
         }
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
     }
-    
+
 }
 
