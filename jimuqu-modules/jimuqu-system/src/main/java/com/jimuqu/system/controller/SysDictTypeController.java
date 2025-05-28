@@ -43,6 +43,16 @@ public class SysDictTypeController extends BaseController {
      * 查询字典类型列表
      */
     @Get
+    @Mapping("/all")
+//    @SaCheckPermission("system:dict:list")
+    public List<SysDictTypeVo> all(SysDictTypeQuery query) {
+        return sysDictTypeService.queryList(query);
+    }
+
+    /**
+     * 查询字典类型分页列表
+     */
+    @Get
     @Mapping("/list")
     @SaCheckPermission("system:dict:list")
     public Page<SysDictTypeVo> list(SysDictTypeQuery query, PageQuery pageQuery) {
