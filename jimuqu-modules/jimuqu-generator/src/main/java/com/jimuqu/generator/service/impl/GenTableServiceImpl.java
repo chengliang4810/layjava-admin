@@ -323,7 +323,7 @@ public class GenTableServiceImpl implements IGenTableService {
             tableColumn.setDefaultValue(Optional.ofNullable(column.getDefaultValue()).map(StrUtil::toString).orElse(""));
             tableColumn.setColumnType(column.getTypeName().toLowerCase());
             tableColumn.setSort(column.getPosition());
-            tableColumn.setIsRequired(column.isNullable() ? "1" : "0");
+            tableColumn.setIsRequired(column.isNullable() ? "0" : "1");
             tableColumn.setIsIncrement(column.isAutoIncrement() ? "1" : "0");
             tableColumns.add(tableColumn);
         });
