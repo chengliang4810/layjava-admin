@@ -1,27 +1,28 @@
-package com.jimuqu.system.domain.vo;
+package com.jimuqu.system.domain.query;
 
-import cn.xbatis.db.annotations.ResultEntity;
+import cn.xbatis.core.sql.ObjectConditionLifeCycle;
+import cn.xbatis.db.annotations.Condition;
+import cn.xbatis.db.annotations.ConditionTarget;
 import com.jimuqu.system.domain.SysDept;
-import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+
+import static cn.xbatis.db.annotations.Condition.Type.*;
 
 /**
- * 部门视图对象
+ * 部门查询条件对象
  * @author chengliang4810
  * @since 2025-06-04
  */
 @Data
 @FieldNameConstants
 @Accessors(chain = true)
-@ResultEntity(SysDept.class)
-@AutoMapper(target = SysDept.class)
-public class SysDeptVo implements Serializable {
+@ConditionTarget(SysDept.class)
+public class SysDeptQuery implements Serializable, ObjectConditionLifeCycle {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -29,55 +30,60 @@ public class SysDeptVo implements Serializable {
     /**
      * 主键
      */
+    @Condition(value = EQ)
     private Long id;
     /**
      * 父部门id
      */
+    @Condition(value = EQ)
     private Long parentId;
-
-    /**
-     * 父部门名称
-     */
-    private String parentName;
-
     /**
      * 祖级列表
      */
+    @Condition(value = EQ)
     private String ancestors;
     /**
      * 部门名称
      */
+    @Condition(value = LIKE)
     private String deptName;
     /**
      * 显示顺序
      */
+    @Condition(value = EQ)
     private Long orderNum;
-    /**
-     * 负责人 Id
-     */
-    private Long leader;
-
     /**
      * 负责人
      */
-    // @RelationOneToOne(valueField = "userName", selfField = "leader", joinSelfColumn = "leader", targetField = "userId", joinTargetColumn = "user_id", targetTable = "sys_user")
-    private String leaderName;
-
+    @Condition(value = EQ)
+    private Long leader;
     /**
      * 联系电话
      */
+    @Condition(value = EQ)
     private String phone;
     /**
      * 邮箱
      */
+    @Condition(value = EQ)
     private String email;
     /**
      * 部门状态（0正常 1停用）
      */
+    @Condition(value = EQ)
     private String status;
     /**
-     * 创建时间
+     * 删除标志（0代表存在 2代表删除）
      */
-    private Date createTime;
+    @Condition(value = EQ)
+    private String delFlag;
+
+    /**
+     * 条件构建前执行
+     */
+    @Override
+    public void beforeBuildCondition() {
+
+    }
 
 }

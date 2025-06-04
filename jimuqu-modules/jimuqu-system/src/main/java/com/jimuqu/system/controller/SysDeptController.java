@@ -87,7 +87,7 @@ public class SysDeptController extends BaseController {
     @Put
     @Mapping
     public R<Void> edit(SysDeptBo dept) {
-        Long deptId = dept.getDeptId();
+        Long deptId = dept.getId();
         deptService.checkDeptDataScope(deptId);
         if (!deptService.checkDeptNameUnique(dept)) {
             return R.fail("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在" );
