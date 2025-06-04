@@ -15,14 +15,14 @@ import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.bo.SysDeptBo;
-import com.jimuqu.system.domain.bo.SysPostBo;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.bo.SysUserBo;
+import com.jimuqu.system.domain.query.SysPostQuery;
 import com.jimuqu.system.domain.vo.*;
 import com.jimuqu.system.service.ISysDeptService;
-import com.jimuqu.system.service.ISysPostService;
 import com.jimuqu.system.service.ISysRoleService;
 import com.jimuqu.system.service.ISysUserService;
+import com.jimuqu.system.service.SysPostService;
 import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.array.ArrayUtil;
 import org.dromara.hutool.core.tree.MapTree;
@@ -45,7 +45,7 @@ public class SysUserController extends BaseController {
 
     private final ISysUserService userService;
     private final ISysRoleService roleService;
-    private final ISysPostService postService;
+    private final SysPostService postService;
     private final ISysDeptService deptService;
 
     /**
@@ -129,11 +129,9 @@ public class SysUserController extends BaseController {
         SysUserInfoVo userInfoVo = new SysUserInfoVo();
         SysRoleBo roleBo = new SysRoleBo();
         roleBo.setStatus(UserConstants.ROLE_NORMAL);
-        SysPostBo postBo = new SysPostBo();
-        postBo.setStatus(UserConstants.POST_NORMAL);
         List<SysRoleVo> roles = roleService.selectRoleList(roleBo);
         userInfoVo.setRoles(LoginHelper.isSuperAdmin(userId) ? roles : StreamUtil.filter(roles, r -> !r.isSuperAdmin()));
-        userInfoVo.setPosts(postService.selectPostList(postBo));
+        userInfoVo.setPosts(postService.queryList(new SysPostQuery().setStatus(UserConstants.POST_NORMAL)));
         SysUserVo sysUser = userService.selectUserById(userId);
         userInfoVo.setUser(sysUser);
         userInfoVo.setRoleIds(StreamUtil.toList(sysUser.getRoles(), SysRoleVo::getId));
