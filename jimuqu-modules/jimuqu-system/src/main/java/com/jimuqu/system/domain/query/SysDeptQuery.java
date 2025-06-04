@@ -3,6 +3,7 @@ package com.jimuqu.system.domain.query;
 import cn.xbatis.core.sql.ObjectConditionLifeCycle;
 import cn.xbatis.db.annotations.Condition;
 import cn.xbatis.db.annotations.ConditionTarget;
+import cn.xbatis.db.annotations.Ignore;
 import com.jimuqu.system.domain.SysDept;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -10,6 +11,8 @@ import lombok.experimental.FieldNameConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import static cn.xbatis.db.annotations.Condition.Type.*;
 
@@ -32,6 +35,11 @@ public class SysDeptQuery implements Serializable, ObjectConditionLifeCycle {
      */
     @Condition(value = EQ)
     private Long id;
+    /**
+     * 所属部门
+     */
+    @Ignore
+    private Long belongDeptId;
     /**
      * 父部门id
      */
@@ -75,8 +83,14 @@ public class SysDeptQuery implements Serializable, ObjectConditionLifeCycle {
     /**
      * 删除标志（0代表存在 2代表删除）
      */
-    @Condition(value = EQ)
+    @Condition(value = EQ, defaultValue = "0")
     private String delFlag;
+
+    /**
+     * 创建时间
+     */
+    @Condition(value = BETWEEN)
+    private List<Date> createTime;
 
     /**
      * 条件构建前执行

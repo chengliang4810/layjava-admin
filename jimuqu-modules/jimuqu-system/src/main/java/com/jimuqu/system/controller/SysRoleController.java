@@ -11,12 +11,14 @@ import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.bo.SysDeptBo;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.bo.SysUserBo;
+import com.jimuqu.system.domain.query.SysDeptQuery;
 import com.jimuqu.system.domain.vo.DeptTreeSelectVo;
 import com.jimuqu.system.domain.vo.SysRoleVo;
 import com.jimuqu.system.domain.vo.SysUserVo;
 import com.jimuqu.system.service.ISysDeptService;
 import com.jimuqu.system.service.ISysRoleService;
 import com.jimuqu.system.service.ISysUserService;
+import com.jimuqu.system.service.SysDeptService;
 import org.noear.solon.annotation.*;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class SysRoleController extends BaseController {
     @Inject
     private ISysUserService userService;
     @Inject
-    private ISysDeptService deptService;
+    private SysDeptService deptService;
 
     /**
      * 获取角色信息列表
@@ -229,11 +231,11 @@ public class SysRoleController extends BaseController {
      */
     @SaCheckPermission("system:role:list")
     @Get
-    @Mapping(value = "/deptTree/{roleId}")
-    public R<DeptTreeSelectVo> roleDeptTreeselect(Long roleId) {
+    @Mapping(value = "/dept/tree/{roleId}")
+    public R<DeptTreeSelectVo> roleDeptTreeSelect(Long roleId) {
         DeptTreeSelectVo selectVo = new DeptTreeSelectVo();
         selectVo.setCheckedKeys(deptService.selectDeptListByRoleId(roleId));
-        selectVo.setDepts(deptService.selectDeptTreeList(new SysDeptBo()));
+        selectVo.setDepts(deptService.selectDeptTreeList(new SysDeptQuery()));
         return R.ok(selectVo);
     }
 }

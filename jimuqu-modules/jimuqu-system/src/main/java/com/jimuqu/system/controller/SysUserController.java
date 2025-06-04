@@ -17,12 +17,10 @@ import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.bo.SysDeptBo;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.bo.SysUserBo;
+import com.jimuqu.system.domain.query.SysDeptQuery;
 import com.jimuqu.system.domain.query.SysPostQuery;
 import com.jimuqu.system.domain.vo.*;
-import com.jimuqu.system.service.ISysDeptService;
-import com.jimuqu.system.service.ISysRoleService;
-import com.jimuqu.system.service.ISysUserService;
-import com.jimuqu.system.service.SysPostService;
+import com.jimuqu.system.service.*;
 import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.array.ArrayUtil;
 import org.dromara.hutool.core.tree.MapTree;
@@ -46,7 +44,7 @@ public class SysUserController extends BaseController {
     private final ISysUserService userService;
     private final ISysRoleService roleService;
     private final SysPostService postService;
-    private final ISysDeptService deptService;
+    private final SysDeptService deptService;
 
     /**
      * 获取用户列表
@@ -263,7 +261,7 @@ public class SysUserController extends BaseController {
     @Get
     @Mapping("/deptTree" )
     @SaCheckPermission("system:user:list" )
-    public R<List<MapTree<Long>>> deptTree(SysDeptBo dept) {
+    public R<List<MapTree<Long>>> deptTree(SysDeptQuery dept) {
         return R.ok(deptService.selectDeptTreeList(dept));
     }
 

@@ -1,5 +1,6 @@
 package com.jimuqu.system.domain.vo;
 
+import cn.xbatis.db.annotations.Ignores;
 import cn.xbatis.db.annotations.ResultEntity;
 import com.jimuqu.system.domain.SysDept;
 import io.github.linpeilie.annotations.AutoMapper;
@@ -21,6 +22,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @ResultEntity(SysDept.class)
 @AutoMapper(target = SysDept.class)
+@Ignores({"parentName", "leaderName"})
 public class SysDeptVo implements Serializable {
 
     @Serial
