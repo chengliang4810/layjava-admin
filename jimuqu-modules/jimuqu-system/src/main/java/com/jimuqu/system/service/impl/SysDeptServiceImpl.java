@@ -1,5 +1,9 @@
 package com.jimuqu.system.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.jimuqu.common.core.utils.StreamUtil;
+import com.jimuqu.common.core.utils.TreeBuildUtil;
 import com.jimuqu.system.domain.bo.SysDeptBo;
 import com.jimuqu.system.domain.vo.SysDeptVo;
 import com.jimuqu.system.service.ISysDeptService;
@@ -23,9 +27,34 @@ public class SysDeptServiceImpl implements ISysDeptService {
         return List.of();
     }
 
+    /**
+     * 构建前端所需要下拉树结构
+     *
+     * @param depts 部门列表
+     * @return 下拉树结构列表
+     */
     @Override
     public List<MapTree<Long>> buildDeptTreeSelect(List<SysDeptVo> depts) {
-        return List.of();
+        if (CollUtil.isEmpty(depts)) {
+            return CollUtil.newArrayList();
+        }
+        // 获取当前列表中每一个节点的parentId，然后在列表中查找是否有id与其parentId对应，若无对应，则表明此时节点列表中，该节点在当前列表中属于顶级节点
+        List<MapTree<Long>> treeList = CollUtil.newArrayList();
+        for (SysDeptVo d : depts) {
+            Long parentId = d.getParentId();
+            SysDeptVo sysDeptVo = StreamUtil.findFirst(depts, it -> it.getId().longValue() == parentId);
+            if (ObjectUtil.isNull(sysDeptVo)) {
+                List<MapTree<Long>> trees = TreeBuildUtil.build(depts, parentId, (dept, tree) ->
+                        tree.setId(dept.getId())
+                                .setParentId(dept.getParentId())
+                                .setName(dept.getDeptName())
+                                .setWeight(dept.getOrderNum())
+                                .putExtra("disabled", "0".equals(dept.getStatus())));
+                MapTree<Long> tree = StreamUtil.findFirst(trees, it -> it.getId().longValue() == d.getId());
+                treeList.add(tree);
+            }
+        }
+        return treeList;
     }
 
     @Override
