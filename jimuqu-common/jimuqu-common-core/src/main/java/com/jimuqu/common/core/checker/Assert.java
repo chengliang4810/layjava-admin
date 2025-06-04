@@ -20,6 +20,17 @@ public class Assert {
     private static final String TEMPLATE_VALUE_MUST_BE_BETWEEN_AND = "The value must be between {} and {}.";
 
     /**
+     * 外部已通过判断，这里不再做重复判断
+     * 检验异常
+     *
+     * @param errorMsgTemplate 错误抛出异常附带的消息模板，变量用{}代替
+     * @param params           参数列表
+     */
+    public static void fail(String errorMsgTemplate, Object... params) {
+        throw new AssertException(StringUtil.format(errorMsgTemplate, params));
+    }
+
+    /**
      * 大于0的断言
      */
     public static void gtZero(Integer value, String errorMsgTemplate, Object... params) {
