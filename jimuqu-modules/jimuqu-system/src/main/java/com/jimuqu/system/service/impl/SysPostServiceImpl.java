@@ -125,8 +125,8 @@ public class SysPostServiceImpl implements SysPostService {
     public List<Long> selectPostListByUserId(Long userId) {
         List<SysPost> sysPostList = QueryChain.of(sysPostMapper)
                 .select(SysPost::getPostId)
-                .leftJoin(SysUserPost::getPostId, SysPost::getPostId)
-                .leftJoin(SysUser::getId, SysUserPost::getUserId)
+                .leftJoin(SysPost::getPostId, SysUserPost::getPostId)
+                .eq(SysUserPost::getUserId, userId)
                 .list();
         return Optional.ofNullable(sysPostList)
                 .map(sysPosts -> sysPosts.stream().map(SysPost::getPostId).toList())
