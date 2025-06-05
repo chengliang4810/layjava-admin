@@ -115,13 +115,13 @@ public class SysUserVo implements Serializable {
      * 角色组
      */
     @Ignore
-    private Long[] roleIds;
+    private List<Long> roleIds;
 
     /**
      * 岗位组
      */
     @Ignore
-    private Long[] postIds;
+    private List<Long> postIds;
 
     /**
      * 数据权限 当前角色ID

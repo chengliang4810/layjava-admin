@@ -97,8 +97,10 @@ public class SysUserController extends BaseController {
         userInfoVo.setPosts(postService.queryList(new SysPostQuery().setStatus(UserConstants.POST_NORMAL)));
         if (ObjectUtil.isNotNull(userId)) {
             SysUserVo sysUser = sysUserService.queryById(userId);
+            List<Long> roleIds = StreamUtil.toList(sysUser.getRoles(), SysRoleVo::getId);
+            sysUser.setRoleIds(roleIds);
             userInfoVo.setUser(sysUser);
-            userInfoVo.setRoleIds(StreamUtil.toList(sysUser.getRoles(), SysRoleVo::getId));
+            userInfoVo.setRoleIds(roleIds);
             userInfoVo.setPostIds(postService.selectPostListByUserId(userId));
         }
         return userInfoVo;
