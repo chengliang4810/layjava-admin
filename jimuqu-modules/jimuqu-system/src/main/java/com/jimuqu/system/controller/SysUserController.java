@@ -17,7 +17,6 @@ import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.common.web.core.BaseController;
-import com.jimuqu.system.domain.bo.SysPostBo;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.query.SysPostQuery;
@@ -71,21 +70,21 @@ public class SysUserController extends BaseController {
      * 获取部门下的所有用户信息
      */
     @Get
-    @Mapping("/list/dept/{deptId}" )
-    @SaCheckPermission("system:user:list" )
+    @Mapping("/list/dept/{deptId}")
+    @SaCheckPermission("system:user:list")
     public R<List<SysUserVo>> listByDept(@NotNull Long deptId) {
         return R.ok(sysUserService.selectUserListByDept(deptId));
     }
 
     /**
-     * 获取用户信息详细信息
+     * 获取指定用户信息详细信息
      *
      * @param userId 用户信息主键
      */
     @Get
-    @Mapping("/{userId}")
+    @Mapping("/{userId}?") // {userId}?表示userId参数是可选的
     @SaCheckPermission("system:user:query")
-    public SysUserInfoVo getInfo(@Param(required = false) Long userId) {
+    public SysUserInfoVo getInfoById(Long userId) {
         sysUserService.checkUserDataScope(userId);
         SysUserInfoVo userInfoVo = new SysUserInfoVo();
         SysRoleBo roleBo = new SysRoleBo();
@@ -114,7 +113,7 @@ public class SysUserController extends BaseController {
         LoginUser loginUser = LoginHelper.getLoginUser();
         SysUserVo user = sysUserService.queryById(loginUser.getUserId());
         if (ObjUtil.isNull(user)) {
-            return R.fail("没有权限访问用户数据!" );
+            return R.fail("没有权限访问用户数据!");
         }
         userInfoVo.setUser(user);
         userInfoVo.setPermissions(loginUser.getMenuPermission());
@@ -128,8 +127,8 @@ public class SysUserController extends BaseController {
      * @param userId 用户ID
      */
     @Get
-    @Mapping("/authRole/{userId}" )
-    @SaCheckPermission("system:user:query" )
+    @Mapping("/authRole/{userId}")
+    @SaCheckPermission("system:user:query")
     public R<SysUserInfoVo> authRole(Long userId) {
         SysUserVo user = sysUserService.queryById(userId);
         List<SysRoleVo> roles = roleService.selectRolesByUserId(userId);
@@ -149,11 +148,11 @@ public class SysUserController extends BaseController {
     public R<Long> add(@Validated(AddGroup.class) SysUserBo user) {
         deptService.checkDeptDataScope(user.getDeptId());
         if (!sysUserService.checkUserNameUnique(user)) {
-            return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在" );
+            return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (StringUtil.isNotEmpty(user.getPhonenumber()) && !sysUserService.checkPhoneUnique(user)) {
-            return R.fail("新增用户'" + user.getUserName() + "'失败，手机号码已存在" );
+            return R.fail("新增用户'" + user.getUserName() + "'失败，手机号码已存在");
         } else if (StringUtil.isNotEmpty(user.getEmail()) && !sysUserService.checkEmailUnique(user)) {
-            return R.fail("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在" );
+            return R.fail("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         user.setPassword(BCrypt.hashpw(user.getPassword()));
         boolean result = sysUserService.insertByBo(user);
@@ -173,11 +172,11 @@ public class SysUserController extends BaseController {
         sysUserService.checkUserDataScope(user.getId());
         deptService.checkDeptDataScope(user.getDeptId());
         if (!sysUserService.checkUserNameUnique(user)) {
-            return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在" );
+            return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (StringUtil.isNotEmpty(user.getPhonenumber()) && !sysUserService.checkPhoneUnique(user)) {
-            return R.fail("修改用户'" + user.getUserName() + "'失败，手机号码已存在" );
+            return R.fail("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
         } else if (StringUtil.isNotEmpty(user.getEmail()) && !sysUserService.checkEmailUnique(user)) {
-            return R.fail("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在" );
+            return R.fail("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         boolean result = sysUserService.updateByBo(user);
         Assert.isTrue(result, "更新用户信息失败");
@@ -187,8 +186,8 @@ public class SysUserController extends BaseController {
     /**
      * 重置密码
      */
-    @Mapping("/resetPwd" )
-    @SaCheckPermission("system:user:resetPwd" )
+    @Mapping("/resetPwd")
+    @SaCheckPermission("system:user:resetPwd")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public R<Void> resetPwd(SysUserBo user) {
         sysUserService.checkUserAllowed(user.getId());
@@ -200,8 +199,8 @@ public class SysUserController extends BaseController {
     /**
      * 状态修改
      */
-    @Mapping("/changeStatus" )
-    @SaCheckPermission("system:user:edit" )
+    @Mapping("/changeStatus")
+    @SaCheckPermission("system:user:edit")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     public R<Void> changeStatus(SysUserBo user) {
         sysUserService.checkUserAllowed(user.getId());
@@ -215,8 +214,8 @@ public class SysUserController extends BaseController {
      * @param userId  用户Id
      * @param roleIds 角色ID串
      */
-    @Mapping("/authRole" )
-    @SaCheckPermission("system:user:edit" )
+    @Mapping("/authRole")
+    @SaCheckPermission("system:user:edit")
     @Log(title = "用户管理", businessType = BusinessType.GRANT)
     public R<Void> insertAuthRole(Long userId, Long[] roleIds) {
         sysUserService.checkUserDataScope(userId);
@@ -231,7 +230,7 @@ public class SysUserController extends BaseController {
     @SaCheckPermission("system:user:delete")
     @Log(title = "删除用户信息", businessType = BusinessType.DELETE)
     public Integer delete(@NotEmpty(message = "主键不能为空") List<Long> ids) {
-        Assert.isFalse(ids.contains(LoginHelper.getUserId()), "当前用户不能删除" );
+        Assert.isFalse(ids.contains(LoginHelper.getUserId()), "当前用户不能删除");
         Integer num = sysUserService.deleteByIds(ids);
         Assert.gtZero(num, "删除用户信息失败");
         return num;
