@@ -3,6 +3,7 @@ package com.jimuqu.system.domain.query;
 import cn.xbatis.core.sql.ObjectConditionLifeCycle;
 import cn.xbatis.db.annotations.Condition;
 import cn.xbatis.db.annotations.ConditionTarget;
+import cn.xbatis.db.annotations.Ignore;
 import com.jimuqu.system.domain.SysPost;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -37,6 +38,11 @@ public class SysPostQuery implements Serializable, ObjectConditionLifeCycle {
      */
     @Condition(value = EQ)
     private Long deptId;
+    /**
+     * 所属部门
+     */
+    @Ignore
+    private Long belongDeptId;
     /**
      * 岗位编码
      */

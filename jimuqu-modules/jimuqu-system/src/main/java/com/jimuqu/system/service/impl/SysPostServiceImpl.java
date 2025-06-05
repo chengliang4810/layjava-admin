@@ -1,5 +1,6 @@
 package com.jimuqu.system.service.impl;
 
+import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
@@ -12,6 +13,7 @@ import com.jimuqu.system.domain.SysUserPost;
 import com.jimuqu.system.domain.bo.SysPostBo;
 import com.jimuqu.system.domain.query.SysPostQuery;
 import com.jimuqu.system.domain.vo.SysPostVo;
+import com.jimuqu.system.mapper.SysDeptMapper;
 import com.jimuqu.system.mapper.SysPostMapper;
 import com.jimuqu.system.service.SysPostService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SysPostServiceImpl implements SysPostService {
 
+    private final SysDeptMapper sysDeptMapper;
     private final SysPostMapper sysPostMapper;
 
     /**
@@ -71,9 +74,16 @@ public class SysPostServiceImpl implements SysPostService {
      * @return 查询条件对象
      */
     private QueryChain<SysPost> buildQueryChain(SysPostQuery query) {
-        return QueryChain.of(sysPostMapper)
+        QueryChain<SysPost> queryChain = QueryChain.of(sysPostMapper)
                 .forSearch(true)
                 .where(query);
+
+        if (ObjUtil.isNotNull(query.getBelongDeptId())){
+            List<Long> deptIds = sysDeptMapper.selectListByParentId(query.getBelongDeptId());
+            deptIds.add(query.getBelongDeptId());
+            queryChain.in(SysPost::getDeptId, deptIds);
+        }
+        return queryChain;
     }
 
     /**

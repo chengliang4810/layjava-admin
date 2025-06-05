@@ -1,18 +1,15 @@
 package com.jimuqu.system.mapper;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.utils.StreamUtil;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.system.domain.SysDept;
 import com.jimuqu.system.domain.vo.SysDeptVo;
-import db.sql.api.impl.cmd.Methods;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 部门数据层
@@ -33,10 +30,7 @@ public interface SysDeptMapper extends BaseMapperPlus<SysDept, SysDeptVo> {
                 .select(SysDept::getId)
                 .and(SysDept::getAncestors, dept-> dept.mysql().findInSet(parentId))
                 .list();
-
-        return Optional.ofNullable(sysDeptList)
-                .map(list -> list.stream().map(SysDept::getId).toList())
-                .orElse(CollUtil.newArrayList());
+        return StreamUtil.toList(sysDeptList, SysDept::getId);
     }
 
 
