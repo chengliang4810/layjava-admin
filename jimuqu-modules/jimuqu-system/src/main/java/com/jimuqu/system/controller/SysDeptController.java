@@ -16,6 +16,7 @@ import com.jimuqu.system.domain.vo.SysDeptVo;
 import com.jimuqu.system.service.SysDeptService;
 import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.convert.ConvertUtil;
+import org.dromara.hutool.core.tree.MapTree;
 import org.noear.solon.annotation.Controller;
 import org.noear.solon.annotation.Get;
 import org.noear.solon.annotation.Mapping;
@@ -48,6 +49,30 @@ public class SysDeptController extends BaseController {
     @SaCheckPermission("system:dept:list")
     public List<SysDeptVo> list(SysDeptQuery query) {
         return sysDeptService.queryList(query);
+    }
+
+    /**
+     * 获取部门树列表
+     */
+    @Get
+    @Mapping("/tree" )
+    @SaCheckPermission("system:dept:list" )
+    public R<List<MapTree<Long>>> deptTree(SysDeptQuery dept) {
+        return R.ok(sysDeptService.selectDeptTreeList(dept));
+    }
+
+    /**
+     * 查询部门列表（排除节点）
+     *
+     * @param deptId 部门ID
+     */
+    @Get
+    @Mapping("/tree/exclude/{deptId}") // @PathVariable(value = "deptId", required = false)
+    @SaCheckPermission("system:dept:list" )
+    public List<MapTree<Long>> deptTreeExcludeChild(Long deptId) {
+        List<SysDeptVo> deptVoList = sysDeptService.queryList(new SysDeptQuery());
+        deptVoList.removeIf(d -> d.getId().equals(deptId) || StringUtil.splitList(d.getAncestors()).contains(ConvertUtil.toStr(deptId)));
+        return sysDeptService.buildDeptTreeSelect(deptVoList);
     }
 
     /**
@@ -85,7 +110,8 @@ public class SysDeptController extends BaseController {
     @SaCheckPermission("system:dept:add")
     @Log(title = "新增部门", businessType = BusinessType.ADD)
     public Long add(@Validated(AddGroup.class) SysDeptBo bo) {
-        Assert.isTrue(sysDeptService.checkDeptNameUnique(new SysDeptQuery().setDeptName(bo.getDeptName())), "新增部门'{}'失败，部门名称已存在", bo.getDeptName());
+        boolean checkDeptNameUnique = sysDeptService.checkDeptNameUnique(new SysDeptQuery().setParentId(bo.getParentId()).setDeptName(bo.getDeptName()));
+        Assert.isTrue(checkDeptNameUnique, "新增部门'{}'失败，部门名称已存在", bo.getDeptName());
         boolean result = sysDeptService.insertByBo(bo);
         Assert.isTrue(result, "新增部门失败");
         return bo.getId();
@@ -101,7 +127,7 @@ public class SysDeptController extends BaseController {
     public void edit(@Validated(UpdateGroup.class) SysDeptBo bo) {
         Long deptId = bo.getId();
         sysDeptService.checkDeptDataScope(deptId);
-        if (!sysDeptService.checkDeptNameUnique(new SysDeptQuery().setDeptName(bo.getDeptName()).setId(deptId))) {
+        if (!sysDeptService.checkDeptNameUnique(new SysDeptQuery().setParentId(bo.getParentId()).setDeptName(bo.getDeptName()).setId(deptId))) {
             Assert.fail("修改部门'{}'失败，部门名称已存在", bo.getDeptName());
         } else if (bo.getParentId().equals(deptId)) {
             Assert.fail("修改部门'{}'失败，上级部门不能是自己", bo.getDeptName());

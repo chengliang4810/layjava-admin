@@ -59,7 +59,7 @@ public class SysDeptQuery implements Serializable, ObjectConditionLifeCycle {
      * 显示顺序
      */
     @Condition(value = EQ)
-    private Long orderNum;
+    private Integer orderNum;
     /**
      * 负责人
      */

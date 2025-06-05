@@ -2,9 +2,7 @@ package com.jimuqu.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
-import com.jimuqu.common.core.checker.Assert;
 import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.core.utils.StreamUtil;
@@ -15,8 +13,8 @@ import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.system.domain.SysDept;
 import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.bo.SysDeptBo;
-import com.jimuqu.system.domain.vo.SysDeptVo;
 import com.jimuqu.system.domain.query.SysDeptQuery;
+import com.jimuqu.system.domain.vo.SysDeptVo;
 import com.jimuqu.system.mapper.SysDeptMapper;
 import com.jimuqu.system.mapper.SysUserMapper;
 import com.jimuqu.system.service.SysDeptService;
@@ -157,7 +155,7 @@ public class SysDeptServiceImpl implements SysDeptService {
                                 .setParentId(dept.getParentId())
                                 .setName(dept.getDeptName())
                                 .setWeight(dept.getOrderNum())
-                                .putExtra("disabled", "0".equals(dept.getStatus())));
+                                .putExtra("disabled", "1".equals(dept.getStatus())));
                 MapTree<Long> tree = StreamUtil.findFirst(trees, it -> it.getId().longValue() == d.getId());
                 treeList.add(tree);
             }
@@ -199,7 +197,7 @@ public class SysDeptServiceImpl implements SysDeptService {
      */
     @Override
     public boolean hasChildByDeptId(Long deptId) {
-        return sysDeptMapper.exists(where -> where.eq(SysDept::getId, deptId));
+        return sysDeptMapper.exists(where -> where.eq(SysDept::getParentId, deptId));
     }
 
     /**

@@ -84,7 +84,7 @@ public class SysUserVo implements Serializable {
     /**
      * 密码
      */
-    private String password;
+    private transient String password;
 
     /**
      * 帐号状态（0正常 1停用）

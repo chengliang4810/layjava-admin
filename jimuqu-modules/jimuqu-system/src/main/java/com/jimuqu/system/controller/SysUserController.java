@@ -14,16 +14,16 @@ import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.common.web.core.BaseController;
-import com.jimuqu.system.domain.bo.SysDeptBo;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.bo.SysUserBo;
-import com.jimuqu.system.domain.query.SysDeptQuery;
 import com.jimuqu.system.domain.query.SysPostQuery;
 import com.jimuqu.system.domain.vo.*;
-import com.jimuqu.system.service.*;
+import com.jimuqu.system.service.ISysRoleService;
+import com.jimuqu.system.service.ISysUserService;
+import com.jimuqu.system.service.SysDeptService;
+import com.jimuqu.system.service.SysPostService;
 import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.array.ArrayUtil;
-import org.dromara.hutool.core.tree.MapTree;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.*;
 import org.noear.solon.core.handle.UploadedFile;
@@ -253,16 +253,6 @@ public class SysUserController extends BaseController {
         userService.checkUserDataScope(userId);
         userService.insertUserAuth(userId, roleIds);
         return R.ok();
-    }
-
-    /**
-     * 获取部门树列表
-     */
-    @Get
-    @Mapping("/deptTree" )
-    @SaCheckPermission("system:user:list" )
-    public R<List<MapTree<Long>>> deptTree(SysDeptQuery dept) {
-        return R.ok(deptService.selectDeptTreeList(dept));
     }
 
     /**

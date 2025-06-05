@@ -56,7 +56,7 @@ public class SysDept extends TenantEntity {
      * 显示顺序
      */
     @AutoColumn(comment = "显示顺序")
-    private Long orderNum;
+    private Integer orderNum;
     /**
      * 负责人
      */

@@ -1,7 +1,9 @@
 package com.jimuqu.system.service.impl;
 
+import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
+import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.vo.SysUserVo;
 import com.jimuqu.system.mapper.SysUserMapper;
@@ -141,6 +143,10 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Override
     public List<SysUserVo> selectUserListByDept(Long deptId) {
-        return List.of();
+        return QueryChain.of(sysUserMapper)
+                .select(SysUser.class)
+                .eq(SysUser::getDeptId, deptId)
+                .orderBy(SysUser::getId)
+                .returnType(SysUserVo.class).list();
     }
 }
