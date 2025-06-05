@@ -1,25 +1,26 @@
 package com.jimuqu.system.domain.bo;
 
 import com.jimuqu.common.core.constant.UserConstants;
+import com.jimuqu.common.core.validate.group.AddGroup;
+import com.jimuqu.common.core.validate.group.UpdateGroup;
 import com.jimuqu.common.mybatis.core.entity.BoBaseEntity;
 import com.jimuqu.system.domain.SysRole;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.noear.solon.validation.annotation.Length;
-import org.noear.solon.validation.annotation.NotBlank;
-import org.noear.solon.validation.annotation.NotNull;
-
+import lombok.experimental.Accessors;
+import org.noear.solon.validation.annotation.*;
 
 /**
  * 角色信息业务对象 sys_role
  *
- * @author Michelle.Chung
+ * @author chengliang4810
+ * @since 2025-06-05
  */
-
 @Data
 @NoArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = SysRole.class, reverseConvertGenerate = false)
 public class SysRoleBo extends BoBaseEntity {
@@ -27,48 +28,41 @@ public class SysRoleBo extends BoBaseEntity {
     /**
      * 角色ID
      */
-    private Long roleId;
-
+    @NotNull(message = "角色ID不能为空", groups = { UpdateGroup.class })
+    private Long id;
     /**
      * 角色名称
      */
-    @NotBlank(message = "角色名称不能为空")
     @Length(min = 0, max = 30, message = "角色名称长度不能超过{max}个字符")
+    @NotBlank(message = "角色名称不能为空", groups = { AddGroup.class, UpdateGroup.class })
     private String roleName;
-
     /**
      * 角色权限字符串
      */
-    @NotBlank(message = "角色权限字符串不能为空")
     @Length(min = 0, max = 100, message = "权限字符长度不能超过{max}个字符")
+    @NotBlank(message = "角色权限字符串不能为空", groups = { AddGroup.class, UpdateGroup.class })
     private String roleKey;
-
     /**
      * 显示顺序
      */
-    @NotNull(message = "显示顺序不能为空")
+    @NotNull(message = "显示顺序不能为空", groups = { AddGroup.class, UpdateGroup.class })
     private Integer roleSort;
-
     /**
-     * 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）
+     * 数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限 5：仅本人数据权限 6：部门及以下或本人数据权限）
      */
     private String dataScope;
-
     /**
      * 菜单树选择项是否关联显示
      */
     private Boolean menuCheckStrictly;
-
     /**
      * 部门树选择项是否关联显示
      */
     private Boolean deptCheckStrictly;
-
     /**
      * 角色状态（0正常 1停用）
      */
     private String status;
-
     /**
      * 备注
      */
@@ -84,12 +78,12 @@ public class SysRoleBo extends BoBaseEntity {
      */
     private Long[] deptIds;
 
-    public SysRoleBo(Long roleId) {
-        this.roleId = roleId;
+    public SysRoleBo(Long id) {
+        this.id = id;
     }
 
     public boolean isSuperAdmin() {
-        return UserConstants.SUPER_ADMIN_ID.equals(this.roleId);
+        return UserConstants.SUPER_ADMIN_ID.equals(this.id);
     }
 
 }

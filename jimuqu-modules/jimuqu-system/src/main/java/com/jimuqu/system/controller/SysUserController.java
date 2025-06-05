@@ -17,21 +17,24 @@ import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.common.web.core.BaseController;
-import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.query.SysPostQuery;
+import com.jimuqu.system.domain.query.SysRoleQuery;
 import com.jimuqu.system.domain.query.SysUserQuery;
 import com.jimuqu.system.domain.vo.SysRoleVo;
 import com.jimuqu.system.domain.vo.SysUserInfoVo;
 import com.jimuqu.system.domain.vo.SysUserVo;
 import com.jimuqu.system.domain.vo.UserInfoVo;
-import com.jimuqu.system.service.ISysRoleService;
 import com.jimuqu.system.service.SysDeptService;
 import com.jimuqu.system.service.SysPostService;
+import com.jimuqu.system.service.SysRoleService;
 import com.jimuqu.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import org.dromara.hutool.core.util.ObjUtil;
-import org.noear.solon.annotation.*;
+import org.noear.solon.annotation.Controller;
+import org.noear.solon.annotation.Get;
+import org.noear.solon.annotation.Mapping;
+import org.noear.solon.annotation.Post;
 import org.noear.solon.validation.annotation.NoRepeatSubmit;
 import org.noear.solon.validation.annotation.NotEmpty;
 import org.noear.solon.validation.annotation.NotNull;
@@ -52,7 +55,7 @@ import java.util.List;
 public class SysUserController extends BaseController {
 
     private final SysUserService sysUserService;
-    private final ISysRoleService roleService;
+    private final SysRoleService roleService;
     private final SysPostService postService;
     private final SysDeptService deptService;
 
@@ -87,9 +90,9 @@ public class SysUserController extends BaseController {
     public SysUserInfoVo getInfoById(Long userId) {
         sysUserService.checkUserDataScope(userId);
         SysUserInfoVo userInfoVo = new SysUserInfoVo();
-        SysRoleBo roleBo = new SysRoleBo();
+        SysRoleQuery roleBo = new SysRoleQuery();
         roleBo.setStatus(UserConstants.ROLE_NORMAL);
-        List<SysRoleVo> roles = roleService.selectRoleList(roleBo);
+        List<SysRoleVo> roles = roleService.queryList(roleBo);
         userInfoVo.setRoles(LoginHelper.isSuperAdmin(userId) ? roles : StreamUtil.filter(roles, r -> !r.isSuperAdmin()));
         userInfoVo.setPosts(postService.queryList(new SysPostQuery().setStatus(UserConstants.POST_NORMAL)));
         if (ObjectUtil.isNotNull(userId)) {
