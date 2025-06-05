@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 import org.noear.solon.validation.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户信息业务对象 sys_user
@@ -99,12 +100,12 @@ public class SysUserBo extends BoBaseEntity {
      * 角色组
      */
     @Size(min = 1, message = "用户角色不能为空")
-    private Long[] roleIds;
+    private List<Long> roleIds;
 
     /**
      * 岗位组
      */
-    private Long[] postIds;
+    private List<Long> postIds;
 
     /**
      * 数据权限 当前角色ID

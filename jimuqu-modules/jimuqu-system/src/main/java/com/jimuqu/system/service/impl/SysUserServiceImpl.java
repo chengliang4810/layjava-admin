@@ -1,9 +1,12 @@
 package com.jimuqu.system.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
+import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
+import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.query.SysUserQuery;
@@ -233,7 +236,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public boolean updateUserStatus(Long userId, String status) {
-        return false;
+        return sysUserMapper.update(new SysUser().setId(userId).setStatus(status)) > 0;
     }
 
     /**
@@ -245,7 +248,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public boolean updateUserAvatar(Long userId, Long avatar) {
-        return false;
+        return sysUserMapper.update(new SysUser().setId(userId).setAvatar(avatar)) > 0;
     }
 
     /**
@@ -257,7 +260,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public boolean resetUserPwd(Long userId, String password) {
-        return false;
+        return sysUserMapper.update(new SysUser().setId(userId).setPassword(password)) > 0;
     }
 
     /**
@@ -268,7 +271,10 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public boolean checkUserNameUnique(SysUserBo user) {
-        return false;
+        return !sysUserMapper.exists(where -> where
+                .eq(SysUser::getUserName, user.getUserName())
+                .ne(ObjectUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
+        );
     }
 
     /**
@@ -279,7 +285,10 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public boolean checkPhoneUnique(SysUserBo user) {
-        return false;
+        return !sysUserMapper.exists(where -> where
+                .eq(SysUser::getPhonenumber, user.getPhonenumber())
+                .ne(ObjectUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
+        );
     }
 
     /**
@@ -290,7 +299,10 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public boolean checkEmailUnique(SysUserBo user) {
-        return false;
+        return !sysUserMapper.exists(where -> where
+                .eq(SysUser::getEmail, user.getEmail())
+                .ne(ObjectUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
+        );
     }
 
     /**
@@ -300,7 +312,9 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public void checkUserAllowed(Long userId) {
-
+        if (ObjectUtil.isNotNull(userId) && LoginHelper.isSuperAdmin(userId)) {
+            throw new ServiceException("不允许操作超级管理员用户");
+        }
     }
 
     /**
@@ -310,6 +324,14 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public void checkUserDataScope(Long userId) {
-
+        if (ObjectUtil.isNull(userId)) {
+            return;
+        }
+        if (LoginHelper.isSuperAdmin()) {
+            return;
+        }
+        if (ObjectUtil.isNull(sysUserMapper.selectUserById(userId))) {
+            throw new ServiceException("没有权限访问用户数据！");
+        }
     }
 }
