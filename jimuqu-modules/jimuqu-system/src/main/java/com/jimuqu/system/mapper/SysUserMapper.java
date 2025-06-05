@@ -11,15 +11,17 @@ import com.jimuqu.system.domain.SysRole;
 import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.vo.SysUserVo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 
 /**
- * 用户表 数据层
- *
- * @author Lion Li,chengliang4810
+ * 用户信息数据层
+ * @author chengliang4810
+ * @since 2025-06-05
  */
+@Mapper
 public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
     default Page<SysUserVo> selectPageUserList(PageQuery pageQuery, Where queryWrapper) {

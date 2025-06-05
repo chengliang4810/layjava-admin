@@ -8,17 +8,15 @@ import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.web.core.BaseController;
 import com.jimuqu.system.domain.SysUserRole;
-import com.jimuqu.system.domain.bo.SysDeptBo;
 import com.jimuqu.system.domain.bo.SysRoleBo;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.query.SysDeptQuery;
 import com.jimuqu.system.domain.vo.DeptTreeSelectVo;
 import com.jimuqu.system.domain.vo.SysRoleVo;
 import com.jimuqu.system.domain.vo.SysUserVo;
-import com.jimuqu.system.service.ISysDeptService;
 import com.jimuqu.system.service.ISysRoleService;
-import com.jimuqu.system.service.ISysUserService;
 import com.jimuqu.system.service.SysDeptService;
+import com.jimuqu.system.service.SysUserService;
 import org.noear.solon.annotation.*;
 
 import java.util.List;
@@ -35,7 +33,7 @@ public class SysRoleController extends BaseController {
     @Inject
     private ISysRoleService roleService;
     @Inject
-    private ISysUserService userService;
+    private SysUserService userService;
     @Inject
     private SysDeptService deptService;
 

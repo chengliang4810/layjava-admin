@@ -15,7 +15,7 @@ import com.jimuqu.common.web.config.properties.CaptchaProperties;
 import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.mapper.SysUserMapper;
-import com.jimuqu.system.service.ISysUserService;
+import com.jimuqu.system.service.SysUserService;
 import org.noear.solon.annotation.Component;
 import org.noear.solon.annotation.Inject;
 import org.noear.solon.core.event.EventBus;
@@ -32,7 +32,7 @@ import org.noear.solon.data.cache.CacheService;
 public class SysRegisterService {
 
     @Inject
-    private ISysUserService userService;
+    private SysUserService userService;
     @Inject
     private CacheService cacheService;
     @Inject
@@ -62,7 +62,7 @@ public class SysRegisterService {
 
         boolean exist = userMapper.exists(Where.create()
                         .eq(SysUser::getUserName, sysUser.getUserName())
-                        .ne(SysUser::getId, sysUser.getUserId())
+                        .ne(SysUser::getId, sysUser.getId())
         );
         if (exist) {
             throw new UserException("保存用户 {} 失败，注册账号已存在", username);

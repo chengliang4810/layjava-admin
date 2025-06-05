@@ -8,19 +8,22 @@ import com.jimuqu.system.domain.SysRole;
 import com.jimuqu.system.domain.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-
 /**
- * 用户信息视图对象 sys_user
- *
- * @author Michelle.Chung
+ * 用户信息视图对象
+ * @author chengliang4810
+ * @since 2025-06-05
  */
 @Data
+@FieldNameConstants
+@Accessors(chain = true)
 @ResultEntity(SysUser.class)
 @AutoMapper(target = SysUser.class)
 public class SysUserVo implements Serializable {
@@ -32,75 +35,58 @@ public class SysUserVo implements Serializable {
      * 用户ID
      */
     private Long id;
-
     /**
      * 租户ID
      */
     private String tenantId;
-
     /**
      * 部门ID
      */
     private Long deptId;
-
     /**
      * 用户账号
      */
     private String userName;
-
     /**
      * 用户昵称
      */
     private String nickName;
-
     /**
      * 用户类型（sys_user系统用户）
      */
     private String userType;
-
     /**
      * 用户邮箱
      */
-    // @Sensitive(strategy = SensitiveStrategy.EMAIL)
     private String email;
-
     /**
      * 手机号码
      */
-    // @Sensitive(strategy = SensitiveStrategy.PHONE)
     private String phonenumber;
-
     /**
      * 用户性别（0男 1女 2未知）
      */
     private String sex;
-
     /**
      * 头像地址
      */
-    // @Transactionslation(type = TransConstant.OSS_ID_TO_URL)
     private Long avatar;
-
     /**
      * 密码
      */
-    private transient String password;
-
+    private String password;
     /**
      * 帐号状态（0正常 1停用）
      */
     private String status;
-
     /**
      * 最后登录IP
      */
     private String loginIp;
-
     /**
      * 最后登录时间
      */
     private Date loginDate;
-
     /**
      * 备注
      */

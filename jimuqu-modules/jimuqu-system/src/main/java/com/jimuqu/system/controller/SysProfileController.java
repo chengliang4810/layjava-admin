@@ -14,7 +14,7 @@ import com.jimuqu.system.domain.bo.SysUserProfileBo;
 import com.jimuqu.system.domain.vo.AvatarVo;
 import com.jimuqu.system.domain.vo.ProfileVo;
 import com.jimuqu.system.domain.vo.SysUserVo;
-import com.jimuqu.system.service.ISysUserService;
+import com.jimuqu.system.service.SysUserService;
 import org.dromara.hutool.core.bean.BeanUtil;
 import org.dromara.hutool.core.io.file.FileNameUtil;
 import org.noear.solon.annotation.*;
@@ -33,7 +33,7 @@ import java.util.Arrays;
 public class SysProfileController extends BaseController {
 
     @Inject
-    private ISysUserService userService;
+    private SysUserService userService;
 
     /**
      * 个人信息
@@ -41,7 +41,7 @@ public class SysProfileController extends BaseController {
     @Get
     @Mapping
     public R<ProfileVo> profile() {
-        SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
+        SysUserVo user = userService.queryById(LoginHelper.getUserId());
         ProfileVo profileVo = new ProfileVo();
         profileVo.setUser(user);
         profileVo.setRoleGroup(userService.selectUserRoleGroup(user.getUserName()));
@@ -64,7 +64,7 @@ public class SysProfileController extends BaseController {
         if (StringUtil.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
             return R.fail("修改用户'" + username + "'失败，邮箱账号已存在" );
         }
-        user.setUserId(LoginHelper.getUserId());
+        user.setId(LoginHelper.getUserId());
         if (userService.updateUserProfile(user) > 0) {
             return R.ok();
         }
@@ -81,7 +81,7 @@ public class SysProfileController extends BaseController {
     @Put
     @Mapping("/updatePwd" )
     public R<Void> updatePwd(SysUserPasswordBo bo) {
-        SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
+        SysUserVo user = userService.queryById(LoginHelper.getUserId());
         String password = user.getPassword();
         if (!BCrypt.checkpw(bo.getOldPassword(), password)) {
             return R.fail("修改密码失败，旧密码错误" );

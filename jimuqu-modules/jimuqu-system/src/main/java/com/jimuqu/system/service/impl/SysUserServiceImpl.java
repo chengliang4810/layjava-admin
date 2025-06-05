@@ -1,146 +1,198 @@
 package com.jimuqu.system.service.impl;
 
 import cn.xbatis.core.sql.executor.chain.QueryChain;
+import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.bo.SysUserBo;
+import com.jimuqu.system.domain.query.SysUserQuery;
 import com.jimuqu.system.domain.vo.SysUserVo;
+import com.jimuqu.system.mapper.SysDeptMapper;
 import com.jimuqu.system.mapper.SysUserMapper;
-import com.jimuqu.system.service.ISysUserService;
+import com.jimuqu.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 
+import java.util.Collection;
 import java.util.List;
 
+
+/**
+ * 用户信息Service业务层处理
+ *
+ * @author chengliang4810
+ * @since 2025-06-05
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SysUserServiceImpl implements ISysUserService {
+public class SysUserServiceImpl implements SysUserService {
 
     private final SysUserMapper sysUserMapper;
-
+    private final SysDeptMapper sysDeptMapper;
+    /**
+     * 查询用户信息
+     */
     @Override
-    public Page<SysUserVo> selectPageUserList(SysUserBo user, PageQuery pageQuery) {
-        return null;
+    public SysUserVo queryById(Long id) {
+        return sysUserMapper.getVoById(id);
     }
 
+    /**
+     * 查询用户信息分页列表
+     */
     @Override
-    public List<SysUserVo> selectUserList(SysUserBo user) {
-        return List.of();
+    public Page<SysUserVo> queryPageList(SysUserQuery query, PageQuery pageQuery) {
+        return buildQueryChain(query)
+                .select(SysUser.class)
+                .returnType(SysUserVo.class)
+                .paging(pageQuery.build());
     }
 
+    /**
+     * 查询用户信息列表
+     */
     @Override
-    public Page<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery) {
-        return null;
+    public List<SysUserVo> queryList(SysUserQuery query) {
+        QueryChain<SysUser> queryChain = buildQueryChain(query);
+        return queryChain.returnType(SysUserVo.class).list();
     }
 
-    @Override
-    public Page<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery) {
-        return null;
+    /**
+     * 构建查询条件
+     * @param query 查询对象
+     * @return 查询条件对象
+     */
+    private QueryChain<SysUser> buildQueryChain(SysUserQuery query) {
+        QueryChain<SysUser> queryChain = QueryChain.of(sysUserMapper)
+                .forSearch(true)
+                .where(query);
+
+        if (ObjUtil.isNotNull(query.getDeptId())) {
+            List<Long> deptIdList = sysDeptMapper.selectListByParentId(query.getDeptId());
+            deptIdList.add(query.getDeptId());
+            queryChain.in(SysUser::getDeptId, deptIdList);
+        }
+
+        return queryChain;
     }
 
+    /**
+     * 新增用户信息
+     */
     @Override
-    public SysUserVo selectUserByUserName(String userName) {
-        return null;
+    public Boolean insertByBo(SysUserBo bo) {
+        SysUser sysUser = MapstructUtil.convert(bo, SysUser.class);
+        boolean flag = sysUserMapper.save(sysUser) > 0;
+        bo.setId(sysUser.getId());
+        return flag;
     }
 
+    /**
+     * 修改用户信息
+     */
     @Override
-    public SysUserVo selectUserByPhonenumber(String phonenumber) {
-        return null;
+    public Boolean updateByBo(SysUserBo bo) {
+        SysUser sysUser = MapstructUtil.convert(bo, SysUser.class);
+        return sysUserMapper.update(sysUser) > 0;
     }
 
-    @Override
-    public SysUserVo selectUserById(Long userId) {
-        return sysUserMapper.selectUserById(userId);
-    }
-
-    @Override
-    public String selectUserRoleGroup(String userName) {
-        return "";
-    }
-
-    @Override
-    public String selectUserPostGroup(String userName) {
-        return "";
-    }
-
-    @Override
-    public boolean checkUserNameUnique(SysUserBo user) {
-        return false;
-    }
-
-    @Override
-    public boolean checkPhoneUnique(SysUserBo user) {
-        return false;
-    }
-
-    @Override
-    public boolean checkEmailUnique(SysUserBo user) {
-        return false;
-    }
-
-    @Override
-    public void checkUserAllowed(Long userId) {
-
-    }
-
-    @Override
-    public void checkUserDataScope(Long userId) {
-
-    }
-
-    @Override
-    public int insertUser(SysUserBo user) {
-        return 0;
-    }
-
-    @Override
-    public boolean registerUser(SysUserBo user) {
-        return false;
-    }
-
-    @Override
-    public int updateUser(SysUserBo user) {
-        return 0;
-    }
-
-    @Override
-    public void insertUserAuth(Long userId, Long[] roleIds) {
-
-    }
-
-    @Override
-    public boolean updateUserStatus(Long userId, String status) {
-        return false;
-    }
-
+    /**
+     * 修改用户基本信息
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
     @Override
     public int updateUserProfile(SysUserBo user) {
         return 0;
     }
 
+    /**
+     * 批量删除用户信息
+     */
     @Override
-    public boolean updateUserAvatar(Long userId, Long avatar) {
-        return false;
+    public Integer deleteByIds(Collection<Long> ids) {
+        return sysUserMapper.deleteByIds(ids);
     }
 
+    /**
+     * 通过用户名查询用户
+     *
+     * @param userName 用户名
+     * @return 用户对象信息
+     */
     @Override
-    public boolean resetUserPwd(Long userId, String password) {
-        return false;
+    public SysUserVo selectUserByUserName(String userName) {
+        return null;
     }
 
+    /**
+     * 通过手机号查询用户
+     *
+     * @param phonenumber 手机号
+     * @return 用户对象信息
+     */
     @Override
-    public int deleteUserById(Long userId) {
-        return 0;
+    public SysUserVo selectUserByPhonenumber(String phonenumber) {
+        return null;
     }
 
+    /**
+     * 根据用户ID查询用户所属角色组
+     *
+     * @param userName 用户名
+     * @return 结果
+     */
     @Override
-    public int deleteUserByIds(Long[] userIds) {
-        return 0;
+    public String selectUserRoleGroup(String userName) {
+        return "";
     }
 
+    /**
+     * 根据用户ID查询用户所属岗位组
+     *
+     * @param userName 用户名
+     * @return 结果
+     */
+    @Override
+    public String selectUserPostGroup(String userName) {
+        return "";
+    }
+
+    /**
+     * 根据条件分页查询已分配用户角色列表
+     *
+     * @param user      用户信息
+     * @param pageQuery
+     * @return 用户信息集合信息
+     */
+    @Override
+    public Page<SysUserVo> selectAllocatedList(SysUserBo user, PageQuery pageQuery) {
+        return null;
+    }
+
+    /**
+     * 根据条件分页查询未分配用户角色列表
+     *
+     * @param user      用户信息
+     * @param pageQuery
+     * @return 用户信息集合信息
+     */
+    @Override
+    public Page<SysUserVo> selectUnallocatedList(SysUserBo user, PageQuery pageQuery) {
+        return null;
+    }
+
+    /**
+     * 通过部门id查询当前部门所有用户
+     *
+     * @param deptId 部门id
+     * @return {@link List }<{@link SysUserVo }> 用户信息列表
+     */
     @Override
     public List<SysUserVo> selectUserListByDept(Long deptId) {
         return QueryChain.of(sysUserMapper)
@@ -148,5 +200,116 @@ public class SysUserServiceImpl implements ISysUserService {
                 .eq(SysUser::getDeptId, deptId)
                 .orderBy(SysUser::getId)
                 .returnType(SysUserVo.class).list();
+    }
+
+    /**
+     * 注册用户信息
+     *
+     * @param bo 用户信息
+     * @return 结果
+     */
+    @Override
+    public boolean registerUser(SysUserBo bo) {
+        return false;
+    }
+
+    /**
+     * 用户授权角色
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色组
+     */
+    @Override
+    public void insertUserAuth(Long userId, Long[] roleIds) {
+
+    }
+
+    /**
+     * 修改用户状态
+     *
+     * @param userId 用户ID
+     * @param status 帐号状态
+     * @return 结果
+     */
+    @Override
+    public boolean updateUserStatus(Long userId, String status) {
+        return false;
+    }
+
+    /**
+     * 修改用户头像
+     *
+     * @param userId 用户ID
+     * @param avatar 头像地址
+     * @return 结果
+     */
+    @Override
+    public boolean updateUserAvatar(Long userId, Long avatar) {
+        return false;
+    }
+
+    /**
+     * 重置用户密码
+     *
+     * @param userId   用户ID
+     * @param password 密码
+     * @return 结果
+     */
+    @Override
+    public boolean resetUserPwd(Long userId, String password) {
+        return false;
+    }
+
+    /**
+     * 校验用户名称是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    @Override
+    public boolean checkUserNameUnique(SysUserBo user) {
+        return false;
+    }
+
+    /**
+     * 校验手机号码是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    @Override
+    public boolean checkPhoneUnique(SysUserBo user) {
+        return false;
+    }
+
+    /**
+     * 校验email是否唯一
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    @Override
+    public boolean checkEmailUnique(SysUserBo user) {
+        return false;
+    }
+
+    /**
+     * 校验用户是否允许操作
+     *
+     * @param userId 用户ID
+     */
+    @Override
+    public void checkUserAllowed(Long userId) {
+
+    }
+
+    /**
+     * 校验用户是否有数据权限
+     *
+     * @param userId 用户id
+     */
+    @Override
+    public void checkUserDataScope(Long userId) {
+
     }
 }
