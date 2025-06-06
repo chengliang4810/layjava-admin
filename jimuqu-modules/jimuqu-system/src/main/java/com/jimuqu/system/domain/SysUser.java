@@ -56,9 +56,9 @@ public class SysUser extends TenantEntity {
     @AutoColumn(comment = "用户昵称", length = 30)
     private String nickName;
     /**
-     * 用户类型（sys_user系统用户）
+     * 用户类型（pc_user系统用户）
      */
-    @AutoColumn(comment = "用户类型（sys_user系统用户）", length = 10, defaultValue = "sys_user")
+    @AutoColumn(comment = "用户类型（pc_user系统用户）", length = 10, defaultValue = "pc_user")
     private String userType;
     /**
      * 用户邮箱
