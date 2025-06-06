@@ -132,7 +132,7 @@ public class SysMenuController extends BaseController {
             return R.fail("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在" );
         } else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtil.isHttp(menu.getPath())) {
             return R.fail("修改菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头" );
-        } else if (menu.getMenuId().equals(menu.getParentId())) {
+        } else if (menu.getId().equals(menu.getParentId())) {
             return R.fail("修改菜单'" + menu.getMenuName() + "'失败，上级菜单不能选择自己" );
         }
         return toAjax(menuService.updateMenu(menu));

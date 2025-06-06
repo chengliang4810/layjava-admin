@@ -13,99 +13,110 @@ import com.jimuqu.common.core.utils.StringUtil;
 import com.jimuqu.common.mybatis.core.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 import me.zhyd.oauth.utils.StringUtils;
+import org.dromara.autotable.annotation.AutoColumn;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 菜单权限表 sys_menu
- *
- * @author Lion Li,chengliang4810
+ * 菜单权限
+ * @author chengliang4810
+ * @since 2025-06-06
  */
-
 @Data
-@Table("sys_menu")
+@Table("menu")
+@NoArgsConstructor
 @FieldNameConstants
+@Accessors(chain = true)
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Ignores({SysMenu.Fields.parentName, SysMenu.Fields.children})
 public class SysMenu extends BaseEntity {
 
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     /**
-     * 主键
+     * 菜单ID
      */
     @TableId(value = IdAutoType.GENERATOR, generatorName = IdentifierGeneratorType.DEFAULT)
-    protected Long id;
-
+    @AutoColumn(comment = "菜单ID")
+    private Long id;
     /**
      * 父菜单ID
      */
+    @AutoColumn(comment = "父菜单ID", defaultValue = "0")
     private Long parentId;
-
     /**
      * 菜单名称
      */
+    @AutoColumn(comment = "菜单名称", length = 50)
     private String menuName;
-
     /**
      * 显示顺序
      */
+    @AutoColumn(comment = "显示顺序", defaultValue = "0")
     private Integer orderNum;
-
     /**
      * 路由地址
      */
+    @AutoColumn(comment = "路由地址", length = 200)
     private String path;
-
     /**
      * 组件路径
      */
+    @AutoColumn(comment = "组件路径", length = 255)
     private String component;
-
     /**
      * 路由参数
      */
+    @AutoColumn(comment = "路由参数", length = 255)
     private String queryParam;
-
     /**
      * 是否为外链（0是 1否）
      */
+    @AutoColumn(comment = "是否为外链（0是 1否）", defaultValue = "1")
     private String isFrame;
-
     /**
      * 是否缓存（0缓存 1不缓存）
      */
+    @AutoColumn(comment = "是否缓存（0缓存 1不缓存）", defaultValue = "0")
     private String isCache;
-
     /**
-     * 类型（M目录 C菜单 F按钮）
+     * 菜单类型（M目录 C菜单 F按钮）
      */
+    @AutoColumn(comment = "菜单类型（M目录 C菜单 F按钮）", length = 1)
     private String menuType;
-
     /**
      * 显示状态（0显示 1隐藏）
      */
+    @AutoColumn(comment = "显示状态（0显示 1隐藏）", length = 1, defaultValue = "0")
     private String visible;
-
     /**
      * 菜单状态（0正常 1停用）
      */
+    @AutoColumn(comment = "菜单状态（0正常 1停用）", length = 1, defaultValue = "0")
     private String status;
-
     /**
-     * 权限字符串
+     * 权限标识
      */
+    @AutoColumn(comment = "权限标识", length = 100)
     private String perms;
-
     /**
      * 菜单图标
      */
+    @AutoColumn(comment = "菜单图标", length = 100, defaultValue = "#")
     private String icon;
-
     /**
      * 备注
      */
+    @AutoColumn(comment = "备注", length = 500)
     private String remark;
 
     /**
@@ -124,9 +135,7 @@ public class SysMenu extends BaseEntity {
     public static String innerLinkReplaceEach(String path) {
         path = StringUtil.removeAll(path, Constants.HTTP, Constants.HTTPS, Constants.WWW);
         path = StringUtil.replace(path,StrPool.COLON , StrPool.SLASH);
-        path = StringUtil.replace(path,StrPool.DOT , StrPool.SLASH);
-//        return  StringUtil.replace(path, new String[]{Constants.HTTP, Constants.HTTPS, Constants.WWW, ".", ":"},
-//                new String[]{"", "", "", "/", "/"});
+        path = StringUtil.replace(path, StrPool.DOT , StrPool.SLASH);
         return path;
     }
 
