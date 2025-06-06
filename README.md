@@ -9,6 +9,7 @@
 <br>
 ![GitHub Repo stars](https://img.shields.io/github/stars/chengliang4810/jimuqu-admin)
 [![star](https://gitee.com/opensolon/jimuqu-admin/badge/star.svg?theme=dark)](https://gitee.com/opensolon/jimuqu-admin/stargazers)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/chengliang4810/layjava-admin)
 
 
 #### 介绍
