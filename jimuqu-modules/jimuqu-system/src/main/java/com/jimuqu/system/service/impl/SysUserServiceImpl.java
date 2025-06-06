@@ -12,6 +12,7 @@ import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.query.SysUserQuery;
 import com.jimuqu.system.domain.vo.SysUserVo;
 import com.jimuqu.system.mapper.SysDeptMapper;
+import com.jimuqu.system.mapper.SysRoleMapper;
 import com.jimuqu.system.mapper.SysUserMapper;
 import com.jimuqu.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +37,19 @@ public class SysUserServiceImpl implements SysUserService {
 
     private final SysUserMapper sysUserMapper;
     private final SysDeptMapper sysDeptMapper;
+    private final SysRoleMapper sysRoleMapper;
+
     /**
      * 查询用户信息
      */
     @Override
     public SysUserVo queryById(Long id) {
-        return sysUserMapper.getVoById(id);
+        SysUserVo userVo = sysUserMapper.getVoById(id);
+        if (ObjUtil.isNull(userVo)) {
+            return null;
+        }
+        userVo.setRoles(sysRoleMapper.selectRolesByUserId(id));
+        return userVo;
     }
 
     /**
@@ -66,6 +74,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     /**
      * 构建查询条件
+     *
      * @param query 查询对象
      * @return 查询条件对象
      */
