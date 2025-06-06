@@ -1,16 +1,19 @@
 package com.jimuqu.system.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.constant.UserConstants;
+import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.core.utils.StreamUtil;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.system.domain.SysMenu;
 import com.jimuqu.system.domain.bo.SysMenuBo;
+import com.jimuqu.system.domain.query.SysMenuQuery;
 import com.jimuqu.system.domain.vo.MetaVo;
 import com.jimuqu.system.domain.vo.RouterVo;
 import com.jimuqu.system.domain.vo.SysMenuVo;
 import com.jimuqu.system.mapper.SysMenuMapper;
-import com.jimuqu.system.service.ISysMenuService;
+import com.jimuqu.system.service.SysMenuService;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,54 +25,154 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * 菜单权限Service业务层处理
+ *
+ * @author chengliang4810
+ * @since 2025-06-06
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SysMenuServiceImpl implements ISysMenuService {
+public class SysMenuServiceImpl implements SysMenuService {
 
-    private final SysMenuMapper menuMapper;
+    private final SysMenuMapper sysMenuMapper;
 
+    /**
+     * 查询菜单权限
+     */
     @Override
-    public List<SysMenuVo> selectMenuList(Long userId) {
+    public SysMenuVo queryById(Long id) {
+        return sysMenuMapper.getVoById(id);
+    }
+
+    /**
+     * 查询菜单权限列表
+     */
+    @Override
+    public List<SysMenuVo> queryList(SysMenuQuery query, Long userId) {
+        QueryChain<SysMenu> queryChain = buildQueryChain(query);
+        return queryChain.returnType(SysMenuVo.class).list();
+    }
+
+    /**
+     * 构建查询条件
+     * @param query 查询对象
+     * @return 查询条件对象
+     */
+    private QueryChain<SysMenu> buildQueryChain(SysMenuQuery query) {
+        return QueryChain.of(sysMenuMapper)
+                .forSearch(true)
+                .where(query);
+    }
+
+    /**
+     * 新增菜单权限
+     */
+    @Override
+    public Boolean insertByBo(SysMenuBo bo) {
+        SysMenu sysMenu = MapstructUtil.convert(bo, SysMenu.class);
+        boolean flag = sysMenuMapper.save(sysMenu) > 0;
+        bo.setId(sysMenu.getId());
+        return flag;
+    }
+
+    /**
+     * 修改菜单权限
+     */
+    @Override
+    public Boolean updateByBo(SysMenuBo bo) {
+        SysMenu sysMenu = MapstructUtil.convert(bo, SysMenu.class);
+        return sysMenuMapper.update(sysMenu) > 0;
+    }
+
+    /**
+     * 批量删除菜单权限
+     */
+    @Override
+    public Integer deleteById(Long id) {
+        return sysMenuMapper.deleteById(id);
+    }
+
+    /**
+     * 根据用户查询系统菜单列表
+     *
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
+    @Override
+    public List<SysMenuVo> queryList(Long userId) {
         return List.of();
     }
 
+    /**
+     * 根据用户ID查询权限
+     *
+     * @param userId 用户ID
+     * @return 权限列表
+     */
     @Override
-    public List<SysMenuVo> selectMenuList(SysMenuBo menu, Long userId) {
-        return List.of();
-    }
-
-    @Override
-    public Set<String> selectMenuPermsByUserId(Long userId) {
+    public Set<String> queryMenuPermsByUserId(Long userId) {
         return Set.of();
     }
 
+    /**
+     * 根据角色ID查询权限
+     *
+     * @param roleId 角色ID
+     * @return 权限列表
+     */
     @Override
-    public Set<String> selectMenuPermsByRoleId(Long roleId) {
+    public Set<String> queryMenuPermsByRoleId(Long roleId) {
         return Set.of();
     }
 
+    /**
+     * 根据用户ID查询菜单树信息
+     *
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
     @Override
-    public List<SysMenu> selectMenuTreeByUserId(Long userId) {
+    public List<SysMenu> queryMenuTreeByUserId(Long userId) {
         List<SysMenu> menus;
         if (LoginHelper.isSuperAdmin(userId)) {
-            menus = menuMapper.selectMenuAll();
+            menus = sysMenuMapper.selectMenuAll();
         } else {
-            menus = menuMapper.selectMenuByUserId(userId);
+            menus = sysMenuMapper.selectMenuByUserId(userId);
         }
         return getChildPerms(menus, 0);
     }
 
+    /**
+     * 根据用户ID查询菜单信息
+     *
+     * @param userId 用户ID
+     * @return 菜单列表
+     */
     @Override
-    public List<SysMenu> selectMenuByUserId(Long userId) {
+    public List<SysMenu> queryMenuByUserId(Long userId) {
         return List.of();
     }
 
+    /**
+     * 根据角色ID查询菜单树信息
+     *
+     * @param roleId 角色ID
+     * @return 选中菜单列表
+     */
     @Override
-    public List<Long> selectMenuListByRoleId(Long roleId) {
+    public List<Long> queryMenuListByRoleId(Long roleId) {
         return List.of();
     }
 
+    /**
+     * 构建前端路由所需要的菜单
+     *
+     * @param menus 菜单列表
+     * @return 路由列表
+     */
     @Override
     public List<RouterVo> buildMenus(List<SysMenu> menus) {
         List<RouterVo> routers = new LinkedList<>();
@@ -115,41 +218,45 @@ public class SysMenuServiceImpl implements ISysMenuService {
         return routers;
     }
 
+    /**
+     * 构建前端所需要下拉树结构
+     *
+     * @param menus 菜单列表
+     * @return 下拉树结构列表
+     */
     @Override
     public List<MapTree<Long>> buildMenuTreeSelect(List<SysMenuVo> menus) {
         return List.of();
     }
 
-    @Override
-    public SysMenuVo selectMenuById(Long menuId) {
-        return null;
-    }
-
+    /**
+     * 是否存在菜单子节点
+     *
+     * @param menuId 菜单ID
+     * @return 结果 true 存在 false 不存在
+     */
     @Override
     public boolean hasChildByMenuId(Long menuId) {
         return false;
     }
 
+    /**
+     * 查询菜单是否存在角色
+     *
+     * @param menuId 菜单ID
+     * @return 结果 true 存在 false 不存在
+     */
     @Override
     public boolean checkMenuExistRole(Long menuId) {
         return false;
     }
 
-    @Override
-    public int insertMenu(SysMenuBo bo) {
-        return 0;
-    }
-
-    @Override
-    public int updateMenu(SysMenuBo bo) {
-        return 0;
-    }
-
-    @Override
-    public int deleteMenuById(Long menuId) {
-        return 0;
-    }
-
+    /**
+     * 校验菜单名称是否唯一
+     *
+     * @param menu 菜单信息
+     * @return 结果
+     */
     @Override
     public boolean checkMenuNameUnique(SysMenuBo menu) {
         return false;

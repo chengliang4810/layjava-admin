@@ -5,15 +5,17 @@ import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.system.domain.*;
 import com.jimuqu.system.domain.vo.SysMenuVo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * 菜单表 数据层
- *
- * @author Lion Li,chengliang4810
+ * 菜单权限数据层
+ * @author chengliang4810
+ * @since 2025-06-06
  */
+@Mapper
 public interface SysMenuMapper extends BaseMapperPlus<SysMenu, SysMenuVo> {
 
     /**
