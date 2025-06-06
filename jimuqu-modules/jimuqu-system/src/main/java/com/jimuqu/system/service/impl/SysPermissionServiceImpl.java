@@ -12,7 +12,7 @@ public class SysPermissionServiceImpl implements ISysPermissionService {
 
     @Override
     public Set<String> getRolePermission(Long userId) {
-        return Set.of("root");
+        return Set.of("superadmin");
     }
 
     @Override

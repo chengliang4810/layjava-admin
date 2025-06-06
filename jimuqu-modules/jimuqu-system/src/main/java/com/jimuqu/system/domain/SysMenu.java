@@ -30,7 +30,7 @@ import java.util.List;
  * @since 2025-06-06
  */
 @Data
-@Table("menu")
+@Table("sys_menu")
 @NoArgsConstructor
 @FieldNameConstants
 @Accessors(chain = true)
