@@ -9,7 +9,7 @@
 <br>
 ![GitHub Repo stars](https://img.shields.io/github/stars/chengliang4810/jimuqu-admin)
 [![star](https://gitee.com/opensolon/jimuqu-admin/badge/star.svg?theme=dark)](https://gitee.com/opensolon/jimuqu-admin/stargazers)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/chengliang4810/layjava-admin)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/chengliang4810/jimuqu-admin)
 
 
 #### 介绍
@@ -19,6 +19,8 @@ jimuqu-admin 是基于solon的管理系统，
 活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
 
 > 文档地址: [https://doc.jimuqu.com](https://doc.jimuqu.com)
+
+> deepwiki文档地址: [https://deepwiki.com/chengliang4810/jimuqu-admin](https://deepwiki.com/chengliang4810/jimuqu-admin)
 
 > 演示系统: [https://admin.jimuqu.com](https://admin.jimuqu.com)
 
