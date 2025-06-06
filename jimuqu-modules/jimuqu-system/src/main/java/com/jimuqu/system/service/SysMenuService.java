@@ -102,10 +102,10 @@ public interface SysMenuService {
     /**
      * 是否存在菜单子节点
      *
-     * @param menuId 菜单ID
+     * @param menuIdList 菜单ID
      * @return 结果 true 存在 false 不存在
      */
-    boolean hasChildByMenuId(Long menuId);
+    boolean hasChildByMenuId(List<Long> menuIdList);
 
     /**
      * 查询菜单是否存在角色
@@ -134,10 +134,10 @@ public interface SysMenuService {
     /**
      * 删除代码生成模板信息
      *
-     * @param menuId 菜单ID
+     * @param menuIdList 菜单ID
      * @return {@link Integer } 删除成功条数
      */
-    Integer deleteById(Long menuId);
+    Integer deleteById(List<Long> menuIdList);
 
     /**
      * 校验菜单名称是否唯一

@@ -140,20 +140,17 @@ public class SysMenuController extends BaseController {
     /**
      * 删除菜单权限
      */
-    @Mapping("/delete/{id}")
+    @Mapping("/delete/{ids}")
     @SaCheckPermission("system:menu:delete")
     @SaCheckRole(TenantConstants.SUPER_ADMIN_ROLE_KEY)
     @Log(title = "删除菜单权限", businessType = BusinessType.DELETE)
-    public R<Void> delete(@NotEmpty(message = "主键不能为空") Long id) {
-        if (sysMenuService.hasChildByMenuId(id)) {
-            return R.fail("存在子菜单,不允许删除" );
+    public R<Integer> delete(@NotEmpty(message = "主键不能为空") List<Long> ids) {
+        if (sysMenuService.hasChildByMenuId(ids)) {
+            return R.warn("存在子菜单,不允许删除");
         }
-        if (sysMenuService.checkMenuExistRole(id)) {
-            return R.fail("菜单已分配,不允许删除" );
-        }
-        Integer num = sysMenuService.deleteById(id);
+        Integer num = sysMenuService.deleteById(ids);
         Assert.gtZero(num, "删除菜单权限失败");
-        return R.ok();
+        return R.ok(num);
     }
 
 }

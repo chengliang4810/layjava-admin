@@ -7,18 +7,21 @@ import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.core.utils.StreamUtil;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.system.domain.SysMenu;
+import com.jimuqu.system.domain.SysRoleMenu;
 import com.jimuqu.system.domain.bo.SysMenuBo;
 import com.jimuqu.system.domain.query.SysMenuQuery;
 import com.jimuqu.system.domain.vo.MetaVo;
 import com.jimuqu.system.domain.vo.RouterVo;
 import com.jimuqu.system.domain.vo.SysMenuVo;
 import com.jimuqu.system.mapper.SysMenuMapper;
+import com.jimuqu.system.mapper.SysRoleMenuMapper;
 import com.jimuqu.system.service.SysMenuService;
 import jodd.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.tree.MapTree;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.data.annotation.Transaction;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -38,6 +41,7 @@ import java.util.Set;
 public class SysMenuServiceImpl implements SysMenuService {
 
     private final SysMenuMapper sysMenuMapper;
+    private final SysRoleMenuMapper sysRoleMenuMapper;
 
     /**
      * 查询菜单权限
@@ -64,7 +68,9 @@ public class SysMenuServiceImpl implements SysMenuService {
     private QueryChain<SysMenu> buildQueryChain(SysMenuQuery query) {
         return QueryChain.of(sysMenuMapper)
                 .forSearch(true)
-                .where(query);
+                .where(query)
+                .orderBy(SysMenu::getParentId, SysMenu::getOrderNum)
+                ;
     }
 
     /**
@@ -88,11 +94,17 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     /**
-     * 批量删除菜单权限
+     * 删除代码生成模板信息
+     *
+     * @param menuIdList 菜单ID
+     * @return {@link Integer } 删除成功条数
      */
     @Override
-    public Integer deleteById(Long id) {
-        return sysMenuMapper.deleteById(id);
+    @Transaction
+    public Integer deleteById(List<Long> menuIdList) {
+        int num = sysMenuMapper.deleteByIds(menuIdList);
+        sysRoleMenuMapper.deleteByMenuIds(menuIdList);
+        return num;
     }
 
     /**
@@ -232,12 +244,12 @@ public class SysMenuServiceImpl implements SysMenuService {
     /**
      * 是否存在菜单子节点
      *
-     * @param menuId 菜单ID
+     * @param menuIdList 菜单ID
      * @return 结果 true 存在 false 不存在
      */
     @Override
-    public boolean hasChildByMenuId(Long menuId) {
-        return false;
+    public boolean hasChildByMenuId(List<Long> menuIdList) {
+        return sysMenuMapper.exists(where -> where.in(SysMenu::getParentId, menuIdList).notIn(SysMenu::getId, menuIdList));
     }
 
     /**
@@ -248,7 +260,7 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public boolean checkMenuExistRole(Long menuId) {
-        return false;
+        return sysRoleMenuMapper.exists(where -> where.eq(SysRoleMenu::getMenuId, menuId));
     }
 
     /**
@@ -259,7 +271,11 @@ public class SysMenuServiceImpl implements SysMenuService {
      */
     @Override
     public boolean checkMenuNameUnique(SysMenuBo menu) {
-        return false;
+        return !sysMenuMapper.exists(where -> where
+                .eq(SysMenu::getMenuName, menu.getMenuName())
+                .eq(SysMenu::getParentId, menu.getParentId())
+                .ne(menu.getId() != null, SysMenu::getId, menu.getId())
+        );
     }
 
     /**
