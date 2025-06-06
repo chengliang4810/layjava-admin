@@ -21,6 +21,26 @@ jimuqu-admin 是基于solon的管理系统，
 
 > 演示系统: [https://admin.jimuqu.com](https://admin.jimuqu.com)
 
+
+#### 主要技术栈
+
+| 技术名                  | 作用                                                                 | 特点                                                                 |
+|-------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------|
+| **Solon**              | Java 轻量级应用框架（IoC容器、Web开发等）                            | 国产、高性能、低延时（类似 Spring Boot 但更轻量）                    |
+| **Hutool**             | Java 工具库（集合/日期/IO/加密等工具）                               | 国产、简化代码、功能全面                                             |
+| **Sa-Token**           | 权限认证框架（登录/鉴权/会话管理）                                   | 国产、轻量级、支持分布式会话                                         |
+| **Xbatis**             | MyBatis 增强工具（简化 CRUD 操作）                                   | 兼容 MyBatis、动态 SQL 支持                                          |
+| **AutoTable**          | 数据库表结构自动维护（根据实体类生成/更新表）                        | 国产、支持多数据库（MySQL/SQLite）                                   |
+| **EasyExcel**          | Excel 导入导出工具                                                  | 阿里开源、避免 OOM（大文件处理）                                     |
+| **JustAuth**           | 第三方登录集成（微信/钉钉/GitHub 等）                                | 国产、支持 20+ 平台                                                 |
+| **ip2region**          | 离线 IP 地址定位                                                    | 数据本地化、毫秒级查询                                               |
+| **MapStruct Plus**     | 对象转换工具（DTO/Entity 互转）                                     | 基于 MapStruct、零反射、高性能                                       |
+| **Lombok**             | 代码简化（自动生成 getter/setter 等）                               | 减少样板代码                                                         |
+| **HikariCP**           | JDBC 连接池                                                         | 高性能、轻量级（默认 Spring Boot 连接池）                            |
+| **TransmittableThreadLocal** | 线程间上下文传递（线程池场景）                                      | 阿里开源、解决异步线程上下文丢失                                     |
+| **SQLite**             | 嵌入式数据库                                                         | 轻量级、零配置、单文件存储                                           |
+| **Beetl/Velocity**     | 模板引擎（代码生成/页面渲染）                                       | Beetl 国产高性能，Velocity 老牌稳定                                 |
+
 ## 功能列表
 
 | 业务                                  | 功能说明 |
@@ -51,4 +71,3 @@ jimuqu-admin 是基于solon的管理系统，
 ![img.png](docs/images/img_3.png)
 ![img.png](docs/images/img_4.png)
 ![img.png](docs/images/img_5.png)
-
