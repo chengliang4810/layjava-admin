@@ -45,7 +45,7 @@
         <anyline.version>8.7.2-jdk17-20250520</anyline.version>
         <velocity.version>2.3</velocity.version>
         <beetl.version>3.19.0.RELEASE</beetl.version>
-        <sa-token.version>1.43.0</sa-token.version>
+        <sa-token.version>1.44.0</sa-token.version>
         <!-- excel -->
         <alibaba-ttl.version>2.14.4</alibaba-ttl.version>
         <easyexcel.version>4.0.2</easyexcel.version>
@@ -97,6 +97,15 @@
                 <groupId>org.dromara.hutool</groupId>
                 <artifactId>hutool-bom</artifactId>
                 <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- sa-token 的依赖配置-->
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-bom</artifactId>
+                <version>${sa-token.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -158,29 +167,6 @@
                 <groupId>org.lionsoul</groupId>
                 <artifactId>ip2region</artifactId>
                 <version>${ip2region.version}</version>
-            </dependency>
-
-            <!-- sa-token -->
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-solon-plugin</artifactId>
-                <version>${sa-token.version}</version>
-            </dependency>
-            <!-- sa-token redisson依赖, 使用redis时加入。 -->
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-snack3</artifactId>
-                <version>${sa-token.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-jackson</artifactId>
-                <version>${sa-token.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-redisson</artifactId>
-                <version>${sa-token.version}</version>
             </dependency>
 
             <!-- 持久层框架 -->
