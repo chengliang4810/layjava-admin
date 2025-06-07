@@ -25,8 +25,8 @@ public class P6SpyLogger implements MessageFormattingStrategy {
      */
     @Override
     public String formatMessage(int connectionId, String now, long elapsed, String category, String prepared, String sql, String url) {
-        return StrUtil.isNotBlank(sql) ? " Consume Time：" + elapsed + " ms " + now +
-                "\n Execute SQL：" + sql.replaceAll("[\\s]+", " ") + "\n" : "";
+        return StrUtil.isNotBlank(sql) ? " Execute SQL：" + sql.replaceAll("[\\s]+", " ") + "\n" +
+                " Consume Time：" + elapsed + " ms " + now + "\n": "";
     }
 
 }
