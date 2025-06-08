@@ -58,7 +58,7 @@ public class CustomAutoTableMetadataAdapter implements AutoTableMetadataAdapter 
      * @return boolean
      */
     @Override
-    public boolean isIgnoreField(Field field, Class<?> clazz) {
+    public Boolean isIgnoreField(Field field, Class<?> clazz) {
         Ignore ignore = AnnotatedElementUtilsPlus.findDeepMergedAnnotation(field, Ignore.class);
         if (ignore != null) {
             return true;
@@ -80,7 +80,7 @@ public class CustomAutoTableMetadataAdapter implements AutoTableMetadataAdapter 
      * @return boolean
      */
     @Override
-    public boolean isPrimary(Field field, Class<?> clazz) {
+    public Boolean isPrimary(Field field, Class<?> clazz) {
         // 通过TableId判断是否为主键
         if (AnnotatedElementUtilsPlus.findDeepMergedAnnotation(field, TableId.class) != null) {
             return true;
@@ -97,7 +97,7 @@ public class CustomAutoTableMetadataAdapter implements AutoTableMetadataAdapter 
      * @return boolean
      */
     @Override
-    public boolean isAutoIncrement(Field field, Class<?> clazz) {
+    public Boolean isAutoIncrement(Field field, Class<?> clazz) {
 
         if (!isPrimary(field, clazz)) {
             return false;
