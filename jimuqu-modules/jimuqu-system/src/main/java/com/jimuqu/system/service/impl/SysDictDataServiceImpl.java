@@ -6,14 +6,14 @@ import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.system.domain.SysDictData;
 import com.jimuqu.system.domain.bo.SysDictDataBo;
-import com.jimuqu.system.domain.vo.SysDictDataVo;
 import com.jimuqu.system.domain.query.SysDictDataQuery;
+import com.jimuqu.system.domain.vo.SysDictDataVo;
 import com.jimuqu.system.mapper.SysDictDataMapper;
 import com.jimuqu.system.service.SysDictDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.text.StrUtil;
 import org.noear.solon.annotation.Component;
 
 import java.util.Collection;

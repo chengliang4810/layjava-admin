@@ -58,12 +58,13 @@
         <dependency>
             <groupId>org.dromara.autotable</groupId>
             <artifactId>auto-table-solon-plugin</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>cn.hutool</groupId>
-                    <artifactId>hutool-core</artifactId>
-                </exclusion>
-            </exclusions>
+<!--            无法排除该依赖，会导致插件启动异常-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>cn.hutool</groupId>-->
+<!--                    <artifactId>hutool-core</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
         </dependency>
 
         <dependency>
