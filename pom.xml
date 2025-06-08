@@ -31,7 +31,7 @@
 
         <!-- 通用 -->
         <lombok.version>1.18.34</lombok.version>
-        <hutool.version>6.0.0-M20</hutool.version>
+        <hutool.version>6.0.0-M21</hutool.version>
         <commons-lang3.version>3.12.0</commons-lang3.version>
         <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
 
@@ -41,7 +41,7 @@
         <hikaricp.version>4.0.3</hikaricp.version>
         <therapi-javadoc.version>0.15.0</therapi-javadoc.version>
         <autotable.version>2.4.1</autotable.version>
-        <xbatis.version>1.8.8-M1</xbatis.version>
+        <xbatis.version>1.8.8</xbatis.version>
         <anyline.version>8.7.2-jdk17-20250520</anyline.version>
         <velocity.version>2.3</velocity.version>
         <beetl.version>3.19.0.RELEASE</beetl.version>
