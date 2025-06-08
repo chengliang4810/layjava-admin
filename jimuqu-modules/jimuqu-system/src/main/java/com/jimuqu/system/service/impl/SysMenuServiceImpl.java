@@ -1,6 +1,5 @@
 package com.jimuqu.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.core.utils.MapstructUtil;

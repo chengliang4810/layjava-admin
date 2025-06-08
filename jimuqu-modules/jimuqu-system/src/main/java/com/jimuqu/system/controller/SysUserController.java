@@ -2,7 +2,6 @@ package com.jimuqu.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.BCrypt;
-import cn.hutool.core.util.ObjectUtil;
 import com.jimuqu.common.core.checker.Assert;
 import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.core.domain.R;
@@ -95,7 +94,7 @@ public class SysUserController extends BaseController {
         List<SysRoleVo> roles = roleService.queryList(roleBo);
         userInfoVo.setRoles(LoginHelper.isSuperAdmin(userId) ? roles : StreamUtil.filter(roles, r -> !r.isSuperAdmin()));
         userInfoVo.setPosts(postService.queryList(new SysPostQuery().setStatus(UserConstants.POST_NORMAL)));
-        if (ObjectUtil.isNotNull(userId)) {
+        if (ObjUtil.isNotNull(userId)) {
             SysUserVo sysUser = sysUserService.queryById(userId);
             List<Long> roleIds = StreamUtil.toList(sysUser.getRoles(), SysRoleVo::getId);
             sysUser.setRoleIds(roleIds);

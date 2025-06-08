@@ -1,14 +1,11 @@
 package com.jimuqu.system.service.impl;
 
-import cn.hutool.core.util.ObjUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.utils.MapstructUtil;
 import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.system.domain.SysPost;
-import com.jimuqu.system.domain.SysUser;
 import com.jimuqu.system.domain.SysUserPost;
 import com.jimuqu.system.domain.bo.SysPostBo;
 import com.jimuqu.system.domain.query.SysPostQuery;
@@ -19,6 +16,7 @@ import com.jimuqu.system.service.SysPostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 
 import java.util.Collection;
@@ -143,7 +141,7 @@ public class SysPostServiceImpl implements SysPostService {
     public boolean checkPostNameUnique(SysPostBo post) {
         boolean exists = sysPostMapper.exists(Where.create(SysPost.class)
                 .eq(SysPost::getPostName, post.getPostName())
-                .ne(ObjectUtil.isNotNull(post.getPostId()), SysPost::getPostId, post.getPostId()));
+                .ne(ObjUtil.isNotNull(post.getPostId()), SysPost::getPostId, post.getPostId()));
         return !exists;
     }
 
@@ -157,7 +155,7 @@ public class SysPostServiceImpl implements SysPostService {
     public boolean checkPostCodeUnique(SysPostBo post) {
         boolean exists = sysPostMapper.exists(Where.create(SysPost.class)
                 .eq(SysPost::getPostCode, post.getPostCode())
-                .ne(ObjectUtil.isNotNull(post.getPostId()), SysPost::getPostId, post.getPostId()));
+                .ne(ObjUtil.isNotNull(post.getPostId()), SysPost::getPostId, post.getPostId()));
         return !exists;
     }
 

@@ -58,6 +58,12 @@
         <dependency>
             <groupId>org.dromara.autotable</groupId>
             <artifactId>auto-table-solon-plugin</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>cn.hutool</groupId>
+                    <artifactId>hutool-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

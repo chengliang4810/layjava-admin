@@ -1,7 +1,5 @@
 package com.jimuqu.common.mybatis.autotable.adapter;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
 import cn.xbatis.db.IdAutoType;
 import cn.xbatis.db.annotations.Ignore;
 import cn.xbatis.db.annotations.Ignores;
@@ -12,6 +10,8 @@ import org.dromara.autotable.annotation.ColumnType;
 import org.dromara.autotable.annotation.enums.DefaultValueEnum;
 import org.dromara.autotable.core.AutoTableMetadataAdapter;
 import org.dromara.autotable.solon.util.AnnotatedElementUtilsPlus;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.map.MapUtil;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * 自定义自动表元数据适配器
  *
  * @author chengliang
- * @date 2025/05/21
+ * @since 2025/05/21
  */
 public class CustomAutoTableMetadataAdapter implements AutoTableMetadataAdapter {
 

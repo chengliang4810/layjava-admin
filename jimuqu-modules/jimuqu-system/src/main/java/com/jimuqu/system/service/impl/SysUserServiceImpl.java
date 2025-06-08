@@ -1,6 +1,5 @@
 package com.jimuqu.system.service.impl;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.MapstructUtil;
@@ -282,7 +281,7 @@ public class SysUserServiceImpl implements SysUserService {
     public boolean checkUserNameUnique(SysUserBo user) {
         return !sysUserMapper.exists(where -> where
                 .eq(SysUser::getUserName, user.getUserName())
-                .ne(ObjectUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
+                .ne(ObjUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
         );
     }
 
@@ -296,7 +295,7 @@ public class SysUserServiceImpl implements SysUserService {
     public boolean checkPhoneUnique(SysUserBo user) {
         return !sysUserMapper.exists(where -> where
                 .eq(SysUser::getPhonenumber, user.getPhonenumber())
-                .ne(ObjectUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
+                .ne(ObjUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
         );
     }
 
@@ -310,7 +309,7 @@ public class SysUserServiceImpl implements SysUserService {
     public boolean checkEmailUnique(SysUserBo user) {
         return !sysUserMapper.exists(where -> where
                 .eq(SysUser::getEmail, user.getEmail())
-                .ne(ObjectUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
+                .ne(ObjUtil.isNotNull(user.getId()), SysUser::getId, user.getId())
         );
     }
 
@@ -321,7 +320,7 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public void checkUserAllowed(Long userId) {
-        if (ObjectUtil.isNotNull(userId) && LoginHelper.isSuperAdmin(userId)) {
+        if (ObjUtil.isNotNull(userId) && LoginHelper.isSuperAdmin(userId)) {
             throw new ServiceException("不允许操作超级管理员用户");
         }
     }
@@ -333,13 +332,13 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Override
     public void checkUserDataScope(Long userId) {
-        if (ObjectUtil.isNull(userId)) {
+        if (ObjUtil.isNull(userId)) {
             return;
         }
         if (LoginHelper.isSuperAdmin()) {
             return;
         }
-        if (ObjectUtil.isNull(sysUserMapper.selectUserById(userId))) {
+        if (ObjUtil.isNull(sysUserMapper.selectUserById(userId))) {
             throw new ServiceException("没有权限访问用户数据！");
         }
     }

@@ -1,7 +1,5 @@
 package com.jimuqu.system.domain;
 
-import cn.hutool.core.lang.Validator;
-import cn.hutool.core.text.StrPool;
 import cn.xbatis.core.incrementer.IdentifierGeneratorType;
 import cn.xbatis.db.IdAutoType;
 import cn.xbatis.db.annotations.Ignores;
@@ -19,6 +17,8 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 import me.zhyd.oauth.utils.StringUtils;
 import org.dromara.autotable.annotation.AutoColumn;
+import org.dromara.hutool.core.lang.Validator;
+import org.dromara.hutool.core.text.StrPool;
 
 import java.io.Serial;
 import java.util.ArrayList;
@@ -134,7 +134,7 @@ public class SysMenu extends BaseEntity {
      */
     public static String innerLinkReplaceEach(String path) {
         path = StringUtil.removeAll(path, Constants.HTTP, Constants.HTTPS, Constants.WWW);
-        path = StringUtil.replace(path,StrPool.COLON , StrPool.SLASH);
+        path = StringUtil.replace(path, StrPool.COLON , StrPool.SLASH);
         path = StringUtil.replace(path, StrPool.DOT , StrPool.SLASH);
         return path;
     }

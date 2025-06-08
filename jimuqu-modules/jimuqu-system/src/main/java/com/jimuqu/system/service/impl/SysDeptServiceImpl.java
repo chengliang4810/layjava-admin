@@ -1,7 +1,5 @@
 package com.jimuqu.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
 import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.MapstructUtil;
@@ -20,10 +18,13 @@ import com.jimuqu.system.mapper.SysUserMapper;
 import com.jimuqu.system.service.SysDeptService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.collection.CollUtil;
+import org.dromara.hutool.core.collection.ListUtil;
 import org.dromara.hutool.core.tree.MapTree;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -142,14 +143,14 @@ public class SysDeptServiceImpl implements SysDeptService {
     @Override
     public List<MapTree<Long>> buildDeptTreeSelect(List<SysDeptVo> deptVoList) {
         if (CollUtil.isEmpty(deptVoList)) {
-            return CollUtil.newArrayList();
+            return ListUtil.zero();
         }
         // 获取当前列表中每一个节点的parentId，然后在列表中查找是否有id与其parentId对应，若无对应，则表明此时节点列表中，该节点在当前列表中属于顶级节点
-        List<MapTree<Long>> treeList = CollUtil.newArrayList();
+        List<MapTree<Long>> treeList = new ArrayList<>();
         for (SysDeptVo d : deptVoList) {
             Long parentId = d.getParentId();
             SysDeptVo sysDeptVo = StreamUtil.findFirst(deptVoList, it -> it.getId().longValue() == parentId);
-            if (ObjectUtil.isNull(sysDeptVo)) {
+            if (ObjUtil.isNull(sysDeptVo)) {
                 List<MapTree<Long>> trees = TreeBuildUtil.build(deptVoList, parentId, (dept, tree) ->
                         tree.setId(dept.getId())
                                 .setParentId(dept.getParentId())
@@ -222,7 +223,7 @@ public class SysDeptServiceImpl implements SysDeptService {
         boolean exist = sysDeptMapper.exists(where -> where
                 .eq(SysDept::getDeptName, deptQuery.getDeptName())
                 .eq(SysDept::getParentId, deptQuery.getParentId())
-                .ne(ObjectUtil.isNotNull(deptQuery.getId()), SysDept::getId, deptQuery.getId()));
+                .ne(ObjUtil.isNotNull(deptQuery.getId()), SysDept::getId, deptQuery.getId()));
         return !exist;
     }
 
@@ -233,7 +234,7 @@ public class SysDeptServiceImpl implements SysDeptService {
      */
     @Override
     public void checkDeptDataScope(Long deptId) {
-        if (ObjectUtil.isNull(deptId)) {
+        if (ObjUtil.isNull(deptId)) {
             return;
         }
         if (LoginHelper.isSuperAdmin()) {

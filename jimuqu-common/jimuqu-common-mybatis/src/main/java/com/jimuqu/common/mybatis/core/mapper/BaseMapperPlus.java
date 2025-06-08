@@ -1,6 +1,5 @@
 package com.jimuqu.common.mybatis.core.mapper;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.xbatis.core.mybatis.mapper.MybatisMapper;
 import cn.xbatis.core.sql.executor.Where;
 import com.jimuqu.common.core.utils.MapstructUtil;
@@ -8,6 +7,7 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.collection.ListUtil;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.core.util.GenericUtil;
 
 import java.io.Serializable;
@@ -64,7 +64,7 @@ public interface BaseMapperPlus<T, V> extends MybatisMapper<T> {
      */
     default  <C, ID extends Serializable> C getById(ID id, Class<C> voClass) {
         T obj = this.getById(id);
-        if (ObjectUtil.isNull(obj)) {
+        if (ObjUtil.isNull(obj)) {
             return null;
         }
         return MapstructUtil.convert(obj, voClass);
