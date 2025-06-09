@@ -7,12 +7,13 @@ import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.system.domain.SysRole;
 import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.bo.SysRoleBo;
-import com.jimuqu.system.domain.vo.SysRoleVo;
 import com.jimuqu.system.domain.query.SysRoleQuery;
+import com.jimuqu.system.domain.vo.SysRoleVo;
 import com.jimuqu.system.mapper.SysRoleMapper;
 import com.jimuqu.system.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
 
 import java.util.Collection;
@@ -150,8 +151,12 @@ public class SysRoleServiceImpl implements SysRoleService {
      */
     @Override
     public boolean checkRoleNameUnique(SysRoleBo role) {
-        return false;
+        return !sysRoleMapper.exists(where -> where
+                .eq(SysRole::getRoleName, role.getRoleName())
+                .ne(ObjUtil.isNotNull(role.getId()), SysRole::getId, role.getId())
+        );
     }
+
 
     /**
      * 校验角色权限是否唯一
@@ -161,7 +166,10 @@ public class SysRoleServiceImpl implements SysRoleService {
      */
     @Override
     public boolean checkRoleKeyUnique(SysRoleBo role) {
-        return false;
+        return !sysRoleMapper.exists(where -> where
+                .eq(SysRole::getRoleKey, role.getRoleKey())
+                .ne(ObjUtil.isNotNull(role.getId()), SysRole::getId, role.getId())
+        );
     }
 
     /**
