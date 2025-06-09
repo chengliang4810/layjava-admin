@@ -25,7 +25,7 @@ public class TimeConsumingInterceptor implements RouterInterceptor {
             return;
         }
 
-        System.err.println(StrUtil.format("开始请求[{}] ,请求方式:[{}], 参数: [{}], Body: [{}]\n", action.fullName(), ctx.method(), ctx.paramMap().toValuesMap(), ctx.body()));
+        System.err.println(StrUtil.format("开始请求[{}] ,请求方式:[{}], 参数: [{}], Body: [{}]", action.fullName(), ctx.method(), ctx.paramMap().toValuesMap(), ctx.body()));
 
         // 开始计时
         long startTime = System.currentTimeMillis();
@@ -35,7 +35,7 @@ public class TimeConsumingInterceptor implements RouterInterceptor {
             // 计算执行时间
             long executionTime = System.currentTimeMillis() - startTime;
             // 输出执行时间
-            System.err.println(StrUtil.format("结束请求[{}] ,耗时:[{}ms]", action.fullName(), executionTime));
+            System.err.println(StrUtil.format("结束请求[{}] ,耗时:[{}ms]\n", action.fullName(), executionTime));
         }
     }
 
