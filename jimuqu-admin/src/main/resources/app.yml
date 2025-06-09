@@ -45,7 +45,6 @@ security:
   # 排除路径
   excludes:
     - /
-    - version
     # 登录
     - /auth/login
 

@@ -1,6 +1,6 @@
 package com.jimuqu;
 
-import com.jimuqu.domain.LayJavaVersion;
+import com.jimuqu.domain.SystemVersion;
 import org.dromara.autotable.solon.annotation.EnableAutoTable;
 import org.noear.solon.Solon;
 import org.noear.solon.annotation.Controller;
@@ -28,9 +28,9 @@ public class Application {
      * @return 版本号
      */
     @Get
-    @Mapping("/version")
-    public LayJavaVersion version(){
-        return LayJavaVersion.builder()
+    @Mapping
+    public SystemVersion version(){
+        return SystemVersion.builder()
                 .name("LayJava-Admin开源管理系统")
                 .version(Solon.cfg().get("solon.app.version"))
                 .build();

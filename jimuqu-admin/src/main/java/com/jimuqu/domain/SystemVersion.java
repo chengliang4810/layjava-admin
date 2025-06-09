@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @Builder
-public class LayJavaVersion implements Serializable {
+public class SystemVersion implements Serializable {
 
     /**
      * 名称
