@@ -19,7 +19,7 @@ solon:
 # 线上环境支持外部配置
 ---
 solon.env.on: prod
-solon.config.add: "./app.yml,./app-prod.yml"
+solon.config.add: "./app.yml"
 ---
 
 # 批量加载内部配置
