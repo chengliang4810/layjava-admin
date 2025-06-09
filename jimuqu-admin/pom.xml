@@ -6,12 +6,12 @@
 
     <parent>
         <groupId>com.jimuqu</groupId>
-        <artifactId>jimuqu-admin</artifactId>
+        <artifactId>jimuqu</artifactId>
         <version>${revision}</version>
     </parent>
 
 
-    <artifactId>jimuqu-starter</artifactId>
+    <artifactId>jimuqu-admin</artifactId>
     <packaging>jar</packaging>
 
     <description>

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jimuqu</groupId>
-    <artifactId>jimuqu-admin</artifactId>
+    <artifactId>jimuqu</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
@@ -17,7 +17,7 @@
     </parent>
 
     <modules>
-        <module>jimuqu-starter</module>
+        <module>jimuqu-admin</module>
         <module>jimuqu-common</module>
         <module>jimuqu-modules</module>
     </modules>
