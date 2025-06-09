@@ -56,7 +56,8 @@
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
+        <!-- 打包后jar的名称 -->
+        <finalName>${project.parent.artifactId}</finalName>
         <plugins>
             <!-- 配置打包插件（并打包成胖包） -->
             <plugin>
