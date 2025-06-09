@@ -31,7 +31,8 @@
 
         <!-- 通用 -->
         <lombok.version>1.18.34</lombok.version>
-        <hutool.version>6.0.0-M21</hutool.version>
+        <hutool.version>5.8.38</hutool.version>
+        <hutool6.version>6.0.0-M21</hutool6.version>
         <mapstruct-plus.version>1.4.3</mapstruct-plus.version>
 
         <!-- 数据源 -->
@@ -91,11 +92,20 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <!-- 注意这里是import -->
+                <scope>import</scope>
+            </dependency>
+
             <!-- hutool 的依赖配置-->
             <dependency>
                 <groupId>org.dromara.hutool</groupId>
                 <artifactId>hutool-bom</artifactId>
-                <version>${hutool.version}</version>
+                <version>${hutool6.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
