@@ -220,6 +220,10 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     @Transaction
     public Integer deleteByIds(Collection<Long> ids) {
+        for (Long userId : ids) {
+            checkUserAllowed(userId);
+            checkUserDataScope(userId);
+        }
         sysUserRoleMapper.delete(where -> where.in(SysUserRole::getUserId, ids));
         sysUserPostMapper.delete(where -> where.in(SysUserPost::getUserId, ids));
         int num = sysUserMapper.deleteByIds(ids);
@@ -435,8 +439,9 @@ public class SysUserServiceImpl implements SysUserService {
         if (LoginHelper.isSuperAdmin()) {
             return;
         }
-        if (ObjUtil.isNull(sysUserMapper.selectUserById(userId))) {
-            throw new ServiceException("没有权限访问用户数据！");
-        }
+        // TODO 数据权限
+//        if (ObjUtil.isNull(sysUserMapper.selectUserById(userId))) {
+//            throw new ServiceException("没有权限访问用户数据！");
+//        }
     }
 }
