@@ -1,24 +1,30 @@
 package com.jimuqu.system.service.impl;
 
 import cn.xbatis.core.sql.executor.chain.QueryChain;
+import com.jimuqu.common.core.checker.Assert;
+import com.jimuqu.common.core.constant.UserConstants;
 import com.jimuqu.common.core.exception.ServiceException;
 import com.jimuqu.common.core.utils.MapstructUtil;
+import com.jimuqu.common.core.utils.StreamUtil;
 import com.jimuqu.common.mybatis.core.Page;
 import com.jimuqu.common.mybatis.core.page.PageQuery;
 import com.jimuqu.common.satoken.utils.LoginHelper;
 import com.jimuqu.system.domain.SysUser;
+import com.jimuqu.system.domain.SysUserPost;
+import com.jimuqu.system.domain.SysUserRole;
 import com.jimuqu.system.domain.bo.SysUserBo;
 import com.jimuqu.system.domain.query.SysUserQuery;
 import com.jimuqu.system.domain.vo.SysUserVo;
-import com.jimuqu.system.mapper.SysDeptMapper;
-import com.jimuqu.system.mapper.SysRoleMapper;
-import com.jimuqu.system.mapper.SysUserMapper;
+import com.jimuqu.system.mapper.*;
 import com.jimuqu.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.dromara.hutool.core.collection.CollUtil;
 import org.dromara.hutool.core.util.ObjUtil;
 import org.noear.solon.annotation.Component;
+import org.noear.solon.data.annotation.Transaction;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +43,8 @@ public class SysUserServiceImpl implements SysUserService {
     private final SysUserMapper sysUserMapper;
     private final SysDeptMapper sysDeptMapper;
     private final SysRoleMapper sysRoleMapper;
+    private final SysUserPostMapper sysUserPostMapper;
+    private final SysUserRoleMapper sysUserRoleMapper;
 
     /**
      * 查询用户信息
@@ -95,10 +103,15 @@ public class SysUserServiceImpl implements SysUserService {
      * 新增用户信息
      */
     @Override
+    @Transaction
     public Boolean insertByBo(SysUserBo bo) {
         SysUser sysUser = MapstructUtil.convert(bo, SysUser.class);
         boolean flag = sysUserMapper.save(sysUser) > 0;
         bo.setId(sysUser.getId());
+        // 新增用户岗位关联
+        insertUserPost(bo, false);
+        // 新增用户与角色管理
+        insertUserRole(bo, false);
         return flag;
     }
 
@@ -106,9 +119,17 @@ public class SysUserServiceImpl implements SysUserService {
      * 修改用户信息
      */
     @Override
+    @Transaction
     public Boolean updateByBo(SysUserBo bo) {
+        // 新增用户与角色管理
+        insertUserRole(bo, true);
+        // 新增用户与岗位管理
+        insertUserPost(bo, true);
         SysUser sysUser = MapstructUtil.convert(bo, SysUser.class);
-        return sysUserMapper.update(sysUser) > 0;
+
+        int num = sysUserMapper.update(sysUser);
+        Assert.gtZero(num, "删除用户失败");
+        return num > 0;
     }
 
     /**
@@ -123,11 +144,87 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     /**
+     * 新增用户岗位信息
+     *
+     * @param user  用户对象
+     * @param clear 清除已存在的关联数据
+     */
+    private void insertUserPost(SysUserBo user, boolean clear) {
+        List<Long> postIds = user.getPostIds();
+        if (CollUtil.isEmpty(postIds)) {
+            return;
+        }
+        if (clear) {
+            // 删除用户与岗位关联
+            sysUserPostMapper.delete(where -> where.eq(SysUserPost::getUserId, user.getId()));
+        }
+        // 新增用户与岗位管理
+        List<SysUserPost> sysUserPostList = StreamUtil.toList(postIds, postId -> {
+            SysUserPost up = new SysUserPost();
+            up.setUserId(user.getId());
+            up.setPostId(postId);
+            return up;
+        });
+        sysUserPostMapper.saveBatch(sysUserPostList);
+    }
+
+    /**
+     * 新增用户角色信息
+     *
+     * @param user  用户对象
+     * @param clear 清除已存在的关联数据
+     */
+    private void insertUserRole(SysUserBo user, boolean clear) {
+        this.insertUserRole(user.getId(), user.getRoleIds(), clear);
+    }
+
+    /**
+     * 新增用户角色信息
+     *
+     * @param userId  用户ID
+     * @param roleIds 角色组
+     * @param clear   清除已存在的关联数据
+     */
+    private void insertUserRole(Long userId, List<Long> roleIds, boolean clear) {
+        if (CollUtil.isEmpty(roleIds)) {
+            return;
+        }
+        List<Long> roleList = new ArrayList<>(roleIds);
+        if (!LoginHelper.isSuperAdmin(userId)) {
+            roleList.remove(UserConstants.SUPER_ADMIN_ID);
+        }
+        // TODO 判断是否具有此角色的操作权限
+//            List<SysRoleVo> roles = roleMapper.selectRoleList(
+//                    new QueryWrapper<SysRole>().in("r.role_id", roleList));
+//            if (CollUtil.isEmpty(roles)) {
+//                throw new ServiceException("没有权限访问角色的数据");
+//            }
+        if (clear) {
+            // 删除用户与角色关联
+            sysUserRoleMapper.delete(where -> where.eq(SysUserRole::getUserId, userId));
+        }
+        // 新增用户与角色管理
+        List<SysUserRole> list = StreamUtil.toList(roleList, roleId -> {
+            SysUserRole ur = new SysUserRole();
+            ur.setUserId(userId);
+            ur.setRoleId(roleId);
+            return ur;
+        });
+        sysUserRoleMapper.saveBatch(list);
+    }
+
+
+    /**
      * 批量删除用户信息
      */
     @Override
+    @Transaction
     public Integer deleteByIds(Collection<Long> ids) {
-        return sysUserMapper.deleteByIds(ids);
+        sysUserRoleMapper.delete(where -> where.in(SysUserRole::getUserId, ids));
+        sysUserPostMapper.delete(where -> where.in(SysUserPost::getUserId, ids));
+        int num = sysUserMapper.deleteByIds(ids);
+        Assert.gtZero(num, "删除用户失败");
+        return num;
     }
 
     /**
