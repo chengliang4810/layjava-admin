@@ -2,7 +2,6 @@ package com.jimuqu.system.mapper;
 
 import cn.xbatis.core.sql.executor.Where;
 import cn.xbatis.core.sql.executor.chain.QueryChain;
-import com.jimuqu.common.core.utils.StreamUtil;
 import com.jimuqu.common.mybatis.core.mapper.BaseMapperPlus;
 import com.jimuqu.system.domain.SysDept;
 import com.jimuqu.system.domain.vo.SysDeptVo;
@@ -26,11 +25,11 @@ public interface SysDeptMapper extends BaseMapperPlus<SysDept, SysDeptVo> {
      * @return 包含子部门的列表
      */
     default List<Long> selectListByParentId(Long parentId) {
-        List<SysDept> sysDeptList = QueryChain.of(this)
+        return QueryChain.of(this)
                 .select(SysDept::getId)
                 .and(SysDept::getAncestors, dept-> dept.mysql().findInSet(parentId))
+                .returnType(Long.class)
                 .list();
-        return StreamUtil.toList(sysDeptList, SysDept::getId);
     }
 
 
